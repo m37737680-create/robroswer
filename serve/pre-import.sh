@@ -5,6 +5,7 @@ DB_HOST="${MYSQL_HOST:-db}"
 DB_NAME="${MYSQL_DATABASE:-ragnarok}"
 DB_USER="${MYSQL_USER:-ragnarok}"
 DB_PASSWORD="${MYSQL_PASSWORD:-ragnarok}"
+GAME_MODE="${GAME_MODE:-renewal}"
 
 until mysqladmin ping -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASSWORD" --silent; do
     sleep 2
@@ -12,8 +13,10 @@ done
 
 cd /rathena
 
-if ! grep -q '^REPLACE INTO' sql-files/item_db.sql 2>/dev/null ||
-   ! grep -q '^REPLACE INTO' sql-files/mob_db.sql 2>/dev/null; then
+if [ "$GAME_MODE" = "pre-renewal" ] && {
+   ! grep -q '^REPLACE INTO' sql-files/item_db.sql 2>/dev/null ||
+   ! grep -q '^REPLACE INTO' sql-files/mob_db.sql 2>/dev/null;
+}; then
     mkdir -p /tmp/pre-renewal-bin
     printf '#!/bin/sh\nexec /usr/bin/g++ -DPRERE -DCONVERT_ALL "$@"\n' > /tmp/pre-renewal-bin/g++
     chmod +x /tmp/pre-renewal-bin/g++

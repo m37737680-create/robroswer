@@ -1,0 +1,167 @@
+services: 
+
+  # Emulador
+  serve: 
+    build: serve
+    container_name: ro-ragnarok-serve
+    restart: always
+    tty: true
+    working_dir: /rathena
+    # SEMPRE QUE REINICIAR O CONTAINER IRAR BUIDAR O EMULADOR  
+    volumes:
+      # LEMBRAR SUBISTITUIR O NOME <EMULADOR> PARA A PASTE DO SEU SERVER
+      - ./serve/rathena:/rathena
+      - ./serve/pre-import.sh:/pre-import.sh:ro
+    # entrypoint: ./entrypoint.sh 20141022
+    # TESTAR UM HEXED
+    # versione client/server: 20141022
+    # non funziona 20250604
+    entrypoint: ["/usr/local/bin/rathena-entrypoint"]
+    ports:
+      - "${MAP_PORT}:${MAP_PORT}"
+      - "${CHAR_PORT}:${CHAR_PORT}"
+      - "${LOGIN_PORT}:${LOGIN_PORT}"
+    environment:
+      GAME_MODE: ${GAME_MODE}
+      PACKETVER: ${PACKETVER}
+      RENEWAL: ${RENEWAL}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${GAME_DB_NAME}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      RATHENA_HOST: ${RATHENA_HOST}
+      RATHENA_BIND_IP: ${RATHENA_BIND_IP}
+    networks:
+      - ragnarok-app-network
+    depends_on:
+      db:
+        condition: service_started
+      
+  db:
+    build: db
+    container_name: ro-ragnarok-db
+    restart: always
+    tty: true
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - ./db/dbdata:/var/lib/mysql
+      - ./db/sql-files:/docker-entrypoint-initdb.d
+      - ./FluxCP/data/schemas:/fluxcp-schemas:ro
+      # - ./db/log:/var/log/mysql
+    environment:
+      MYSQL_DATABASE: ${GAME_DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - ragnarok-app-network
+
+  # RoBrawser
+  app:
+    build: app
+    container_name: ro-browser-Brawser
+    volumes:
+      - ./app:/var/www
+    networks:
+      - ragnarok-app-network
+
+  renewal:
+    build: renewal
+    container_name: ro-browser-renewal
+    restart: always
+    environment:
+      PACKETVER: ${PACKETVER}
+      RENEWAL: ${RENEWAL}
+    networks:
+      - ragnarok-app-network
+    depends_on:
+      - nginx
+
+  nginx:
+    build: nginx
+    container_name: ro-browser-nginx
+    restart: always
+    tty: true
+    ports:
+      - "${WEB_PORT}:80"
+    volumes:
+      - ./app/roBrowser:/var/www/roBrowser
+    networks:
+      - ragnarok-app-network
+    depends_on:
+      - app
+
+  fluxcp:
+    build: FluxCP
+    container_name: ro-fluxcp
+    restart: always
+    ports:
+      - "${FLUXCP_PORT}:80"
+    environment:
+      FLUX_DB_HOST: ${MYSQL_HOST}
+      FLUX_DB_PORT: ${DB_PORT}
+      FLUX_DB_NAME: ${GAME_DB_NAME}
+      FLUX_DB_USER: ${MYSQL_USER}
+      FLUX_DB_PASSWORD: ${MYSQL_PASSWORD}
+      FLUX_INSTALLER_PASSWORD: ${FLUX_INSTALLER_PASSWORD}
+      FLUX_LOGIN_ADDRESS: ${RATHENA_HOST}
+      FLUX_CHAR_ADDRESS: ${RATHENA_HOST}
+      FLUX_MAP_ADDRESS: ${RATHENA_HOST}
+      FLUX_RENEWAL: ${RENEWAL}
+      FLUX_GAME_MODE: ${GAME_MODE}
+      FLUX_SERVER_ADDRESS: ${FLUX_SERVER_ADDRESS}
+      FLUX_BASE_URI: ${FLUX_BASE_URI}
+      FLUX_FORCE_HTTPS: ${FLUX_FORCE_HTTPS}
+      FLUX_REQUIRE_OWNERSHIP: ${FLUX_REQUIRE_OWNERSHIP}
+    volumes:
+      - ./FluxCP:/var/www/html
+    networks:
+      - ragnarok-app-network
+    depends_on:
+      db:
+        condition: service_started
+
+  wsproxy:
+    # image: node:18
+    build: wsproxy
+    container_name: ro-browser-wsproxy
+    restart: always
+    tty: true
+    command: >
+      bash -c "wsproxy -a ${RATHENA_HOST}:${LOGIN_PORT},${RATHENA_HOST}:${CHAR_PORT},${RATHENA_HOST}:${MAP_PORT}"
+    ports:
+      - "${WSPROXY_PORT}:${WSPROXY_PORT}"
+    networks:
+      - ragnarok-app-network
+    depends_on:
+      serve:
+        condition: service_started
+      app:
+        condition: service_started
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "${PHPMYADMIN_PORT}:80"
+    environment:
+      PMA_ARBITRARY: "1"
+      PMA_HOST: ${MYSQL_HOST}
+      MYSQL_USERNAME: ${MYSQL_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    depends_on: 
+      - db
+    networks:
+      - ragnarok-app-network
+                        
+networks:
+  ragnarok-app-network:
+    driver: bridge

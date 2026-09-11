@@ -34,6 +34,8 @@ RUN apt update && apt -y upgrade
 RUN mkdir rathena
 # COPY entrypoint.sh ../emulador
 WORKDIR /rathena
+COPY entrypoint.sh /usr/local/bin/rathena-entrypoint
+RUN sed -i 's/\r$//' /usr/local/bin/rathena-entrypoint && chmod +x /usr/local/bin/rathena-entrypoint
 # RUN dos2unix -f entrypoint.sh
 # RUN chmod a+x entrypoint.sh
 

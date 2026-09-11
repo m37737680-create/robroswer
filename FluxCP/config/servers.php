@@ -7,6 +7,7 @@ $dbName = getenv('FLUX_DB_NAME') ?: 'ragnarok';
 $loginAddress = getenv('FLUX_LOGIN_ADDRESS') ?: '127.0.0.1';
 $charAddress = getenv('FLUX_CHAR_ADDRESS') ?: '127.0.0.1';
 $mapAddress = getenv('FLUX_MAP_ADDRESS') ?: '127.0.0.1';
+$isRenewal = strtolower(getenv('FLUX_RENEWAL') ?: 'true') === 'true';
 
 return array(
 	// Example server configuration. You may have more arrays like this one to
@@ -73,7 +74,7 @@ return array(
 		'CharMapServers' => array(
 			array(
 				'ServerName'      => 'FluxRO',
-				'Renewal'         => false,
+				'Renewal'         => $isRenewal,
 				'MaxCharSlots'    => 9,
 				'DateTimezone'    => null, // Specifies game server's timezone for this char/map pair. (See: http://php.net/timezones)
 				//'ResetDenyMaps'   => 'sec_pri', // Defaults to 'sec_pri'. This value can be an array of map names.
