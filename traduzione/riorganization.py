@@ -67,13 +67,14 @@ def clean_and_rename_translation_files(root_directory):
 
 
 # --- Configurazione ---
-# CAMBIA QUESTO CON IL PERCORSO REALE DELLA TUA CARTELLA NPC
-ROOT_DIR = r"C:\il\tuo\Desktop\ragnarokserver\"
+import sys
+DEFAULT_ROOT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "npc")
 
 # Esecuzione dello script
 if __name__ == "__main__":
+    root_dir = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_ROOT_DIR
     # Verifica che la cartella esista
-    if not os.path.exists(ROOT_DIR):
-        print(f"FATAL ERROR: La directory specificata non esiste: {ROOT_DIR}")
+    if not os.path.exists(root_dir):
+        print(f"FATAL ERROR: La directory specificata non esiste: {root_dir}")
     else:
-        clean_and_rename_translation_files(ROOT_DIR)
+        clean_and_rename_translation_files(root_dir)

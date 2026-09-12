@@ -1,6 +1,8 @@
 #Set-ExecutionPolicy RemoteSigned -Scope Process 
+python3.13 -m venv venv 
+.\venv\Scripts\Activate.ps1
+pip install deep-translator
 
-.\.venv\Scripts\Activate.ps1
 
 powershell -ExecutionPolicy Bypass -Command ".venv\Scripts\Activate.ps1"                                                                                                              
 
@@ -73,3 +75,39 @@ CTRL + A, poi N	Passa alla finestra successiva
 CTRL + A, poi P	Passa alla finestra precedente
 
 exit	Chiude la sessione (se dentro screen)
+
+
+
+
+
+
+
+
+
+
+
+Come eseguire lo script:
+Dalla cartella c:\Users\utente\Desktop\ragnarokserver\robroswer\traduzione:
+
+Per avviare la traduzione di tutta la cartella NPC:
+
+powershell
+.\venv\Scripts\python tradricorsivocodifica.py
+(Su Linux / screen: python3 ./tradricorsivocodifica.py)
+
+Per testare un singolo file:
+
+powershell
+.\venv\Scripts\python tradricorsivocodifica.py npc/cities/alberta.txt
+Per forzare la ritraduzione e sovrascrivere i file esistenti:
+
+powershell
+.\venv\Scripts\python tradricorsivocodifica.py --force
+Una volta terminato, per applicare i file tradotti (rimuovere originali e rinominare):
+
+powershell
+.\venv\Scripts\python riorganization.py
+(È stato corretto anche il percorso predefinito in 
+
+riorganization.py
+).
