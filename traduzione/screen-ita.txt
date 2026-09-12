@@ -1,0 +1,75 @@
+#Set-ExecutionPolicy RemoteSigned -Scope Process 
+
+.\.venv\Scripts\Activate.ps1
+
+powershell -ExecutionPolicy Bypass -Command ".venv\Scripts\Activate.ps1"                                                                                                              
+
+# 1. Avvia screen
+
+screen -S traduzione
+
+
+
+# 2. Esegui lo script
+
+sudo python3 ./traduzione.py
+
+
+
+# 3. Esci (senza terminare lo script)
+
+CTRL + A, poi D
+
+
+
+# 4. Da un'altra sessione SSH, ricollegati
+
+screen -r traduzione
+
+screen -r 12345
+
+
+
+# 5. Se vuoi terminare tutto
+
+CTRL + A, poi K
+
+
+
+
+
+
+
+
+
+screen -ls
+
+
+
+
+
+
+
+
+
+
+
+
+
+screen -S nome_sessione	Crea una nuova sessione con un nome personalizzato
+
+screen -ls	Mostra tutte le sessioni attive
+
+screen -r nome_sessione	Ricollegati a una sessione esistente
+
+CTRL + A, poi D	Detach (esci lasciando il processo in esecuzione)
+
+CTRL + A, poi K	Kill (termina la sessione corrente)
+
+CTRL + A, poi C	Crea una nuova finestra (tab) nella stessa sessione
+
+CTRL + A, poi N	Passa alla finestra successiva
+
+CTRL + A, poi P	Passa alla finestra precedente
+
+exit	Chiude la sessione (se dentro screen)
