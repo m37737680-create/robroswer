@@ -6,8 +6,9 @@ DB_NAME="${MYSQL_DATABASE:-ragnarok}"
 DB_USER="${MYSQL_USER:-ragnarok}"
 DB_PASSWORD="${MYSQL_PASSWORD:-ragnarok}"
 GAME_MODE="${GAME_MODE:-renewal}"
+DB_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD:-ragnarok}"
 
-until mysqladmin ping -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASSWORD" --silent; do
+until mysqladmin ping -h"$DB_HOST" -uroot -p"$DB_ROOT_PASSWORD" --silent; do
     sleep 2
 done
 
@@ -27,7 +28,7 @@ if [ "$GAME_MODE" = "pre-renewal" ] && {
 fi
 
 table_rows() {
-    mysql -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASSWORD" -N \
+    mysql -h"$DB_HOST" -uroot -p"$DB_ROOT_PASSWORD" -N \
         -e "SELECT table_rows FROM information_schema.tables WHERE table_schema='$DB_NAME' AND table_name='$1';"
 }
 
@@ -37,7 +38,7 @@ import_if_empty() {
     rows="$(table_rows "$table")"
     if [ -z "$rows" ] || [ "$rows" = "0" ]; then
         for sql_file in "$@"; do
-            mysql -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" < "/rathena/sql-files/$sql_file"
+            mysql -h"$DB_HOST" -uroot -p"$DB_ROOT_PASSWORD" "$DB_NAME" < "/rathena/sql-files/$sql_file"
         done
     fi
 }

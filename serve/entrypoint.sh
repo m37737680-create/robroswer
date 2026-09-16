@@ -8,9 +8,9 @@ db_host="${MYSQL_HOST:-db}"
 db_name="${GAME_DB_NAME:-ragnarok}"
 db_user="${MYSQL_USER:-ragnarok}"
 db_password="${MYSQL_PASSWORD:-ragnarok}"
-db_root_password="${MYSQL_ROOT_PASSWORD:-R00t+}"
+db_root_password="${MYSQL_ROOT_PASSWORD:-ragnarok}"
 server_host="${RATHENA_HOST:-serve}"
-bind_ip="${RATHENA_BIND_IP:-0.0.0.0}"
+bind_ip="${RATHENA_BIND_IP:-serve}"
 
 case "$mode" in
 	renewal)
@@ -88,16 +88,17 @@ export MYSQL_USER="$db_user"
 export MYSQL_PASSWORD="$db_password"
 export MYSQL_ROOT_PASSWORD="$db_root_password"
 
-until mysqladmin ping -h"$db_host" -uroot -p"$db_root_password" --silent; do
+until mysql -h"$db_host" -uroot -p"$db_root_password" -e "SELECT 1" > /dev/null 2>&1; do
+	echo "Waiting for database to be ready..."
 	sleep 2
 done
-mysql -h"$db_host" -uroot -p"$db_root_password" -e \
-	"CREATE DATABASE IF NOT EXISTS \`$db_name\`; GRANT ALL PRIVILEGES ON \`$db_name\`.* TO '$db_user'@'%'; FLUSH PRIVILEGES;"
+
 
 ./configure --enable-packetver="$packetver"
 make clean
 make server
 
 /bin/bash /pre-import.sh
+/bin/bash /20-fluxcp-schemas
 ./athena-start start
 exec tail -f /dev/null
