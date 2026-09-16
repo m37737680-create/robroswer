@@ -99,6 +99,6 @@ make clean
 make server
 
 /bin/bash /pre-import.sh
-/bin/bash /20-fluxcp-schemas
+/bin/bash /20-fluxcp-schemas.sh
 ./athena-start start
 exec tail -f /dev/null
