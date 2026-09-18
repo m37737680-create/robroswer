@@ -1,0 +1,634 @@
+//===== rAthena Script =======================================
+//= The Last Room
+//===== Description: =========================================
+//= [Official Conversion]
+//= The Last Room Instance
+//===== Changelogs: ==========================================
+//= 1.0 First version. [Capuche]
+//= 1.1 Updated to match official script. [Capuche]
+//============================================================
+
+un_myst,163,38,5	script	Mark	4_M_BLUEMAN,{
+	mes "[Segno]";
+	cutin "bu_mark1.bmp",0;
+
+	if (BaseLevel < 150) {
+		mes "È pericoloso qui.";
+		mes "Sarebbe meglio tornare la prossima volta quando saremo più forti.";
+		close3;
+	}
+	mes "A differenza delle altre porte che abbiamo visto, questa porta presenta tracce di essere stata bloccata da questo lato.";
+	next;
+	mes "[Segno]";
+	mes "C'è qualcosa dentro?";
+	next;
+	switch( checkquest(11379,PLAYTIME) ) {
+	case -1:
+		.@party_id = getcharid(1);
+		if (.@party_id < 1) {
+			mes "...Non mi sento proprio qui.";
+			mes "Potrebbe essere pericoloso da soli, quindi potrebbe essere meglio formare un partito.";
+			close3;
+		}
+		if (is_party_leader() == true)
+			.@string$ = "Open door.";
+		switch( select( .@string$, "Entra.", "Esentato." ) ) {
+		case 1:
+			if (instance_create("Last room") < 1) {
+				mes "Festa: " + getpartyname( getcharid(1) ) + "";
+				mes "Leader: " + getpartyleader( getcharid(1) ) + "";
+				mes "^0000ffUltima stanza ^000000- Creazione fallita";
+				close3;
+			}
+			mes "[Segno]";
+			mes "Sto aprendo la porta.";
+			mes "Entra quando la porta è completamente aperta.";
+			close3;
+		case 2:
+			switch( instance_enter("Last room") ) {
+			case IE_NOMEMBER:
+				mes "[Segno]";
+				mes "...mi sento molto sospettoso!";
+				mes "È un po' pericoloso restare soli. Si consiglia di fare squadra!";
+				close3;
+			case IE_NOINSTANCE:
+				mes "[Segno]";
+				mes "La porta non sembra essere completamente aperta.";
+				close3;
+			case IE_OTHER:
+				mes "[Segno]";
+				mes "Ehi... cosa sta succedendo?";
+				close3;
+			case IE_OK:
+				mapannounce "un_myst", """ + strcharinfo(0) + " of the party, " + getpartyname(.@party_id) + ", is entering Last room.",bc_map,"0x00FF99";
+				setquest 11379;// Final Room
+				if (isbegin_quest(11380) == 0)
+					setquest 11380;// Final Room
+				end;
+			}
+			end;
+		case 3:
+			close3;
+		}
+		end;
+	case 0:
+	case 1:
+		mes "[Segno]";
+		cutin "bu_mark1.bmp",0;
+		mes "...Sembri stanco.";
+		mes "Visto che sei andato lì dovresti prenderti un giorno per riposarti.";
+		close3;
+	case 2:
+		mes "[Segno]";
+		cutin "bu_mark1.bmp",0;
+		mes "Non posso credere che tu voglia entrare di nuovo in un posto come questo...";
+		erasequest 11379;// Final Room
+		close3;
+	}
+}
+
+// 1st step
+/*
+// npcs found on iro
+1@uns,139,41,3	script	Mark#room1	4_M_BLUEMAN,{
+	mes "[Segno]";
+	mes "Qualcosa non va. È meglio muoversi con cautela.";
+	cutin "bu_mark4.bmp",0;
+	close3;
+}
+
+1@uns,145,32,5	script	Alph#room1	4_M_BLACKMAN,{
+	mes "[Alfa]";
+	mes "Ci sono tracce sospette ovunque.";
+	mes "Sembra che sia passata una specie di macchina pesante...";
+	cutin "bu_alp1.bmp",2;
+	close3;
+}
+
+1@uns,143,39,5	script	Maggi#room1	4_F_PINKWOMAN,{
+	mes "[Maggi]";
+	mes "Aahh....";
+	cutin "bu_maggi4.bmp",2;
+	close3;
+}
+*/
+
+1@uns,145,37,3	script	Tamarin#room1	4_M_TAMARIN,{
+	mes "[Tamarino]";
+	mes "Verità, stai bene?";
+	mes "Non hai un bell'aspetto...";
+	cutin "ep143_taang.bmp",2;
+	close3;
+}
+
+1@uns,143,38,5	script	Du#room1	4_M_REDMAN,{
+	mes "[Du]";
+	mes "Ho una brutta sensazione a riguardo...";
+	cutin "bu_du1.bmp",2;
+	close3;
+}
+
+1@uns,144,37,3	script	Verity#room1	4_F_BERRYTEA,{
+	if ('protocole < 2) {
+		mes "[Verità]";
+		mes "Umph... all'improvviso ho la sensazione che non va bene.";
+		cutin "EP15_2_brt_6.bmp",2;
+		if (is_party_leader() == false) {
+			mes "Desidero parlare con il leader.";
+			close3;
+		}
+		npctalk "Verity: Umph... all'improvviso ho la sensazione che non va bene.";
+		next;
+		mes "[Verità]";
+		mes "Qualcosa mi sta spaccando la testa....Ugh....";
+		npctalk "Verity: Qualcosa mi sta spaccando la testa....Ugh....";
+		next;
+		mes "[Verità]";
+		mes "....Uffa....";
+		npctalk "Verità: ....Ugh....";
+		next;
+		mes "[Du]";
+		mes "Sorella! Stai bene?!";
+		cutin "bu_du5.bmp",2;
+		npctalk "Du: Sorella! Stai bene?!", instance_npcname("Du#room1");
+		next;
+		mes "[Verità]";
+		mes "....Bisogna tornare indietro....";
+		cutin "EP15_2_brt_7.bmp",2;
+		npctalk "Verity: ....Devo tornare indietro....";
+		next;
+		mes "[Tamarino]";
+		mes "Verità, stai bene?";
+		mes "Puoi camminare?";
+		cutin "ep143_tahuk.bmp",2;
+		npctalk "Tamarin: Verity, are you alright? Can you walk?", instance_npcname("Tamarin#room1");
+		next;
+		mes "[Verità]";
+		mes "Uffa...";
+		cutin "EP15_2_brt_6.bmp",2;
+		npctalk "Verità: uff...";
+		next;
+		mes "[Du]";
+		mes "" + strcharinfo(0) + "! Penso che sia meglio che tu torni indietro.";
+		cutin "bu_du5.bmp",2;
+		npctalk "Du: " + strcharinfo(0) + "! I think it is better that you go back.", instance_npcname("Du#room1");
+		next;
+		mes "[Verità]";
+		mes "N...no. Mi aggiornerò presto, quindi vai avanti.";
+		cutin "EP15_2_brt_4.bmp",2;
+		npctalk "Verità: N...no. Mi aggiornerò presto, quindi vai avanti.";
+		next;
+		mes "[Tamarino]";
+		mes "Allora resterò con Verity finché non si sarà ripresa, così potrai andare avanti.";
+		cutin "ep143_tahuk.bmp",2;
+		npctalk "Tamarin: Allora resterò con Verity finché non si riprenderà, così potrai andare avanti.";
+		if ('protocole == 0) {
+			'protocole = 1;
+			disablenpc instance_npcname("#lrdoor1");
+			enablenpc instance_npcname("#lrdoor2");
+		}
+		close2;
+		cutin "",255;
+	}
+	end;
+}
+
+1@uns,140,45,0	script	#lrdoor1	WARPNPC,5,5,{
+	end;
+OnTouch:
+	warp 'map_name$,142,30;
+	end;
+}
+
+1@uns,140,45,0	script	#lrdoor2	HIDDEN_WARP_NPC,5,5,{
+	end;
+OnTouch:
+	if ('protocole == 1) {
+		'protocole = 2;
+		disablenpc instance_npcname("#lrdoor2");
+		// disablenpc instance_npcname("Mark#room1");
+		disablenpc instance_npcname("Du#room1");
+		disablenpc instance_npcname("Tamarin#room1");
+		disablenpc instance_npcname("Verity#room1");
+		// disablenpc instance_npcname("Maggi#room1");
+		// disablenpc instance_npcname("Alph#room1");
+		mapannounce 'map_name$, "-----------------Creak---------------------",bc_map,"0xFF0000";
+		donpcevent instance_npcname("#lrdoor3") + "::OnStart";
+	}
+	end;
+}
+
+1@uns,1,1,0	script	#lrdoor3	-1,{
+	end;
+OnStart:
+	initnpctimer;
+	end;
+OnTimer2000:
+	mapannounce 'map_name$, "-----Creak---Wrr--------------------------",bc_map,"0xFF0000";
+	end;
+OnTimer4000:
+	mapannounce 'map_name$, "--------------Wirrrrrrr-----------------",bc_map,"0xFF0000";
+	end;
+OnTimer6000:
+	mapannounce 'map_name$, "-----Zizip--------Zizizip------------------",bc_map,"0xFF0000";
+	end;
+OnTimer8000:
+	mapannounce 'map_name$, "System message : Intruder detected.",bc_map,"0xFF0000";
+	end;
+OnTimer10000:
+	mapannounce 'map_name$, "System message : Sealing off entrance and eliminating intruder according to designated protocols.",bc_map,"0xFF0000";
+	enablenpc instance_npcname("#lrdoor3");
+	areamonster 'map_name$,30,33,70,73,"System message",3253,1, instance_npcname("#lrdoor3") + "::OnMyMobDead";
+	callsub S_Spawn;
+OnTimer310000:
+	mapannounce 'map_name$, "System message : Eliminating intruder.",bc_map,"0xFF0000";
+	callsub S_Spawn;
+OnTimer610000:
+	stopnpctimer;
+	mapannounce 'map_name$, "System message : Eliminating intruder.",bc_map,"0xFF0000";
+	callsub S_Spawn;
+S_Spawn:
+	.@label$ = instance_npcname("#lrdoor3") + "::OnMyMobDead";
+	areamonster 'map_name$,125,44,145, 64, "Machine Component",3251,3, .@label$;	// GC109
+	areamonster 'map_name$,117,50,137, 70, "Machine Component",3251,3, .@label$;
+	areamonster 'map_name$, 77,59, 97, 79, "Machine Component",3251,3, .@label$;
+	areamonster 'map_name$, 53,86, 73,106, "Machine Component",3251,3, .@label$;
+	areamonster 'map_name$,125,44,145, 64, "Machine Component",3252,3, .@label$;	// DR815
+	areamonster 'map_name$,117,50,137, 70, "Machine Component",3252,3, .@label$;
+	areamonster 'map_name$, 77,59, 97, 79, "Machine Component",3252,3, .@label$;
+	areamonster 'map_name$, 53,86, 73,106, "Machine Component",3252,3, .@label$;
+	end;
+OnMyMobDead:
+	.@count = mobcount( 'map_name$, instance_npcname("#lrdoor3") + "::OnMyMobDead" );
+	if (.@count < 1) {
+		mapannounce 'map_name$, "System message : First protocol failed. Commencing next protocol.",bc_map,"0xFF0000";
+		stopnpctimer;
+		enablenpc instance_npcname("Tamarin#room2");
+		disablenpc instance_npcname("#lrdoor3");
+	}
+	end;
+}
+
+1@uns,67,97,3	script	Tamarin#room2	4_M_TAMARIN,{
+	mes "[Tamarino]";
+	mes "Huff huff... Verity all'improvviso huff huff non riusciva nemmeno a stare dritta davanti a huff huff...";
+	cutin "ep143_tahuk.bmp",2;
+	if (is_party_leader() == false) {
+		next;
+		mes "[Tamarino]";
+		mes "Non credo che questo sia un problema che possiamo risolvere parlando tra di noi.";
+		mes "Chiediamo prima il parere del leader.";
+		close3;
+	}
+	npctalk "Tamarin: Huff huff... Verity all'improvviso huff huff non riusciva nemmeno a stare dritta davanti a huff huff...";
+	next;
+	mes "[Tamarino]";
+	mes "Sono scappato così in fretta, uff... uff... per riuscire a raggiungerlo. Uff uff";
+	npctalk "Tamarin: Sono scappato così velocemente, uff... uff... da riuscire a raggiungerlo. Uff uff";
+	next;
+	mapannounce 'map_name$, "System message : An unidentified object is moving fast from Zone 1 to Zone 2.",bc_map,"0xFF0000";
+	mes "[Tamarino]";
+	mes "Uh... Verity potrebbe essere arrivata a tanto?";
+	npctalk "Tamarin: Uh... Verity potrebbe essere arrivata a tanto?";
+	next;
+	mapannounce 'map_name$, "System message : Commencing emergency protocol.",bc_map,"0xFF0000";
+	mes "[Tamarino]";
+	mes "Dobbiamo trovare Verity velocemente";
+	npctalk "Tamarin: Dobbiamo trovare Verity velocemente";
+	next;
+	mes "[Tamarino]";
+	mes "C'è solo la strada in salita quindi vai avanti.";
+	npctalk "Tamarin: C'è solo la strada in salita quindi vai avanti.";
+	if ('protocole == 2) {
+		'protocole = 3;
+		enablenpc instance_npcname("#lrdoor4");
+		for ( .@i = 1; .@i < 16; ++.@i )
+			enablenpc instance_npcname( "#lrboom" + .@i );
+		enablenpc instance_npcname("Verity#room2");
+		enablenpc instance_npcname("Verity#room3");
+	}
+	close3;
+}
+
+// 2nd step
+1@uns,100,121,0	warp2	#lrdoor4	3,3,1@uns,145,107
+
+1@uns,157,94,0	script	#lrboom1	4_CRACK,2,2,{
+	end;
+OnTouch:
+	sscanf( strnpcinfo(2), "lrboom%d", .@num );
+	areamonster 'map_name$,178,34,198,54, "Machine Component", (3251 + ((.@num-1) % 2)), 3;
+	mapannounce 'map_name$, "System message : Intruder detected in Zone 2.",bc_map,"0xFF0000";
+	disablenpc();
+	end;
+}
+1@uns,164,97,0	duplicate(#lrboom1)	#lrboom2	4_CRACK,2,2
+1@uns,166,92,0	duplicate(#lrboom1)	#lrboom3	4_CRACK,2,2
+1@uns,170,96,0	duplicate(#lrboom1)	#lrboom4	4_CRACK,2,2
+1@uns,175,93,0	duplicate(#lrboom1)	#lrboom5	4_CRACK,2,2
+1@uns,190,97,0	duplicate(#lrboom1)	#lrboom6	4_CRACK,2,2
+1@uns,194,94,0	duplicate(#lrboom1)	#lrboom7	4_CRACK,2,2
+1@uns,199,96,0	duplicate(#lrboom1)	#lrboom8	4_CRACK,2,2
+1@uns,206,93,0	duplicate(#lrboom1)	#lrboom9	4_CRACK,2,2
+1@uns,217,91,0	duplicate(#lrboom1)	#lrboom10	4_CRACK,2,2
+1@uns,224,79,0	duplicate(#lrboom1)	#lrboom11	4_CRACK,2,2
+1@uns,227,73,0	duplicate(#lrboom1)	#lrboom12	4_CRACK,2,2
+1@uns,227,69,0	duplicate(#lrboom1)	#lrboom13	4_CRACK,2,2
+1@uns,220,63,0	duplicate(#lrboom1)	#lrboom14	4_CRACK,2,2
+1@uns,201,60,0	duplicate(#lrboom1)	#lrboom15	4_CRACK,2,2
+
+1@uns,224,29,3	script	Verity#room2	4_F_BERRYTEA,{
+	mes "[Verità]";
+	mes "Ah...Dove sono...";
+	mes "Quello che è successo?";
+	cutin "EP15_2_brt_6.bmp",2;
+	next;
+	mes "[Verità]";
+	mes "La mia testa...si sta spaccando.";
+	mes "Un suono proveniente da questa... porta...";
+	next;
+	if (select( "Esentato.", "Vai dentro." ) == 1) {
+		mes "[Verità]";
+		mes "Torna indietro... dobbiamo tornare indietro...";
+		cutin "EP15_2_brt_7.bmp",2;
+		close3;
+	}
+	mes "[Verità]";
+	mes "Presto... dobbiamo tornare indietro...";
+	cutin "EP15_2_brt_7.bmp",2;
+	close2;
+	warp 'map_name$,240,255;
+	end;
+}
+
+// Last step
+1@uns,242,253,3	script	Verity#room3	4_F_BERRYTEA,{
+	mes "[Verità]";
+	mes "Finalmente.. Siamo tornati...";
+	mes "Finalmente.....";
+	cutin "EP15_2_brt_7.bmp",2;
+	if ('protocole == 3) {
+		'protocole = 4;
+		disablenpc instance_npcname("Verity#room3");
+		donpcevent instance_npcname("#bosslr") + "::OnStart";
+	}
+	close3;
+}
+
+1@uns,1,1,0	script	#bosslr	-1,{
+	end;
+OnStart:
+	enablenpc instance_npcname("#bosslr");
+	initnpctimer;
+	end;
+OnTimer2000:
+	mapannounce 'map_name$, "System message : Intruder detected in Mother Room.",bc_map,"0xFF0000";
+	end;
+OnTimer4000:
+	mapannounce 'map_name$, "System message : Commencing final protocol.",bc_map,"0xFF0000";
+	areamonster 'map_name$,235,255,255,275,"T_W_O",3254,1, instance_npcname("#bosslr") + "::OnMyMobDead";
+	end;
+OnTimer6000:
+	mapannounce 'map_name$, "System message : Changing all systems from maintenance mode to combat mode.",bc_map,"0xFF0000";
+	end;
+OnTimer8000:
+	mapannounce 'map_name$, "System message : This is the final protocol to protect... all unrelated personnel please evacuate.",bc_map,"0xFF0000";
+	end;
+OnTimer11000:
+	mapannounce 'map_name$, "T_W_O : Have to go back..... This place isn't it....",bc_map,"0xFF0000";
+	end;
+OnTimer30000:
+	mapannounce 'map_name$, "System message : System damage occurred.",bc_map,"0xFF0000";
+	areamonster 'map_name$,225,250,265,280, "System message",3253,4, instance_npcname("#bosslr") + "::OnMyMobDead2";
+	end;
+OnTimer32000:
+	mapannounce 'map_name$, "T_W_O : Who am I? Why am I here?.",bc_map,"0xFF0000";
+	end;
+OnTimer60000:
+	mapannounce 'map_name$, "System message : There may be critical damage within the Zone during system damage so please be careful.",bc_map,"0xFF0000";
+	end;
+OnTimer90000:
+	mapannounce 'map_name$, "System message : System damage occurred.",bc_map,"0xFF0000";
+	areamonster 'map_name$,225,250,265,280, "System message",3253,4, instance_npcname("#bosslr") + "::OnMyMobDead2";
+	end;
+OnTimer100000:
+	mapannounce 'map_name$, "T_W_O : There is nothing left....",bc_map,"0xFF0000";
+	end;
+OnTimer110000:
+	mapannounce 'map_name$, "T_W_O : I... Nor them....",bc_map,"0xFF0000";
+	end;
+OnTimer150000:
+	mapannounce 'map_name$, "System message : System damage occurred.",bc_map,"0xFF0000";
+	areamonster 'map_name$,225,250,265,280, "System message",3253,4, instance_npcname("#bosslr") + "::OnMyMobDead2";
+	end;
+OnTimer210000:
+	mapannounce 'map_name$, "System message : System damage occurred.",bc_map,"0xFF0000";
+	areamonster 'map_name$,225,250,265,280, "System message",3253,4, instance_npcname("#bosslr") + "::OnMyMobDead2";
+	stopnpctimer;
+	end;
+OnMyMobDead:
+	if (mobcount( 'map_name$, instance_npcname("#bosslr") + "::OnMyMobDead" ) < 1) {
+		stopnpctimer;
+		killmonster 'map_name$, instance_npcname("#bosslr") + "::OnMyMobDead";
+		killmonster 'map_name$, instance_npcname("#bosslr") + "::OnMyMobDead2";
+		mapannounce 'map_name$, "System message : All protocols failed. Locking down area excluding threat element.",bc_map,"0xFF0000";
+		// enablenpc instance_npcname("Alph#room4");
+		// enablenpc instance_npcname("Tamarin#room4");
+		// enablenpc instance_npcname("Maggi#room4");
+		// enablenpc instance_npcname("Du#room4");
+		// enablenpc instance_npcname("Mark#room4");
+		enablenpc instance_npcname("Verity#room4");
+		disablenpc instance_npcname("#bosslr");
+	}
+	end;
+OnMyMobDead2:
+	end;
+}
+
+1@uns,242,253,3	script	Verity#room4	4_F_BERRYTEA,{
+	mes "[Verità]";
+	mes "Chi sono io?";
+	mes "Chi sono io...";
+	cutin "EP15_2_brt_6.bmp",2;
+	close2;
+	warp "un_bunker",299,162;
+	end;
+
+OnInstanceInit:
+	'map_name$ = instance_mapname("1@uns");
+	'protocole = 0;
+
+	// 1st step
+	disablenpc instance_npcname("#lrdoor3");
+	disablenpc instance_npcname("Tamarin#room2");
+	disablenpc instance_npcname("#lrdoor4");
+
+	// 2nd step
+	disablenpc instance_npcname("Verity#room2");
+	for ( .@i = 1; .@i < 16; ++.@i )
+		disablenpc instance_npcname( "#lrboom" + .@i );
+
+	// Last step
+	disablenpc instance_npcname("Verity#room3");
+	disablenpc instance_npcname("#bosslr");
+	// disablenpc instance_npcname("Alph#room4");
+	// disablenpc instance_npcname("Tamarin#room4");
+	// disablenpc instance_npcname("Maggi#room4");
+	// disablenpc instance_npcname("Du#room4");
+	// disablenpc instance_npcname("Mark#room4");
+	disablenpc instance_npcname("Verity#room4");
+	end;
+}
+
+/*
+1@uns,236,258,1	script	Alph#room4	4_M_BLACKMAN,{
+	mes "[Alfa]";
+	mes "È troppo presto per rilassarsi...";
+	cutin "bu_alp1.bmp",2;
+	close3;
+}
+
+1@uns,244,257,3	script	Tamarin#room4	4_M_TAMARIN,{
+	mes "[Tamarino]";
+	mes "Verità!!!";
+	mes "Rimettiti in sesto!";
+	cutin "ep143_tahuk.bmp",2;
+	close3;
+}
+
+1@uns,245,254,3	script	Maggi#room4	4_F_PINKWOMAN,{
+	mes "[Maggi]";
+	mes "Verità, stai bene?";
+	cutin "bu_maggi4.bmp",2;
+	close3;
+}
+
+1@uns,244,254,3	script	Du#room4	4_M_REDMAN,{
+	mes "[Du]";
+	mes "Sorella!";
+	mes "Quello che è successo?!";
+	mes "Stai bene?";
+	cutin "bu_du5.bmp",2;
+	close3;
+}
+
+1@uns,242,255,5	script	Mark#room4	4_M_BLUEMAN,{
+	mes "[Segno]";
+	mes "Tutti fuori dai piedi!";
+	mes "Lancerò Guarigione!!!";
+	cutin "bu_mark4.bmp",0;
+	close3;
+}
+
+1@uns,242,253,3	script	Verity#room4	4_F_BERRYTEA,{
+	mes "[Du]";
+	mes "Sorella!";
+	mes "Quello che è successo?!";
+	mes "Stai bene?";
+	cutin "bu_du5.bmp",2;
+	npctalk "Du: Sorella! Quello che è successo?! Stai bene?", instance_npcname("Du#room4");
+	next;
+	mes "[Tamarino]";
+	mes "Verità!!!";
+	mes "Rimettiti in sesto!";
+	cutin "ep143_tahuk.bmp",2;
+	npctalk "Tamarin: Verità!!! Rimettiti in sesto!", instance_npcname("Tamarin#room4");
+	next;
+	mes "[Segno]";
+	mes "Tutti fuori dai piedi!";
+	mes "Lancerò Guarigione!!!";
+	cutin "bu_mark4.bmp",0;
+	npctalk "Mark: Tutti fuori dai piedi! Lancerò Guarigione!!!", instance_npcname("Mark#room4");
+	next;
+	mes "[Verità]";
+	mes "Uh...uhm...";
+	cutin "EP15_2_brt_4.bmp",2;
+	npctalk "Verità: Uh...uhm...";
+	next;
+	mes "[Verità]";
+	mes "OH...";
+	mes "Cosa sta succedendo?";
+	mes "Con facce serie.";
+	cutin "EP15_2_brt_5.bmp",2;
+	npctalk "Verity Oh... Cosa sta succedendo? Con facce serie.";
+	next;
+	mes "[Du]";
+	mes "Cosa ne pensi!";
+	mes "Non ricordi?";
+	cutin "bu_du4.bmp",2;
+	npctalk "Du: Cosa ne pensi! Non ricordi?", instance_npcname("Du#room4");
+	next;
+	mes "[Verità]";
+	mes "Ricordare?";
+	cutin "EP15_2_brt_5.bmp",2;
+	npctalk "Verità: ricordi?";
+	next;
+	mes "[Verità]";
+	mes "... Ora che ci penso, dove sono?";
+	cutin "EP15_2_brt_3.bmp",2;
+	npctalk "Verity: ... Ora che ci penso, dove sono?";
+	next;
+	mes "[Tamarino]";
+	mes "Verità, davvero non ricordi nulla?";
+	mes "Prima...";
+	cutin "ep143_tahuk.bmp",2;
+	npctalk "Tamarin: Verità, davvero non ricordi nulla? Prima...", instance_npcname("Tamarin#room4");
+	next;
+	mes "[Verità]";
+	mes "Ehm...";
+	mes "Credo che mi si spaccasse la testa da quando sono andato sottoterra...";
+	npctalk "Verity: Penso che mi si spaccasse la testa da quando sono andata sottoterra...";
+	cutin "EP15_2_brt_3.bmp",2;
+	next;
+	mes "[Verità]";
+	mes "Non ricordo nulla dopo.";
+	npctalk "Verity: Non ricordo più nulla dopo.";
+	cutin "EP15_2_brt_5.bmp",2;
+	next;
+	mes "[Du]";
+	mes "Proprio adesso qualcosa di straordinario...";
+	cutin "bu_du4.bmp",2;
+	npctalk "Du: Proprio adesso qualcosa di tremendo...", instance_npcname("Du#room4");
+	next;
+	mes "[Alfa]";
+	mes "Ehi... non penso che questa sia una situazione in cui dovremmo chattare in questo momento.";
+	cutin "bu_alp3.bmp",2;
+	npctalk "Alph: Ehi... non penso che questa sia una situazione in cui dovremmo chattare in questo momento.", instance_npcname("Alph#room4");
+	next;
+	mes "[Du]";
+	mes "Questa la chiami chattare?";
+	mes "Era tremendo prima, okay?";
+	cutin "bu_du4.bmp",2;
+	npctalk "Du: Questo lo chiami chattare? Era tremendo prima, okay?", instance_npcname("Du#room4");
+	next;
+	mes "[Alfa]";
+	mes "Lo senti?";
+	mes "Qualcosa sta arrivando...";
+	cutin "bu_alp1.bmp",2;
+	npctalk "Alpha: Hai sentito questo? Qualcosa sta arrivando...", instance_npcname("Alph#room4");
+	next;
+	mes "[Tamarino]";
+	mes "Ora... ora che guardo, il terreno... trema un po', vero?";
+	cutin "ep143_tahuk.bmp",2;
+	npctalk "Tamarin: Now...now that I look the ground is..., shaking a little, right?", instance_npcname("Tamarin#room4");
+	next;
+	mes "[Du]";
+	mes "Cosa... cos'è questo?";
+	cutin "bu_du4.bmp",2;
+	npctalk "Du: Cosa... cos'è questo?", instance_npcname("Du#room4");
+	next;
+	mes "[Alfa]";
+	mes "Questo è... pericoloso.";
+	mes "Questo non è un livello che possiamo gestire...";
+	cutin "bu_alp2.bmp",2;
+	npctalk "Alph: Questo è... pericoloso. Questo non è un livello che possiamo gestire...", instance_npcname("Alph#room4");
+	next;
+	mes "[Segno]";
+	mes "Avanti... presto fuori!!!!!";
+	cutin "bu_mark4.bmp",0;
+	npctalk "Mark: Qui... presto fuori!!!!!", instance_npcname("Mark#room4");
+	close2;
+	warp "un_bunker",299,162;
+	end;
+*/
+

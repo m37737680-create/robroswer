@@ -1,0 +1,550 @@
+//===== rAthena Script ======================================= 
+//= Royal Guard Job Quest
+//===== By: ================================================== 
+//= Muad_Dib
+//===== Current Version: ===================================== 
+//= 1.3
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Job change Quest from Crusader / Paladin -> Royal Guard.
+//===== Additional Comments: ================================= 
+//= 1.0 First Version. [brAthena]
+//= 1.1 Updated script. [Euphy]
+//= 1.2 Added GM management function. [Euphy]
+//= 1.3 Added VIP features. [Euphy]
+//= 2.0 Prontera castle map changed in ep16.1 [Capuche]
+//============================================================
+
+// prt_castle,48,161,3	script	Middle-aged Gentleman#rg	57,{
+prt_cas,172,275,5	script	Middle-aged Gentleman#rg	1_M_LIBRARYMASTER,{
+	if (checkweight(1201,1) == 0 || MaxWeight - Weight < 1000) {
+		mes "- Il tuo zaino è troppo pesante. -";
+		mes "- Prima alleggerisci il tuo corpo -";
+		mes "- e per favore riprova. -";
+		close;
+	}
+	if (Class == Job_Royal_Guard || Class == Job_Royal_Guard_T || Class == Job_Baby_Royal_Guard) {
+		mes "[Gentiluomo di mezza età]";
+		mes "Eh? Cosa sto facendo? Sono venuto qui per una commissione...";
+		next;
+		mes "^000099Forse i miei sentimenti si sono spostati in un altro corpo.^000000";
+		close;
+	}
+	if (BaseLevel < 99 || JobLevel < 50 || SkillPoint != 0) {
+		mes "[Gentiluomo di mezza età]";
+		mes "Oh, sei così giovane. Continua a lavorare duro.";
+		close;
+	}
+	if (checkriding() || checkcart() || checkfalcon()) {
+		mes "[Gentiluomo di mezza età]";
+		mes "Stai trascinando qualcosa. Se stai guidando qualcosa è meglio smontarlo prima di procedere.";
+		close;
+	}
+	if (BaseJob != Job_Crusader) {
+		mes "[Gentiluomo di mezza età]";
+		mes "Non ho niente da dirti Trova un'altra persona.";
+		close;
+	}
+	if (job_royal == 0) {
+		mes "[Gentiluomo di mezza età]";
+		mes "Cosa stavo dicendo... (borbotta) il segmento rimanente è a Glast Heim verso le 13.......";
+		next;
+		mes "[Gentiluomo di mezza età]";
+		mes "Eh?";
+		mes "Avevi bisogno di qualcosa?";
+		next;
+		select("Non ti ho visto prima.");
+		mes "[Gentiluomo di mezza età]";
+		mes "Hehehe, non preoccuparti per me.";
+		next;
+		mes "[Gentiluomo di mezza età]";
+		mes "Se non hai affari con me, continua così amico mio.";
+		next;
+		select("Non sembri un cavaliere...");
+		mes "[Gentiluomo di mezza età]";
+		mes "Sei curioso. Chi sei? Cosa vuoi?";
+		next;
+		select("Basta guardarsi intorno!:Questo è il mio ufficio!:Chi sono io? Chi sei?");
+		mes "[Gentiluomo di mezza età]";
+		mes "Vuoi discutere con me? Sai chi sono?";
+		next;
+		if(select("Non proprio, chi sei?:Mi dispiace, non ferirò i tuoi sentimenti.") == 2) {
+			mes "["+strcharinfo(0)+"]";
+			mes "Scusa. Dovevo essere sicuro. Non sapevo che fossi del palazzo reale.";
+			next;
+			mes "[Gentiluomo di mezza età]";
+			mes "Questo è abbastanza. Non commettere di nuovo questo errore.";
+			close;
+		}
+		mes "["+strcharinfo(0)+"]";
+		mes "Sono un membro qui e ho l'autorità per scoprire qual è la tua attività qui.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Sei un estraneo e non sono sicuro che tu appartenga a questo posto.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Se mi dici la tua identità, mi scuserò.";
+		next;
+		mes "[Gentiluomo di mezza età]";
+		mes "Sei così persistente.";
+		mes "Se vuoi davvero mi presento.";
+		next;
+		mes "[Gentiluomo di mezza età]";
+		mes "Sono Enrico.";
+		mes "Sto raccogliendo informazioni sulla traccia di re Schmidtz che è scomparsa.";
+		next;
+		select("La traccia di Schmidzt? È un tesoro?");
+		mes "[Enrico]";
+		mes "La maggior parte degli archeologi è ansiosa di ottenere tesori. Sto cercando tracce della ^000099Guardia Reale^000000 e dei loro figli che appartengono alla linea Schmidtz.";
+		next;
+		select("Guardia Reale?");
+		mes "[Enrico]";
+		mes "Sembra interessante, vero? Non posso davvero dirlo, ma la loro cronologia e i loro file sono sottoposti a stretta sicurezza.";
+		next;
+		select("Non puoi dirmelo?");
+		mes "[Enrico]";
+		mes "Non posso davvero parlare della Guardia Reale a chiunque mi chieda di loro.";
+		next;
+		mes "[Enrico]";
+		mes "MA!! Voglio crederti...";
+		next;
+		switch(select("Voglio saperne di più:Smettila di parlare.")) {
+		case 1:
+			if (VIP_SCRIPT) {
+				callfunc "VIP_Third_Class";
+				set job_royal,1;
+				setquest 12090;
+				next;
+			}
+			mes "[Enrico]";
+			mes "Sei impetuoso.";
+			next;
+			mes "[Enrico]";
+			mes "Non è una storia semplice da raccontare ad una persona come te. Torna indietro.";
+			set job_royal,1;
+			setquest 12090;
+			close;
+		case 2:
+			mes "[Enrico]";
+			mes "Buona idea.";
+			next;
+			mes "[Enrico]";
+			mes "Dimenticalo e lascia che la tua mente faccia cose più degne.";
+			close;
+		}
+	}
+	mes "[Enrico]";
+	if (job_royal == 1) {
+		mes "[Enrico]";
+		mes "Sei un amico tenace.";
+		mes "Hai altre cose di cui parlarmi?";
+		next;
+		select("Se non puoi fidarti di me, mettimi alla prova, amico.");
+		mes "[Enrico]";
+		mes "Test?";
+		mes "Hai detto il test? Uh!";
+		next;
+		mes "[Enrico]";
+		mes "Amico, hai dimostrato il tuo interesse per il mio lavoro, sei sicuro? O mi stai prendendo in giro?";
+		next;
+		select("Dico sul serio!");
+		mes "[Enrico]";
+		mes "Veramente?";
+		mes "Bene. Potresti avere un'idea sbagliata di cosa sia una guardia reale. Quindi, secondo te, quale pensi sia la chiave per essere una Guardia Reale?";
+		next;
+		select("Decisione e coraggio:Giudizio calmo:Saggezza tagliente:Spirito benevolo");
+		mes "[Enrico]";
+		mes "Buona scelta.";
+		mes "In realtà, anche gli altri 3 sono necessari per avere lo spirito della Guardia Reale, amico.";
+		next;
+		mes "[Enrico]";
+		mes "Ma secondo i documenti di ricerca sulla Guardia Reale, la migliore convinzione è 'ascetismo e resistenza'.";
+		next;
+		mes "[Enrico]";
+		mes "L'hai capito?";
+		mes "Ascetismo e Resistenza, giovane. È un po' diverso da quello che hai risposto.";
+		next;
+		mes "[Enrico]";
+		mes "Sembra che tu abbia un grande interesse per questa storia ma non posso dirti di più.";
+		next;
+		mes "[Enrico]";
+		mes "Solo coloro che hanno la qualifica possono ascoltare la storia della Guardia Reale.";
+		next;
+		select("Cosa posso fare per ascoltare quella storia?");
+		mes "^000099Heinrich ha un'espressione angosciata sul viso. Poi sembrava che si fosse addormentato. Alla fine dice con sconsiderato abbandono.^000000";
+		next;
+		mes "[Enrico]";
+		mes "Sei troppo testardo.";
+		mes "Se è così ti metterò alla prova per vedere il tuo ascetismo e la tua resistenza.";
+		next;
+		mes "[Enrico]";
+		mes "Molto tempo fa il re Schmidtz diede un titolo a un soldato coraggioso che tornò con 100 marchi sacri.";
+		next;
+		mes "[Enrico]";
+		mes "Se vuoi ascoltare più storie, devi mostrarmi il tuo atteggiamento simile.";
+		next;
+		if(select("È una richiesta ingiusta.:Cercherò.") == 1) {
+			mes "[Enrico]";
+			mes "Buona idea, sarebbe meglio trovare qualcosa di più degno.";
+			close;
+		}
+		mes "[Enrico]";
+		mes "Ok, facciamolo in questo modo. In realtà è troppo difficile raccogliere 100 Marchi Sacri, dimostra semplicemente la tua ambizione raccogliendo 100 Burning Hearts.";
+		next;
+		mes "[Enrico]";
+		mes "Se li porti posso raccontarti qualcosa in più della storia. Ciò significa che mi mostri la tua resistenza.";
+		next;
+		mes "[Enrico]";
+		mes "Non dimenticare di portare con te i 100 Burning Hearts.";
+		set job_royal,2;
+		changequest 12090,12091;
+		close;
+	} else if (job_royal == 2) {
+		if (countitem(7097) < 100) {
+			mes "Non dimenticare di portare 100 Burning Heart.";
+			close;
+		}
+		mes "Li hai presi tutti?";
+		mes "La maggior parte delle persone semplicemente mi ignora o rinuncia alla missione.";
+		next;
+		mes "[Enrico]";
+		mes "Aspetta che preparo la roba che hai portato.";
+		delitem 7097,100; //Burning_Heart
+		set job_royal,3;
+		changequest 12091,12092;
+		close;
+	} else if (job_royal == 3) {
+		mes "...";
+		mes "Bene. Posso sentire la verità dal tuo cuore. Adesso posso raccontarvi qualcosa in più della storia.";
+		next;
+		select("Ok, dimmi di più.");
+		mes "[Enrico]";
+		mes "I migliori membri delle classi Crociato e Paladino possono ottenere la qualifica di Guardia Reale.";
+		next;
+		mes "[Enrico]";
+		mes "Sono agenti dell'ordine divino e giudicano con punizione rapida.";
+		next;
+		mes "[Enrico]";
+		mes "Abbiamo ancora molte opinioni su come avrebbero potuto sopravvivere. Sicuramente qualcuno doveva aver creduto che la loro storia non fosse falsa.";
+		next;
+		select("Ci sono ancora i documenti?");
+		mes "[Enrico]";
+		mes "Hmm, documenti, dici...";
+		next;
+		mes "[Enrico]";
+		mes "Purtroppo dopo la scomparsa del re Schmidtz sono scomparse le tracce della guardia reale.";
+		next;
+		mes "[Enrico]";
+		mes "La loro storia, convinzione, visione e abilità di combattimento apparentemente sono scomparse senza che nessuno dei documenti fosse salvato.";
+		next;
+		mes "[Enrico]";
+		mes "È come se fosse scomparso con il re.";
+		next;
+		select("Quindi il motivo per cui sono state trovate le loro tracce...");
+		mes "[Enrico]";
+		mes "Ero preoccupato per le Guardie Reali del passato che avrebbero potuto non essere in grado di tramandare la loro storia.";
+		next;
+		mes "[Enrico]";
+		mes "Il potere misterioso... non può più apparire nel mondo. Quanto è deludente~!";
+		next;
+		mes "[Enrico]";
+		mes "Ecco perché mi sto concentrando per rilanciare il loro lavoro.";
+		next;
+		select("Quanti progressi hai fatto?");
+		mes "[Enrico]";
+		mes "Fortunatamente, ho portato alla luce la maggior parte dei tesori e li ho interpretati. Mi resta solo una traccia da trovare.";
+		next;
+		select("Il resto delle tracce?");
+		mes "[Enrico]";
+		mes "La guardia reale incise sui loro vestiti il ​​marchio del re Schmidtz. La traccia di questa usanza è l'ultimo indizio.";
+		next;
+		mes "[Enrico]";
+		mes "Secondo rapporti provenienti da altre città l'ultima traccia esiste forse in un monastero all'interno di Glass Heim.";
+		next;
+		mes "[Enrico]";
+		mes "Ma è troppo pericoloso per me lì, quindi ho quasi rinunciato.";
+		next;
+		mes "[Enrico]";
+		mes "Ora non posso dirvi perché la traccia è lì.";
+		next;
+		if(select("Interessante. Posso andare lì?:Sembra davvero pericoloso.") == 2) {
+			mes "[Enrico]";
+			mes "Buona idea, è un lavoro inutile da esplorare lì.";
+			close;
+		}
+		mes "[Enrico]";
+		mes "Stai scherzando?";
+		mes "Non dovresti trattarlo come se fosse un lavoro normale.";
+		next;
+		select("Non sto scherzando. Dico sul serio.");
+		mes "[Enrico]";
+		mes "Se lo dici così non ho più opzioni.";
+		next;
+		mes "[Enrico]";
+		mes "Non so se sarà utile o meno. Scriverò una spiegazione dettagliata.";
+		next;
+		mes "^000099Ecco l'ultima traccia della Guardia Reale. Apri la finestra delle missioni e controlla la posizione.^000000";
+		set job_royal,4;
+		changequest 12092,12093;
+		close;
+	} else if (job_royal == 4) {
+		if (countitem(6274) == 0) {
+			mes "Il nostro staff è già partito per trovare l'ultima traccia, quindi non lavorare troppo.";
+			close;
+		}
+		mes "No, non è quello giusto che voglio.";
+		next;
+		mes "[Hainrich]";
+		mes "Mi hai sorpreso. Come l'hai ottenuto? Finora nessuno è riuscito a capirlo.";
+		next;
+		mes "[Enrico]";
+		mes "Grazie mille.";
+		mes "Grazie al tuo impegno riesco a trovare l'ultimo indizio. Che meraviglia~!";
+		next;
+		mes "^000099Heinrich esitò e portò un vecchio scudo da un lato dell'ufficio.^000000";
+		next;
+		mes "[Enrico]";
+		mes "Il nostro staff lo ha scavato. Presumevano che lo usasse il re Schmidtz. Ma non è stato usato da lui.";
+		next;
+		select("Sicuro che non sia stato usato dal Re?");
+		mes "[Enrico]";
+		mes "Non posso esserne del tutto sicuro.";
+		mes "Forse hai ragione, ma da quando abbiamo effettuato l'identificazione iniziale possiamo essere sicuri che non sia stato utilizzato.";
+		next;
+		mes "[Enrico]";
+		mes "Ma è un vecchio tesoro quindi, in qualche modo, sarà utile. Potrei sapere come usarlo.";
+		next;
+		select("Posso tenerlo?");
+		mes "[Enrico]";
+		mes "Ovviamente.";
+		mes "Un giorno potrebbe esserti utile.";
+		next;
+		mes "^000099 Ottieni lo scudo da Heinrich. All'interno dello scudo sono incise alcune lettere.^000000 ";
+		next;
+		mes "^000099Se vuoi vedere le lettere, controlla la finestra delle missioni.^000000";
+		next;
+		mes "[Enrico]";
+		mes "Ok~~ adesso.";
+		mes "Per ora decifrerò la stoffa, quindi sarò molto impegnata!";
+		delitem 6274,1; //Saint_Cloth_Piece
+		getitem 6275,1; //King_Shield
+		set job_royal,5;
+		changequest 12093,12094;
+		close;
+	} else if (job_royal == 5) {
+		if (countitem(6275) == 0) {
+			mes "Che cosa? Hai perso lo scudo? Cos'è quello sulla tua schiena?";
+			getitem 6275,1; //King_Shield
+			close;
+		}
+		mes "Grazie al vostro aiuto posso terminare i lavori di scavo. Molte grazie.";
+		close;
+	}
+}
+
+glast_01,240,366,5	script	Memory of King Schmidtz	844,{
+	if (checkweight(1201,1) == 0 || MaxWeight - Weight < 1000) {
+		mes "- Il tuo zaino è troppo pesante. -";
+		mes "- Prima alleggerisci il tuo corpo -";
+		mes "- e per favore riprova. -";
+		close;
+	}
+	if (ismounting() || checkriding()) {
+		mes " Per favore togli l'equipaggiamento al tuo animale domestico da equitazione e riprova!";
+		close;
+	}
+	if (BaseJob == Job_Crusader && job_royal == 5) {
+		if (countitem(6275) == 0) {
+			mes "^000099Sembra che tu abbia perso lo scudo. Torna da Heinrich e chiedi aiuto^000000.";
+			close;
+		}
+		mes "[Ricordo del re Schmidtz]";
+		mes "Chi sei?";
+		next;
+		select("Ho portato una reliquia...");
+		mes "[Ricordo del re Schmidtz]";
+		mes "La mia reliquia?";
+		next;
+		mes "[Ricordo del re Schmidtz]";
+		mes "Peccato. Ecco un altro amico che è stato ingannato da Heinrich.";
+		next;
+		select("Conosci Enrico?");
+		mes "[Ricordo del re Schmidtz]";
+		mes "Era il mio fedele aiutante. E ha continuato ad esserlo per centinaia di anni.";
+		next;
+		select("Come ha vissuto per centinaia...");
+		mes "[Ricordo del re Schmidtz]";
+		mes "Forse il suo corpo è solo un calco. Ha trovato il modo di spostarsi da un corpo all'altro per rimanere in vita.";
+		next;
+		mes "[Ricordo del re Schmidtz]";
+		mes "Non vuole accettare la mia morte e vaga per il mondo, continuando a trovare le Guardie Reali.";
+		next;
+		select("Qual è il significato di questo scudo?");
+		mes "[Ricordo del re Schmidtz]";
+		mes "Lo scudo di Heinrich è il nostro contratto prima che io morissi.";
+		next;
+		mes "[Ricordo del re Schmidtz]";
+		mes "Heinrich fu incaricato di trovare le persone adatte per diventare guardie reali, lo scudo doveva essere il contratto.";
+		next;
+		mes "[Ricordo del re Schmidtz]";
+		mes "Per lui, questo è stato l'ultimo ordine che gli ho dato.";
+		next;
+		mes "[Ricordo del re Schmidtz]";
+		mes "Adesso non ha più bisogno di farlo, ma resterà come uno stolto che non riesce a dimenticare l'ultimo ordine del suo Re.";
+		next;
+		select("E adesso? Posso andarmene?");
+		mes "[Ricordo del re Schmidtz]";
+		mes "Mi spiace ma non posso inviarti adesso.";
+		next;
+		mes "[Ricordo del re Schmidtz]";
+		mes "Questo è un contratto con Heinrich quindi devo mantenerlo. Sembri fedele e coraggioso.";
+		next;
+		mes "[Ricordo del re Schmidtz]";
+		mes "Ora è il momento di mantenere la promessa fatta a Heinrich. Dipende da te.";
+		next;
+		mes "[Ricordo del re Schmidtz]";
+		mes "Ho intenzione di accettarti come membro della Guardia Reale per continuare le loro tradizioni perdute. Sei pronto a farlo?";
+		next;
+		if(select("Certo, ovviamente:Non ancora") == 2) {
+			mes "[Ricordo del re Schmidtz]";
+			mes "Uhm, forse Heinrich aveva un giudizio sbagliato.";
+			close;
+		}
+		mes "[Ricordo del re Schmidtz]";
+		mes "Se è così, procederò a nominarti Guardia Reale.";
+		next;
+		if(select("Grande.:Non ancora.") == 2) {
+			mes "[Ricordo del re Schmidtz]";
+			mes "Forse Heinrich aveva un'immagine sbagliata di te.";
+			close;
+		}
+		mes "[Ricordo del re Schmidtz]";
+		if (BaseLevel < 99 || JobLevel < 50 || SkillPoint != 0) {
+			mes "Guarda il tuo corpo prima!";
+			next;
+			mes "[Ricordo del re Schmidtz]";
+			mes "Sei ancora sentimentalmente legato a te stesso?";
+			mes "Non puoi ereditare la Guardia Reale!";
+			close;
+		}
+		mes "Congratulazioni! Giovane guardia reale.";
+		mes "Sii un simbolo d'onore e continua la grande tradizione del tuo nuovo nome.";
+		close2;
+		specialeffect2 EF_MAPPILLAR;
+		progressbar "FFFF00",7;
+		specialeffect2 EF_LORD;
+		delitem 6275,1; //King_Shield
+		erasequest 12094;
+		jobchange roclass(eaclass()|EAJL_THIRD);
+		getitem 5757,1; //Schmidt_Helm
+		getitem 2795,1; //Green_Apple_Ring
+		end;
+	}
+	end;
+}
+
+gl_church,173,88,0	script	Delicate trace#01	844,{
+	if (job_royal == 4 && countitem(6274) == 0) {
+		progressbar "ffff00",5;
+		set .@roy_ran, rand(1,70);
+		if (.@roy_ran < 6)
+			getitem 6274,1; //Saint_Cloth_Piece
+		else if (.@roy_ran > 5 && .@roy_ran < 66)
+			getitem 7049,1; //Stone
+		else {
+			mes "Durante le indagini, la topografia si rompe. Sarebbe meglio scavare altri posti per un po'.";
+			disablenpc();
+			initnpctimer;
+			close;
+		}
+	}
+	mes "C'è una traccia che qualcuno ha già scavato qui.";
+	close;
+OnTimer60000:
+	enablenpc();
+	stopnpctimer;
+OnTimer1000:
+OnTimer20000:
+OnTimer40000:
+	specialeffect EF_MAPPILLAR;
+	end;
+	specialeffect EF_MAPPILLAR;
+	end;
+	specialeffect EF_MAPPILLAR;
+	end;
+}
+gl_church,158,103,0	duplicate(Delicate trace#01)	Delicate trace#02	844
+gl_church,139,90,0	duplicate(Delicate trace#01)	Delicate trace#03	844
+gl_church,126,62,0	duplicate(Delicate trace#01)	Delicate trace#04	844
+gl_church,148,5,0	duplicate(Delicate trace#01)	Delicate trace#05	844
+gl_church,185,72,0	duplicate(Delicate trace#01)	Delicate trace#06	844
+gl_church,185,72,0	duplicate(Delicate trace#01)	Delicate trace#07	844
+gl_church,211,94,0	duplicate(Delicate trace#01)	Delicate trace#08	844
+gl_church,185,125,0	duplicate(Delicate trace#01)	Delicate trace#09	844
+gl_church,143,125,0	duplicate(Delicate trace#01)	Delicate trace#10	844
+gl_church,105,115,0	duplicate(Delicate trace#01)	Delicate trace#11	844
+
+gl_church,158,100,0	script	#Clue of traces	111,4,4,{
+	end;
+OnTouch_:
+	if (job_royal == 4 && countitem(6274) == 0) {
+		specialeffect2 EF_FREEZE;
+		mes "Posso sentire un forte potere da queste parti. Sarebbe meglio esplorare da queste parti.";
+		viewpoint 1,173,88 ,1, 0xFFFF00;
+		viewpoint 1,158,103,2, 0xFFFF00;
+		viewpoint 1,139,90 ,3, 0xFFFF00;
+		viewpoint 1,126,62 ,4, 0xFFFF00;
+		viewpoint 1,148,5  ,5, 0xFFFF00;
+		viewpoint 1,185,72 ,6, 0xFFFF00;
+		viewpoint 1,211,94 ,7, 0xFFFF00;
+		viewpoint 1,185,125,8, 0xFFFF00;
+		viewpoint 1,143,125,9, 0xFFFF00;
+		viewpoint 1,105,115,10,0xFFFF00;
+		close;
+	}
+	end;
+}
+
+sec_in02,12,43,3	script	sorcereryal	57,1,1,{
+	callfunc "F_GM_NPC";
+	switch(select("Guardia Reale:Cavaliere delle Rune:Stregone")) {
+	case 1:
+		mes "1~5";
+		input .@input;
+		next;
+		if (.@input < 1 || .@input > 5) {
+			mes "Imposta l'oggetto per adattare la Guardia Reale";
+			mes "È possibile impostare solo un numero compreso tra 1 e 5.";
+		} else {
+			set job_royal, .@input;
+			mes "Completato";
+		}
+		close;
+	case 2:
+		mes "1~24";
+		input .@input;
+		next;
+		if (.@input < 1 || .@input > 24) {
+			mes "Imposta l'oggetto per regolare il Rune Knight";
+			mes "È possibile impostare solo un numero compreso tra 1 e 24.";
+		} else {
+			set job_rune_edq, .@input;
+			mes "Completato";
+		}
+		close;
+	case 3:
+		mes "1~5";
+		input .@input;
+		next;
+		if (.@input < 1 || .@input > 5) {
+			mes "Imposta l'oggetto per modificare lo Stregone";
+			mes "È possibile impostare solo un numero compreso tra 1 e 5.";
+		} else {
+			set job_soc, .@input;
+			mes "Completato";
+		}
+		close;
+	}
+}

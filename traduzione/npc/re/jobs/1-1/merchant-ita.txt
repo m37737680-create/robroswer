@@ -1,0 +1,125 @@
+//===== rAthena Script ======================================= 
+//= Renewal Merchant Job Quest
+//===== By: ================================================== 
+//= Kisuka
+//===== Current Version: ===================================== 
+//= 1.1
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Job Change to Merchant Class
+//===== Additional Comments: ================================= 
+//= 1.0 First Version. [Kisuka]
+//= 1.1 Added support for Baby classes. [Euphy]
+//============================================================ 
+alberta_in,53,43,6	script	Merchant#mer	86,{
+	if (Upper == 1) {
+		if (Class == Job_Novice_High && (ADVJOB == Job_Whitesmith || ADVJOB == Job_Creator)) {
+			mes "[Capo Mahnsoo]";
+			mes "È molto tempo che non ci si vede!";
+			mes "Ehi, non hai mollato";
+			mes "sono affari tuoi, vero?";
+			mes "Quello che è successo?";
+			next;
+			mes "[Capo Mahnsoo]";
+			mes "Ehi...";
+			mes "Sei stato davvero nel Valhalla?! Wow, hai fatto molta strada...";
+			next;
+			if (!callfunc("F_CanChangeJob")) {
+				mes "[Capo Mahnsoo]";
+				mes "Hmm...";
+				mes "Sembra che tu non sia pronto per diventare di nuovo un commerciante. Prima finisci di apprendere le abilità di base per principianti.";
+				next;
+				mes "[Capo Mahnsoo]";
+				mes "Non preoccuparti, avremo sempre una posizione Commerciante aperta per te. Torna quando sei pronto, ok?";
+				close;
+			}
+			mes "[Capo Mahnsoo]";
+			mes "Immagino sia destino che ci incontriamo ancora una volta in questo modo. Bene. Ancora una volta, permettimi di trasformarti in un Mercante!";
+			next;
+			skill "NV_TRICKDEAD",0,SKILL_PERM;
+			jobchange Job_Merchant_High;
+			skill "MC_CARTREVOLUTION",1,SKILL_PERM;
+			skill "MC_CHANGECART",1,SKILL_PERM;
+			skill "MC_LOUD",1,SKILL_PERM;
+			mes "[Capo Mahnsoo]";
+			mes "Ah~ Che nostalgia. Proprio come ai vecchi tempi! Va bene, fai del tuo meglio!";
+			close;
+		}else{
+			mes "[Capo Mahnsoo]";
+			mes "^333333*Sospiro*^000000";
+			mes "Sono così annoiato...";
+			mes "Quando avrò notizie della mia adorabile Blossom?";
+			close;
+		}
+	}
+	mes "[Il guardiano Mahnsoo]";
+	mes "Ehi, perché sei qui?";
+	next;
+	switch(select("Voglio essere un commerciante.:Voglio saperne di più sui commercianti.:Chiedigli i requisiti per essere un commerciante.:Niente.")) {
+	case 1:
+		mes "[Il guardiano Mahnsoo]";
+		if(BaseJob != Job_Novice) {
+			if(BaseJob == Job_Merchant) {
+				mes ".....? Scusa? Cosa stai dicendo?";
+				mes "Sei già un commerciante. Oh mio Dio..";
+				mes "Eh?! ...Ho bisogno di ridere in questo momento?!";
+			}else{
+				mes "Ahh? Stai cercando di avere entrambe le cose?";
+				mes "Che ne dici di dedicarti al tuo lavoro originale?";
+				next;
+				mes "[Il guardiano Mahnsoo]";
+				mes "Abbiamo un'etica aziendale, lo sai.";
+			}
+			close;
+		}else{
+			mes "Vuoi essere un commerciante? Hmm...";
+			next;
+			if (!callfunc("F_CanChangeJob")) {
+				mes "[Il guardiano Mahnsoo]";
+				mes "Ma se vuoi essere un commerciante, il tuo livello di abilità di base deve raggiungere il livello 9 oppure devi spendere tutti i tuoi punti abilità.";
+				next;
+				mes "[Il guardiano Mahnsoo]";
+				mes "Non pensi che dobbiamo imparare alcune competenze di base anche se ci occupiamo solo di soldi?";
+				close;
+			}
+			mes "[Il guardiano Mahnsoo]";
+			mes "Bene, penso che tu sia pienamente pronto visto che il tuo livello di abilità di base è soddisfatto.";
+			mes "Ora ti permetto di essere un commerciante.";
+			next;
+			mes "[Il guardiano Mahnsoo]";
+			mes "Congratulazioni per essere diventato un commerciante!";
+			mes "Ancora congratulazioni per essere membro della gilda dei mercanti e uno dei nostri colleghi. Mi aspetto la tua partecipazione attiva da ora in poi!";
+			callfunc "Job_Change",Job_Merchant;
+			getitem 1381,1;	// N_Battle_Axe
+			next;
+			mes "[Il guardiano Mahnsoo]";
+			mes "Assolutamente, abbiamo bisogno di giovani che abbiano la passione per raggiungere il nostro grande obiettivo di garantire il 20% del volume valutario mondiale. Capito? Eh?";
+			mes "Beh, sto solo dicendo... significa che alla fine guadagneremo un sacco di soldi. Ragazzi, lo sapete~";
+			close;
+		}
+	case 2:
+		mes "[Il guardiano Mahnsoo]";
+		mes "Commerciante? Per dirla semplicemente, la persona che vende bene e guadagna è un commerciante.";
+		mes "Non è bravo a combattere e non ha abilità speciali di attacco/recupero... ma un commerciante può comprare cose a basso prezzo e poi venderle e fare soldi.";
+		next;
+		mes "[Il guardiano Mahnsoo]";
+		mes "Bene, un commerciante ha un'abilità suprema chiamata Mammonite che colpisce un nemico con i suoi soldi... Possiamo equipaggiare tutto tranne archi, verghe e spade a due mani. Ma possiamo sempre venderli e acquistarli.";
+		mes "Sì... noi commercianti abbiamo sempre i soldi in mente, capito?";
+		close;
+	case 3:
+		mes "[Il guardiano Mahnsoo]";
+		mes "Per diventare un commerciante, anche se il nostro lavoro è semplicemente vendere e ricevere denaro, devi raggiungere almeno il livello di abilità di base 9.";
+		next;
+		mes "[Il guardiano Mahnsoo]";
+		mes "Bene, prima ricevevamo una commissione di avvio. Non è stato difficile guadagnare quei soldi?";
+		mes "C'erano troppe persone che non riuscivano a raccogliere quei soldi e continuavano a piangere.";
+		next;
+		mes "[Il guardiano Mahnsoo]";
+		mes "Di recente, abbiamo deciso di consentire a qualsiasi principiante che desideri diventare commerciante di diventarlo.";
+		mes "Perché essere vivi o morire dipende dalle proprie capacità.";
+		close;
+	case 4:
+		close;
+	}
+}

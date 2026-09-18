@@ -1,0 +1,129 @@
+//===== rAthena Script ======================================= 
+//= Renewal Archer Job Quest
+//===== By: ================================================== 
+//= Kisuka
+//===== Current Version: ===================================== 
+//= 1.1
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Job Change to Archer Class
+//===== Additional Comments: ================================= 
+//= 1.0 First Version. [Kisuka]
+//= 1.1 Added support for Baby classes. [Euphy]
+//============================================================ 
+payon_in02,64,71,4	script	Archer Guildsman#archer	85,{
+	if (Upper == 1) {
+		if (Class == Job_Novice_High && (ADVJOB == Job_Sniper || ADVJOB == Job_Clown || ADVJOB == Job_Gypsy)) {
+			mes "[Arciere della Gilda]";
+			mes "Ehi, ti conosco.";
+			mes "Hai fatto questo test";
+			mes "prima, vero?";
+			next;
+			mes "[Arciere della Gilda]";
+			mes "Ah, devi essere stato";
+			mes "nel Valhalla e rinato.";
+			mes "Wow, è davvero impressionante!";
+			next;
+			if (!callfunc("F_CanChangeJob")) {
+				mes "[Arciere della Gilda]";
+				mes "Ehm...";
+				mes "Faresti meglio ad apprendere tutte le abilità di base prima di poter diventare un arciere.";
+				next;
+				mes "[Arciere della Gilda]";
+				mes "Va bene, ci vediamo dopo.";
+				close;
+			}
+			mes "[Arciere della Gilda]";
+			mes "Bene allora. Io non";
+			mes "devo dire qualcos'altro.";
+			mes "So che sarai un grande arciere...";
+			next;
+			skill "NV_TRICKDEAD",0,SKILL_PERM;
+			jobchange Job_Archer_high;
+			skill "AC_MAKINGARROW",1,SKILL_PERM;
+			skill "AC_CHARGEARROW",1,SKILL_PERM;
+			mes "[Arciere della Gilda]";
+			mes "Anche se non c'è niente di speciale";
+			mes "ricompensa per te questa volta, spero che tu capisca. Prendersi cura di se stessi.";
+			close;
+		}else{
+			mes "[Arciere della Gilda]";
+			mes "OH...?";
+			mes "Ehi, cosa sono";
+			mes "fai qui...?";
+			next;
+			mes "[Arciere della Gilda]";
+			mes "Posso dire che non sei tagliato per essere un arciere. Sembra che tu sia destinato a farlo";
+			mes "qualcos'altro...";
+			close;
+		}
+	}
+	mes "[Arciere della Gilda]";
+	mes "Piacere di conoscerti. Come posso aiutarti?";
+	next;
+	switch(select("Voglio essere un arciere.:Mi servono i requisiti, per favore.:Niente, grazie.")) {
+	case 1:
+		mes "[Arciere della Gilda]";
+		if(BaseJob != Job_Novice) {
+			if(BaseJob == Job_Archer)
+				mes "Ahah, mi stai prendendo in giro...";
+			else {
+				mes "Mi dispiace ma solo i Novizi possono cambiare lavoro.";
+				mes "Hai già un lavoro decente, vero?";
+			}
+			close;
+		}else{
+			mes "Sei... "+strcharinfo(0)+", Giusto?";
+			next;
+			if (!callfunc("F_CanChangeJob")) {
+				mes "[Arciere della Gilda]";
+				mes "Beh, non sei al giusto livello di abilità.";
+				mes "Il tuo livello lavorativo deve essere almeno ^4A4AFF10^000000 e il tuo livello di abilità di base dovrebbe raggiungere ^4A4AFFlivello 9";
+				next;
+				mes "[Arciere della Gilda]";
+				mes "Perché un Arciere ha bisogno di una concentrazione estremamente elevata, quindi non accettiamo chi ha poca pazienza.";
+				close;
+			}
+			mes "[Arciere della Gilda]";
+			mes "La tua abilità di base ora è sufficiente..";
+			mes "....Hm~~ quindi ora sei pronto per essere un arciere. Farò subito il passo.";
+			next;
+			mes "[Arciere della Gilda]";
+			mes "Congratulazioni! Ora sei un arciere! Inoltre, ci auguriamo che parteciperai attivamente a molti programmi per il rilancio della Gilda degli Arcieri.";
+			mes "Ah, sono arrivati ​​degli articoli dal reparto di produzione. Ecco, prendi questi! Questi sono tutti tuoi!";
+			callfunc "Job_Change",Job_Archer;
+			getitem 1742,1;	// N_Composite_Bow
+			getitem 12004,1;	// Arrow_Container
+			getitem 12009,1;	// Silver_Arrow_Container
+			getitem 12008,1;	// Fire_Arrow_Container
+			next;
+			mes "[Arciere della Gilda]";
+			mes "Avendo arco e frecce, ora sei diventato un vero arciere.";
+			mes "Se apri il contenitore delle frecce, ci sono delle frecce al suo interno e puoi equipaggiarle.";
+			mes "Bene, mi aspetto di ricevere notizie migliori da te. È ora di salutarci.";
+			mes "Ciao.";
+			close;
+		}
+	case 2:
+		mes "[Arciere della Gilda]";
+		mes "Un arciere ha abilità nell'uso dell'arco e ha vari talenti.";
+		mes "La più grande abilità di un arciere è attaccare i nemici da lunga distanza.";
+		next;
+		mes "[Arciere della Gilda]";
+		mes "Sebbene un arciere abbia HP più deboli, può sparare ai nemici a lungo raggio,";
+		mes "quindi un arciere è più sicuro in una vera battaglia.";
+		next;
+		mes "[Arciere della Gilda]";
+		mes "Sebbene un arciere in Ragnarok abbia HP inferiori, lui o lei ha un'elevata precisione e velocità di attacco in modo che l'arciere possa uccidere i mostri prima che si avvicinino a un arciere.";
+		next;
+		mes "[Arciere della Gilda]";
+		mes "^8C2121Un Arciere può cambiare mestiere in Cacciatore.^000000";
+		mes "^8C2121Oltre a Hunter, se sei un uomo, puoi cambiare il tuo lavoro in Bardo e se sei una donna, puoi cambiare il tuo lavoro in Ballerino.^000000";
+		close;
+	case 3:
+		mes "[Arciere della Gilda]";
+		mes "Se avete domande, sentitevi liberi di venire a chiedermelo.";
+		close;
+	}
+}

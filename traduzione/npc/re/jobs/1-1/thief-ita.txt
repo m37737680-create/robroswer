@@ -1,0 +1,202 @@
+//===== rAthena Script ======================================= 
+//= Renewal Thief Job Quest
+//===== By: ================================================== 
+//= Kisuka
+//===== Current Version: ===================================== 
+//= 1.1
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Job Change to Thief Class
+//===== Additional Comments: ================================= 
+//= 1.0 First Version. [Kisuka]
+//= 1.1 Added support for Baby classes. [Euphy]
+//============================================================ 
+moc_prydb1,39,129,2	script	Thief Guide#thief	69,{
+	if (Upper == 1) {
+		if (ADVJOB == Job_Assassin_Cross || ADVJOB == Job_Stalker) {
+			if (Class == Job_Novice_High) {
+				mes "[Guida ai ladri]";
+				mes "Eh? Ti conosco? È inquietante che tu sembri così familiare. Non hai un gemello, vero?";
+				next;
+				if (!callfunc("F_CanChangeJob")) {
+					mes "[Guida ai ladri]";
+					mes "Cosa, vuoi essere un ladro? Mi dispiace, ma sembra che tu abbia bisogno di più allenamento.";
+					next;
+					mes "[Guida ai ladri]";
+					mes "Prenditi il ​​tuo tempo e apprendi tutte le competenze di base, ok? Bene, allora ci vediamo più tardi~!";
+					close;
+				}
+				mes "[Guida ai ladri]";
+				mes "Beh, ho la sensazione che tu abbia combattuto per tutta la vita, quindi ti promuovo a Ladro proprio in questo momento. Sarà meglio che vi dia quello che volete, ragazzi duri...";
+				next;
+				skill "NV_TRICKDEAD",0,SKILL_PERM;
+				jobchange Job_Thief_High;
+				skill "TF_SPRINKLESAND",1,SKILL_PERM;
+				skill "TF_BACKSLIDING",1,SKILL_PERM;
+				skill "TF_PICKSTONE",1,SKILL_PERM;
+				skill "TF_THROWSTONE",1,SKILL_PERM;
+				mes "[Guida ai ladri]";
+				mes "Dato che sei diventato un ladro, vivi da ladro. Ora, provaci! Avanti~";
+				close;
+			}else{
+				mes "[Guida ai ladri]";
+				if (Sex == SEX_MALE)
+					mes "Ehi, amico.";
+				else
+					mes "Ehi, tesoro~";
+				close;
+			}
+		}else{
+			mes "[Guida ai ladri]";
+			if (Sex == SEX_MALE)
+				mes "Ehi, amico.";
+			else
+				mes "Ehi, tesoro.";
+			mes "...EHI! Sei troppo bello per voler essere un ladro!! Adesso sbrigati, sono occupato. Prossimo!";
+			close;
+		}
+	}
+	if(q_job_thief == 1) {
+		mes "[Uomo della Gilda Ladro]";
+		mes "Ehh... Sembra un amato "+(Sex == SEX_MALE?"figlio":"figlia")+" di una famiglia ricca, ma perché sei qui in questo posto sporco?";
+		next;
+		mes "[Uomo della Gilda Ladro]";
+		mes "Beh, non ho l'incarico di farti diventare un ladro. Accetto solo richieste, capito?";
+		mes "Se vuoi diventare un ladro, chiedi al ragazzo dallo sguardo acuto accanto a me.";
+		close;
+	}
+	mes "[Uomo della Gilda Ladro]";
+	if(BaseJob != Job_Novice) {
+		if(BaseJob == Job_Thief) {
+			mes "Ehi~ se hai qualche problema, dimmelo quando vuoi, eh?";
+			close;
+		}else{
+			mes "Che diavolo...?";
+			if(Sex == SEX_MALE) {
+				mes "Eh... tu sei un "+jobname(Class)+", testone!";
+				next;
+				mes "[Uomo della Gilda Ladro]";
+				mes "Ehi, fratello.";
+			}else{
+				next;
+				mes "[Uomo della Gilda Ladro]";
+				mes "Ehi, signora.";
+			}
+			mes "Perché sei qui? Torna a casa tua~ torna indietro~~";
+			close;
+		}
+	}
+	mes "Ehh... Sembra un amato "+(Sex == SEX_MALE?"figlio":"figlia")+" di una famiglia ricca, ma perché sei qui in questo posto sporco?";
+	next;
+	if(select("Voglio essere un ladro.:Niente.") == 2) {
+		mes "[Uomo della Gilda Ladro]";
+		mes "Sai che non puoi essere un ladro senza un'applicazione...";
+		mes "Cos'hai in mente...?";
+		close;
+	}
+	mes "[Uomo della Gilda Ladro]";
+	mes "Beh, ne sei così orgoglioso?";
+	mes "Mi stai dicendo con così orgoglio che vuoi diventare un ladro! Perché non vai in tutti i villaggi e ti fai pubblicità come ladro?";
+	mes "'Ah ah ah! Vai ad affiggere uno striscione con scritto 'Sarò un ladro orgoglioso che ruba le cose degli altri'.";
+	next;
+	mes "[Uomo della Gilda Ladro]";
+	mes "Vuoi così tanto essere un ladro?";
+	next;
+	switch(select("SÌ.:NO.:E tu?")) {
+	case 1:
+		mes "[Uomo della Gilda Ladro]";
+		mes "Oh, tu...? Eh... beh... vivo e imparo a vedere persone strane come te.";
+		next;
+		break;
+	case 2:
+		mes "[Uomo della Gilda Ladro]";
+		mes "Allora perché sei qui? Pensi di poter diventare un ladro così facilmente?";
+		next;
+		break;
+	case 3:
+		mes "[Uomo della Gilda Ladro]";
+		mes "Eh...? Me? Me?";
+		mes "Beh... semplicemente mi adatto bene al ruolo di ladro... tipicamente... non mi interessa questa stupidaggine.";
+		next;
+		break;
+	}
+	mes "[Uomo della Gilda Ladro]";
+	mes "Ad ogni modo, nel mondo esterno, non dire mai che vuoi essere un ladro!!";
+	next;
+	mes "[Uomo della Gilda Ladro]";
+	mes "Allora, vuoi fare domanda per diventare un ladro?";
+	next;
+	if(select("Sì, certamente.:NO.") == 2) {
+		mes "[Uomo della Gilda Ladro]";
+		mes "Beh... fai quello che vuoi~ Vai per la tua strada~";
+		close;
+	}
+	mes "[Uomo della Gilda Ladro]";
+	mes "Va bene, dimmi il tuo nome. Eh? Che cosa?";
+	mes ""+strcharinfo(0)+". COSÌ "+strcharinfo(0)+", Giusto...?";
+	next;
+	if (!callfunc("F_CanChangeJob")) {
+		mes "[Uomo della Gilda Ladro]";
+		mes "Vedo la tua forte volontà di diventare un ladro......";
+		mes "Ma solo con la tua volontà non puoi farcela in un vero combattimento, vero?";
+		mes "Quindi vai e raggiungi almeno il livello di abilità di base 9.";
+		close;
+	}
+	mes "[Uomo della Gilda Ladro]";
+	mes "Hmm.... Ho trovato i tuoi interessanti precedenti penali dai dati dell'agenzia investigativa. Beh, sembra che tu abbia le carte in regola per essere un buon ladro.";
+	mes ""+strcharinfo(0)+". Dichiaro ora che hai superato il colloquio di lavoro!";
+	next;
+	mes "[Uomo della Gilda Ladro]";
+	mes "Beh, non ho l'incarico di farti diventare un ladro. Accetto solo richieste, capito?";
+	mes "Se vuoi diventare un ladro, chiedi al ragazzo accanto a me.";
+	set q_job_thief,1;
+	close;
+}
+
+moc_prydb1,42,133,2	script	Thief Guildsman#thief	118,{
+	if(q_job_thief == 1) {
+		mes "[Uomo della Gilda Ladro]";
+		mes "Bene. Devi aver superato il colloquio di lavoro, eh?";
+		mes "Bene. Ti accetterò.";
+		mes "Iniziamo la cerimonia di cambio di lavoro della nostra gilda!";
+		next;
+		mes "[Comandante della Gilda dei Ladri]";
+		mes "'"+strcharinfo(0)+".'";
+		mes "«Per coloro che sono pronti, la luce della luna aprirà la strada. Ora sei completamente pronto, ora ti permetto ufficialmente di diventare un membro della Gilda dei Ladri.'";
+		callfunc "Job_Change",Job_Thief;
+		set q_job_thief,0;
+		getitem 13041,1;	// N_Main_Gauche
+		next;
+		mes "[Comandante della Gilda dei Ladri]";
+		mes "'Congratulazioni per essere diventato un ladro.'";
+		mes "'D'ora in poi, rispetta le regole della nostra gilda e sii un membro onorevole.'";
+		mes "'Se ci arrechi disonore infrangendo le nostre regole, faresti meglio a guardarti le spalle.'";
+		mes "'Comunque mi aspetto che tu sia un grande ladro.'";
+		next;
+		mes "[Brad]";
+		mes "Heee~Yaaaa~! Congratulazioni! Mio amico.";
+		mes "Il mio nome è 'Brad'. Qui sono responsabile delle risorse umane.";
+		mes "Non ne sono sicuro per ora, ma avrai più possibilità di vedermi più tardi.";
+		next;
+		mes "[Brad]";
+		mes "Ok, ho fatto quello che potevo farti, quindi vai per la tua strada. Sono un uomo piuttosto impegnato.";
+		mes "Ci vediamo di nuovo.";
+		close;
+	}
+	if(BaseJob != Job_Novice) {
+		if(BaseJob == Job_Thief) {
+			mes "[Brad]";
+			mes "Non ho eventi speciali adesso. Quindi vai per la tua strada e torna più tardi.";
+		}else{
+			mes "[Uomo della Gilda Ladro]";
+			mes "Ehi~ Ehi~ Non sei un principiante o un ladro!";
+			mes "Cosa stai facendo qui? Non sei il benvenuto a fare di questo posto la tua casa~ Hweeeee~ Vattene da qui~";
+		}
+		close;
+	}
+	mes "[Uomo della Gilda Ladro]";
+	mes "Eh? Perché un principiante come te viene qui?";
+	mes "Se sei qui per essere un ladro, chiedi alla signora dal carattere cattivo proprio accanto a me.";
+	close;
+}

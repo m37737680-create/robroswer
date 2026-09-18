@@ -1,0 +1,33 @@
+//===== rAthena Script =======================================
+//= Clothing Effect Removal Service
+//===== Description: =========================================
+//= Service to remove clothing effects like Xmas, Wedding, ...
+//===== Changelog: ===========================================
+//= 1.0 Initial version. [Balferian, Everade, Lemongrass]
+//============================================================
+
+prontera,80,106,5	script	Clothing Effect Removal Service	4_EP16_COOK2,{
+	mes "[Il colpo di Derek]";
+	mes "Non riesci a partecipare alla battaglia a causa degli appassionati di abbigliamento? Deve essere fastidioso.";
+	next;
+	mes "[Il colpo di Derek]";
+	mes "Anche se ti sta bene, può anche diventare davvero fastidioso. Posso sbarazzarmene con un solo gesto della mano!! Lo sistemerò in modo ordinato. Se sei pronto, scegli la tua opzione!";
+	next;
+	switch( select( "Tienilo", "Rilascialo immediatamente" ) ){
+		case 1:
+			mes "[Il colpo di Derek]";
+			mes "Torna da me, se cambi idea.";
+			close;
+		case 2:
+			sleep2 500;
+			specialeffect2 EF_SPHERE;
+			sleep2 500;
+			specialeffect2 EF_SPHERE;
+			sleep2 500;
+			specialeffect2 EF_SPHERE;
+			mes "[Il colpo di Derek]";
+			mes "La rimozione è stata completata. Assicurati di poterti muovere liberamente adesso.";
+			atcommand "@changedress";
+			close;
+	}
+}

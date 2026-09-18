@@ -1,0 +1,121 @@
+//===== rAthena Script ======================================= 
+//= Alchemist Shop
+//===== By: ================================================== 
+//= rAthena Dev Team
+//===== Current Version: ===================================== 
+//= 1.0
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Merchants for Alchemist Materials and Manuals.
+//===== Additional Comments: ================================= 
+//= 1.0 Split Geneticist shop from main file. [Euphy]
+//=     Updated dialogue to match the official script.
+//============================================================ 
+
+// Main NPC :: craft_book_alche_skill_npc
+//============================================================
+alde_alche,31,186,3	script	Craft Book Merchant#alde	883,{
+	mes "[Mercante di libri di artigianato]";
+	mes "Benvenuto.";
+	mes "Sono qui per vendere";
+	mes "^0000FFlibri artigianali speciali^000000 per genetisti.";
+	next;
+	mes "[Mercante di libri di artigianato]";
+	mes "I genetisti hanno alcune abilità";
+	mes "che richiedono l'attivazione di libri di artigianato.";
+	next;
+	mes "[Mercante di libri di artigianato]";
+	mes "Più libri di artigianato hai,";
+	mes "più abilità puoi usare.";
+	next;
+	mes "[Mercante di libri di artigianato]";
+	mes "Per favore capiscilo";
+	mes "Sono specializzato nella vendita di questi libri speciali e";
+	mes "Io ^FF0000non vendo altri articoli^000000.";
+	next;
+	mes "[Mercante di libri di artigianato]";
+	mes "Vuoi dare un'occhiata ai miei libri di artigianato?";
+	next;
+	if(select("Sicuro.:NO.") == 2) {
+		mes "[Mercante di libri di artigianato]";
+		mes "Grazie per aver visitato il mio negozio.";
+		mes "Per favore, sii sicuro durante i tuoi viaggi.";
+		close;
+	}
+	if (checkweight(1201,1) == 0) {
+		mes "[Mercante di libri di artigianato]";
+		mes "Mi dispiace, ma il tuo inventario è quasi pieno.";
+		mes "Per favore svuota prima il tuo inventario.";
+		close;
+	}
+	if (MaxWeight - Weight < 2500) {
+		mes "[Mercante di libri di artigianato]";
+		mes "Per favore svuota prima il tuo inventario.";
+		close;
+	}
+	mes "[Mercante di libri di artigianato]";
+	mes "Ok allora, ecco l'elenco dei libri di artigianato disponibili.";
+	next;
+	switch(select("[Libro artigianale della bomba Apple] 100.000 zeny:[Libro artigianale della bomba all'ananas] 100.000 zeny:[Libro artigianale della bomba al cocco] 100.000 zeny:[Libro artigianale della bomba al melone] 100.000 zeny:[Libro artigianale della bomba alla banana] 100.000 zeny:[Metodo di coltivazione del gene vegetale] 100.000 zeny:[Manuale di creazione di pozioni superiori] 100.000 zeny:[Libro di cucina mista] 100.000 zeny:[Libro di ricerca sul miglioramento della salute] 100.000 zeny:[Ricetta bevanda Vigor] 100.000 zeny:Vicino")){
+	case 1: set .@item,6279; break;
+	case 2: set .@item,6280; break;
+	case 3: set .@item,6281; break;
+	case 4: set .@item,6282; break;
+	case 5: set .@item,6283; break;
+	case 6: set .@item,6284; break;
+	case 7: set .@item,6285; break;
+	case 8: set .@item,11022; break;
+	case 9: set .@item,11023; break;
+	case 10: set .@item,11024; break;
+	case 11:
+		mes "[Mercante di libri di artigianato]";
+		mes "Grazie per il tuo patrocinio.";
+		mes "Per favore, vieni di nuovo.";
+		close;
+	}
+	mes "[Mercante di libri di artigianato]";
+	mes "^0000FF["+getitemname(.@item)+"] costi";
+	mes "100.000 zeni.";
+	mes "Quanti ne vorresti acquistare?";
+	next;
+	input .@amount;
+	if (.@amount == 0) {
+		mes "[Mercante di libri di artigianato]";
+		mes "Ti piacerebbe vedere qualche libro diverso?";
+		close;
+	}
+	if (.@amount < 1 || .@amount > 99 ){
+		mes "[Mercante di libri di artigianato]";
+		mes "Non puoi acquistarne più di 100 alla volta.";
+		close;
+	}
+	mes "[Mercante di libri di artigianato]";
+	mes "Sei entrato "+.@amount+"x^0000FF["+getitemname(.@item)+"]^000000 da acquistare.";
+	mes "Desideri continuare?";
+	next;
+	if (select("SÌ:NO") == 1) {
+		set .@total, .@amount * 100000;
+		if (Zeny < .@total) {
+			mes "[Mercante di libri di artigianato]";
+			mes "Mi dispiace, ma non hai abbastanza soldi.";
+			close;
+		}
+		if (checkweight(.@item,.@amount) == 0){
+			mes "[Mercante di libri di artigianato]";
+			mes "Non sembra che tu possa portare tutto.";
+			mes "Controlla lo spazio nel tuo inventario.";
+			close;
+		}
+		mes "[Mercante di libri di artigianato]";
+		mes "Grazie per il tuo patrocinio.";
+		set Zeny,Zeny - .@total;
+		getitem .@item,.@amount;
+		close;
+	}
+	mes "[Mercante di libri di artigianato]";
+	mes "Per favore, prenditi il ​​tuo tempo";
+	mes "prima di prendere la tua decisione.";
+	close;
+}

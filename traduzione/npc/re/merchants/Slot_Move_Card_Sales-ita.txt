@@ -1,0 +1,32 @@
+//===== rAthena Script ======================================= 
+//= Slot Move Card Sales
+//===== By: ================================================== 
+//= Pokye
+//===== Current Version: ===================================== 
+//= 1.0
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Character Position Change Coupon seller.
+//===== Additional Comments: ================================= 
+//= 1.0 Special thanks for Balfear and Everade
+//============================================================ 
+
+prt_in,211,173,3	script	Slot Move Card Sales#slo	4_F_01,{
+	mes "[Venditore]";
+	mes "Salve.";
+	mes "Vendo " + mesitemlink( 12786 ) + ".";
+	mes "Puoi ^4d4dffcambiare la posizione dello slot di un personaggio utilizzando la carta^000000.";
+	next;
+	mes "[Venditore]";
+	mes "Lo vendo in quantità limitata ogni settimana, quindi se non vedi nulla,";
+	mes "significa che tutti gli articoli sono esauriti, quindi torna la prossima volta.";
+	close2;
+	callshop "change_slot#slo";
+	end;
+
+OnMon0000:
+	npcshopupdate "change_slot#slo",12786,0,9999;
+	end;
+}
+-	marketshop	change_slot#slo	FAKE_NPC,12786:100000:9999

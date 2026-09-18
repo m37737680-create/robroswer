@@ -1,0 +1,740 @@
+//===== rAthena Script ======================================= 
+//= Mechanic Job Quest
+//===== By: ================================================== 
+//= Muad_Dib
+//===== Current Version: ===================================== 
+//= 1.3
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Jobchange Quest from Blacksmith / Whitesmith -> Mechanic.
+//===== Additional Comments: ================================= 
+//= 1.0 First Version. [Masao]
+//= 1.1 Fixed the Door NPC [JayPee].
+//= 1.2 Updated script. [Euphy]
+//= 1.3 Added VIP features. [Euphy]
+//============================================================ 
+
+yuno,129,156,3	script	Chainheart	923,{
+	mes "[Cuore a catena]";
+	if (eaclass() & EAJL_THIRD) {
+		mes "Vivere come meccanico è duro,";
+		mes "ma sono felice di poterlo fare";
+		mes "fare sempre quello che voglio.";
+		close;
+	}
+	if (job__mechanic == 12) {
+		mes "Non c'è niente da dire specificatamente sulla meccanica o sui macchinari magici.";
+		mes "Adesso ne sapresti più di chiunque altro.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Continua ad accrescere le tue conoscenze sperimentando ciò che il mondo ha da offrire.";
+		close;
+	} else if (job__mechanic == 11) {
+		if (BaseJob == Job_Blacksmith && BaseLevel > 98 && JobLevel > 49 && SkillPoint == 0) {
+			if (ismounting()) {
+				mes "Sei su un animale domestico da equitazione,";
+				mes "quindi non puoi cambiare lavoro.";
+				mes "Per favore togli l'equipaggiamento al tuo animale domestico da equitazione e riprova!";
+				close;
+			}
+			mes "Che cos'è? Sei tu?";
+			mes "Oh aspetta, sembri molto diverso dall'ultima volta che ti ho visto.";
+			mes "È successo qualcosa?";
+			next;
+			mes "[Cuore a catena]";
+			mes "Ah! Sei andato a Juperos";
+			mes "come ho detto. Come ha fatto Franklson.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Sembra che non ce ne sia bisogno";
+			mes "per ulteriori domande.";
+			mes "Sono certo che hai acquisito le conoscenze per essere un vero meccanico.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Non c'è niente che posso dire di più.";
+			mes "Sei già un grande meccanico.";
+			mes "Non perdere i nervi con il";
+			mes "titolo. La cosa più importante è che tu abbia la conoscenza.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Non sembri il tipo da rinchiudere in un laboratorio o in una biblioteca.";
+			mes "Sei un tipo che impara";
+			mes "partecipando attivamente.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Mi piace chi sei e penso che abbiamo bisogno di quel tipo di sangue nuovo per i nostri meccanici.";
+			next;
+			mes "[Cuore a catena]";
+			mes "La scienza sta cercando e studiando cose che possono essere dimostrate logicamente.";
+			mes "Ironicamente, la scienza di solito parte da teorie incerte proprio come la magia.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Come ho detto prima se la passione e il talento fossero reali non ci sarebbero problemi!";
+			mes "Congratulazioni per aver intrapreso un nuovo percorso come Meccanico!";
+			next;
+			set job__mechanic,12;
+			completequest 10101;
+			if (Sex == SEX_MALE)
+				getitem 5749,1; //Driver_Band
+			else
+				getitem 5760,1; //Driver_Band_
+			getitem 2795,1; //Green_Apple_Ring
+			jobchange roclass(eaclass()|EAJL_THIRD);
+			mes "[Cuore a catena]";
+			mes "Questo è un regalo che ti faccio.";
+			mes "Se lo manterrai bene, un giorno";
+			mes "mi sarai grato.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Bene, vai. Questo vasto mondo è";
+			mes "il tuo laboratorio, tutto dentro";
+			mes "questo mondo sarà tuo";
+			mes "libro di testo, quindi lascia che ci sia un lato positivo nel futuro della Meccanica!";
+			close;
+		}
+		mes "Sembra che qualcosa non basti?";
+		close;
+	} else if (job__mechanic >= 3) {
+		mes "A proposito, manca Franklson.";
+		mes "Ha detto che voleva studiare";
+		mes "e poi è scomparso.";
+		mes "Dove potrebbe essere andato?";
+		next;
+		mes "[Cuore a catena]";
+		mes "Se continui a percorrere la strada per diventare un meccanico potresti incontrarlo.";
+		mes "Il destino funziona in modi strani, amico.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Comunque addio.";
+		close;
+	} else if (job__mechanic == 2) {
+		mes "Credo di aver fatto tutte le spiegazioni, c'è qualcos'altro che vuoi sapere?";
+		next;
+		switch(select("Voglio saperne di più:Niente.")) {
+		case 1:
+			mes "[Cuore a catena]";
+			mes "Uhm...? Vuoi saperne di più sui macchinari magici. È tutto?";
+			mes "Hmm... te l'ho detto che hai talento, è difficile.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Beh, sembri talentuoso, quindi non sarebbe male per noi se potessi diventare un meccanico.";
+			mes "Ma sfortunatamente non è così";
+			mes "lavorare proprio così.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Gli studiosi di meccanica non si limiteranno a riconoscerti così facilmente e a trasmetterti la conoscenza senza che tu mostri prima un vero sforzo.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Naturalmente, io sono uno di quegli studiosi, quindi immagino di poter provare a prenderti in considerazione.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Ad ogni modo, penso che sia ingiusto escludere qualcuno che ha talento senza alcun test.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Hmm...";
+			next;
+			mes "[Cuore a catena]";
+			mes "In realtà, se qualcuno non può insegnarti, puoi imparare da solo.";
+			mes "Se qualcun altro può farlo, allora anche chiunque può capirlo da solo, giusto?";
+			next;
+			mes "[Cuore a catena]";
+			mes "Non sarà facile ma se la tua passione è forte e il tuo talento è reale allora non dovrebbero esserci problemi.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Vieni a pensarci...";
+			mes "Franklson ha sviluppato il";
+			mes "macchinario magico da solo.";
+			mes "Allora perché non ci vai?";
+			mes "le Rovine di Juperos?";
+			next;
+			mes "[Cuore a catena]";
+			mes "Come ti ho detto prima, se la tua passione e il tuo talento sono reali, troverai sicuramente qualcosa.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Scopri la conoscenza";
+			mes "per te stesso come abbiamo fatto noi.";
+			mes "Non aspettare semplicemente che qualcuno te lo insegni. Mostra la passione che affermi di avere.";
+			next;
+			set job__mechanic,3;
+			changequest 10091,10092;
+			mes "[Cuore a catena]";
+			mes "Comunque, qualunque sia la tua scelta, mi aspetto che tu faccia del tuo meglio.";
+			close;
+		case 2:
+			mes "[Cuore a catena]";
+			mes "Che persona strana.";
+			mes "Pensavo che avessi le carte in regola per essere un vero meccanico.";
+			close;
+		}
+	} else if (job__mechanic == 1) {
+		mes "Ok, lasciami riprendere fiato.";
+		mes "Devi essere interessato a";
+		mes "macchinari magici e il";
+		mes "mondo della meccanica.";
+		mes "Ok, allora lasciami spiegare.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Magic Machines nasce dalla fusione tra macchine e magia.";
+		mes "I due non sono mai stati collegati con successo insieme fino ad ora.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Se usi i macchinari magici, devi avere molta familiarità con il funzionamento interno delle macchine.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Può essere utilizzato in modo efficace,";
+		mes "e non hai bisogno di fare affidamento su qualcosa che è incerto e instabile come la magia, quindi cosa può esserci di meglio di questo.";
+		next;
+		mes "[Cuore a catena]";
+		mes "La persona che ha inventato la macchina magica è Franklson, uno studioso della Repubblica della Foresta Nera.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Franklson scoprì un'antica macchina nelle ^FF0000Rovine di Juperos^000000 e la fuse con il potere della magia, e quello fu l'inizio.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Quindi, naturalmente, Franklson chiamò la macchina appena nata Magic Machinery.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Ad ogni modo, poiché non era molto conosciuto in altri luoghi al di fuori di Giunone, da allora lo studio dei Macchinari Magici ha continuato a progredire.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Perché abbiamo fatto delle ricerche";
+		mes "Macchinari magici all'infinito";
+		mes "la gente ha iniziato a chiamarci ^FF0000Meccanici^000000.";
+		mes "Il nome è autoesplicativo";
+		mes "quindi è rimasto bloccato.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Hmm. Beh, credo di aver finito di spiegare i Macchinari Magici.";
+		mes "Vorrei spiegare di più ma è troppo tecnico.";
+		mes "Non voglio annoiarti di più.";
+		next;
+		set job__mechanic,2;
+		changequest 10090,10091;
+		mes "[Cuore a catena]";
+		mes "Ad ogni modo, se diventi uno di noi, potrai creare tu stesso la tua definizione e spiegazione della Meccanica.";
+		close;
+	}
+	if (BaseJob == Job_Blacksmith) {
+		if (BaseLevel > 98 && JobLevel > 49 && SkillPoint == 0) {
+			if (VIP_SCRIPT) {
+				callfunc "VIP_Third_Class";
+				set job__mechanic,1;
+				setquest 10090;
+				next;
+			}
+			mes "A prima vista, sembri una persona molto versatile nell'affrontare varie cose.";
+			mes "Sembri piuttosto abile.";
+			mes "Tu puoi essere quello giusto.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Ah, non mi sono presentato.";
+			mes "Sono il famoso Chainheart.";
+			mes "Sono un meccanico.";
+			mes "Beh, in realtà non sono così famoso.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Non penso alla parola Meccanico";
+			mes "ti è familiare.";
+			mes "In effetti, quando arriverà";
+			mes "alla descrizione,";
+			mes "è un nuovo lavoro che può";
+			mes "essere spiegato semplicemente.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Colui che studia e usa i Macchinari Magici, cioè un Meccanico.";
+			next;
+			mes "[Cuore a catena]";
+			mes "Allora, qual è il Macchinario Magico che un Meccanico studia e utilizza?";
+			mes "Non è così semplice da spiegare ma ci proverò.";
+			next;
+			setquest 10090;
+			set job__mechanic,1;
+			mes "[Cuore a catena]";
+			mes "Scusa, sto iniziando";
+			mes "parlare troppo.";
+			mes "Fammi prendere il mio";
+			mes "respirare per un po'.";
+			mes "Se sei interessato,";
+			mes "per favore, parlami ancora.";
+			close;
+		}
+		mes "Sembri qualcuno che ha un grande senso nell'affrontare le cose.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Quel potere è stato utilizzato";
+		mes "occuparsi solo di cose semplici.";
+		mes "Questo non darà";
+		mes "il tuo vero divertimento.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Giusto... Se vuoi divertirti";
+		mes "veri sentimenti di trattare e";
+		mes "una profonda profondità,";
+		mes "devi gestire";
+		mes "^FF0000Macchine magiche^000000!";
+		next;
+		mes "[Cuore a catena]";
+		mes "Magic Machinery non lo è stato";
+		mes "nel mondo da molto tempo, quindi riconoscerlo non è ancora comune.";
+		mes "È molto preciso e completamente diverso da qualsiasi cosa tu abbia sperimentato nel mondo.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Sì, e quelli che si occupano di macchinari magici si chiamano ^FF0000Meccanici^000000.";
+		mes "Sono anche uno di quegli onorevoli meccanici.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Sembra che tu abbia quello che serve per essere un buon meccanico.";
+		mes "Ecco i requisiti di base.";
+		next;
+		mes "[Cuore a catena]";
+		mes "Se vieni da me dopo aver raggiunto il ^FF0000Livello base 99^000000 e il ^FF0000Livello lavorativo 50^000000,";
+		mes "Ti guiderò nel mondo della Meccanica.";
+		close;
+	}
+	mes "Vivere come meccanico è duro,";
+	mes "ma sono felice di poterlo fare";
+	mes "fare sempre quello che voglio.";
+	next;
+	mes "[Cuore a catena]";
+	mes "Non vuoi diventare anche tu un Meccanico e godere della vera felicità?";
+	close;
+}
+
+jupe_cave,37,55,5	script	Scholar#Mechanic	883,{
+	if (checkweight(1201,1) == 0 || MaxWeight - Weight < 300) {
+		mes "- Il tuo zaino è troppo pesante. -";
+		mes "- Prima alleggerisci il tuo corpo -";
+		mes "- e per favore riprova. -";
+		close;
+	}
+	mes "[Studioso]";
+	if (job__mechanic > 10) {
+		mes "Com'è andato Juperos?";
+		mes "Sono così spaventato che lo sono ancora";
+		mes "non posso andarci.";
+		close;
+	} else if (job__mechanic > 3) {
+		mes "^FF0000Non potrai raggiungere la destinazione camminando.";
+		mes "^FF0000I nemici forti non sono il problema qui, semplicemente non sarai in grado di arrivare a destinazione.";
+		mes "Per favore, mettiti a casa.^000000";
+		next;
+		mes "[Studioso]";
+		mes "Per quanto comodo possa essere,";
+		mes "Non ho intenzione di andare.";
+		next;
+		mes "[Studioso]";
+		mes "Ok allora, sei pronto?";
+		mes "per andare a metà strada";
+		mes "a Juperos?";
+		next;
+		switch(select("Sono pronto!:Non ancora")) {
+		case 1:
+			mes "[Studioso]";
+			mes "Uh... ti comporti in modo così fermo che mi pento un po' di non esserci andato.";
+			mes "Avrei dovuto andare lì? Uh... E' inutile piangere sul latte versato!";
+			next;
+			mes "[Studioso]";
+			mes "Bene, ti manderò.";
+			mes "Spero che tu ottenga";
+			mes "la conoscenza";
+			mes "volevi.";
+			close2;
+			warp "jupe_core2",149,288;
+			end;
+		case 2:
+			mes "[Studioso]";
+			mes "Uhm... giusto. Naturalmente, non sorprende che tu sia titubante.";
+			next;
+			mes "[Studioso]";
+			mes "Ma se non prendi la curvatura che apro per te, non potrai arrivare a destinazione.";
+			mes "Per favore, non sprecare la tua energia.";
+			next;
+			mes "[Studioso]";
+			mes "Naturalmente, non importa quanto tu possa sentirti a tuo agio, non ci andrei.";
+			close;
+		}
+	}
+	mes "Sono uno studioso venuto qui per fare ricerche sulle rovine qui a Juperos.";
+	next;
+	mes "[Studioso]";
+	mes "Ma... in realtà quando provo ad andare oltre";
+	mes "Mi spavento. Difficilmente riesco ad entrare.";
+	mes "Cosa posso fare?";
+	next;
+	mes "[Studioso]";
+	mes "Ho sentito dire che gli umani non sono i benvenuti lì dentro.";
+	mes "Ma dovrebbe essere molto utile studiare le meravigliose macchine che si trovano lì dentro.";
+	if (job__mechanic != 3) close;
+	next;
+	mes "[Studioso]";
+	mes "Ehm? Vai anche tu a Juperos a prendere qualcosa?";
+	mes "Non ho il coraggio di entrare lì dentro.";
+	mes "Buona fortuna a te.";
+	next;
+	mes "[Studioso]";
+	mes "Conosco la strada per arrivarci";
+	mes "il punto a metà strada e ho anche";
+	mes "tutta la roba di cui ho bisogno. Ma sono semplicemente troppo spaventato.";
+	next;
+	mes "[Studioso]";
+	mes "Quindi, se vuoi, te lo manderò";
+	mes "a Juperos. Signor studioso anziano";
+	mes "mi ha detto come deformarmi";
+	mes "il punto a metà strada verso Juperos.";
+	next;
+	set job__mechanic,4;
+	mes "[Studioso]";
+	mes "È vero che diventa facile";
+	mes "ma non puoi aiutare la paura";
+	mes "è un peccato. Comunque se lo sei";
+	mes "pronto a partire, per favore, dimmelo.";
+	close;
+}
+
+jupe_core2,149,273,3	script	Ghostfire#1	802,{
+	mes "[?]";
+	if (job__mechanic == 11) {
+		mes "Ho perso il mio corpo e tutto ciò che resta è il mio spirito in questo posto.";
+		mes "Vivrò e morirò qui a Juperos per sempre...";
+		close;
+	} else if (job__mechanic == 10) {
+		mes "Quell'apparenza... è così? Hai anche acquisito la conoscenza.";
+		mes "Quando il futuro è pieno di possibilità...";
+		mes "Un atteggiamento da bambino puro";
+		mes "come se potessi fare qualsiasi cosa...";
+		next;
+		mes "[?]";
+		mes "Ora che ci penso, la cosa più preziosa in questo momento potrebbe essere acquisire fiducia piuttosto che la conoscenza stessa...";
+		next;
+		mes "[?]";
+		mes "Per favore, non farne nessuno";
+		mes "difetti da ora in poi come ho fatto io.";
+		mes "Spero che tu acquisisca conoscenza";
+		mes "da solo un giorno.";
+		next;
+		mes "[?]";
+		mes "Bene, allora torna indietro, trova un umano che conosca i macchinari magici e mostra la prova di aver acquisito la conoscenza...";
+		next;
+		mes "[?]";
+		mes "Sono io quello che ha perso il mio corpo";
+		mes "e il mio spirito è sconvolto";
+		mes "Sono confinato in questo posto, Juperos... Vivrò e morirò con Juperos";
+		mes "Per sempre...";
+		next;
+		mes "[?]";
+		mes "Il mio nome... mi chiamo... Fr...";
+		close2;
+		set job__mechanic,11;
+		changequest 10100,10101;
+		warp "yuno",157,83;
+		end;
+	} else if (job__mechanic > 4) {
+		mes "Ho perso il mio corpo e tutto ciò che resta è il mio spirito in questo posto.";
+		mes "Vivrò e morirò qui a Juperos per sempre...";
+		close;
+	} else if (job__mechanic > 2) {
+		mes "Uno di talento.";
+		mes "Assicurati che ci siano";
+		mes "nessun nemico in giro.";
+		mes "Se ti concentri su di me,";
+		mes "potresti essere attaccato.";
+		next;
+		if(select("Bene, allora, dopo.:Messa a fuoco.") == 1) close;
+		mes "[?]";
+		mes "Una volta ero uno studioso umano.";
+		mes "Volevo conoscere i limiti della scienza che l'umanità non conosceva, quindi ho imparato molte cose, ho studiato,";
+		mes "e cercato...";
+		next;
+		mes "[?]";
+		mes "È stato allora che ho scoperto l'incerto potere magico.";
+		next;
+		mes "[?]";
+		mes "Il problema della magia incerta è che è altamente instabile e imprevedibile.";
+		mes "Durante i miei studi mi sono imbattuto in una sacca di magia altamente volatile.";
+		next;
+		mes "[?]";
+		mes "Gli unici ricordi che ho sono da quel giorno in poi.";
+		mes "Sono rimasto intrappolato qui da allora.";
+		next;
+		mes "[?]";
+		mes "Juperos è tutto ciò che so adesso.";
+		mes "Morirò qui.";
+		next;
+		mes "[?]";
+		mes "Non so chi sei...";
+		mes "Non mi preoccuperò di sapere se tu";
+		mes "vuoi acquisire qualche conoscenza";
+		mes "trova qualcuno a cui importi.";
+		next;
+		if (job__mechanic == 3 || job__mechanic == 4)
+			changequest 10092,10094;
+		set job__mechanic,5;
+		mes "[?]";
+		mes "La conoscenza non si ottiene dagli altri. Si trova attraverso i propri sforzi.";
+		mes "Trova il tuo percorso di conoscenza.";
+		close;
+	}
+	end;
+}
+
+jupe_core2,53,75,3	script	Ghostfire#2	802,{
+	mes "[?]";
+	if (job__mechanic > 5) {
+		mes "Juperos... Io...";
+		mes "Juperos... Quello che voglio";
+		mes "esiste tutto qui...";
+		mes "Il potere della scienza...il paradiso delle macchine...";
+		close;
+	} else if (job__mechanic == 5) {
+		mes "Uno di talento.";
+		mes "Assicurati che ci siano";
+		mes "nessun nemico in giro.";
+		mes "Se ti concentri su di me,";
+		mes "potresti essere attaccato.";
+		next;
+		if(select("Bene, allora, dopo:Messa a fuoco") == 1) close;
+		mes "[?]";
+		mes "Quando avevo un corpo";
+		mes "Volevo dimostrare il";
+		mes "eccellenza della scienza";
+		mes "a quelli che credono soltanto";
+		mes "cose così occulte...";
+		next;
+		mes "[?]";
+		mes "Volevo usare il potere di";
+		mes "la magia come forma ragionevole";
+		mes "che è visibile. Con più forte";
+		mes "risultati, volevo controllare";
+		mes "il potere della magia di";
+		mes "usando la scienza....";
+		next;
+		mes "[?]";
+		mes "Volevo mostrare quella scienza";
+		mes "è eccellente per controllare la magia";
+		mes "come l'occulto. Ho studiato molto";
+		mes "delle cose e angosciato";
+		mes "fare scienza e magia";
+		mes "coesistere.";
+		next;
+		mes "[?]";
+		mes "La mia ricerca mi ha portato qui,";
+		mes "Juperos. In questo posto lì";
+		mes "sono molti prodotti della scienza";
+		mes "che potrebbe stimolare quello di uno studioso";
+		mes "cervello...";
+		next;
+		mes "[?]";
+		mes "Ho scoperto che era possibile unire il potere della magia con quello della scienza.";
+		mes "Anche se non era perfetto, piaceva abbastanza agli altri studiosi...";
+		next;
+		mes "[?]";
+		mes "I recenti eventi mondiali hanno creato confusione, quindi la mia ricerca non è stata condivisa con il resto del mondo.";
+		next;
+		set job__mechanic,6;
+		changequest 10094,10095;
+		mes "[?]";
+		mes "Quindi... sono tornato a Juperos per continuare la mia indagine sulla scienza e sulla magia.";
+		close;
+	}
+	end;
+}
+
+jupe_core2,242,62,3	script	Ghostfire#3	802,{
+	mes "[?]";
+	if (job__mechanic > 6) {
+		mes "Voglio saperne di più sulla conoscenza...";
+		mes "le caratteristiche dell'uomo...";
+		mes "Le cose da fare prima e dopo...";
+		mes "La porta della verità verrà più tardi...";
+		close;
+	} else if (job__mechanic == 6) {
+		mes "Uno di talento.";
+		mes "Assicurati che ci siano";
+		mes "nessun nemico in giro.";
+		mes "Se ti concentri su di me,";
+		mes "potresti essere attaccato.";
+		next;
+		if(select("Bene, allora, dopo:Messa a fuoco") == 1) close;
+		mes "[?]";
+		mes "Non ero soddisfatto del mio successo, quindi sono tornato qui più e più volte.";
+		next;
+		mes "[?]";
+		mes "Quando ho messo piede su questa statua, l'energia che avevo raccolto e imparato è stata assorbita.";
+		next;
+		mes "[?]";
+		mes "Ma, una volta assorbita quell’energia, ho iniziato ad acquisire una conoscenza che non avevo mai conosciuto prima.";
+		next;
+		mes "[?]";
+		mes "Ma ha avuto un prezzo. Con la consapevolezza ho iniziato a perdere la mia umanità.";
+		mes "Ho perso il mio corpo e l'unica cosa che avevo era il mio spirito.";
+		next;
+		mes "[?]";
+		mes "Non mi pento di aver acquisito la conoscenza. Tutto ciò che desidero è poter riavere il mio corpo.";
+		next;
+		set job__mechanic,7;
+		changequest 10095,10096;
+		mes "[?]";
+		mes "Dopo aver riversato la mia energia nella statua, ho pensato che avrei potuto spostare la mia energia su statue diverse.";
+		close;
+	}
+	end;
+}
+
+jupe_core2,29,150,0	script	#Foothold	139,1,1,{
+OnTouch_:
+	if (job__mechanic == 8) {
+		percentheal 0,-30;
+		mes "-All'improvviso sento che il potere è-";
+		mes "-sfuggendo a tutto il mio corpo-";
+		mes "-Che cosa sta accadendo?-";
+		next;
+		mes "-Trova la porta della verità-";
+		mes "-è la fonte del-";
+		mes "-assorbimento di energia.-";
+		close;
+	} else if (job__mechanic == 7) {
+		percentheal -20,0;
+		mes "-All'improvviso, uno sconosciuto-";
+		mes "-la voce risuona nella mia testa-";
+		mes "-Che cos'è?-";
+		next;
+		mes "-Macchine per la movimentazione-";
+		mes "-assorbendo potere magico-";
+		mes "-un'offerta sacrificale-";
+		mes "-la statua di un essere umano.-";
+		next;
+		set job__mechanic,8;
+		changequest 10096,10097;
+		mes "-La cosa più certa è che-";
+		mes "-Ho iniziato a sentire l'impulso-";
+		mes "-per andare alla porta della verità.-";
+		close;
+	} else if (job__mechanic > 2) {
+		percentheal 0,-30;
+		mes "-All'improvviso sento che il potere è-";
+		mes "-fuggendo dal mio corpo-";
+		mes "-Che cosa sta accadendo?-";
+		close;
+	}
+	end;
+}
+
+jupe_core2,272,149,0	script	#Foothold2	139,1,1,{
+OnTouch_:
+	if (job__mechanic == 9) {
+		mes "-Avevo la sensazione di quel potere-";
+		mes "-si è prosciugato,-";
+		mes "-ma adesso non lo so-";
+		mes "-senti qualsiasi cosa.-";
+		next;
+		mes "-Vai a sud di-";
+		mes "-il punto d'appoggio velocemente.-";
+		close;
+	} else if (job__mechanic == 8) {
+		percentheal -20,-30;
+		mes "-All'improvviso sento che il potere è-";
+		mes "-fuggendo dal mio corpo-";
+		mes "-Che cosa sta accadendo?-";
+		next;
+		mes "-Sento i miei sensi-";
+		mes "-stanno tornando da me.-";
+		next;
+		donpcevent "#Door::OnEnable";
+		changequest 10097,10098;
+		mes "-Penso che sto diventando-";
+		mes "-l'offerta sacrificale.-";
+		close;
+	} else if (job__mechanic > 2) {
+		percentheal 0,-30;
+		mes "-All'improvviso sento che il potere è-";
+		mes "-fuggendo dal mio corpo-";
+		mes "-Che cosa sta accadendo?-";
+		close;
+	}
+	end;
+}
+
+jupe_core2,288,142,3	script	#Door	844,1,1,{
+	end;
+OnInit:
+OnDisable:
+	disablenpc "#Door";
+	end;
+OnEnable:
+	enablenpc "#Door";
+	specialeffect EF_MAPPILLAR;
+	initnpctimer;
+	end;
+OnTimer180000:
+	donpcevent "#Door::OnDisable";
+	end;
+OnTouch_:
+	mes "-Ancora una volta risuona una voce-";
+	mes "-nella mia testa. Questa volta è-";
+	mes "-diverso da prima, è un-";
+	mes "-voce di una persona impressionante.-";
+	next;
+	mes "So che sei arrivato fin qui perché vuoi la conoscenza.";
+	mes "Gli esseri umani sono animali deboli";
+	mes "e ogni sacrificio è duro";
+	mes "decisione da prendere.";
+	next;
+	mes "Ma ti manca qualcosa per varcare questa porta della verità.";
+	mes "Attraverso questa porta c'è la conoscenza, al di sopra di ogni pensiero umano.";
+	next;
+	mes "Non danneggerà la mente di un essere umano se non supera la capacità del tuo cervello.";
+	next;
+	mes "Cerca di mettere il tuo corpo sul punto d'appoggio della conoscenza a sud.";
+	next;
+	mes "Se la conoscenza ti si addice, potrai ottenerla senza diventare un'offerta sacrificale.";
+	mes "Se non sei qualificato, perderai il tuo corpo in sacrificio.";
+	next;
+	mes "Quando sarai qualificato, sarai in grado di varcare la porta della verità.";
+	mes "Fino a quel giorno, non perderti.";
+	next;
+	mes "............";
+	next;
+	mes "-Non sento nessuna voce-";
+	mes "-non c'è più e non riesco a sentire-";
+	mes "-qualsiasi cosa in questo posto.-";
+	next;
+	mes "-Come la voce che squilla nel mio-";
+	mes "-testa istruita, andiamo a-";
+	mes "-il punto d'appoggio meridionale.-";
+	close2;
+	set job__mechanic,9;
+	changequest 10098,10099;
+	donpcevent "#Door::OnDisable";
+	end;
+}
+
+jupe_core2,149,34,0	script	#Acquiring Knowledge	139,1,0,{
+OnTouch_:
+	if (job__mechanic == 9) {
+		mes "-Nel momento in cui ho messo piede-";
+		mes "-il punto d'appoggio la voce-";
+		mes "-non mi è venuto in mente-";
+		mes "-conoscenza piuttosto nuova-";
+		mes "-è entrato naturalmente.-";
+		next;
+		mes "-Quasi istantaneamente-";
+		mes "-hai guadagnato tutto-";
+		mes "-la conoscenza di cui hai bisogno-";
+		mes "-conoscere la meccanica-";
+		mes "-e macchinari magici.-";
+		next;
+		set job__mechanic,10;
+		changequest 10099,10100;
+		specialeffect EF_POTION_CON;
+		mes "-Questa quantità di conoscenza-";
+		mes "-è abbastanza. Finiamo-";
+		mes "-e trova una via d'uscita.-";
+		close;
+	}
+	end;
+}
+jupe_core2,150,33,0	duplicate(#Acquiring Knowledge)	#Acquiring Knowledge2	139,1,0
+
+jupe_core2,0,0	monster	Dimik	1669,100

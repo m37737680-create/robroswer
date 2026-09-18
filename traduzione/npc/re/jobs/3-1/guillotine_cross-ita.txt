@@ -1,0 +1,3959 @@
+//===== rAthena Script ======================================= 
+//= Guillotine Cross Job Quest
+//===== By: ================================================== 
+//= Muad_Dib
+//===== Current Version: ===================================== 
+//= 1.6
+//===== Compatible With: ===================================== 
+//= rAthena Project; SVN r16945+
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Job change Quest from Assassin / Assassin Cross -> Guillotine Cross.
+//===== Additional Comments: ================================= 
+//= 1.0 Adapted from original script. [Euphy]
+//= 1.0a Added 'npcskill' command. [Euphy]
+//= 1.0b Moved warps to separate file. [Euphy]
+//= 1.1 Fixed some minor bugs. [Euphy]
+//= 1.2 Moved "Girl" NPC off ve_fild05. [Euphy]
+//= 1.3 Added missing OnMyMobDead labels. [Euphy]
+//= 1.4 Added missing labels. [Joseph]
+//= 1.5 Added GM management function. [Euphy]
+//= 1.6 Added VIP features. [Euphy]
+//= 1.7 Fixed PLAYTIME issue. [Capuche]
+//============================================================
+
+que_job01,75,96,3	script	Guild Member#3rdgc01	997,{
+	if (job_3rd_gc == 0) {
+		if (Class == Job_Assassin || Class == Job_Assassin_Cross || Class == Job_Baby_Assassin) {
+			if (BaseLevel > 98) {
+			L_Mission:
+				mes "[Ahcart]";
+				mes "Finalmente è giunto il momento...";
+				mes "Ehi, come ti chiami?";
+				next;
+				switch(select(strcharinfo(0),".....")) {
+				case 1:
+					mes "[Ahcart]";
+					mes strcharinfo(0)+"?";
+					mes "Fatto. Ricorderò il tuo nome.";
+					mes "Un maestro mi ha detto che sei una persona dotata di abilità.";
+					break;
+				case 2:
+					mes "[Ahcart]";
+					mes "Che cosa? Sei una persona diffidente.";
+					mes "Hmm, qualunque cosa.";
+					mes "Ho sentito che sei una persona con abilità.";
+					break;
+				}
+				next;
+				mes "[Ahcart]";
+				mes "Il mio compito è consegnare un messaggio alla gilda a un abile assassino.";
+				mes "Penso che tu sia adatto a svolgere il compito della gilda.";
+				next;
+				mes "[Ahcart]";
+				mes "Allora, svolgeresti questo compito per noi?";
+				mes "Naturalmente offrirò una ricompensa per aver completato il tuo compito.";
+				next;
+				select("Qual è la richiesta?");
+				mes "[Ahcart]";
+				mes "Non è chiaro.";
+				mes "Te l'avevo detto. È un compito speciale.";
+				mes "L'unica cosa che so è la condizione per portare una persona con l'abilità del maestro.";
+				next;
+				mes "[Ahcart]";
+				mes "Innanzitutto chi ha pazienza.";
+				mes "Secondo, chi è silenzioso.";
+				mes "Terzo, uno che è concentrato.";
+				next;
+				mes "[Ahcart]";
+				mes "Cosa ne pensi di quello che ti ho detto?";
+				mes "Questo compito significa che ha bisogno di una persona che possa svolgere un compito indipendentemente dalla propria volontà.";
+				next;
+				mes "[Ahcart]";
+				mes "È necessario mantenere segreta questa richiesta.";
+				mes "Ma è anche tuo dovere non dirlo a nessuno.";
+				next;
+				mes "[Ahcart]";
+				mes "Questa è tutta una tua scelta.";
+				mes "Ci aiuterete con questa richiesta?";
+				next;
+				switch(select("Lo farò.:Dammi tempo per pensare.")) {
+				case 1:
+					if (VIP_SCRIPT) {
+						callfunc "VIP_Third_Class";
+						set job_3rd_gc, 3;
+						setquest 7101;
+						next;
+					}
+					mes "[Ahcart]";
+					mes "Ok, a Venes.";
+					mes "Li contatterò.";
+					mes "È il tuo primo dovere andare a Veins.";
+					next;
+					mes "[Ahcart]";
+					mes "Dovresti riuscire a trovarlo facilmente.";
+					mes "Vai adesso.";
+					set job_3rd_gc, 3;
+					setquest 7101;
+					close;
+				case 2:
+					mes "[Ahcart]";
+					mes "Fatto.";
+					mes "Ma non pensarci troppo a lungo.";
+					set job_3rd_gc, 2;
+					close;
+				}
+			}
+			mes "[Ahcart]";
+			mes "Hmm, tu sei mio pari.";
+			mes "Sono Ahcart. Vengo da Venes.";
+			mes "Hmm...";
+			next;
+			mes "[Ahcart]";
+			mes "Naturalmente, un capitolo della Gilda degli Assassini non è solo in Marocco. Se hai la possibilità di andarci, visita lì.";
+			mes "Penso che potresti andarci.";
+			set job_3rd_gc, 1;
+			close;
+		}
+		mes "[Un uomo di forte impressione]";
+		mes "....";
+		mes "Che diavolo...?";
+		mes "Non sei un assassino.";
+		close;
+	} else if (job_3rd_gc == 1) {
+		if (BaseLevel > 98) goto L_Mission;
+		mes "[Ahcart]";
+		mes "Se diventi più forte e più abile, la gilda degli assassini ti assegnerà un compito speciale.";
+		mes "Fallo.";
+		close;
+	} else if (job_3rd_gc == 2) {
+		mes "[Ahcart]";
+		mes "Ci hai pensato di più?";
+		next;
+		switch(select("Lo farò.:Non sono pronto.")) {
+		case 1:
+			if (VIP_SCRIPT) {
+				callfunc "VIP_Third_Class";
+				set job_3rd_gc, 3;
+				setquest 7101;
+				next;
+			}
+			mes "[Ahcart]";
+			mes "Ok, a Venes.";
+			mes "Li contatterò.";
+			mes "È il tuo primo dovere andare a Veins.";
+			next;
+			mes "[Ahcart]";
+			mes "Dovresti riuscire a trovarlo facilmente.";
+			mes "Vai adesso.";
+			set job_3rd_gc, 3;
+			setquest 7101;
+			close;
+		case 2:
+			mes "[Ahcart]";
+			mes "Sei troppo cauto.";
+			mes "Ho la sensazione che tu non voglia lavorare per noi.";
+			close;
+		}
+	} else if (job_3rd_gc == 3) {
+		mes "[Ahcart]";
+		mes "Vai su Veins e trova un capitolo.";
+		mes "Puoi ascoltare maggiori dettagli da lì.";
+		close;
+	} else {
+		mes "[Ahcart]";
+		mes "Buona fortuna a te.";
+		close;
+	}
+}
+
+function	script	func_3rdgc	{
+	set .@n$, "["+strcharinfo(0)+"]";
+	mes .@n$;
+	mes "Raccolgo tutte le informazioni...";
+	set .@i,0;
+	if (checkquest(7112) == 1) { mes "Madelle ha visto una persona che sembrava un prete di Rachel a tarda notte."; set .@i,.@i+1; }
+	if (checkquest(7113) == 1) { mes "Crave ha detto che c'era una ragazza che comprava un sacco di cose giorno e notte."; set .@i,.@i+1; }
+	if (checkquest(7114) == 1) { mes "Trovan ha detto che c'era un ragazzo che poteva essere visto spesso ma non è un ospite dell'hotel, quindi è sospettoso."; set .@i,.@i+1; }
+	if (!getarg(0)) {
+		set .@i,.@i-2;
+		if (checkquest(7115) == 1) { mes "Una venditrice ambulante indossa abiti trasandati, ma ogni giorno compra cose fresche e costose."; set .@i,.@i+1; }
+		if (checkquest(7116) == 1) { mes "Il vecchio del villaggio ha detto che c'era una ragazza che si è presentata nello stesso posto alla stessa ora, quindi forse si è trasferita qui."; set .@i,.@i+1; }
+	}
+	next;
+	if (.@i == 3) {
+		mes .@n$;
+		mes "Un giorno, Madelle vide una persona che sembrava un prete di Rachele,";
+		mes "e Trovan è sospettoso del motivo per cui quella persona è qui.";
+		next;
+		mes .@n$;
+		mes "Ma il motivo per cui Trovan sospetta di loro è...";
+		next;
+		switch(select("Non hanno familiarità:La residenza non è chiara")) {
+		case 1:
+			mes .@n$;
+			mes "No, non è questo il motivo. La guardia vede nuovi avventurieri ogni giorno.";
+			mes "Inoltre, Madelle mi ha detto che era un maschio e Crave ha detto che era una femmina.";
+			mes "Non ho capito bene.";
+			next;
+			mes .@n$;
+			mes "Lasciami ripensare a questo.";
+			set job_3rd_gc, 7;
+			close;
+		case 2:
+			mes .@n$;
+			mes "Sì, gli avventurieri vengono spesso in visita, quindi non può essere un motivo valido.";
+			next;
+			mes .@n$;
+			mes "Ciò che Trovan sospettava è che la sua residenza non fosse chiara. Ma si presenta spesso e acquista regolarmente provviste.";
+			next;
+			mes .@n$;
+			mes "Ma Crave ha detto che era una ragazza.";
+			mes "Madelle ha detto di aver visto un ragazzo.";
+			next;
+			if (getarg(0)) {
+				if(select("Madelle ha assistito a 2...:Sono più di 2...") == 1) {
+					mes .@n$;
+					mes "Madelle ha detto di aver visto un'altra persona nell'oscurità.";
+					mes "Allora è stata una ragazza a portare le provviste?";
+					next;
+				}
+			}
+			else select("Potrebbe essere un aiuto.");
+			mes .@n$;
+			mes "Sì. Potrebbe esserci un aiutante in più.";
+			mes "Ha mandato una persona a comprare la roba al posto suo.";
+			mes "Oppure potrebbe essere un coetaneo che Madelle non riesce a vedere.";
+			next;
+			mes .@n$;
+			mes "Crave ha detto che viene qui giorno e notte per comprare cose regolarmente.";
+			mes "Allora so cosa devo fare.";
+			set job_3rd_gc, 8;
+			close;
+		}
+	}
+	mes .@n$;
+	mes "Ehm...";
+	mes "Ho bisogno di maggiori informazioni? Penso che serva qualcosa di più.";
+	close;
+}
+
+job3_guil01,82,95,3	script	Daora#3rdgc02	940,{
+	mes "[Daora]";
+	if (Class == Job_Assassin || Class == Job_Assassin_Cross || Class == Job_Baby_Assassin) {
+		if (job_3rd_gc < 4) {
+			if (Sex == SEX_MALE) {
+				mes "Oh~ sei bello!";
+				mes "Allora, cosa vuoi?";
+			} else {
+				mes "Hmm, sei una ragazza.";
+				mes "Ok, prendi quello che vuoi.";
+			}
+			next;
+			mes "[Daora]";
+			mes "Non sono sicuro che tu lo sappia già o no, ma stiamo vendendo uno speciale liquore marocchino.";
+			mes "Quale vuoi?";
+			next;
+			switch(select("Sograt tropicale:Vermiglio sulla spiaggia:No grazie!:......")) {
+			case 1:
+				mes "[Daora]";
+				if (Zeny > 799) {
+					mes "Ecco, prendilo.";
+					set Zeny, Zeny - 800;
+					getitem 12112,1; //Tropical_Sograt
+					close;
+				}
+				mes "Sono 800 zeny per un bicchiere di Tropical Sograt.";
+				close;
+			case 2:
+				mes "[Daora]";
+				if (Zeny > 799) {
+					mes "Ecco, prendilo.";
+					set Zeny, Zeny - 800;
+					getitem 12113,1; //Vermilion_The_Beach
+					close;
+				}
+				mes "Sono 800 zeny per un bicchiere di Vermilion on the Beach.";
+				close;
+			case 3:
+				mes "[Daora]";
+				mes "Non mostrarmi il tuo nervosismo!";
+				specialeffect2 EF_HIT1;
+				percentheal -30,0;
+				close;
+			case 4:
+				mes "[Daora]";
+				mes "Che cosa? Perché mi guardi così?";
+				mes "OH? Sei una persona di questo mondo.";
+				mes "Il tuo nome è...";
+				next;
+				mes "["+strcharinfo(0)+"]";
+				mes strcharinfo(0)+".";
+				next;
+				mes "[Daora]";
+				if (job_3rd_gc == 3) {
+					mes "Ah~ Ho già sentito il tuo nome.";
+					mes "Uhm... giusto!";
+					mes "Sei stato consigliato da Ahcart.";
+					next;
+					mes "[Daora]";
+					mes "Sì, riesci a trovare l'ingresso in un vicolo nell'angolo?";
+					mes "Entra lì, così potrai ascoltare una storia più dettagliata.";
+					mes "Affronta questo compito speciale~!";
+					set job_3rd_gc, 4;
+					changequest 7101,7102;
+					close;
+				}
+				mes "Cosa, non conosco quel nome.";
+				mes "Ehi, devo lavorare, puoi spostarti?";
+				close;
+			}
+		} else if (job_3rd_gc == 4) {
+			mes "La stanza nell'angolo. Sentiti libero di entrarci perché comunque in quella stanza non entra nessuno.";
+			mes "Oppure hai bisogno di qualcosa?";
+			next;
+			mes "[Daora]";
+			mes "Ah, non vendo liquori a qualcuno che ha iniziato l'incarico speciale.";
+			next;
+			switch(select("Non vendere liquori...:Ho bisogno di informazioni.:Bene allora, punk!")) {
+			case 1:
+				mes "[Daora]";
+				mes "Ehi, stai eseguendo un compito adesso.";
+				mes "E vuoi che ti venda degli alcolici?!";
+				mes "Ogni assassino è come te? Bevitori pigri?";
+				close;
+			case 2:
+				mes "[Daora]";
+				mes "Hai il coraggio di chiedere informazioni dopo aver svolto un compito.";
+				mes "Non hai ancora incontrato un maestro?";
+				mes "Come se te lo dicessi solo perché me lo chiedi!";
+				mes "Sei infantile.";
+				close;
+			case 3:
+				mes "[Daora]";
+				mes "Non parlarmi come se fossi uno dei tuoi amici!";
+				mes "Non hai il diritto di essere così!";
+				specialeffect2 EF_HIT1;
+				percentheal -30,0;
+				close;
+			}
+		} else if (job_3rd_gc == 10) {
+			mes "Oh~! buon per me.";
+			mes "Chi è lei?";
+			mes "Le hai detto che la proteggeremo?";
+			next;
+			select("Sì, l'ho fatto.");
+			mes "[Daora]";
+			mes "Hmm, capisco...";
+			mes "La tua opinione sarà importante.";
+			mes "Capito.";
+			next;
+			mes "[Daora]";
+			mes "Era così spaventata";
+			mes "così le ho dato una bevanda calda";
+			mes "e la portò nella sua stanza.";
+			next;
+			mes "[Daora]";
+			mes "Beh... c'è posto migliore per tenerla d'occhio di questa stanza.";
+			next;
+			select("No, io proteggo solo...");
+			mes "[Daora]";
+			mes "Ah~ comunque, comunque mi fai lavorare.";
+			mes "Per proteggere quella ragazzina.";
+			next;
+			mes "[Daora]";
+			mes "Mayshell mi ha detto che devo sostenerti, quindi non mi lamenterò.";
+			next;
+			mes "[Daora]";
+			mes "Quindi non preoccuparti.";
+			mes "Dovresti essere qui per lei?";
+			mes "Andare avanti.";
+			set job_3rd_gc, 11;
+			close;
+		} else if (job_3rd_gc == 11) {
+			mes "Lei è in una stanza.";
+			mes "Quello davanti alla stanza del padrone.";
+			mes "Riesci a trovarlo?";
+			close;
+		} else if (job_3rd_gc == 12) {
+			mes "Quella ragazza...";
+			mes "verrà mandato a casa sua?";
+			mes "Non preoccuparti di questo.";
+			next;
+			mes "[Daora]";
+			mes "Mayshell e gli altri ragazzi se ne occuperanno.";
+			close;
+		} else if (job_3rd_gc == 14) {
+			mes "Oh, è il tempismo perfetto.";
+			mes "Mayshell ti chiamerà.";
+			mes "Vai nella stanza del maestro.";
+			close;
+		} else if (job_3rd_gc > 4 && job_3rd_gc < 18) {
+			mes "Di che cosa hai bisogno?";
+			mes "Non vendiamo a nessuno che abbia iniziato l'incarico speciale.";
+			next;
+			switch(select("....:Dammi 1 bicchiere.:Allora puoi dare il latte?")) {
+			case 1:
+				mes "[Daora]";
+				mes "Perché? Sei deluso?";
+				mes "Ehm~";
+				mes "Non posso permettere a nessuno in servizio di bere.";
+				close;
+			case 2:
+				mes "[Daora]";
+				if (job_3rd_gc == 5) {
+					mes "Ti ho detto che non te ne venderò nessuno.";
+					mes "Un bicchiere vuoto va bene senza liquore.";
+					mes "Te l'ho già detto...";
+					next;
+					mes "[Daora]";
+					mes "Ti farò sapere tutte le informazioni che so.";
+					next;
+					mes "[Daora]";
+					mes "Se ne hai bisogno, vieni a trovarmi quando vuoi e ti servirò da bere dopo aver finito il tuo compito.";
+					set job_3rd_gc, 6;
+					close;
+				} else if (job_3rd_gc == 6) {
+					if (checkquest(7091) == 1) {
+						mes "Speri che ci sia qualcosa nel bicchiere?";
+						mes "Le informazioni non possono uscire da bicchieri vuoti.";
+						close;
+					}
+					mes "Hai bisogno di un bicchiere?";
+					mes "L'ordine di Mayshell ti ha distratto, quindi non puoi capire niente.";
+					next;
+					mes "[Daora]";
+					mes "Ok, cosa vuoi sapere?";
+					mes "Speri che ci sia qualcosa nel bicchiere?";
+					next;
+					switch(select("Chiedi aiuto.:Gestiscilo da solo.")) {
+					case 1:
+						mes "[Daora]";
+						mes "Quindi significa semplicemente uccidere uno strano ragazzo nel villaggio?";
+						mes "Perché soffrivi per questo?";
+						mes "Hmm... Fammi vedere...";
+						next;
+						mes "[Daora]";
+						mes "Allora servirà un po' di lavoro?";
+						mes "Dov'è il posto più affollato in questo villaggio?";
+						mes "Il pub e il motel.";
+						next;
+						mes "[Daora]";
+						mes "E la guardia del villaggio tiene sempre d'occhio gli strani.";
+						mes "Oppure il vecchio commerciante è veloce nell'apprendimento visivo.";
+						next;
+						mes "[Daora]";
+						mes "Posso dire che soprattutto...";
+						mes "Trovan, Crave che è un commerciante e Madelle al pub sono veloci nell'apprendimento visivo.";
+						next;
+						mes "[Daora]";
+						mes "È una buona informazione, non è vero?";
+						setquest 7091;
+						next;
+						mes "- Il consiglio di Daora è allegato al tabellone con le informazioni sulla missione. -";
+						close;
+					case 2:
+						mes "[Daora]";
+						mes "OK. È ottimo.";
+						mes "Ogni parola e comportamento sarà una chiave importante degli eventi.";
+						mes "Quindi, guardati intorno attentamente e scoprilo.";
+						next;
+						mes "[Daora]";
+						mes "Succederà qualcosa di bello.";
+						close;
+					}
+				} else if (job_3rd_gc == 7) {
+					mes "Sembri preoccupato.";
+					mes "Ecco, è acqua fredda.";
+					mes "Ci pensi con l'acqua fredda.";
+					next;
+					switch(select("Capire in base alle informazioni.:Ferma il palco.")) {
+					case 1:
+						if (checkquest(7091) == 1) set .@j,1;
+						callfunc "func_3rdgc",.@j;
+						close;
+					case 2:
+						mes "Interrompi la conferma delle informazioni.";
+						close;
+					}
+				} else if (job_3rd_gc == 8) {
+					if (checkquest(7092) == 1) {
+						mes "Aspetta in un vicolo dove di solito si presenta per trovarla e potrai approfondire la domanda.";
+						next;
+						mes "[Daora]";
+						mes "Provarci non farebbe male.";
+						mes "Se vuoi trovare una radice, devi prima trovare una foglia.";
+						mes "Lavora duro.";
+						close;
+					}
+					mes "Lo hai risolto?";
+					mes "Cosa farai?";
+					next;
+					switch(select("Ottieni consigli.:È un segreto.")) {
+					case 1:
+						mes "[Daora]";
+						mes "Puoi farmi sapere qualcosa sulle informazioni che hai raccolto?";
+						next;
+						if(select("Hai una conversazione cuore a cuore con lui.:Questo è impossibile.") == 2) {
+							mes "[Daora]";
+							mes "Cosa, non posso supportarti adeguatamente?";
+							mes "Lo risolvi da solo.";
+							close;
+						}
+						mes "[Daora]";
+						mes "Ronzio. Fatto.";
+						next;
+						mes "[Daora]";
+						mes "C'è un ragazzo che sembra un prete e Trovan e Madelle lo hanno visto.";
+						mes "Un commerciante ha visto una ragazza che compra regolarmente cose.";
+						next;
+						mes "[Daora]";
+						mes "L'obiettivo principale è un ragazzo,";
+						mes "ma l'aiutante è una ragazza.";
+						mes "Forse.";
+						next;
+						mes "[Daora]";
+						mes "Soprattutto,";
+						mes "ti sta davvero dando fastidio.";
+						next;
+						mes "[Daora]";
+						mes "Allora è semplice.";
+						mes "Perché non la incontri nel luogo dove viene spesso?";
+						next;
+						mes "[Daora]";
+						mes "È la transitorietà del dovere.";
+						mes "Non conosci il significato di un pezzo del puzzle.";
+						next;
+						mes "[Daora]";
+						mes "Possono essere persone imparentate o meno.";
+						mes "Ok, sarò molto attento ai miei desideri.";
+						next;
+						mes "[Daora]";
+						mes "Giusto~?";
+						mes "Vai in un posto dove puoi guardare bene un villaggio e trova Melissa.";
+						mes "Sarà utile.";
+						next;
+						mes "- Il consiglio di Daora è allegato al tabellone della missione. -";
+						setquest 7092;
+						close;
+					case 2:
+						mes "[Daora]";
+						mes "Uhm~.";
+						mes "Giusto. C'è un segreto";
+						mes "non puoi dirlo a nessuno mentre svolgi un compito.";
+						next;
+						mes "[Daora]";
+						mes "Sotto questo aspetto superi gli standard.";
+						close;
+					}
+				} else if (job_3rd_gc == 9) {
+					if (checkquest(7093) == 1) {
+						mes "Quindi, vai ad est del villaggio, puoi vedere uno stretto vicolo diretto a nord.";
+						next;
+						mes "[Daora]";
+						mes "Il vicolo cieco raccontato da Melissa significa questa strada.";
+						mes "Stai pensando come un bambino.";
+						close;
+					}
+					mes "Ahah... come va?";
+					next;
+					switch(select("Dov'è il vicolo cieco?:Va bene.")) {
+					case 1:
+						mes "[Daora]";
+						mes "Il vicolo cieco?";
+						mes "Hmm... beh.";
+						mes "Esiste un vicolo cieco come il nostro pub...";
+						next;
+						mes "[Daora]";
+						mes "Ah, nel vicolo nord-est";
+						mes "diretto sottosopra nel villaggio,";
+						mes "non c'è nessuna strada perché";
+						mes "le case sono vicine tra loro in quella zona.";
+						next;
+						mes "[Daora]";
+						mes "Intorno alla casa di Melissa,";
+						mes "quello è il vicolo cieco";
+						mes "per il ragazzo, forse.";
+						next;
+						mes "[Daora]";
+						mes "È molto facile trovarlo passeggiando per il villaggio.";
+						setquest 7093;
+						next;
+						mes "- Il consiglio di Daora è allegato al tabellone della missione. -";
+						close;
+					case 2:
+						mes "[Daora]";
+						mes "OK. Sta andando bene.";
+						mes "Posso aspettarmi un buon risultato?";
+						close;
+					}
+				} else if (job_3rd_gc == 13) {
+					mes "Ho mandato una ragazza di nome Estillda a casa sua.";
+					mes "Perché gestiamo cose senza valore come queste?";
+					next;
+					if (checkquest(7094) == 1) {
+						mes "[Daora]";
+						mes "Non sono sicuro che sia ancora vivo...";
+						mes "Comunque, è un artigiano chiave per Rachel,";
+						mes "e può riconoscere tutti i tipi di chiavi.";
+						next;
+						mes "[Daora]";
+						mes "Che cosa? Residenza?";
+						mes "Te l'ho detto, sono Rachel.";
+						mes "Forse vivrà comodamente per il resto dei suoi giorni a Rachel.";
+						next;
+						mes "[Daora]";
+						mes "Andate a chiedere all'interno di un pub di Rachel...";
+						close;
+					}
+					mes "[Daora]";
+					mes "Già, come va?";
+					next;
+					switch(select("Progredisce in modo soddisfacente.:Mostra la chiave.")) {
+					case 1:
+						mes "[Daora]";
+						mes "Il mio bicchiere, non ti serve?";
+						next;
+						mes "["+strcharinfo(0)+"]";
+						mes "SÌ. Ho già abbastanza informazioni.";
+						mes "Se questa è una cosa che ha una lunga storia alle spalle,";
+						mes "abbiamo solo un modo.";
+						next;
+						mes "[Daora]";
+						mes "Giusto.";
+						mes "Se pensi attentamente,";
+						mes "puoi trovare un modo.";
+						next;
+						mes "[Daora]";
+						mes "Buona fortuna~";
+						close;
+					case 2:
+						mes "[Daora]";
+						mes "Cos'è...";
+						mes "Capisco, quel ragazzo aveva questa chiave...?";
+						next;
+						mes "[Daora]";
+						mes "È un simbolo dei santuari";
+						mes "e ha un modello vistoso.";
+						mes "Hmm...";
+						next;
+						mes "[Daora]";
+						mes "Allora, vuoi sapere l'uso di questa chiave?";
+						mes "Se lo fai, vai da Rachel.";
+						mes "C'è un artigiano chiave lì.";
+						next;
+						mes "[Daora]";
+						mes "Ora è in pensione, ma lui";
+						mes "trascorre in pace i suoi ultimi anni.";
+						mes "Puoi chiederglielo tu stesso.";
+						next;
+						mes "[Daora]";
+						mes "Chiedi a cosa serve questa chiave.";
+						setquest 7094;
+						next;
+						mes "- Il consiglio di Daora è allegato alla bacheca delle missioni. -";
+						close;
+					}
+				} else if (job_3rd_gc == 15) {
+					if (checkquest(7095) == 1) {
+						mes "Il campo a nord-ovest di Venes.";
+						mes "Puoi trovarlo facilmente con una mappa.";
+						mes "Ci sono molti lupi, quindi fai attenzione.";
+						close;
+					}
+					mes "Ehi, come sta Mayshell?";
+					mes "Puoi correggere un modo scomodo di parlare?";
+					next;
+					mes "[Daora]";
+					mes "Non fingere di essere una nobildonna.";
+					next;
+					switch(select("sto andando.:Conosci una villa nei dintorni di Veins?")) {
+					case 1:
+						mes "[Daora]";
+						mes "OK.";
+						mes "Non lasciarti trasportare da un coraggio sconsiderato.";
+						mes "Beh... è anche difficile essere uccisi.";
+						close;
+					case 2:
+						mes "[Daora]";
+						mes "Sì, certo.";
+						mes "C'è una villa tra i burroni.";
+						mes "È molto cupo.";
+						mes "Non capisco i suoi gusti.";
+						next;
+						mes "[Daora]";
+						mes "E quella villa è costruita in fondo ad un burrone...";
+						mes "È sempre buio come la notte.";
+						next;
+						mes "[Daora]";
+						mes "La posizione?";
+						mes "BENE...";
+						mes "È nel campo nord-ovest di Venes.";
+						mes "Puoi percorrere una strada stretta verso nord-est.";
+						setquest 7095;
+						next;
+						mes "- Il consiglio di Daora è allegato al tabellone della missione. -";
+						next;
+						mes "[Daora]";
+						mes "Ci sono molti lupi spaventosi in quella zona, fai attenzione.";
+						close;
+					}
+				} else {
+					mes "No. Non è più divertente.";
+					close;
+				}
+			case 3:
+				mes "[Daora]";
+				mes "Il nostro latte è caro!";
+				mes "Dammi 500 zeny per una tazza.";
+				next;
+				switch(select("Va bene. Dammi una tazza di latte.:Sei un ladro a faccia in giù!")) {
+				case 1:
+					mes "[Daora]";
+					if (Zeny > 499) {
+						mes "Ecco. Latte.";
+						mes "Allora riposati.";
+						set Zeny, Zeny - 500;
+						getitem 519,1; //Milk
+						close;
+					}
+					mes "Te l'ho detto, sono 500 zeny.";
+					mes "Un povero uomo. Hai solo una bella figura!";
+					close;
+				case 2:
+					mes "[Daora]";
+					mes "Un tipo impertinente!";
+					specialeffect2 EF_HIT1;
+					percentheal -30,0;
+					close;
+				}
+			}
+		} else {
+			mes "Hai completato l'attività perfettamente.";
+			mes "Di cosa hai bisogno adesso?";
+			mes "Hai bisogno di qualcos'altro?";
+			next;
+			mes "[Daora]";
+			mes "Se decidi un modo di camminare, è tempo di ricominciare da capo.";
+			mes "Tutti ti stanno aspettando.";
+			close;
+		}
+	} else if (Class == Job_Guillotine_Cross || Class == Job_Guillotine_Cross_T || Class == Job_Baby_Guillotine_Cross) {
+		if (Sex == SEX_MALE) {
+			mes "Oh~ sei bello~!";
+			mes "Vale la pena aprire un pub~";
+			mes "Posso sentire un lavoro fruttuoso ogni volta che vedo un ragazzo come te~";
+		} else {
+			mes "Hmm... hai un bell'aspetto proprio come quando ero giovane.";
+			mes "Cosa vuoi?";
+		}
+		next;
+		switch(select("Sograt tropicale:Vermiglio sulla spiaggia:Latte")) {
+		case 1:
+			mes "[Daora]";
+			if (Zeny > 799) {
+				mes "Ecco, prendilo.";
+				set Zeny, Zeny - 800;
+				getitem 12112,1; //Tropical_Sograt
+				close;
+			}
+			mes "Sono 800 zeny per 1 bicchiere di Tropical Sograt.";
+			close;
+		case 2:
+			mes "[Daora]";
+			if (Zeny > 799) {
+				mes "Ecco, prendilo.";
+				set Zeny, Zeny - 800;
+				getitem 12113,1; //Vermilion_The_Beach
+				close;
+			}
+			mes "[Daora]";
+			mes "Sono 800 zeny per 1 bicchiere di Vermilion on the Beach.";
+			close;
+		case 3:
+			mes "[Daora]";
+			if (Sex == SEX_MALE) {
+				mes "Ehm... Uhm...";
+				mes "E' un ordine complicato. ma non ho altra scelta dato che lo vuoi tu.";
+				next;
+				mes "[Daora]";
+				if (Zeny > 499) {
+					mes "Mi dispiace prendere 500 zeny a bottiglia, ma devo farlo.";
+					mes "È molto difficile far entrare il latte nelle vene.";
+					set Zeny, Zeny - 500;
+					getitem 519,1; //Milk
+					close;
+				}
+				mes "Umm... penso di non poterti aiutare.";
+				mes "Non c'è latte nelle vene.";
+				close;
+			} else {
+				mes "Ah, latte.";
+				mes "Uuu! Latte!";
+				next;
+				mes "[Daora]";
+				mes "Non ho niente del genere.";
+				close;
+			}
+		}
+	} else {
+		if (Sex == SEX_MALE) {
+			mes "Oh~ sei bello!";
+			mes "Allora, cosa vuoi?";
+		}
+		else {
+			mes "Uhm... sei una ragazza.";
+			mes "Ok, prendi quello che vuoi.";
+		}
+		next;
+		mes "[Daora]";
+		mes "Non sono sicuro che tu lo sappia già o no, ma stiamo vendendo liquori speciali del Marocco.";
+		mes "Quale vuoi?";
+		next;
+		switch(select("Sograt tropicale:Vermiglio la spiaggia:No grazie!")) {
+		case 1:
+			mes "[Daora]";
+			if (Zeny > 999) {
+				mes "Ecco, prendilo.";
+				set Zeny, Zeny - 1000;
+				getitem 12112,1; //Tropical_Sograt
+				close;
+			}
+			mes "Sono 1000 zeny per bicchiere di Tropical Sograt.";
+			close;
+		case 2:
+			mes "[Daora]";
+			if (Zeny > 999) {
+				mes "Ecco, prendilo.";
+				set Zeny, Zeny - 1000;
+				getitem 12113,1; //Vermilion_The_Beach
+				close;
+			}
+			mes "Sono 1000 zeny per un bicchiere di Vermilion on the Beach.";
+			close;
+		case 3:
+			mes "[Daora]";
+			mes "Non mostrarmi il tuo nervosismo!";
+			specialeffect2 EF_HIT1;
+			percentheal -30,0;
+			close;
+		}
+	}
+}
+
+job3_guil01,16,20,4	script	Mayshell#3rdgc03	894,{
+	if (!checkweight(1201,2)) {
+		mes "- Non puoi continuare questa missione perché hai troppi oggetti. -";
+		close;
+	}
+	mes "[Mayshell]";
+	if (job_3rd_gc == 4) {
+		mes "Sei stato mandato qui da Ahcart?";
+		mes "Ti darò un compito senza farti più domande.";
+		mes "Ok, ascolta attentamente.";
+		next;
+		mes "[Mayshell]";
+		mes "Stiamo inseguendo una persona che cerca di sciogliere un'organizzazione.";
+		mes "Abbiamo informazioni su un ragazzo che sembra un leader della città.";
+		next;
+		mes "[Mayshell]";
+		mes "Il tuo compito è punirlo sotto la copertura dell'ombra.";
+		next;
+		mes "[Mayshell]";
+		mes "Il nostro obiettivo non dovrebbe essere rivelato a nessuno.";
+		mes "I tuoi ricordi dovrebbero scomparire nell'ombra.";
+		mes "Sii cauto ed evita l'osservazione.";
+		next;
+		select("OK...:Quindi il compito è...?");
+		mes "[Mayshell]";
+		mes "Che aspetto ha?";
+		mes "Come lo riconosci?";
+		mes "Non posso dirtelo.";
+		mes "Questo sta a te scoprirlo.";
+		next;
+		mes "[Mayshell]";
+		mes "Avrai bisogno di una bussola.";
+		mes "Hai bisogno di una lampada e di una luce per vedere nell'oscurità.";
+		next;
+		mes "[Mayshell]";
+		mes "A quel punto potrete bere qualcosa e riposarvi.";
+		next;
+		mes "[Mayshell]";
+		mes "Superare le avversità.";
+		mes "Sta a te giudicare.";
+		mes "Non possiamo aiutarti, quindi devi capirlo da solo.";
+		next;
+		mes "[Mayshell]";
+		mes "Abbiamo visto uno sconosciuto in questo villaggio, siamo abbastanza sicuri che sia la persona che stiamo cercando per il tuo incarico.";
+		next;
+		mes "[Mayshell]";
+		mes strcharinfo(0)+".";
+		mes "Il tempo non ti aspetta.";
+		mes "Andare avanti. Versare sangue con la lama di un coltello che rappresenta una vita stoica.";
+		set job_3rd_gc, 5;
+		changequest 7102,7103;
+		close;
+	} else if (job_3rd_gc == 5) {
+		mes "Hai già i tuoi ordini.";
+		mes "Anche se non hai alcuna prova, confido che farai un buon lavoro.";
+		next;
+		mes "[Mayshell]";
+		mes "E' una prova osservarti.";
+		mes "Fammi vedere, "+strcharinfo(0)+"...";
+		mes "Esci e pensa prima a cosa devi fare.";
+		next;
+		mes "[Mayshell]";
+		mes "Il tuo compito è trovare uno sconosciuto.";
+		next;
+		mes "[Mayshell]";
+		mes "Esci e cerca diligentemente.";
+		mes "Ti permetto di prendere un po' d'acqua.";
+		next;
+		mes "[Mayshell]";
+		mes "Incontra Daora prima di iniziare.";
+		mes "Potrebbe esserti utile.";
+		close;
+	} else if (job_3rd_gc == 14) {
+		mes "Benvenuto.";
+		mes "Com'è stata la tua giornata?";
+		mes "Ho sentito della tua attività.";
+		next;
+		mes "[Mayshell]";
+		mes "Hai trovato una chiave, vero?";
+		mes "Uh. Ho i miei modi per scoprirlo.";
+		next;
+		mes "[Mayshell]";
+		mes "Puoi mostrarmi la chiave?";
+		mes "Vado a controllare se";
+		mes "eri capace oppure no...";
+		next;
+		select("Dategli una chiave.");
+		mes "[Mayshell]";
+		if (countitem(6150) == 0) {
+			mes "Non hai portato la chiave?";
+			mes "Sarò in un sacco di guai.";
+			close;
+		}
+		mes "Non mi aspettavo il tuo successo senza un obiettivo chiaro...";
+		mes "Sei un uomo con maggiori capacità di quanto pensassi.";
+		next;
+		mes "[Mayshell]";
+		mes "Penso che tu trovi un obiettivo quello che cerchiamo.";
+		mes "Quindi lo gestisci dopo aver trovato l'host di una chiave.";
+		next;
+		mes "[Mayshell]";
+		mes "Poi sarà tutto finito.";
+		mes "Ma devi trovare l'host della chiave da solo.";
+		next;
+		mes "[Mayshell]";
+		mes "Quando troverai la villa, ci sarà una persona che ti aspetterà.";
+		next;
+		mes "[Mayshell]";
+		mes "Questo è l'ultimo passo.";
+		mes "Non commettere errori.";
+		delitem 6150,1; //Key_Of_The_Mansion
+		set job_3rd_gc, 15;
+		changequest 7108,7109;
+		close;
+	} else if (job_3rd_gc == 15) {
+		mes "Ok, hai qualcosa da fare?";
+		mes "Se arrivi in ​​ritardo, Renzak potrebbe arrabbiarsi.";
+		close;
+	} else if (job_3rd_gc == 18 || job_3rd_gc == 19) {
+		mes "Ho già ricevuto un rapporto da Renzak.";
+		if (job_3rd_gc == 18) {
+			mes "Hai completato l'attività rapidamente.";
+			mes "È fantastico.";
+		} else {
+			mes "Sono così felice di vederti.";
+			mes "Ma per noi la rapidità è molto importante.";
+			next;
+			mes "[Mayshell]";
+			mes "Non sei stato puntuale...";
+			mes "Almeno sei tornato vivo.";
+		}
+		next;
+		set .@all_wine,0;
+		for(set .@i,0; .@i<5; set .@i,.@i+1)
+			if (checkquest(7091+.@i) == 1) set .@all_wine, .@all_wine+1;
+		mes "[Mayshell]";
+		if (.@all_wine < 2) {
+			mes "Hai fatto il lavoro da solo";
+			mes "anche se non ce n'era";
+			mes "informazioni su di esso e su di te";
+			mes "raccolto.";
+			next;
+			mes "[Mayshell]";
+			mes "Hai corrisposto a tutte le condizioni";
+			mes "tempestivamente e con pazienza.";
+			next;
+			mes "[Mayshell]";
+			if (job_3rd_gc == 18) {
+				mes "La valutazione del tuo compito è... [S].";
+				mes "[S] sta per 'speciale'.";
+				set .@quest,7099;
+			} else {
+				mes "La valutazione del tuo compito è... [A].";
+				mes "Se fossi stato puntuale avresti ricevuto di più.";
+				set .@quest,7096;
+			}
+			next;
+		} else {
+			mes "Hai sfruttato appieno il consiglio di Daora.";
+			mes "Ma non l'ho menzionato?";
+			next;
+			mes "[Mayshell]";
+			mes "Ti avevo detto di mantenerlo segreto...";
+			mes "Ovviamente non voglio darti torto.";
+			next;
+			mes "[Mayshell]";
+			mes "È importante non solo risolvere questo problema da solo,";
+			mes "ma anche fare uno sforzo per informarsi.";
+			next;
+			mes "[Mayshell]";
+			if (.@all_wine > 3) {
+				if (job_3rd_gc == 18) {
+					mes "La valutazione del tuo compito è... [B].";
+					set .@quest,7097;
+				} else {
+					mes "La valutazione del tuo compito è... [C].";
+					mes "Devi agire da solo.";
+					set .@quest,7098;
+				}
+				next;
+			} else {
+				mes "Hai adattato una relazione con punti di vista flessibili.";
+				mes "Non dipendevi dagli altri e utilizzavi correttamente l'ambiente circostante.";
+				next;
+				mes "[Mayshell]";
+				mes "Mi piace che.";
+				if (job_3rd_gc == 18) {
+					mes "La valutazione del tuo compito è... [A].";
+					set .@quest,7096;
+				} else {
+					mes "La valutazione del tuo compito è... [B].";
+					set .@quest,7097;
+				}
+				next;
+			}
+		}
+		mes "[Mayshell]";
+		mes "Hai ottenuto una nuova qualifica per aver completato questa attività.";
+		mes "È l'ombra del nostro assassino come l'ombra del mondo...";
+		next;
+		mes "[Mayshell]";
+		mes "Ti darò la qualifica per essere una ^4d4dffCroce a Ghigliottina^000000.";
+		mes "Non ti sto spingendo, quindi puoi venire quando vuoi a trovarmi.";
+		next;
+		mes "[Mayshell]";
+		mes "Ti ricompenso per il tuo lavoro e ti farò un regalo.";
+		mes "Questo l'ho preso dalla gilda, spero che ti sia utile.";
+		set job_3rd_gc, 20;
+		getitem 12106,1; //Accessory_Box
+		erasequest 7091;
+		erasequest 7092;
+		erasequest 7093;
+		if (checkquest(7094) > -1) erasequest 7094;
+		if (checkquest(7095) > -1) erasequest 7095;
+		erasequest 7112;
+		erasequest 7113;
+		erasequest 7114;
+		if (checkquest(7115) > -1) erasequest 7115;
+		if (checkquest(7116) > -1) erasequest 7116;
+		changequest 7111,.@quest;
+		next;
+		mes "[Mayshell]";
+		mes "Voglio dirti una cosa.";
+		mes "Ti ordino che ^4d4dffnon dovresti lasciare alcun documento^000000, qualunque esso sia.";
+		next;
+		mes "[Mayshell]";
+		mes "Esistono due tipi di informazioni:";
+		mes "Cose che possono essere condivise e quelle che non possono essere condivise.";
+		next;
+		mes "[Mayshell]";
+		mes "E non lasciare mai registrazioni né parlare a nessuno di un'attività che hai completato...";
+		mes "per il tuo junior che seguirà i tuoi passi.";
+		next;
+		mes "[Mayshell]";
+		mes "Non dimenticare.";
+		mes "E il compito che hai svolto riguarda Rachel, Rune-Midgarts e la nostra gilda di assassini.";
+		mes "Quindi gli altri non dovrebbero essere conosciuti. Naturalmente sei incluso, quindi per favore dimentica tutto.";
+		close;
+	} else if (job_3rd_gc == 20) {
+		mes "Sei riconosciuto dalla gilda.";
+		mes "Sentiti libero di venire ogni volta che vuoi diventare una Croce Ghigliottina.";
+		next;
+		mes "[Mayshell]";
+		mes "Questa scelta significa che dovrai percorrere nuovamente una strada intrisa di sangue.";
+		next;
+		mes "[Mayshell]";
+		mes "Bercasell sta aspettando nella stanza sul lato opposto.";
+		mes "Incontralo.";
+		close;
+	} else if (job_3rd_gc > 20) {
+		mes "Anche se ti ho dato una qualifica,";
+		mes "Non voglio celebrare quella qualificazione.";
+		next;
+		mes "[Mayshell]";
+		mes "È un modo per abbandonare la propria mente e la via del dolore, delle avversità.";
+		mes "Ti ho spinto in quel modo.";
+		next;
+		mes "[Mayshell]";
+		mes "È divertente.";
+		mes "Viviamo per controllare i nostri compagni...";
+		mes "Ma è una regola dell'assassino.";
+		next;
+		mes "[Mayshell]";
+		mes "In una notte buia, è il destino di una persona che cammina all'ombra della luna.";
+		mes "Vorrei che conservassi la tua mente, per favore...";
+		close;
+	} else {
+		mes "Non ti è permesso entrare qui.";
+		close;
+	}
+}
+
+ve_in,228,108,3	script	Waitress#3rdgc04	80,{
+	mes "[Cameriera]";
+	if (job_3rd_gc < 6) {
+		mes "Benvenuto~";
+		mes "Visita e riposati~";
+		close;
+	} else if (job_3rd_gc == 6) {
+		if (checkquest(7091) == 1) {
+			if (checkquest(7112) == 1) {
+				mes "Queste sono tutte le informazioni che so.";
+				mes "Dopodiché non riesco a ricordare nient'altro.";
+				next;
+				mes "Allora possiamo capirlo con le informazioni che hai raccolto?-";
+				next;
+				switch(select("Fallo.:Smettila.")) {
+				case 1:
+					callfunc "func_3rdgc",1;
+					close;
+				case 2:
+					mes "Interrompi la conferma delle informazioni.";
+					close;
+				}
+			} else {
+				mes "Benvenuto.";
+				mes "È pronto per ordinare?";
+				next;
+				switch(select("Sei...:Il tuo nome è...?:Acqua, per favore.")) {
+				case 1:
+					mes "[Cameriera]";
+					mes "Qual è il problema?";
+					mes "È pronto per ordinare?";
+					next;
+					select("Sto cercando Madeleine...");
+					mes "[Madelle]";
+					mes "Ah? Maddalena? Conosci Daora?";
+					mes "Sono Madeleine.";
+					mes "Penso che tu abbia degli affari perché vieni da Daora.";
+					next;
+					select("C'era un ospite sospetto?");
+					mes "[Madelle]";
+					mes "Un ospite sospetto?";
+					mes "Che tipo di...?";
+					mes "Ah, beh... abbiamo avuto qualche sconosciuto.";
+					next;
+					mes "[Madelle]";
+					mes "Non abbiamo molta popolazione fluttuante a causa del terreno accidentato del villaggio.";
+					mes "Quasi tutte le persone sono qui da quando sono nate o sono avventurieri abituali.";
+					next;
+					mes "[Madelle]";
+					mes "Ma se non sono quel tipo di persone...";
+					mes "Sì, c'erano degli estranei.";
+					next;
+					select("Puoi parlarmene?");
+					mes "[Madelle]";
+					mes "Uhm... Uno sembrava un prete di Rachel.";
+					mes "Un prete in questo villaggio...";
+					mes "Forse è un soldato, capisco.";
+					next;
+					mes "[Madelle]";
+					mes "Un giorno c'era un ragazzo che sembrava esausto e comprò del cibo.";
+					mes "Lo ricordo perché venne a trovarmi dopo la chiusura di un negozio.";
+					next;
+					mes "[Madelle]";
+					mes "Non ne sono sicuro, ma c'era una persona che indossava un cappuccio.";
+					mes "Sembrava esausto e volevano comprare una piccola bibita e uno spuntino.";
+					next;
+					mes "[Madelle]";
+					mes "Da allora non ne ho più visto nessuno.";
+					mes "Quindi non lo so più.";
+					setquest 7112;
+					next;
+					mes "- Le informazioni su Madelle sono allegate alla bacheca degli ospiti.";
+					mes "Allora possiamo scoprire quali informazioni hai raccolto? -";
+					next;
+					switch(select("Fallo.:Smettila.")) {
+					case 1:
+						callfunc "func_3rdgc",1;
+						close;
+					case 2:
+						mes "Interrompi la conferma delle informazioni.";
+						close;
+					}
+				case 2:
+					mes "[Cameriera]";
+					mes "Che cosa? Il mio nome?";
+					mes "Ci stai provando con me?";
+					mes "Non farlo.";
+					if (Sex == SEX_MALE) mes "Non sei il mio tipo.";
+					else mes "Non oscillo in quel modo.";
+					close;
+				case 3:
+					mes "[Cameriera]";
+					mes "Vuoi del ghiaccio con quello?";
+					close;
+				}
+			}
+		} else {
+			if (checkquest(7112) == 1) {
+				mes "Queste sono tutte le informazioni che so.";
+				mes "Non li ho più visti da allora.";
+				next;
+				mes "- Chissà se riesco a capirlo con le informazioni che ho raccolto... -";
+				next;
+				switch(select("Fallo.:Smettila.")) {
+				case 1:
+					callfunc "func_3rdgc",0;
+					close;
+				case 2:
+					mes "Interrompi la conferma delle informazioni.";
+					close;
+				}
+			} else {
+				mes "Benvenuto.";
+				mes "È pronto per ordinare?";
+				next;
+				switch(select("Persone sospette?:Qual è il cibo migliore?")) {
+				case 1:
+					mes "[Cameriera]";
+					mes "Una persona sospetta?";
+					mes "Sei una persona sospettosa.";
+					close;
+				case 2:
+					mes "[Cameriera]";
+					mes "Ehm? BENE...";
+					mes "Se vuoi un piatto semplice, consuma un pasto dal nostro menù fisso.";
+					mes "Sono 5000 zeny, lo vuoi?";
+					next;
+					switch(select("Sì, ci proverò.:......")) {
+					case 1:
+						if (Zeny > 4999) {
+							mes "[Cameriera]";
+							mes "Ecco, questo è un pasto dal menù fisso.";
+							mes "Sentiti libero di chiamarmi quando hai bisogno.";
+							next;
+							switch(select("Come vanno gli affari?:Hai molti ospiti?")) {
+							case 1:
+								mes "[Cameriera]";
+								mes "Beh... non male.";
+								mes "Questo è l'unico pub qui quindi è buono.";
+								break;
+							case 2:
+								mes "[Cameriera]";
+								mes "Non molto ultimamente.";
+								mes "È così così.";
+								break;
+							}
+							next;
+							mes "[Cameriera]";
+							mes "Un'azienda in un villaggio può tenere il passo con i clienti.";
+							mes "Al giorno d'oggi, gli avventurieri sono venuti più spesso.";
+							next;
+							select("Qualche visitatore sospetto?");
+							mes "[Cameriera]";
+							mes "Certo, ne vedo alcuni tutti i giorni.";
+							mes "Posso riconoscerli quando vedo i loro abiti.";
+							mes "Devo memorizzare i loro personaggi per motivi di lavoro.";
+							next;
+							select("È noioso...");
+							mes "[Cameriera]";
+							mes "Sì, a volte.";
+							mes "Ogni giorno devo parlare";
+							mes "con le stesse persone.";
+							mes "Ma...";
+							next;
+							mes "[Cameriera]";
+							mes "Mi sento riposato quando vedo ospiti come te.";
+							mes "Ricordo una cosa accaduta qualche giorno fa.";
+							next;
+							mes "[Cameriera]";
+							mes "Quando ho chiuso il negozio,";
+							mes "sembrava esausto e volevano comprare una piccola bibita e uno spuntino.";
+							next;
+							mes "[Cameriera]";
+							mes "Era uno sconosciuto ma sono sicuro che venga da Rachel.";
+							mes "Sembrava un prete.";
+							next;
+							mes "[Cameriera]";
+							mes "Pensavo che fosse venuto qui un prete, ma è sbagliato.";
+							mes "Cominciavo ad avere paura.";
+							next;
+							mes "[Cameriera]";
+							mes "Pensavo di aver aperto la porta a un ladro.";
+							mes "Ah, scusa, forse sto parlando troppo.";
+							next;
+							mes "[Cameriera]";
+							mes "Era noioso parlare con quel vecchio...";
+							mes "Comunque non permettermi più di disturbarti.";
+							mes "Buon appetito!";
+							next;
+							mes "[Cameriera]";
+							mes "Oh, a proposito, mi chiamo Madelle.";
+							mes "Spero che ricordi il mio nome.";
+							set Zeny, Zeny - 5000;
+							setquest 7112;
+							next;
+							mes "- Le informazioni su Madelle sono allegate a una bacheca delle missioni. Quali informazioni ho raccolto? -";
+							next;
+							switch(select("Controlla le informazioni.:Cancellare.")) {
+							case 1:
+								callfunc "func_3rdgc",0;
+								close;
+							case 2:
+								mes "Interrompi la conferma delle informazioni.";
+								close;
+							}
+						} else {
+							mes "[Cameriera]";
+							mes "Un pasto dal nostro menù costa 5000 zeny.";
+							mes "Devi pagare.";
+							mes "È un pagamento anticipato.";
+							close;
+						}
+					case 2:
+						mes "[Cameriera]";
+						mes "Ti senti infastidito.";
+						mes "Vedo. Non ti spingerò.";
+						mes "Riposati lì.";
+						close;
+					}
+				}
+			}
+		}
+	} else {
+		mes "Ciao~!";
+		mes "Possiamo vederci spesso.";
+		next;
+		mes "[Madelle]";
+		mes "Un pasto? Liquore?";
+		mes "Hoho, divertiti!";
+		close;
+	}
+}
+
+ve_in,246,303,3	script	Young Merchant#3rdgc05	930,{
+	if (job_3rd_gc < 6) {
+		mes "[Giovane Mercante]";
+		mes "Se vuoi comprare qualcosa, vai da questa persona.";
+		mes "Sono un distributore.";
+		close;
+	}
+	else if (job_3rd_gc == 6) {
+		if (checkquest(7091) == 1) {
+			if (checkquest(7113) == 1) {
+				mes "[Bramare]";
+				mes "Ti ho già dato tutte le informazioni che ho.";
+				mes "Sono veloce nell'apprendimento visivo.";
+				mes "Non riesco a trovare l'altra ragazza, solo quella che corrisponde alle tue condizioni.";
+				next;
+				mes "Possiamo capirlo con le informazioni che hai raccolto?";
+				next;
+				switch(select("Fallo.:Smettila.")) {
+				case 1:
+					callfunc "func_3rdgc",1;
+					close;
+				case 2:
+					mes "Interrompi la conferma delle informazioni.";
+					close;
+				}
+			} else {
+				mes "[Giovane Mercante]";
+				mes "Che ne dici di aumentare la pozione la prossima volta...";
+				mes "Uhm, hai qualcosa da dirmi?";
+				next;
+				switch(select("Conosci Crave?:Dammi una pozione.")) {
+				case 1:
+					mes "[Bramare]";
+					mes "Io sono Crave, tu chi sei...?";
+					//mes "You're not a usual stuff in connection.."; //FIXME: Dialogue.
+					next;
+					mes "[Bramare]";
+					mes "Ah, si tratta di Daora?";
+					mes "Sì, cosa posso fare per te?";
+					next;
+					select("Hai visto uno sconosciuto in questi giorni?");
+					mes "[Bramare]";
+					mes "Straniero... riguardo agli affari di Daora?";
+					mes "OK. Capisco di cosa stai parlando.";
+					next;
+					mes "[Bramare]";
+					mes "Ho trovato un nuovo volto mentre";
+					mes "guardando i negozi.";
+					mes "Era una ragazza...";
+					next;
+					mes "[Bramare]";
+					mes "Compra regolarmente cibo e beni di prima necessità al mattino e al pomeriggio.";
+					mes "Volevo sapere di più su di lei, perché era carina.";
+					mes "Ma non c'è nessuno che conosca la sua residenza.";
+					next;
+					mes "[Bramare]";
+					mes "È una persona misteriosa?";
+					mes "Non so chi sia, né dove viva!";
+					next;
+					mes "[Bramare]";
+					mes "Vorrei parlarle, ma lei scappa...";
+					mes "Deve nascondere qualcosa.";
+					setquest 7113;
+					next;
+					mes "- Le informazioni fornite da Crave sono allegate alla bacheca delle missioni.";
+					mes "Allora possiamo capirlo con le informazioni che hai raccolto? -";
+					next;
+					switch(select("Fallo.:Smettila.")) {
+					case 1:
+						callfunc "func_3rdgc",1;
+						close;
+					case 2:
+						mes "Interrompi la conferma delle informazioni.";
+						close;
+					}
+				case 2:
+					mes "[Giovane Mercante]";
+					mes "Svolgo un commercio all'ingrosso, non un commercio al dettaglio.";
+					mes "Compratelo da un venditore di utensili.";
+					close;
+				}
+			}
+		} else {
+			if (checkquest(7113) == 1) {
+				mes "[Bramare]";
+				mes "Ti ho già dato tutte le informazioni che ho.";
+				mes "Sono veloce nell'apprendimento visivo.";
+				mes "Non riesco a trovare l'altra ragazza, solo quella che corrisponde alle tue condizioni.";
+				next;
+				mes "Possiamo capirlo con le informazioni che hai raccolto?";
+				next;
+				switch(select("Fallo.:Smettila.")) {
+				case 1:
+					callfunc "func_3rdgc",0;
+					close;
+				case 2:
+					mes "Interrompi la conferma delle informazioni.";
+					close;
+				}
+			} else {
+				mes "[Giovane Mercante]";
+				mes "Cosa c'è che non va?";
+				mes "Sono un commerciante, ma non un commerciante al dettaglio.";
+				mes "Se vuoi comprare delle cose, vai dagli altri.";
+				next;
+				switch(select("Persone sospette?:Ho sentito che sei acuto.")) {
+				case 1:
+					mes "[Giovane Mercante]";
+					mes "Una persona sospetta?";
+					mes "Ci sono molte persone che sono sospettose.";
+					next;
+					mes "[Giovane Mercante]";
+					mes "È quella persona zoppa ad essere sospettosa, vero?";
+					close;
+				case 2:
+					mes "[Giovane Mercante]";
+					mes "Hmm? È ragionevole.";
+					mes "Devo essere veloce nell'apprendimento visivo per vivere come commerciante.";
+					next;
+					mes "[Giovane Mercante]";
+					mes "Devo memorizzare i volti delle persone che fanno affari con me per poter realizzare un profitto.";
+					mes "Allora posso creare clienti fissi.";
+					next;
+					switch(select("Cerco un cugino...:Termina la conversazione.")) {
+					case 1:
+						mes "[Giovane Mercante]";
+						mes "È una bella bionda?";
+						next;
+						switch(select("No, è un maschio.:Sì.")) {
+						case 1:
+							mes "[Giovane Mercante]";
+							mes "Lo è?";
+							mes "Non lo so.";
+							mes "Conosco solo una misteriosa bellezza bionda.";
+							close;
+						case 2:
+							mes "[Bramare]";
+							mes "Oh, lo è?";
+							mes "Sono Crave. Se la trovate più tardi, contattatemi.";
+							next;
+							mes "[Bramare]";
+							mes "Non rivolgermi uno sguardo accigliato.";
+							mes "Sono un uomo di abilità.";
+							next;
+							select("Dove l'hai vista?");
+							mes "["+strcharinfo(0)+"]";
+							mes "Sono già passati alcuni giorni.";
+							mes "Voglio trovarla il prima possibile.";
+							mes "Hai detto di aver visto quel bambino? Dove l'hai vista?";
+							next;
+							mes "[Bramare]";
+							mes "Quindi... ecco perché non conosciamo la sua residenza.";
+							mes "Posso capire l'acquisto di cibo e altre forniture.";
+							next;
+							mes "[Bramare]";
+							mes "Lei scappa sempre senza dire niente.";
+							mes "Mi piace per la sua atmosfera misteriosa.";
+							next;
+							mes "[Bramare]";
+							mes "Penso che sia scappata di casa.";
+							mes "Viene qui per comprare cose regolarmente ogni giorno e ogni notte.";
+							next;
+							mes "[Bramare]";
+							mes "Potrebbe scappare quando ti vede.";
+							mes "Probabilmente è meglio nascondersi nel vicolo per prenderla.";
+							setquest 7113;
+							next;
+							mes "- Le informazioni di Crave sono allegate alla bacheca delle missioni. Quali informazioni ho raccolto? -";
+							next;
+							switch(select("Controlla le informazioni.:Cancellare.")) {
+							case 1:
+								callfunc "func_3rdgc",0;
+								close;
+							case 2:
+								mes "Interrompi la conferma delle informazioni.";
+								close;
+							}
+						}
+					case 2:
+						mes "[Giovane Mercante]";
+						mes "Perché cambi faccia mentre parlo di un cliente fisso?";
+						mes "Oh, tu sei...";
+						mes "È una spada oscura che non può trarre profitto indipendentemente dalla memorizzazione dei volti delle persone.";
+						close;
+					}
+				}
+			}
+		}
+	} else {
+		mes "[Bramare]";
+		mes "Mi scusi?";
+		mes "Hai trovato chi stavi cercando?";
+		close;
+	}
+}
+
+veins,291,215,3	script	Vigilante#3rdgc06	939,{
+	if (job_3rd_gc < 6) {
+		mes "[Vigilante]";
+		mes "Hai qualche inconveniente mentre sei in viaggio?";
+		mes "Alla periferia della città ci sono molti mostri. Stai attento.";
+		close;
+	}
+	else if (job_3rd_gc == 6) {
+		if (checkquest(7091) == 1) {
+			if (checkquest(7114) == 1) {
+				mes "[Trovan]";
+				mes "Ti ho già dato tutte le informazioni che ho.";
+				mes "È l'unica persona sospetta che sia stata vista.";
+				mes "Ma non è ancora successo nulla, quindi sto di guardia.";
+				next;
+				mes "- Quali informazioni ho raccolto? -";
+				next;
+				switch(select("Controlla le informazioni.:Cancellare.")) {
+				case 1:
+					callfunc "func_3rdgc",1;
+					close;
+				case 2:
+					mes "Interrompi la conferma delle informazioni.";
+					close;
+				}
+			} else {
+				mes "[Vigilante]";
+				mes "Ciao?";
+				mes "Hai bisogno di aiuto?";
+				next;
+				switch(select("Conosci Trovan?:No grazie.")) {
+				case 1:
+					mes "[Vigilante]";
+					mes "Eh? Sono Trovan, un membro del corpo di vigilantes di Veins.";
+					mes "Qual è il problema?";
+					next;
+					mes "[Trovan]";
+					mes "Ah, sei stato consigliato da Daora.";
+					mes "Ricordo tutti i volti delle persone che vivono in questo villaggio.";
+					next;
+					mes "[Trovan]";
+					mes "Forse è un estraneo.";
+					mes "Dovremmo escludere i normali avventurieri.";
+					next;
+					mes "[Trovan]";
+					mes "E se Daora trova una persona, non deve essere una persona normale.";
+					mes "Quindi dovremmo escludere gli ospiti normali...";
+					next;
+					mes "[Trovan]";
+					mes "Quindi possiamo impostare dei limiti per indovinare chi è.";
+					mes "Pochi giorni fa, un prete ha visitato questo villaggio.";
+					mes "Si copriva il viso con un cappuccio, quindi non potevo vederlo molto bene.";
+					next;
+					mes "[Trovan]";
+					mes "Riesco a individuare abbastanza bene le persone sospette.";
+					mes "Potrebbe essere un criminale se nascondesse la faccia.";
+					next;
+					mes "[Trovan]";
+					mes "Perché è sospettoso?";
+					mes "Si presenta qui regolarmente, ma non ha una residenza precisa.";
+					mes "E lo perdo sempre quando provo a seguirlo.";
+					next;
+					mes "[Trovan]";
+					mes "Non posso offrire ulteriori informazioni.";
+					mes "Devo sempre sorvegliare l'ingresso del villaggio, quindi non posso seguirlo troppo a lungo.";
+					next;
+					mes "[Trovan]";
+					mes "Comunque. È l'unica persona che sospetto.";
+					mes "Non è stato sorpreso a fare nulla di criminale,";
+					mes "ma si copre sempre.";
+					setquest 7114;
+					next;
+					mes "- Le informazioni su Trovan sono allegate alla bacheca delle missioni. Quali informazioni ho raccolto? -";
+					next;
+					switch(select("Controlla le informazioni.:Cancellare.")) {
+					case 1:
+						callfunc "func_3rdgc",1;
+						close;
+					case 2:
+						mes "Interrompi la conferma delle informazioni.";
+						close;
+					}
+				case 2:
+					mes "[Trovan]";
+					mes "Recentemente ho visto molte persone sospette.";
+					mes "Sto vigilando attentamente.";
+					close;
+				}
+			}
+		} else {
+			if (checkquest(7114) == 1) {
+				mes "[Trovan]";
+				mes "Ti ho già dato tutte le informazioni che ho.";
+				mes "È l'unica persona sospetta che sia stata vista.";
+				mes "Ma non è ancora successo nulla, quindi sto di guardia.";
+				next;
+				mes "- Devo capire le informazioni raccolte? -";
+				next;
+				switch(select("Controlla le informazioni.:Cancellare.")) {
+				case 1:
+					callfunc "func_3rdgc",0;
+					close;
+				case 2:
+					mes "Interrompi la conferma delle informazioni.";
+					close;
+				}
+			} else {
+				mes "[Trovan]";
+				mes "Sono Trovan, una guardia di Veins.";
+				mes "Cosa c'è che non va?";
+				next;
+				switch(select("C'è un uomo ricercato?:Niente.")) {
+				case 1:
+					mes "[Trovan]";
+					mes "Un uomo ricercato?";
+					mes "No, qual è il problema?";
+					next;
+					mes "[Trovan]";
+					mes "Hai trovato persone sospette che entravano in questo villaggio ultimamente?";
+					mes "Ehm...";
+					next;
+					mes "[Trovan]";
+					mes "Recentemente c'è stato un uomo in questo villaggio che indossava un cappuccio.";
+					mes "Non è un viaggiatore. Comprò del cibo e scappò dal villaggio.";
+					next;
+					mes "[Trovan]";
+					mes "Mi chiedo quale sia la sua identità.";
+					mes "Penso che sia legato ad un santuario...";
+					mes "O forse non lo è...";
+					next;
+					mes "[Trovan]";
+					mes "Non c'è nessun altro come lui tra le persone che vivono in questo villaggio.";
+					mes "Mi chiedo da dove venga.";
+					next;
+					mes "[Trovan]";
+					mes "Potrebbe essere ancora qui.";
+					mes "Non ci sono persone nuove tranne lui. Conosco quasi tutti i volti degli avventurieri che vengono qui.";
+					mes "Quindi non ci sono molte novità.";
+					setquest 7114;
+					next;
+					mes "- Le informazioni su Trovan sono allegate alla bacheca delle missioni. Quali informazioni ho raccolto? -";
+					next;
+					switch(select("Controlla le informazioni.:Cancellare.")) {
+					case 1:
+						callfunc "func_3rdgc",0;
+						close;
+					case 2:
+						mes "Interrompi la conferma delle informazioni.";
+						close;
+					}
+				case 2:
+					mes "[Trovan]";
+					mes "Non andare troppo lontano.";
+					close;
+				}
+			}
+		}
+	} else {
+		mes "[Trovan]";
+		mes "Come va?";
+		close;
+	}
+}
+
+veins,187,143,5	script	Peddler#3rdgc07	892,{
+	mes "[Venditore ambulante]";
+	if (job_3rd_gc < 6) {
+		mes "Che enorme tempesta di sabbia.";
+		mes "Stai bene?";
+		close;
+	}
+	else if (job_3rd_gc == 6) {
+		if (checkquest(7091) == 1) {
+			mes "Che enorme tempesta di sabbia.";
+			mes "Stai bene?";
+			close;
+		} else {
+			if (checkquest(7115) == 1) {
+				mes "Allora, hai trovato quella ragazza?";
+				mes "Se lo fai, falle sapere che deve venire a trovarmi.";
+				next;
+				mes "- Non puoi ottenere maggiori informazioni dal venditore ambulante. Quali informazioni ho raccolto? -";
+				next;
+				switch(select("controllare le informazioni.:Cancellare.")) {
+				case 1:
+					callfunc "func_3rdgc",1;
+					close;
+				case 2:
+					mes "Interrompi la conferma delle informazioni.";
+					close;
+				}
+			} else {
+				mes "EHI. EHI!";
+				mes "Sto parlando con te!";
+				next;
+				switch(select("Ignoralo.:Ascolta la storia.")) {
+				case 1:
+					mes "[Venditore ambulante]";
+					mes "Hai troppo freddo.";
+					close;
+				case 2:
+					mes "[Venditore ambulante]";
+					mes "Una bella ragazza ha appena comprato del cibo.";
+					mes "Sapete che la freschezza è importante quando si acquista il pesce...";
+					next;
+					mes "[Venditore ambulante]";
+					mes "Ma le ho dato il pesce sbagliato.";
+					mes "Di recente ha acquistato del cibo dal mio negozio.";
+					mes "Non riesco a trovarla, forse non vive qui.";
+					next;
+					mes "[Venditore ambulante]";
+					mes "Ha un aspetto trasandato ma compra sempre cibo costoso.";
+					mes "Pensavo fosse una domestica, ma a Veins non abbiamo una villa che possa assumere cameriere.";
+					next;
+					mes "[Venditore ambulante]";
+					mes "Un po' sospetto, vero?";
+					mes "Ma le ho dato del pesce andato a male...";
+					next;
+					mes "[Venditore ambulante]";
+					mes "Quindi devo trovarla e scambiare il pesce con un rimborso.";
+					next;
+					mes "[Venditore ambulante]";
+					mes "Se la trovi, manda quel messaggio, per favore?";
+					mes "Non posso perdermi un ospite come lei.";
+					next;
+					mes "[Venditore ambulante]";
+					mes "Ok, vediamo...";
+					mes "Lei è una ragazza bionda.";
+					mes "Dovresti essere in grado";
+					mes "per trovarla facilmente.";
+					next;
+					mes "[Venditore ambulante]";
+					mes "In realtà nessuno sa da dove venga.";
+					mes "Sei un avventuriero, quindi te lo chiedo.";
+					next;
+					select("Le manderò il tuo messaggio.:Hmm...");
+					mes "["+strcharinfo(0)+"]";
+					mes "- Anche se non ho tempo da perdere, la ragazza menzionata dal venditore ambulante è sospettosa. -";
+					next;
+					mes "["+strcharinfo(0)+"]";
+					mes "- Una ragazza che non ha una residenza chiara e compra cibo costoso. Devo scoprirlo. -";
+					next;
+					mes "[Venditore ambulante]";
+					mes "Allora mandale il mio messaggio, per favore.";
+					mes "Se non posso scambiare il pesce, andrà a male.";
+					setquest 7115;
+					next;
+					mes "- Le informazioni del venditore ambulante sono allegate alla bacheca delle missioni. Quali informazioni ho raccolto? -";
+					next;
+					switch(select("Controlla le informazioni.:Cancellare.")) {
+					case 1:
+						callfunc "func_3rdgc",0;
+						close;
+					case 2:
+						mes "Interrompi la conferma delle informazioni.";
+						close;
+					}
+				}
+			}
+		}
+	} else {
+		mes "Hai inviato correttamente il mio messaggio?";
+		mes "Allora perché non è venuta qui per scambiare il pesce?";
+		close;
+	}
+}
+
+veins,235,126,3	script	Old Man#3rdgc07	945,{
+	mes "[Vecchio]";
+	if (job_3rd_gc < 6) {
+		mes "Haha... riesco a ricordare il mio passato quando vedo un giovane avventuriero come te...";
+		close2;
+	} else if (job_3rd_gc == 6) {
+		if (checkquest(7091) == 1) {
+			mes "Haha... riesco a ricordare il mio passato quando vedo un giovane avventuriero come te...";
+			close;
+		} else {
+			if (checkquest(7116) == 1) {
+				mes "Grazie per aver parlato con me.";
+				next;
+				mes "- Non riesco ad avere più informazioni dal Vecchio. Quali informazioni ho raccolto? -";
+				next;
+				switch(select("Controlla le informazioni.:Cancellare.")) {
+				case 1:
+					callfunc "func_3rdgc",0;
+					close;
+				case 2:
+					mes "Interrompi la conferma delle informazioni.";
+					close;
+				}
+			} else {
+				mes "Che cosa? Qual è il problema?";
+				mes "Vuoi parlare con me?";
+				next;
+				switch(select("Persona sospetta...:Stai bene.")) {
+				case 1:
+					mes "[Vecchio]";
+					mes "Una persona sospetta?";
+					mes "Beh, Trovan potrebbe saperne più di me su di lei.";
+					close;
+				case 2:
+					mes "[Vecchio]";
+					mes "Grazie comunque.";
+					mes "Mi limiterò a sedermi qui...";
+					next;
+					mes "[Vecchio]";
+					mes "Guardo le persone che passano di qui in continuazione.";
+					mes "Posso scoprire facilmente da dove vengono guardando cosa indossano.";
+					next;
+					mes "[Vecchio]";
+					mes "Non posso dimenticarla affatto a causa del suo vestito divertente.";
+					mes "Non è difficile dimenticare una persona che indossa un abito formale.";
+					next;
+					select("Allora cosa c'è di divertente?");
+					mes "[Vecchio]";
+					mes "Umm, questo villaggio non è più divertente.";
+					mes "So tutto~ Ho anche scoperto il lavoro di tutti.";
+					next;
+					mes "[Vecchio]";
+					mes "Ma...";
+					mes "Recentemente è arrivata una ragazza.";
+					mes "Al mattino compra del cibo da un venditore ambulante e poi scompare.";
+					next;
+					mes "[Vecchio]";
+					mes "E nel pomeriggio di solito compra il necessario alla vita.";
+					mes "Un po' alla volta.";
+					mes "E poi va da qualche parte dopo...";
+					next;
+					mes "[Vecchio]";
+					mes "Immagino che stia preparando qualcosa.";
+					mes "Se compra molte cose, può essere trovata facilmente.";
+					next;
+					mes "[Vecchio]";
+					mes "Penso che faccia molta scorta di cibi che aiutano durante le battaglie.";
+					next;
+					mes "[Vecchio]";
+					mes "Ha appena iniziato questa routine.";
+					mes "È una nuova arrivata?";
+					next;
+					mes "[Vecchio]";
+					mes "Ti osserverò per un po'.";
+					mes "Ah, perché ti disturbo con questa storia?";
+					setquest 7116;
+					next;
+					mes "- Le informazioni sul Vecchio sono allegate alla bacheca delle missioni. Quali informazioni ho raccolto?";
+					next;
+					switch(select("Controlla le informazioni.:Cancellare.")) {
+					case 1:
+						callfunc "func_3rdgc",0;
+						close;
+					case 2:
+						mes "Interrompi la conferma delle informazioni.";
+						close;
+					}
+				}
+			}
+		}
+	} else if (job_3rd_gc == 8) {
+		mes "Vuoi sapere una cosa?";
+		mes "Abbiamo una ragazza meravigliosa nel nostro villaggio.";
+		next;
+		mes "[Vecchio]";
+		mes "Non so che tipo di dono abbia, ma sa come trovare le persone.";
+		next;
+		mes "[Vecchio]";
+		mes "Se vuoi trovarla, chiedi a quel ragazzo.";
+		close;
+	} else {
+		mes "Ancora non lo so.";
+		mes "sono troppo vecchio...";
+		close;
+	}
+}
+
+veins,223,180,3	script	Girl#3rdgc09	941,{
+	mes "[Melissa]";
+	if (job_3rd_gc == 8) {
+		mes "CIAO?";
+		mes "Che cosa?";
+		mes "Hai perso un amico?";
+		next;
+		switch(select("Sai qualcosa?:NO...")) {
+		case 1:
+			mes "[Melissa]";
+			mes "Ho un dono speciale che ho avuto per tutta la vita.";
+			mes "Le persone vengono a trovarmi quando hanno bisogno di trovare qualcosa.";
+			next;
+			mes "[Melissa]";
+			mes "Stai cercando qualcuno?";
+			mes "Puoi parlarmi del loro carattere?";
+			next;
+			switch(select("Stai scherzando.:Lasciamelo fare.")) {
+			case 1:
+				mes "[Melissa]";
+				mes "Ah! Ma tornerai da me quando avrai bisogno di trovare qualcuno.";
+				mes "So tutto.";
+				close;
+			case 2:
+				set .@ans00, 0;
+				mes "[Melissa]";
+				mes "Ok, rispondi alla mia domanda.";
+				mes "È un maschio o una femmina?";
+				next;
+				switch(select("Un ragazzo:Una ragazza")) {
+				case 1:
+					mes "[Melissa]";
+					mes "Un ragazzo e...";
+					break;
+				case 2:
+					mes "[Melissa]";
+					mes "Una ragazza e...";
+					set .@ans00, .@ans00+1;
+					break;
+				}
+				next;
+				mes "[Melissa]";
+				mes "Qual è il colore dei capelli?";
+				next;
+				switch(select("Buio:Rosso:Giallastro chiaro:Bianco")) {
+				case 1:
+					mes "[Melissa]";
+					mes "Colore dei capelli scuri... hmm...";
+					mes "Capelli castano scuro o neri...";
+					break;
+				case 2:
+					mes "[Melissa]";
+					mes "Castano chiaro o arancione scuro... Capelli rossi...";
+					break;
+				case 3:
+					mes "[Melissa]";
+					mes "Capelli da arancione chiaro a biondo.";
+					set .@ans00, .@ans00+1;
+					break;
+				case 4:
+					mes "[Melissa]";
+					mes "Grigi... bianchi... dorati... capelli argentati...";
+					break;
+				}
+				next;
+				mes "[Melissa]";
+				mes "Giovane o vecchio?";
+				next;
+				switch(select("Come un bambino.:Giovane.:Di mezza età.:Molto vecchio.")) {
+				case 1:
+					mes "[Melissa]";
+					mes "E un bambino.";
+					break;
+				case 2:
+					mes "[Melissa]";
+					mes "Una persona giovane.";
+					mes "Come te?";
+					set .@ans00, .@ans00+1;
+					break;
+				case 3:
+					mes "[Melissa]";
+					mes "La stessa età di un venditore di utensili?";
+					mes "Di mezza età.";
+					break;
+				case 4:
+					mes "[Melissa]";
+					mes "Sì, molto vecchio.";
+					break;
+				}
+				next;
+				mes "[Melissa]";
+				mes "CIAO, "+((Sex == SEX_MALE)?"fratello":"sorella")+"~ Permettimi di raccogliere tutte le informazioni che hai fornito...";
+				next;
+				mes "- Comincia a mormorare e gesticola verso il cielo. I suoi capelli si sollevano mentre dice... -";
+				next;
+				if (.@ans00 == 3) {
+					mes "[Melissa]";
+					mes "Fatto!";
+					mes "La conosco.";
+					mes "Il suo nome è ^4d4dffEstillda^000000.";
+					mes "Giusto?";
+					next;
+					mes "[Melissa]";
+					mes "Perché la stai cercando? Lei è tua amica?";
+					mes "Mi ha dato delle caramelle l'altro giorno.";
+					next;
+					mes "[Melissa]";
+					mes "Uhm... questa ragazza...";
+					mes "passerà in giro";
+					mes "un vicolo cieco dentro";
+					mes "circa 1 ora!";
+					mes "Eheheh!";
+					erasequest 7103;
+					setquest 7104;
+					set job_3rd_gc, 9;
+					next;
+					mes "[Melissa]";
+					mes "Deve essere chi stai cercando. Non sbaglio mai.";
+					mes "Ditemi che ho fatto un buon lavoro!";
+					next;
+					switch(select("Pat Melissa in testa.:Dalle un pollice in su.")) {
+					case 1:
+						mes "Dai una pacca sulla testa a Melissa.";
+						mes "Reagisce come farebbe un cucciolo.";
+						next;
+						mes "[Melissa]";
+						mes "Eheheh...";
+						mes "Sono qui per aiutarti~!";
+						close;
+					case 2:
+						mes "[Melissa]";
+						mes "Eheheh...";
+						mes "Ho fatto bene!";
+						close;
+					}
+				} else {
+					mes "[Melissa]";
+					mes "Ehm...";
+					mes "Quella persona che ha quelle caratteristiche è...";
+					next;
+					mes "[Melissa]";
+					mes "Cosa-...? Eww, non mi sono mai sbagliato.";
+					mes "Non so perché, ma non riesco a vedere quella persona.";
+					next;
+					mes "[Melissa]";
+					mes "Eeeahhh! Wahhh!";
+					next;
+					mes "- Tutto quello che posso fare è calmare Melissa mentre piange. Devo ripensare alle caratteristiche della persona. -";
+					close;
+				}
+			}
+		case 2:
+			mes "[Melissa]";
+			mes "È strano.";
+			mes "In questo villaggio la gente è sempre alla ricerca di qualcuno.";
+			close;
+		}
+	} else if (job_3rd_gc == 9) {
+		mes "L'hai trovata?";
+		mes "Dille grazie per avermi dato delle caramelle l'altro giorno.";
+		close;
+	} else {
+		mes "Quando cerco le persone, un angelo vestito di nero mi dà informazioni.";
+		next;
+		mes "[Melissa]";
+		mes "Ho raccontato questa storia a Daora, poi lei mi ha detto di non farlo più.";
+		mes "Forse non è un buon angelo.";
+		close;
+	}
+}
+
+veins,337,284,0	script	#ghostestilla_3rdgc	139,3,3,{
+	end;
+OnTouch:
+	if (job_3rd_gc == 9) {
+		if ((checkquest(7104,PLAYTIME) == 0) || (checkquest(7105,PLAYTIME) == 0)) {
+			mes ".....?";
+			mes "C'è il segno che qualcuno è presente.";
+			mes "Hai ancora tempo.";
+			close;
+		} else if ((checkquest(7104,PLAYTIME) == 2) || (checkquest(7105,PLAYTIME) == 2)) {
+			mes "Il vicolo cieco di cui mi ha parlato Melissa deve essere questa strada.";
+			next;
+			mes "C'è il segno che qualcuno è presente.";
+			mes "Si presenta una ragazza bionda!";
+			donpcevent "Estillda#3rdgc10::OnEnable";
+			next;
+			select("Effettua un attacco a sorpresa.");
+			set .@c_spec, readparam(bDex)+readparam(bAspd)+readparam(bCritical);
+			if (.@c_spec > 209 || (!rand(2) && .@c_spec > 190 && .@c_spec < 210) || (!rand(3) && .@c_spec < 191)) {
+				mes "La prendi per il polso cercando di non farti vedere.";
+				mes "Il cibo che ha in mano cade a terra.";
+				next;
+				mes "[Estillda]";
+				mes "Ahhhh!";
+				mes "Chi sei?";
+				mes "Cosa fai?";
+				next;
+				if(select("Chi ti ha mandato?:Chi viene da Rachel?") == 2) {
+					mes "[Estillda]";
+					mes "Non lo so! Non ne ho idea. Non lo conosco!";
+					next;
+				}
+				mes "[Estillda]";
+				mes "Se gli compro qualcosa...";
+				mes "Ha detto che può pagare i miei costi di manodopera e di produzione.";
+				next;
+				mes "[Estillda]";
+				mes "Non so chi sia.";
+				mes "E' vero.";
+				mes "È un cattivo ragazzo?";
+				next;
+				mes "[Estillda]";
+				mes "Aiutami, per favore?";
+				mes "Aiutami.";
+				mes "Farò tutto quello che vuoi.";
+				next;
+				mes "[Estillda]";
+				mes "Non sapevo niente di lui, non so se è un cattivo ragazzo.";
+				mes "Ho appena comprato delle cose... (singhiozzando)...";
+				next;
+				mes "- Estillda è sotto shock perché pensa di essere nei guai. -";
+				next;
+				select("Calmatila.");
+				mes "["+strcharinfo(0)+"]";
+				mes "Rilassati solo per un secondo.";
+				mes "Capisco perfettamente quello che stai dicendo.";
+				mes "Non ti troverai nei guai.";
+				next;
+				mes "["+strcharinfo(0)+"]";
+				mes "Sto cercando un ragazzo che ha commesso un crimine ed è scappato.";
+				mes "Devo prenderlo.";
+				next;
+				mes "["+strcharinfo(0)+"]";
+				mes "Allora chi ti ha fatto procurare quelle provviste?";
+				next;
+				mes "["+strcharinfo(0)+"]";
+				mes "Se collabori con me, ti proteggerò finché tutto questo non sarà finito.";
+				mes "La Gilda degli Assassini ti proteggerà.";
+				next;
+				mes "[Estillda]";
+				mes "Lo prometti, vero?";
+				mes "Come posso aiutarla?";
+				next;
+				select("Quando dovresti incontrarti?");
+				mes "[Estillda]";
+				mes "Oh, ho già consegnato la roba.";
+				mes "Sto tornando.";
+				next;
+				mes "[Estillda]";
+				mes "Ah, questi sono miei.";
+				mes "Ho un sacco di entusiasmo.";
+				next;
+				mes "["+strcharinfo(0)+"]";
+				mes "Allora vai dritto da questa parte e fai finta che non sia successo niente.";
+				next;
+				mes "- Le chiedo di camminare come al solito e di dirle come arrivare al pub di Daora. -";
+				donpcevent "Estillda#3rdgc10::OnDisable";
+				if (checkquest(7104) > -1) erasequest 7104;
+				if (checkquest(7105) > -1) erasequest 7105;
+				set job_3rd_gc, 10;
+				setquest 7106;
+				next;
+				mes "- Il pub nei sotterranei di Veins è il posto migliore per tenerla al sicuro. -";
+				close;
+			} else {
+				mes "- Ho provato a prenderla per il polso, ma lei già lo sapeva ed è scappata urlando. -";
+				donpcevent "Estillda#3rdgc10::OnDisable";
+				if (checkquest(7104) > -1) erasequest 7104;
+				if (checkquest(7105) > -1) erasequest 7105;
+				setquest 7105;
+				next;
+				mes "Non sei riuscito a catturare Estillda.";
+				close;
+			}
+		} else {
+			mes "Si è verificato un errore.";
+			mes "Contatta il team GM per risolvere questa situazione.";
+			close;
+		}
+	}
+	end;
+}
+
+veins,341,287,3	script	Estillda#3rdgc10	919,{
+OnInit:
+OnDisable:
+	disablenpc "Estillda#3rdgc10";
+	end;
+OnEnable:
+	enablenpc "Estillda#3rdgc10";
+	end;
+}
+
+job3_guil01,79,15,1	script	Estillda#3rdgc11	919,{
+	if (job_3rd_gc == 11) {
+		mes "Estillda si guarda intorno con un'espressione ansiosa sul viso.";
+		next;
+		switch(select("Stai bene?:Intimidiscila.")) {
+		case 1:
+			mes "[Estillda]";
+			mes "SÌ? SÌ...";
+			mes "Pensavo che gli assassini fossero spaventosi.";
+			mes "Ma non credo...";
+			next;
+			select("Non sembri venire da Veins");
+			mes "[Estillda]";
+			mes "SÌ? SÌ...";
+			mes "Vengo da Rachel.";
+			mes "Sono qui per fare Zeny.";
+			mes "Ho avuto una vita desolata a Rachel.";
+			next;
+			switch(select("Sei venuto qui da solo?:Ho avuto una vita desolata...")) {
+			case 1:
+				mes "[Estillda]";
+				mes "NO.";
+				mes "Non credo.";
+				mes "Sono venuta qui con un ragazzo.";
+				next;
+				mes "[Estillda]";
+				mes "Di solito vengo qui da solo. A volte controlla la mia destinazione.";
+				mes "Pensavo che fosse una persona importante di qualche azienda.";
+				next;
+				mes "[Estillda]";
+				mes "Ma non so chi sia.";
+				break;
+			case 2:
+				mes "[Estillda]";
+				mes "sono nativo,";
+				mes "Lavoro a casa sua.";
+				mes "Penso che non sia male.";
+				mes "Sono appena uscito di casa...";
+				next;
+				mes "[Estillda]";
+				mes "Ha detto che aveva bisogno di una domestica e che poteva pagarmi abbastanza soldi.";
+				break;
+			}
+			next;
+			mes "[Estillda]";
+			mes "In realtà non lo conosco bene.";
+			mes "...non lo farò mai.";
+			mes "Voglio andare a casa. Mi manca la mia mamma.";
+			next;
+			switch(select("Cosa puoi dirmi?:Dimmi cosa sai!")) {
+			case 1:
+				mes "[Estillda]";
+				mes "SÌ. Giusto?";
+				mes "Ti dirò tutto quello che so.";
+				break;
+			case 2:
+				mes "[Estillda]";
+				mes "Scusa. Mi dispiace.";
+				mes "Farò quello che vuoi...";
+				next;
+				mes "["+strcharinfo(0)+"]";
+				mes "Il tuo atteggiamento è un problema.";
+				mes "Riprendiamo l'argomento principale.";
+				break;
+			}
+			next;
+			mes "[Estillda]";
+			mes "Di solito fornisco cibo";
+			mes "e altre necessità di vita.";
+			next;
+			mes "[Estillda]";
+			mes "Compro del cibo da mangiare per me.";
+			mes "E gli compro cibo costoso ogni giorno.";
+			next;
+			mes "[Estillda]";
+			mes "Penso che sia molto esigente riguardo al cibo...";
+			mes "E ricevo soldi ogni volta che consegno cibo..";
+			next;
+			select("Dove hai dormito?");
+			mes "[Estillda]";
+			mes "SÌ? Sì, da queste parti.";
+			mes "C'è un posto dove stanno i soldati.";
+			mes "Vuole che resti lì...";
+			next;
+			select("Quando dovresti incontrarti?");
+			mes "[Estillda]";
+			mes "Tra un paio d'ore.";
+			mes "In un magazzino sotterraneo a sud.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Grazie per la collaborazione.";
+			mes "La tua casa è a Rachel?";
+			mes "Estillda è il tuo vero nome?";
+			mes "Sì, andrò a ritirare la sua razione a Rachel.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Tornare a casa senza incidenti.";
+			set job_3rd_gc, 12;
+			changequest 7106,7107;
+			close;
+		case 2:
+			mes "[Estillda]";
+			mes "SÌ?";
+			mes "Per favore...";
+			mes "Non uccidermi.";
+			next;
+			mes "- Estillda sembra spaventata. Devi cambiare argomento. -";
+			close;
+		}
+	} else if (job_3rd_gc == 12) {
+		mes "[Estillda]";
+		mes "Di solito ci incontriamo nello stesso posto alla stessa ora.";
+		mes "È in un magazzino sotterraneo a sud.";
+		mes "Non dirgli che te l'ho detto.";
+		close;
+	}
+	end;
+}
+
+veins,206,56,0	script	#3rdgc_battleroom01	139,1,1,{
+	end;
+OnInit:
+	set $@3rdgc_room01, 0;
+	end;
+OnTouch_:
+	if (job_3rd_gc == 12) {
+		if (checkquest(7107,PLAYTIME) == 2) {
+			mes "Questo deve essere il posto di cui mi ha parlato Estillda.";
+			next;
+			switch(select("Vai dentro.:Osserva la situazione.")) {
+			case 1:
+				if ($@3rdgc_room01 == 0) {
+					warp "job3_guil02",34,44;
+					set $@3rdgc_room01, 1;
+				} else {
+					mes "Hai provato ad aprire la porta ma è chiusa a chiave.";
+					mes "Non mostra alcun segno di vita.";
+					next;
+					mes "Torna qui più tardi.";
+				}
+				close;
+			case 2:
+				mes "Faccio marcia indietro per osservare lo svolgersi della situazione.";
+				close;
+			}
+		} else if (checkquest(7107,PLAYTIME) == 0) {
+			mes "Questo deve essere il posto di cui mi ha parlato Estillda.";
+			mes "Ho abbastanza tempo per l'incontro.";
+			close;
+		} else {
+			mes "Si è verificato un errore.";
+			mes "Contatta il team GM per risolvere la situazione.";
+			close;
+		}
+	}
+	end;
+}
+
+job3_guil02,34,44,0	script	#3rdgc_room01_mag01	139,2,2,{
+	end;
+OnEnable:
+	enablenpc "#3rdgc_room01_mag01";
+	end;
+OnDisable:
+	disablenpc "#3rdgc_room01_mag01";
+	end;
+OnStop:
+	stopnpctimer;
+	end;
+OnTouch_:
+	if (job_3rd_gc == 12) {
+		initnpctimer;
+		donpcevent "A man with black clothes::OnEnable";
+		disablenpc "#3rdgc_room01_mag01";
+	} else {
+		mes "Non devi venire qui adesso.";
+		close;
+		warp "veins",178,62;
+		set $@3rdgc_room01, 0;
+		end;
+	}
+	end;
+OnTimer295000:
+	mapannounce "job3_guil02",""Dandelion: ...Ah, sei forte e appiccicoso!",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	donpcevent "A man with black clothes::OnReset";
+	end;
+OnTimer296000:
+	mapannounce "job3_guil02",""Il dente di leone è scappato.",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	end;
+OnTimer298000:
+	mapwarp "job3_guil02","veins",186,65;
+	end;
+OnTimer299000:
+	donpcevent "Dandelion#3rdgc12::OnDisable";
+	donpcevent "A man with black clothes::OnDisable";
+	donpcevent "#3rdgc_room01_mag01::OnEnable";
+	end;
+OnTimer300000:
+	set $@3rdgc_room01, 0;
+	stopnpctimer;
+	end;
+}
+
+job3_guil02,51,43,7	script	A man with black clothes	456,4,4,{
+	end;
+OnInit:
+OnDisable:
+	hideonnpc "A man with black clothes";
+	set .on,0;
+	end;
+OnEnable:
+	hideoffnpc "A man with black clothes";
+	set .on,1;
+	end;
+OnReset:
+	killmonster "job3_guil02","A man with black clothes::OnMyMobDead";
+	end;
+OnTouch_:
+	if (!.on) end;
+	mes "[Un uomo vestito di nero]";
+	mes "Sei appena arrivato qui.";
+	mes "Perché sei così in ritardo?";
+	mes "Metti giù le tue cose.";
+	next;
+	select("......");
+	mes "[Un uomo vestito di nero]";
+	mes "Che la dea ti benedica eternamente...";
+	npcskill "AL_BLESSING",10,0,0;
+	next;
+	emotion ET_SURPRISE;
+	mes "[Un uomo vestito di nero]";
+	mes "Chi... chi sei?!";
+	mes "Una... Gilda degli Assassini?!";
+	mes "Che cosa?!";
+	mes "Quando ti ho dato un indizio?!";
+	next;
+	select("Hai perso la testa...");
+	mes "["+strcharinfo(0)+"]";
+	mes "È questo l'obiettivo corretto?";
+	mes "Puoi parlare con me per un secondo?";
+	next;
+	mes "[Un uomo vestito di nero]";
+	mes "Non c'è modo!!!!";
+	mes "Tu... ti farò chiudere gli occhi per sempre!";
+	next;
+	mes "["+strcharinfo(0)+"]";
+	mes "Che cosa?!";
+	close2;
+	donpcevent "A man with black clothes::OnDisable";
+	monster "job3_guil02",51,43,"Dandelion",2031,1,"A man with black clothes::OnMyMobDead";
+	end;
+OnMyMobDead:
+	donpcevent "#3rdgc_room01_mag01::OnStop";
+	donpcevent "#3rdgc_2nd_timer::OnEnable";
+	mapwarp "job3_guil02","job3_guil02",47,43;
+	end;
+}
+
+job3_guil02,1,1,0	script	#3rdgc_2nd_timer	844,{
+	end;
+OnEnable:
+	initnpctimer;
+	end;
+OnTimer1000:
+	donpcevent "Dandelion#3rdgc12::OnEnable";
+	end;
+OnTimer60000:
+	mapwarp "job3_guil02","veins",186,65;
+	end;
+OnTimer61000:
+	donpcevent "Dandelion#3rdgc12::OnDisable";
+	donpcevent "A man with black clothes::OnDisable";
+	donpcevent "#3rdgc_room01_mag01::OnEnable";
+	set $@3rdgc_room01, 0;
+	stopnpctimer;
+	end;
+}
+
+job3_guil02,49,43,5	script	Dandelion#3rdgc12	457,{
+	if (!checkweight(1201,2)) {
+		mes "- Non puoi continuare questa missione perché hai troppi oggetti. -";
+		close;
+	}
+	if (job_3rd_gc == 12) {
+		mes "[Dente di leone]";
+		mes "Sì!";
+		mes "Tu... non troverai nulla.";
+		mes "Tutto... è guidato... dalla dea...";
+		mes "Keeek!";
+		next;
+		mes "- Si mette qualcosa in bocca e deglutisce. -";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Che cos'è?!";
+		mes "Cos'hai in bocca...?";
+		mes "Perché l'hai fatto?";
+		next;
+		mes "È troppo tardi per salvarlo.";
+		mes "È morto.";
+		mes "Trovi una chiave con una decorazione fantasia attorno al collo.";
+		set job_3rd_gc, 13;
+		getitem 6150,1; //Key_Of_The_Mansion
+		changequest 7107,7108;
+		close;
+	} else {
+		if (job_3rd_gc == 13) {
+			mes "Non c'è niente da fare.";
+			mes "Usciamo di qui.";
+		} else
+			mes "Sei spinto da una forza sconosciuta.";
+		close2;
+		warp "veins",178,62;
+		end;
+	}
+OnInit:
+OnDisable:
+	disablenpc "Dandelion#3rdgc12";
+	end;
+OnEnable:
+	enablenpc "Dandelion#3rdgc12";
+	end;
+}
+
+rachel,115,77,3	script	Girke#3rdgc13	85,{
+	mes "[Girke]";
+	mes "Oh~ giovanotto.";
+	mes "Sono Girke Sara.";
+	mes "Chiamami semplicemente Girke.";
+	next;
+	mes "- Puzza di alcol. -";
+	next;
+	mes "[Girke]";
+	mes "Sai cosa?";
+	mes "Un uomo che è un leggendario artigiano chiave vive nel nostro villaggio.";
+	mes "Singhiozzo~";
+	next;
+	mes "[Girke]";
+	mes "Ah~ahahahah";
+	mes "A mio padre piacciono i lavori del genere.";
+	mes "Un giorno, mi disse.";
+	next;
+	mes "[Girke]";
+	mes "'Girke, il mio desiderio è che venga realizzata una chiave da Oresa.'";
+	next;
+	mes "[Girke]";
+	mes "Ma Oresa è già scomparso dopo aver consegnato tutto al suo apprendista.";
+	mes "Alla fine, mio ​​padre è morto senza vedere una chiave del genere...";
+	next;
+	mes "[Girke]";
+	mes "Sai.";
+	mes "Quella Oresa! Vive nella nostra città?!";
+	mes "Singhiozzo~";
+	next;
+	mes "[Girke]";
+	mes "Ma è troppo vecchio...";
+	mes "Ma l'artigiano è...";
+	next;
+	mes "[Girke]";
+	mes "...difficile da incontrare.";
+	mes "Come mio padre... è un po' solitario.";
+	next;
+	mes "[Girke]";
+	mes "Di cosa ti sto parlando?";
+	mes "Sei ubriaco? Papà... (singhiozzando)";
+	mes "Ah... papà...";
+	next;
+	mes "- Girke comincia a piangere. -";
+	close;
+}
+
+ra_in01,175,196,3	script	Oresa Rava#3rdgc13	866,{
+	mes "[Oresa Rava]";
+	if (job_3rd_gc == 13) {
+		mes "Non so perché vieni a trovarmi, ma non sto più lavorando.";
+		mes "Sono troppo vecchio per fare mestiere.";
+		next;
+		select("Conosci questa chiave?");
+		mes "[Oresa Rava]";
+		mes "Hmm? Uhm... Dammelo.";
+		mes "Questo modello...";
+		mes "Da dove hai preso questo?";
+		next;
+		switch(select("L'ho appena preso.:Ho una storia...")) {
+		case 1:
+			mes "[Oresa Rava]";
+			mes "Ehm? L'hai appena ritirato?";
+			mes "Questo è impossibile.";
+			mes "È successo qualcosa in quella casa?";
+			next;
+			mes "[Oresa Rava]";
+			mes "Allora cosa farai con questa chiave?";
+			next;
+			select("Troverò il proprietario.");
+			mes "[Oresa Rava]";
+			mes "Ah~! Ecco perché sei venuto qui a trovarmi.";
+			mes "Ho dato quella chiave a una persona che era un prete.";
+			next;
+			mes "[Oresa Rava]";
+			mes "Non ho potuto vedere la mia casa dopo che lui è diventato prete, ma ho fatto una chiave per una celebrazione.";
+			next;
+			mes "[Oresa Rava]";
+			mes "È la chiave della sua villa.";
+			mes "Adesso non so dove abita.";
+			mes "Ma puoi venire lì e mandare il custode del cottage estivo?";
+			next;
+			break;
+		case 2:
+			mes "[Oresa Rava]";
+			mes "Non so cosa sta succedendo.";
+			mes "Ho dato quella chiave a una persona che era un prete.";
+			next;
+			mes "[Oresa Rava]";
+			mes "Non ho potuto vedere la mia casa dopo che lui è diventato prete, ma ho fatto una chiave per una celebrazione.";
+			next;
+			mes "[Oresa Rava]";
+			mes "È la chiave della sua villa.";
+			mes "Adesso non so dove abita.";
+			mes "Ma puoi venire lì e mandare il custode del cottage estivo?";
+			next;
+			mes "[Oresa Rava]";
+			mes "In realtà, non posso fidarmi di te...";
+			mes "Ma ti sei presentato con una chiave. Potrebbe essere un atto della provvidenza.";
+			next;
+			select("Sicuro.");
+			break;
+		}
+		mes "[Oresa Rava]";
+		mes "Quella villa era...";
+		mes "costruito in una gola di Vene.";
+		mes "Non ne conosco però la posizione esatta.";
+		next;
+		select("Dovrebbe essere sufficiente.");
+		mes "[Oresa Rava]";
+		mes "Sei sicuro?";
+		mes "Sei così gentile.";
+		mes "Mandami quella chiave.";
+		next;
+		mes "- Trova presto il proprietario di quella chiave e dillo a Mayshell. -";
+		set job_3rd_gc, 14;
+		close;
+	} else if (job_3rd_gc == 14) {
+		mes "Quella chiave è di una villa costruita in una gola di Vene.";
+		mes "Ne sono sicuro.";
+		close;
+	} else {
+		mes "È una vecchia storia su quell'artigiano.";
+		mes "Adesso... è meglio vedere mio nipote.";
+		next;
+		mes "[Oresa Rava]";
+		mes "Adesso stai ridendo, ma presto mi capirai.";
+		close;
+	}
+}
+
+//Pre-RE: ve_fild05 (327,308)
+ve_fild02,330,384,3	script	Girl#3rdgc14	466,{
+	if (job_3rd_gc > 14 && job_3rd_gc < 18) {
+		mes "[Renzak]";
+		if (job_3rd_gc == 15) {
+			mes "Tu sei qui.";
+			mes "Sono Renzak.";
+			mes "Hai mandato qui da Mayshell?";
+			//mes "I'm not dwelling on."; //FIXME: Dialogue.
+			next;
+			mes "[Renzak]";
+			mes "Il nostro obiettivo finale è laggiù.";
+			mes "Il palazzo è circondato da scogliere.";
+			mes "Devi rimuovere il bersaglio nella villa.";
+			next;
+			mes "[Renzak]";
+			mes "Ti darò 10 minuti.";
+			mes "Completa il tuo compito e poi aspetta nella porta sul retro della villa.";
+			mes "Ti aspetterò lì.";
+		} else if (job_3rd_gc == 16) {
+			mes "Devi raggiungere il nostro obiettivo ed uscire dalla porta sul retro della villa entro 10 minuti.";
+			mes "Puoi farlo.";
+		} else {
+			mes "Hai fallito.";
+			mes "Devi avere successo.";
+			next;
+			mes "[Renzak]";
+			mes "Devi uscire dalla porta sul retro della villa.";
+			mes "Ti aspetterò.";
+		}
+		next;
+		switch(select("Capito.:Sarò pronto.")) {
+		case 1:
+			if ($@3rdgc_room02 == 0) {
+				erasequest ((job_3rd_gc == 17)?7110:7109);
+				set job_3rd_gc, 17;
+				setquest 7110;
+				set $@3rdgc_room02, 1;
+				warp "job3_guil03",22,70;
+			} else {
+				mes "[Renzak]";
+				mes "Aspetta un secondo.";
+				mes "Aspetta solo che diventi buio.";
+				next;
+				mes "[Renzak]";
+				mes "Sarà facile infiltrarsi perché è coperto dall'ombra del dirupo.";
+				set job_3rd_gc, 16;
+			}
+			close;
+		case 2:
+			mes "[Renzak]";
+			mes "Non hai tempo da perdere.";
+			mes "Dovresti prepararti all'azione.";
+			if (job_3rd_gc == 17) {
+				erasequest 7110;
+				setquest 7109;
+			}
+			set job_3rd_gc, 16;
+			close;
+		}
+	} else if (job_3rd_gc > 18) {
+		mes "[Renzak]";
+		mes "Stai bene.";
+		mes "Me? Ho sempre avuto la stessa figura.";
+		next;
+		mes "[Renzak]";
+		mes "Aspetto solo ragazzi che facciano quello che chiedo.";
+		close;
+	} else {
+		mes "[Ragazza dal volto in ombra]";
+		mes "......";
+		mes "Questa strada è bloccata.";
+		mes "Torna indietro.";
+		close;
+	}
+OnInit:
+	set $@3rdgc_room02, 0;
+	end;
+}
+
+job3_guil03,22,70,0	script	#3rdgc_event01	139,3,3,{
+	end;
+OnEnable:
+	enablenpc "#3rdgc_event01";
+	end;
+OnDisable:
+	disablenpc "#3rdgc_event01";
+	end;
+OnStop:
+	stopnpctimer;
+	end;
+OnTouch_:
+	if (job_3rd_gc == 17) {
+		initnpctimer;
+		donpcevent "#3rdgc_event_master::OnEnable";
+		disablenpc "#3rdgc_event01";
+	} else {
+		mes "Non devi venire qui.";
+		close2;
+		warp "ve_fild02",330,379;	//Pre-RE: ve_fild05 (341,303)
+		set $@3rdgc_room02, 0;
+	}
+	end;
+OnTimer900000:
+	mapannounce "job3_guil03",""Renzak: Ritirati!",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	end;
+OnTimer901000:
+	mapwarp "job3_guil03","ve_fild02",330,379;	//Pre-RE: ve_fild05 (341,303)
+	end;
+OnTimer902000:
+	donpcevent "#3rdgc_event_master::OnReset";
+	stopnpctimer;
+	end;
+}
+
+job3_guil03,1,4,0	script	#3rdgc_event_master	844,{
+	end;
+OnEnable:
+	donpcevent "Barbed-Wire Entanglement::OnEnable";
+	donpcevent "Guard Dog#dog01::OnEnable";
+	donpcevent "Guard Dog#dog02::OnEnable";
+	donpcevent "#3rdgc_sunchal_nomal::OnEnable";
+	donpcevent "#3rdgc_sunchal_kill01::OnEnable";
+	donpcevent "#3rdgc_sunchal_kill02::OnEnable";
+	donpcevent "#3rdgc_sunchal_kill03::OnEnable";
+	donpcevent "#3rdgc_gojung_kill01::OnEnable";
+	donpcevent "#3rdgc_gojung_kill02::OnEnable";
+	donpcevent "#3rdgc_gojung_kill03::OnEnable";
+	donpcevent "Priest from Rachel::OnEnable";
+	end;
+OnReset:
+	donpcevent "#3rdgc_guard::OnStop";
+	donpcevent "#3rdgc_guardoff::OnReset";
+	donpcevent "#3rdgc_hide01::OnStop";
+	donpcevent "#3rdgc_hide02::OnStop";
+	donpcevent "#3rdgc_hide03::OnStop";
+	donpcevent "#3rdgc_sunchal_kill01::OnStop";
+	donpcevent "#3rdgc_sunchal_kill02::OnStop";
+	donpcevent "#3rdgc_sunchal_kill03::OnStop";
+	donpcevent "#3rdgc_gojung_kill01::OnStop";
+	donpcevent "#3rdgc_gojung_kill02::OnStop";
+	donpcevent "#3rdgc_gojung_kill03::OnStop";
+	donpcevent "Guard Dog#dog01::OnReset";
+	donpcevent "Guard Dog#dog02::OnReset";
+	donpcevent "#3rdgc_sunchal_nomal::OnReset";
+	donpcevent "#3rdgc_sunchal_kill01::OnReset";
+	donpcevent "#3rdgc_sunchal_kill02::OnReset";
+	donpcevent "#3rdgc_sunchal_kill03::OnReset";
+	donpcevent "#3rdgc_gojung_kill01::OnReset";
+	donpcevent "#3rdgc_gojung_kill02::OnReset";
+	donpcevent "#3rdgc_gojung_kill03::OnReset";
+	donpcevent "Priest from Rachel::OnReset";
+	donpcevent "Barbed-Wire Entanglement::OnDisable";
+	donpcevent "Guard Dog#dog01::OnDisable";
+	donpcevent "Guard Dog#dog02::OnDisable";
+	donpcevent "#3rdgc_gojung_kill01::OnDisable";
+	donpcevent "#3rdgc_gojung_kill02::OnDisable";
+	donpcevent "#3rdgc_gojung_kill03::OnDisable";
+	donpcevent "Priest from Rachel::OnDisable";
+	donpcevent "Renzak#3rdgc16::OnDisable";
+	donpcevent "#3rdgc_event01::OnEnable";
+	set $@3rdgc_room02, 0;
+	end;
+}
+
+//Original name: Barbed-Wire Entanglements#3rdgc_door01
+job3_guil03,55,79,0	script	Barbed-Wire Entanglement	844,1,1,{
+	end;
+OnEnable:
+	enablenpc "Barbed-Wire Entanglement";
+	end;
+OnDisable:
+	disablenpc "Barbed-Wire Entanglement";
+	end;
+OnTouch_:
+	mes "C'è spazio sul fondo del vecchio recinto.";
+	next;
+	if(select("Trova un altro modo.:Salire nello spazio.") == 2) {
+		mes "Ti arrampichi nello spazio ristretto.";
+		mes "Il buco è bloccato con i vecchi intrecci di filo spinato.";
+		close2;
+		warp "job3_guil03",57,79;
+		disablenpc "Barbed-Wire Entanglement";
+		end;
+	}
+	close;
+}
+
+job3_guil03,98,46,0	script	#3rdgc_hide01	139,1,4,{
+	end;
+OnStop:
+	killmonster "job3_guil03","#3rdgc_hide01::OnMyMobDead";
+	stopnpctimer;
+	end;
+OnTouch_:
+	mapannounce "job3_guil03",""Voce maschile: Uhm? È un'ombra quella nella finestra?",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	initnpctimer;
+	end;
+OnTimer2000:
+	monster "job3_guil03",97,49,"Guard",1985,1,"#3rdgc_hide01::OnMyMobDead";
+	monster "job3_guil03",98,49,"Guard",1985,1,"#3rdgc_hide01::OnMyMobDead";
+	monster "job3_guil03",99,49,"Guard Dog",1866,1,"#3rdgc_hide01::OnMyMobDead";
+	mapannounce "job3_guil03",""Guardie: Un invasore!!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	end;
+OnTimer60000:
+	mapannounce "job3_guil03",""Guardie: State attenti!!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	donpcevent "#3rdgc_guard::OnEnable";
+	stopnpctimer;
+	end;
+OnMyMobDead:
+	if (mobcount("job3_guil03","#3rdgc_hide01::OnMyMobDead") < 1)
+		stopnpctimer;
+	end;
+}
+
+job3_guil03,98,55,0	script	#3rdgc_hide02	139,1,4,{
+	end;
+OnStop:
+	killmonster "job3_guil03","#3rdgc_hide02::OnMyMobDead";
+	stopnpctimer;
+	end;
+OnTouch_:
+	mapannounce "job3_guil03",""Voce maschile: C'è qualcosa fuori!",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	initnpctimer;
+	end;
+OnTimer2000:
+	monster "job3_guil03",97,57,"Guard",1985,1,"#3rdgc_hide02::OnMyMobDead";
+	monster "job3_guil03",98,57,"Guard",1985,1,"#3rdgc_hide02::OnMyMobDead";
+	monster "job3_guil03",99,57,"Guard Dog",1866,1,"#3rdgc_hide02::OnMyMobDead";
+	mapannounce "job3_guil03",""Guardie: Un invasore!!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	end;
+OnTimer60000:
+	mapannounce "job3_guil03",""Guardie: State attenti!!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	donpcevent "#3rdgc_guard::OnEnable";
+	stopnpctimer;
+	end;
+OnMyMobDead:
+	if (mobcount("job3_guil03","#3rdgc_hide02::OnMyMobDead") < 1)
+		stopnpctimer;
+	end;
+}
+
+job3_guil03,98,64,0	script	#3rdgc_hide03	139,1,4,{
+	end;
+OnStop:
+	killmonster "job3_guil03","#3rdgc_hide03::OnMyMobDead";
+	stopnpctimer;
+	end;
+OnTouch_:
+	mapannounce "job3_guil03",""Voce maschile: Che cos'è?",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	initnpctimer;
+	end;
+OnTimer2000:
+	monster "job3_guil03",97,67,"Guard",1985,1,"#3rdgc_hide03::OnMyMobDead";
+	monster "job3_guil03",98,67,"Guard",1985,1,"#3rdgc_hide03::OnMyMobDead";
+	monster "job3_guil03",99,67,"Guard Dog",1866,1,"#3rdgc_hide03::OnMyMobDead";
+	mapannounce "job3_guil03",""Guardie: Un invasore!!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	end;
+OnTimer60000:
+	mapannounce "job3_guil03",""Guardie: State attenti!!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	donpcevent "#3rdgc_guard::OnEnable";
+	stopnpctimer;
+	end;
+OnMyMobDead:
+	if (mobcount("job3_guil03","#3rdgc_hide03::OnMyMobDead") < 1)
+		stopnpctimer;
+	end;
+}
+
+job3_guil03,1,2,0	script	#3rdgc_guard	844,{
+	end;
+OnEnable:
+	initnpctimer;
+	end;
+OnStop:
+	stopnpctimer;
+	end;
+OnTimer5000:
+	mapannounce "job3_guil03",""Guardie: Prendete le dovute precauzioni fuori!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	donpcevent "Exterior Guard#g01::OnEnable";
+	donpcevent "Exterior Guard#g02::OnEnable";
+	donpcevent "Exterior Guard#g03::OnEnable";
+	donpcevent "Exterior Guard#g04::OnEnable";
+	donpcevent "Exterior Guard#g05::OnEnable";
+	donpcevent "Exterior Guard#g06::OnEnable";
+	end;
+OnTimer8000:
+	mapannounce "job3_guil03",""Guardie: Prendete la massima precauzione davanti al cancello principale!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	donpcevent "Front Gate Guard#g01::OnEnable";
+	donpcevent "Front Gate Guard#g03::OnEnable";
+	donpcevent "Front Gate Guard#g04::OnEnable";
+	donpcevent "Front Gate Guard#g05::OnEnable";
+	end;
+OnTimer13000:
+	mapannounce "job3_guil03",""Guardie: Prendete la massima precauzione dal cancello sul retro!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	donpcevent "Back Gate Guard#g01::OnEnable";
+	donpcevent "Back Gate Guard#g03::OnEnable";
+	donpcevent "Back Gate Guard#g04::OnEnable";
+	donpcevent "Back Gate Guard#g05::OnEnable";
+	end;
+OnTimer16000:
+	mapannounce "job3_guil03",""Guardie: Prendete scrupolose precauzioni per l'interno!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	donpcevent "Interior Guard#g01::OnEnable";
+	donpcevent "Interior Guard#g03::OnEnable";
+	donpcevent "Interior Guard#g04::OnEnable";
+	donpcevent "Interior Guard#g05::OnEnable";
+	stopnpctimer;
+	end;
+}
+
+job3_guil03,1,3,0	script	#3rdgc_guardoff	844,{
+	end;
+OnDisable:
+	initnpctimer;
+	end;
+OnReset:
+	stopnpctimer;
+	donpcevent "Front Gate Guard#g01::OnDisable";
+	donpcevent "Front Gate Guard#g03::OnDisable";
+	donpcevent "Front Gate Guard#g04::OnDisable";
+	donpcevent "Front Gate Guard#g05::OnDisable";
+	donpcevent "Back Gate Guard#g01::OnDisable";
+	donpcevent "Back Gate Guard#g03::OnDisable";
+	donpcevent "Back Gate Guard#g04::OnDisable";
+	donpcevent "Back Gate Guard#g05::OnDisable";
+	donpcevent "Interior Guard#g01::OnDisable";
+	donpcevent "Interior Guard#g03::OnDisable";
+	donpcevent "Interior Guard#g04::OnDisable";
+	donpcevent "Interior Guard#g05::OnDisable";
+	donpcevent "Exterior Guard#g01::OnDisable";
+	donpcevent "Exterior Guard#g02::OnDisable";
+	donpcevent "Exterior Guard#g03::OnDisable";
+	donpcevent "Exterior Guard#g04::OnDisable";
+	donpcevent "Exterior Guard#g05::OnDisable";
+	donpcevent "Exterior Guard#g06::OnDisable";
+	donpcevent "Front Gate Guard#g01::OnReset";
+	donpcevent "Back Gate Guard#g01::OnReset";
+	donpcevent "Interior Guard#g01::OnReset";
+	donpcevent "Exterior Guard#g01::OnReset";
+	donpcevent "Exterior Guard#g02::OnReset";
+	donpcevent "Exterior Guard#g03::OnReset";
+	donpcevent "Exterior Guard#g04::OnReset";
+	donpcevent "Exterior Guard#g05::OnReset";
+	donpcevent "Exterior Guard#g06::OnReset";
+	end;
+OnTimer1000:
+	mapannounce "job3_guil03",""Guardie: Uhm? Sto immaginando le cose.",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	end;
+OnTimer4000:
+	mapannounce "job3_guil03",""Guardie: Torniamo indietro.",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	end;
+OnTimer5000:
+	donpcevent "Front Gate Guard#g01::OnDisable";
+	donpcevent "Front Gate Guard#g03::OnDisable";
+	donpcevent "Front Gate Guard#g04::OnDisable";
+	donpcevent "Front Gate Guard#g05::OnDisable";
+	donpcevent "Back Gate Guard#g01::OnDisable";
+	donpcevent "Back Gate Guard#g03::OnDisable";
+	donpcevent "Back Gate Guard#g04::OnDisable";
+	donpcevent "Back Gate Guard#g05::OnDisable";
+	donpcevent "Interior Guard#g01::OnDisable";
+	donpcevent "Interior Guard#g03::OnDisable";
+	donpcevent "Interior Guard#g04::OnDisable";
+	donpcevent "Interior Guard#g05::OnDisable";
+	donpcevent "Exterior Guard#g01::OnDisable";
+	donpcevent "Exterior Guard#g02::OnDisable";
+	donpcevent "Exterior Guard#g03::OnDisable";
+	donpcevent "Exterior Guard#g04::OnDisable";
+	donpcevent "Exterior Guard#g05::OnDisable";
+	donpcevent "Exterior Guard#g06::OnDisable";
+	stopnpctimer;
+	end;
+}
+
+-	script	#3rdgc_guard00	-1,{
+	end;
+OnInit:
+OnDisable:
+	disablenpc();
+	end;
+OnEnable:
+	enablenpc();
+	end;
+}
+
+job3_guil03,93,35,3	script	Front Gate Guard#g01	456,5,5,{
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Front Gate Guard#g01";
+	end;
+OnEnable:
+	enablenpc "Front Gate Guard#g01";
+	end;
+OnReset:
+	killmonster "job3_guil03","Front Gate Guard#g01::OnMyMobDead";
+	end;
+OnTouch_:
+	disablenpc "Front Gate Guard#g01";
+	disablenpc "Front Gate Guard#g03";
+	disablenpc "Front Gate Guard#g04";
+	disablenpc "Front Gate Guard#g05";
+	monster "job3_guil03",93,37,"Guard Dog",1866,1,"Front Gate Guard#g01::OnMyMobDead";
+	monster "job3_guil03",93,36,"Front Gate Guard",1985,1,"Front Gate Guard#g01::OnMyMobDead";
+	monster "job3_guil03",93,35,"Front Gate Guard",1985,1,"Front Gate Guard#g01::OnMyMobDead";
+	monster "job3_guil03",93,34,"Front Gate Guard",1985,1,"Front Gate Guard#g01::OnMyMobDead";
+	monster "job3_guil03",93,33,"Front Gate Guard",1985,1,"Front Gate Guard#g01::OnMyMobDead";
+	monster "job3_guil03",93,32,"Guard Dog",1866,1,"Front Gate Guard#g01::OnMyMobDead";
+	end;
+OnMyMobDead:
+	end;
+}
+job3_guil03,93,36,3	duplicate(#3rdgc_guard00)	Front Gate Guard#g03	456
+job3_guil03,93,34,3	duplicate(#3rdgc_guard00)	Front Gate Guard#g04	456
+job3_guil03,93,33,3	duplicate(#3rdgc_guard00)	Front Gate Guard#g05	456
+
+job3_guil03,133,52,5	script	Back Gate Guard#g01	456,5,5,{
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Back Gate Guard#g01";
+	end;
+OnEnable:
+	enablenpc "Back Gate Guard#g01";
+	end;
+OnReset:
+	killmonster "job3_guil03","Back Gate Guard#g01::OnMyMobDead";
+	end;
+OnTouch_:
+	disablenpc "Back Gate Guard#g01";
+	disablenpc "Back Gate Guard#g03";
+	disablenpc "Back Gate Guard#g04";
+	disablenpc "Back Gate Guard#g05";
+	monster "job3_guil03",133,54,"Guard Dog",1866,1,"Back Gate Guard#g01::OnMyMobDead";
+	monster "job3_guil03",133,53,"Back Gate Guard",1985,1,"Back Gate Guard#g01::OnMyMobDead";
+	monster "job3_guil03",133,52,"Back Gate Guard",1985,1,"Back Gate Guard#g01::OnMyMobDead";
+	monster "job3_guil03",133,51,"Back Gate Guard",1985,1,"Back Gate Guard#g01::OnMyMobDead";
+	monster "job3_guil03",133,50,"Back Gate Guard",1985,1,"Back Gate Guard#g01::OnMyMobDead";
+	monster "job3_guil03",133,49,"Guard Dog",1866,1,"Back Gate Guard#g01::OnMyMobDead";
+	end;
+OnMyMobDead:
+	end;
+}
+job3_guil03,133,53,5	duplicate(#3rdgc_guard00)	Back Gate Guard#g03	456
+job3_guil03,133,51,5	duplicate(#3rdgc_guard00)	Back Gate Guard#g04	456
+job3_guil03,133,50,5	duplicate(#3rdgc_guard00)	Back Gate Guard#g05	456
+
+job3_guil03,117,51,4	script	Interior Guard#g01	456,5,5,{
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Interior Guard#g01";
+	end;
+OnEnable:
+	enablenpc "Interior Guard#g01";
+	end;
+OnReset:
+	killmonster "job3_guil03","Interior Guard#g01::OnMyMobDead";
+	end;
+OnTouch_:
+	disablenpc "Interior Guard#g01";
+	disablenpc "Interior Guard#g03";
+	disablenpc "Interior Guard#g04";
+	disablenpc "Interior Guard#g05";
+	monster "job3_guil03",117,53,"Guard Dog",1866,1,"Interior Guard#g01::OnMyMobDead";
+	monster "job3_guil03",117,52,"Interior Guard",1985,1,"Interior Guard#g01::OnMyMobDead";
+	monster "job3_guil03",117,51,"Interior Guard",1985,1,"Interior Guard#g01::OnMyMobDead";
+	monster "job3_guil03",117,50,"Interior Guard",1985,1,"Interior Guard#g01::OnMyMobDead";
+	monster "job3_guil03",117,49,"Interior Guard",1985,1,"Interior Guard#g01::OnMyMobDead";
+	monster "job3_guil03",117,48,"Guard Dog",1866,1,"Interior Guard#g01::OnMyMobDead";
+	end;
+OnMyMobDead:
+	end;
+}
+job3_guil03,117,52,4	duplicate(#3rdgc_guard00)	Interior Guard#g03	456
+job3_guil03,117,50,4	duplicate(#3rdgc_guard00)	Interior Guard#g04	456
+job3_guil03,117,49,4	duplicate(#3rdgc_guard00)	Interior Guard#g05	456
+
+job3_guil03,88,44,4	script	Exterior Guard#g01	456,5,5,{
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Exterior Guard#g01";
+	end;
+OnEnable:
+	enablenpc "Exterior Guard#g01";
+	end;
+OnReset:
+	killmonster "job3_guil03","Exterior Guard#g01::OnMyMobDead";
+	end;
+OnTouch_:
+	mapannounce "job3_guil03",""Guardie: Chi sei?!",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	disablenpc "Exterior Guard#g01";
+	monster "job3_guil03",88,44,"Exterior Guard",1985,1,"Exterior Guard#g01::OnMyMobDead";
+	monster "job3_guil03",88,43,"Exterior Guard",1985,1,"Exterior Guard#g01::OnMyMobDead";
+	monster "job3_guil03",88,45,"Guard Dog",1866,1,"Exterior Guard#g01::OnMyMobDead";
+	end;
+OnMyMobDead:
+	end;
+}
+
+job3_guil03,88,55,4	script	Exterior Guard#g02	456,5,5,{
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Exterior Guard#g02";
+	end;
+OnEnable:
+	enablenpc "Exterior Guard#g02";
+	end;
+OnReset:
+	killmonster "job3_guil03","Exterior Guard#g02::OnMyMobDead";
+	end;
+OnTouch_:
+	mapannounce "job3_guil03",""Guardie: Nemico?!",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	disablenpc "Exterior Guard#g02";
+	monster "job3_guil03",88,55,"Exterior Guard",1985,1,"Exterior Guard#g02::OnMyMobDead";
+	monster "job3_guil03",88,54,"Exterior Guard",1985,1,"Exterior Guard#g02::OnMyMobDead";
+	monster "job3_guil03",88,56,"Guard Dog",1866,1,"Exterior Guard#g02::OnMyMobDead";
+	end;
+OnMyMobDead:
+	end;
+}
+
+job3_guil03,88,64,4	script	Exterior Guard#g03	456,5,5,{
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Exterior Guard#g03";
+	end;
+OnEnable:
+	enablenpc "Exterior Guard#g03";
+	end;
+OnReset:
+	killmonster "job3_guil03","Exterior Guard#g03::OnMyMobDead";
+	end;
+OnTouch_:
+	mapannounce "job3_guil03",""Guardie: Un invasore, allontanatelo!",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	disablenpc "Exterior Guard#g03";
+	monster "job3_guil03",88,64,"Exterior Guard",1985,1,"Exterior Guard#g03::OnMyMobDead";
+	monster "job3_guil03",88,63,"Exterior Guard",1985,1,"Exterior Guard#g03::OnMyMobDead";
+	monster "job3_guil03",88,65,"Guard Dog",1866,1,"Exterior Guard#g03::OnMyMobDead";
+	end;
+OnMyMobDead:
+	end;
+}
+
+job3_guil03,73,62,4	script	Exterior Guard#g04	456,5,5,{
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Exterior Guard#g04";
+	end;
+OnEnable:
+	enablenpc "Exterior Guard#g04";
+	end;
+OnReset:
+	killmonster "job3_guil03","Exterior Guard#g04::OnMyMobDead";
+	end;
+OnTouch_:
+	mapannounce "job3_guil03",""Guardie: Chi sei?!",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	disablenpc "Exterior Guard#g04";
+	monster "job3_guil03",73,62,"Exterior Guard",1985,1,"Exterior Guard#g04::OnMyMobDead";
+	monster "job3_guil03",73,61,"Exterior Guard",1985,1,"Exterior Guard#g04::OnMyMobDead";
+	monster "job3_guil03",73,63,"Guard Dog",1866,1,"Exterior Guard#g04::OnMyMobDead";
+	end;
+OnMyMobDead:
+	end;
+}
+
+job3_guil03,77,51,4	script	Exterior Guard#g05	456,5,5,{
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Exterior Guard#g05";
+	end;
+OnEnable:
+	enablenpc "Exterior Guard#g05";
+	end;
+OnReset:
+	killmonster "job3_guil03","Exterior Guard#g05::OnMyMobDead";
+	end;
+OnTouch_:
+	mapannounce "job3_guil03",""Guardie: Chi sei?!",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	disablenpc "Exterior Guard#g05";
+	monster "job3_guil03",77,51,"Exterior Guards",1985,1,"Exterior Guard#g05::OnMyMobDead";
+	monster "job3_guil03",77,50,"Exterior Guards",1985,1,"Exterior Guard#g05::OnMyMobDead";
+	monster "job3_guil03",77,49,"Guard Dog",1866,1,"Exterior Guard#g05::OnMyMobDead";
+	end;
+OnMyMobDead:
+	end;
+}
+
+job3_guil03,73,34,4	script	Exterior Guard#g06	456,5,5,{
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Exterior Guard#g06";
+	end;
+OnEnable:
+	enablenpc "Exterior Guard#g06";
+	end;
+OnReset:
+	killmonster "job3_guil03","Exterior Guard#g06::OnMyMobDead";
+	end;
+OnTouch_:
+	mapannounce "job3_guil03",""Guardia: Chi sei?!",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	disablenpc "Exterior Guard#g06";
+	monster "job3_guil03",73,34,"Exterior Guards",1985,1,"Exterior Guard#g06::OnMyMobDead";
+	monster "job3_guil03",73,33,"Exterior guards",1985,1,"Exterior Guard#g06::OnMyMobDead";
+	monster "job3_guil03",73,32,"Guard Dog",1866,1,"Exterior Guard#g06::OnMyMobDead";
+	end;
+OnMyMobDead:
+	end;
+}
+
+job3_guil03,110,27,3	script	Guard Dog#dog01	1866,3,1,{
+	end;
+OnEnable:
+	enablenpc "Guard Dog#dog01";
+	end;
+OnDisable:
+	disablenpc "Guard Dog#dog01";
+	end;
+OnReset:
+	killmonster "job3_guil03","Guard Dog#dog01::OnMyMobDead";
+	end;
+OnTouch_:
+	mapannounce "job3_guil03",""Sei stato rilevato dal cane da guardia.",bc_map,"0x00ff00"; //FW_NORMAL 12 0 0
+	disablenpc "Guard Dog#dog01";
+	monster "job3_guil03",110,27,"Guard Dog",1866,1,"Guard Dog#dog01::OnMyMobDead";
+	monster "job3_guil03",103,27,"Dog Trainer",1985,1,"Guard Dog#dog01::OnMyMobDead";
+	monster "job3_guil03",104,27,"Dog Trainer's Assistant",1985,1,"Guard Dog#dog01::OnMyMobDead";
+	monster "job3_guil03",98,27,"Guard",1985,1,"Guard Dog#dog01::OnMyMobDead";
+	end;
+OnMyMobDead:
+	end;
+}
+
+job3_guil03,119,27,3	script	Guard Dog#dog02	1866,3,1,{
+	end;
+OnEnable:
+	enablenpc "Guard Dog#dog02";
+	end;
+OnDisable:
+	disablenpc "Guard Dog#dog02";
+	end;
+OnReset:
+	killmonster "job3_guil03","Guard Dog#dog02::OnMyMobDead";
+	end;
+OnTouch_:
+	mapannounce "job3_guil03",""Sei stato rilevato dal cane da guardia.",bc_map,"0x00ff00"; //FW_NORMAL 12 0 0
+	disablenpc "Guard Dog#dog02";
+	monster "job3_guil03",124,27,"Guard Dog",1866,1,"Guard Dog#dog02::OnMyMobDead";
+	monster "job3_guil03",126,27,"Dog Trainer",1985,1,"Guard Dog#dog02::OnMyMobDead";
+	monster "job3_guil03",104,27,"Trainer's Assistant",1985,1,"Guard Dog#dog02::OnMyMobDead";
+	monster "job3_guil03",131,27,"Guard",1985,1,"Guard Dog#dog02::OnMyMobDead";
+	end;
+OnMyMobDead:
+	end;
+}
+
+job3_guil03,2,1,0	script	#3rdgc_sunchal_nomal	844,{
+	end;
+OnEnable:
+	monster "job3_guil03",62,35,"Guard",1985,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",108,78,"Guard",1985,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",133,77,"Guard",1985,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",79,69,"Guard",1985,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",117,27,"Guard",1985,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",62,48,"Guard",1985,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",116,24,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",137,24,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",49,74,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",48,50,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",62,48,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",61,38,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",74,47,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",90,34,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",91,51,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",155,77,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",127,67,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",131,43,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",103,27,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",63,74,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",79,69,"Guard Dog",1866,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",0,0,"Watch Light",1129,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",0,0,"Watch Light",1129,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",0,0,"Watch Light",1129,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",0,0,"Watch Light",1129,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	monster "job3_guil03",0,0,"Watch Light",1129,1,"#3rdgc_sunchal_nomal::OnMyMobDead";
+	end;
+OnReset:
+	killmonster "job3_guil03","#3rdgc_sunchal_nomal::OnMyMobDead";
+	end;
+OnMyMobDead:
+	end;
+}
+
+job3_guil03,2,2,0	script	#3rdgc_sunchal_kill01	844,{
+	end;
+OnEnable:
+	set .@i, atoi(charat(strnpcinfo(0),20));
+	setarray .@x[1],74,124,103;
+	setarray .@y[1],63, 78, 24;
+	monster "job3_guil03",.@x[.@i],.@y[.@i],"Guard",1985,1,strnpcinfo(0)+"::OnMyMobDead";
+	end;
+OnStop:
+	mapannounce "job3_guil03",""Guardia: Sto immaginando delle cose? Ho appena sentito qualcosa...",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	stopnpctimer;
+	end;
+OnReset:
+	killmonster "job3_guil03",strnpcinfo(0)+"::OnMyMobDead";
+	end;
+OnMyMobDead:
+	initnpctimer;
+	end;
+OnTimer3000:
+	mapannounce "job3_guil03",""Guardia: Eh? Cos'è quel suono? Ehi, cosa sta succedendo?",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	end;
+OnTimer70000:
+	mapannounce "job3_guil03",""Guardia: Che succede?",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	end;
+OnTimer10000:
+	mapannounce "job3_guil03",""Guardia: Qualcosa non va, fai attenzione!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	donpcevent "#3rdgc_guard::OnEnable";
+	stopnpctimer;
+	end;
+}
+job3_guil03,2,3,0	duplicate(#3rdgc_sunchal_kill01)	#3rdgc_sunchal_kill02	844
+job3_guil03,2,4,0	duplicate(#3rdgc_sunchal_kill01)	#3rdgc_sunchal_kill03	844
+
+job3_guil03,64,68,3	script	#3rdgc_gojung_kill01	456,7,7,{
+	end;
+OnEnable:
+	enablenpc();
+	end;
+OnDisable:
+	disablenpc();
+	end;
+OnStop:
+	mapannounce "job3_guil03",""Guardia: Sto immaginando delle cose? Ho appena sentito qualcosa.",bc_map,"0xA8A8A8"; //FW_NORMAL 12 0 0
+	stopnpctimer;
+	end;
+OnReset:
+	killmonster "job3_guil03",strnpcinfo(0)+"::OnMyMobDead";
+	end;
+OnTouch_:
+	set .@i, atoi(charat(strnpcinfo(0),19));
+	setarray .@x[1],64,86,83;
+	setarray .@y[1],68,63,36;
+	mapannounce "job3_guil03",""Guardia: Chi sei?!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	disablenpc();
+	monster "job3_guil03",.@x[.@i],.@y[.@i],"Guard",1985,1,strnpcinfo(0)+"::OnMyMobDead";
+	initnpctimer;
+	end;
+OnMyMobDead:
+	stopnpctimer;
+	end;
+OnTimer5000:
+	if (strnpcinfo(0) == "#3rdgc_gojung_kill03") end;
+OnTimer10000:
+	mapannounce "job3_guil03",""Guardia: Ho bisogno di sostegno! Fate attenzione!",bc_map,"0x7b68ee"; //FW_NORMAL 12 0 0
+	donpcevent "#3rdgc_guard::OnEnable";
+	stopnpctimer;
+	end;
+}
+job3_guil03,86,63,1	duplicate(#3rdgc_gojung_kill01)	#3rdgc_gojung_kill02	456,8,8
+job3_guil03,83,36,5	duplicate(#3rdgc_gojung_kill01)	#3rdgc_gojung_kill03	456,6,6
+
+job3_guil03,88,71,0	script	#3rdgc_safezone01	139,1,1,{
+	end;
+OnTouch_:
+	mes "È un buon cespuglio per nascondersi.";
+	donpcevent strnpcinfo(0)+"::OnTimer";
+	close;
+OnTimer:
+	//FIXME: This is a workaround for...
+	//var pccount_tt = GetNeighborPcNumber 2
+	getmapxy(.@map$,.@x,.@y,BL_NPC);
+	setarray .@x[1],.@x-2,.@x+2;
+	setarray .@y[1],.@y-2,.@y+2;
+	sleep 1000;
+	for(set .@i,0; .@i<9; set .@i,.@i+1) {
+		if (getareausers(.@map$,.@x[1],.@y[1],.@x[2],.@y[2]) < 1)
+			end;
+		sleep 1000;
+	}
+	if (getareausers(.@map$,.@x[1],.@y[1],.@x[2],.@y[2]) > 0)
+		donpcevent "#3rdgc_guardoff::OnDisable";
+	end;
+}
+job3_guil03,82,45,0	duplicate(#3rdgc_safezone01)	#3rdgc_safezone02	139,1,1
+job3_guil03,72,53,0	duplicate(#3rdgc_safezone01)	#3rdgc_safezone03	139,1,1
+
+job3_guil03,111,51,7	script	Priest from Rachel	928,{
+	if (!.on) end;
+	mes "[Sacerdote di Rachele]";
+	if (job_3rd_gc == 17) {
+		mes "Sei della Gilda degli Assassini?";
+		next;
+		mes "[Sacerdote di Rachele]";
+		mes "Il motivo per cui la nostra organizzazione è stata sciolta è stato a causa vostra.";
+		mes "Sei una persona scrupolosa?";
+		next;
+		mes "[Sacerdote di Rachele]";
+		mes "Per colpa tua hai rovinato tutto!";
+		setnpcdisplay(strnpcinfo(0),2030);
+		next;
+		mes "[Sacerdote di Rachele]";
+		mes "Vuoi distruggerci per sempre!";
+		mes "Non posso far vergognare la Dea con uno sporco Odino!";
+		next;
+		mes "[Sacerdote di Rachele]";
+		mes "Non ti perdonerò mai!!!";
+		mes "Pagano! La giustizia sarà rapida!";
+		donpcevent "Priest from Rachel::OnDisable";
+		monster "job3_guil03",111,51,"Priest from Rachel",2030,1,"Priest from Rachel::OnMyMobDead";
+		close;
+	}
+	mes "Chi sei?";
+	mes "Vattene da qui.";
+	close2;
+	warp "ve_fild02",330,379;	//Pre-RE: ve_fild05 (341,303)
+	end;
+OnInit:
+OnDisable:
+	set .on,0;
+	hideonnpc "Priest from Rachel";
+	end;
+OnEnable:
+	set .on,1;
+	hideoffnpc "Priest from Rachel";
+	end;
+OnReset:
+	killmonster "job3_guil03","Priest from Rachel::OnMyMobDead";
+	end;
+OnMyMobDead:
+	donpcevent "Renzak#3rdgc16::OnEnable";
+	mapannounce "job3_guil03",""Io... non posso morire invano...",bc_map,"0xFF0000"; //FW_NORMAL 12 0 0
+	donpcevent "#3rdgc_event01::OnStop";
+	initnpctimer;
+	end;
+OnTimer3000:
+	mapannounce "job3_guil03",""Renzak: Ehi! Uscire!",bc_map,"0x4d4dff"; //FW_NORMAL 12 0 0
+	end;
+OnTimer40000:
+	mapannounce "job3_guil03",""Renzak: Non ritardare!",bc_map,"0x4d4dff"; //FW_NORMAL 12 0 0
+	end;
+OnTimer60000:
+	mapwarp "job3_guil03","ve_fild02",330,379;	//Pre-RE: ve_fild05 (341,303)
+	end;
+OnTimer61000:
+	donpcevent "#3rdgc_guard::OnStop";
+	donpcevent "#3rdgc_guardoff::OnReset";
+	donpcevent "#3rdgc_hide01::OnStop";
+	donpcevent "#3rdgc_hide02::OnStop";
+	donpcevent "#3rdgc_hide03::OnStop";
+	donpcevent "#3rdgc_sunchal_kill01::OnStop";
+	donpcevent "#3rdgc_sunchal_kill02::OnStop";
+	donpcevent "#3rdgc_sunchal_kill03::OnStop";
+	donpcevent "#3rdgc_gojung_kill01::OnStop";
+	donpcevent "#3rdgc_gojung_kill02::OnStop";
+	donpcevent "#3rdgc_gojung_kill03::OnStop";
+	donpcevent "Guard Dog#dog01::OnReset";
+	donpcevent "Guard Dog#dog02::OnReset";
+	donpcevent "#3rdgc_sunchal_nomal::OnReset";
+	donpcevent "#3rdgc_sunchal_kill01::OnReset";
+	donpcevent "#3rdgc_sunchal_kill02::OnReset";
+	donpcevent "#3rdgc_sunchal_kill03::OnReset";
+	donpcevent "#3rdgc_gojung_kill01::OnReset";
+	donpcevent "#3rdgc_gojung_kill02::OnReset";
+	donpcevent "#3rdgc_gojung_kill03::OnReset";
+	donpcevent "Priest from Rachel::OnReset";
+	donpcevent "Barbed-Wire Entanglement::OnDisable";
+	donpcevent "Guard Dog#dog01::OnDisable";
+	donpcevent "Guard Dog#dog02::OnDisable";
+	donpcevent "#3rdgc_gojung_kill01::OnDisable";
+	donpcevent "#3rdgc_gojung_kill02::OnDisable";
+	donpcevent "#3rdgc_gojung_kill03::OnDisable";
+	donpcevent "Priest from Rachel::OnDisable";
+	donpcevent "Renzak#3rdgc16::OnDisable";
+	end;
+OnTimer61500:
+	donpcevent "#3rdgc_event01::OnEnable";
+	set $@3rdgc_room02, 0;
+	stopnpctimer;
+	end;
+}
+
+job3_guil03,146,70,3	script	Renzak#3rdgc16	466,{
+	mes "[Renzak]";
+	if (checkquest(7110,HUNTING) == 2) {
+		mes "I miei colleghi verranno qui per sistemare questa faccenda.";
+		mes "Vai a Mayshell per il rapporto.";
+		next;
+		mes "[Renzak]";
+		if (checkquest(7110,PLAYTIME) == 0) {
+			mes "Hai finito velocemente.";
+			mes "Buon lavoro.";
+			set job_3rd_gc, 18;
+		} else {
+			mes "Ti avevo detto che dovevi finire entro 10 minuti.";
+			mes "Potresti essere esausto.";
+			mes "Fortunatamente stai bene.";
+			set job_3rd_gc, 19;
+		}
+		erasequest 7110;
+		setquest 7111;
+		close2;
+		warp "job3_guil01",51,50;
+		end;
+	}
+	mes "Prendi l'obiettivo!";
+	mes "In realtà non dovrei essere qui. C'è qualcosa che non va in te?";
+	close;
+OnInit:
+	disablenpc "Renzak#3rdgc16";
+	end;
+OnEnable:
+	enablenpc "Renzak#3rdgc16";
+	end;
+OnDisable:
+	disablenpc "Renzak#3rdgc16";
+	end;
+}
+
+job3_guil01,148,53,3	script	Bercasell#3rdgc16	467,{
+	if (!checkweight(1201,2)) {
+		mes "- Non puoi continuare questa missione perché hai troppi oggetti. -";
+		close;
+	}
+	mes "[Bercasell]";
+	if (Class == Job_Assassin || Class == Job_Assassin_Cross || Class == Job_Baby_Assassin) {
+		if (job_3rd_gc == 20) {
+			if (JobLevel > 49 && SkillPoint == 0 && BaseLevel > 98) {
+				mes "Sono così stanco...";
+				mes "Sei stato mandato da Mayshell?";
+				mes "Dimmi perché sei venuto a trovarmi.";
+				next;
+				switch(select("Cos'è una croce a ghigliottina?:Voglio essere una Croce Ghigliottina.:Niente.")) {
+				case 1:
+					mes "[Bercasell]";
+					mes ".....";
+					next;
+					mes "[Bercasell]";
+					mes "Allora vuoi sapere della Croce Ghigliottina?";
+					mes "Uscire!";
+					next;
+					switch(select("Dimmi solo...:......")) {
+					case 1:
+						mes "[Bercasell]";
+						callsub L_Info;
+						mes "[Bercasell]";
+						mes "È divertente che ti parli in questo modo.";
+						mes "Voglio impedirti di diventare una Croce Ghigliottinata a causa della tua sfida.";
+						close;
+					case 2:
+						mes "[Bercasell]";
+						mes "Sì, non fai domande.";
+						mes "Va bene. Sei qualificato. Che ne dici di essere una Croce Ghigliottina?";
+						mes "Vuoi essere una Croce Ghigliottina?";
+						next;
+						switch(select("Sì, cambia lavoro.:Ho bisogno di pensarci.")) {
+						case 1:
+							L_JobChange:
+							mes "[Bercasell]";
+							mes "Non te ne penti?";
+							callsub L_Info;
+							mes "[Bercasell]";
+							mes "Puoi diventare un'arma offensiva vivente.";
+							mes "Vuoi davvero diventare una Croce Ghigliottina?";
+							next;
+							switch(select("Sì, cambia lavoro.:Ho bisogno di ripensarci.")) {
+							case 1:
+								mes "[Bercasell]";
+								if (ismounting()) {
+									mes "Non riesco a effettuare il cambio di lavoro.";
+									mes "Rimuovi il supporto e riprova.";
+									close;
+								} else if (SkillPoint != 0) {
+									mes "Hai ancora punti abilità non spesi.";
+									mes "Utilizza tutti i tuoi punti abilità e riprova.";
+									close;
+								}
+								mes "La tua decisione è definitiva?";
+								mes "Bene.";
+								next;
+								mes "[Bercasell]";
+								mes "Ora sei un assassino, ma non sei più un assassino.";
+								mes "Sei nell'ombra, ma è diverso dalle altre ombre.";
+								next;
+								mes "[Bercasell]";
+								mes "Il tuo nemico è tutto ciò che puoi vedere.";
+								mes "Non dimenticare te stesso.";
+								mes "Un peso di sangue sulle tue armi.";
+								next;
+								mes "[Bercasell]";
+								mes "Ok, cambia i vestiti con la tua nuova uniforme.";
+								mes "Ora sei una Croce Ghigliottina.";
+								next;
+								mes "[Bercasell]";
+								mes "Una spada dell'ombra...";
+								setlook 7,0;
+								jobchange roclass(eaclass()|EAJL_THIRD);
+								if (checkquest(7096) == 1) {
+									set job_3rd_gc, 25;
+									erasequest 7096;
+								} else if (checkquest(7097) == 1) {
+									set job_3rd_gc, 26;
+									erasequest 7097;
+								} else if (checkquest(7098) == 1) {
+									set job_3rd_gc, 27;
+									erasequest 7098;
+								} else if (checkquest(7099) == 1) {
+									set job_3rd_gc, 28;
+									erasequest 7099;
+								}
+								getitem 2795,1; //Green_Apple_Ring
+								getitem 5755,1; //Silent_Executer
+								next;
+								mes "[Bercasell]";
+								mes "E... questi sono regali per celebrare il tuo diventare una Croce Ghigliottina.";
+								close;
+							case 2:
+								mes "[Bercasell]";
+								mes "Sei prudente. Questa è una buona cosa.";
+								mes "Aspetterò il giorno in cui deciderai di unirti a noi come Croce Ghigliottina.";
+								close;
+							}
+						case 2:
+							mes "[Bercasell]";
+							mes "Sei prudente. Questa è una buona cosa.";
+							mes "Aspetterò il giorno in cui deciderai di unirti a noi come Croce Ghigliottina.";
+							close;
+						}
+					}
+				case 2:
+					goto L_JobChange;
+				case 3:
+					mes "[Bercasell]";
+					mes "Non disturbarmi.";
+					close;
+				}
+			}
+			mes "......";
+			mes "Cosa posso fare per lei?";
+			next;
+			switch(select("Voglio essere una ghigliottina.:Niente.")) {
+			case 1:
+				mes "[Bercasell]";
+				mes "Fai?";
+				mes "Per che cosa...?";
+				mes "Naturalmente sei venuto qui di tua volontà...";
+				next;
+				mes "[Bercasell]";
+				mes "Guillotine Cross è un difensore delle leggi della Gilda degli Assassini.";
+				mes "Puoi piantare un pugnale nella schiena di uno dei tuoi coetanei?";
+				next;
+				mes "[Bercasell]";
+				mes "Non sei ancora pronto per farlo...";
+				close;
+			case 2:
+				mes "[Bercasell]";
+				mes "Non disturbarmi.";
+				close;
+			}
+		} else if (job_3rd_gc > 20) {
+			mes "Non perseguire solo la forza.";
+			mes "Ti stancherai.";
+			mes "Non è meglio che vivere.";
+			mes "Se cerchi solo il potere...";
+			next;
+			mes "[Bercasell]";
+			mes "Un giorno, ti tornerà in mente.";
+			mes "Beh, sono solo un'arma, supponiamo che non abbia il diritto di parlare della vita...";
+			close;
+		} else {
+			mes "Cosa sta succedendo con Daora?";
+			mes "Perché sei qui?";
+			mes "Ho detto che potevi venire qui?";
+			next;
+			mes "[Bercasell]";
+			mes "O ti ha mandato Mayshell?";
+			mes "O cosa, sei un mio fan?";
+			mes "Hai trovato il posto sbagliato!";
+			next;
+			mes "[Bercasell]";
+			mes "Fuori di qui adesso!!!";
+			close;
+		}
+	} else if (Class == Job_Guillotine_Cross || Class == Job_Guillotine_Cross_T || Class == Job_Baby_Guillotine_Cross) {
+		mes "Non perseguire solo la forza.";
+		mes "Ti stancherai.";
+		mes "Non è meglio che vivere.";
+		mes "Se cerchi solo il potere...";
+		next;
+		mes "[Bercasell]";
+		mes "Un giorno, ti tornerà in mente.";
+		mes "Beh, sono solo un'arma, supponiamo che non abbia il diritto di parlare della vita...";
+		close;
+	}
+	mes "Che cosa?";
+	mes "Ehi, non dovresti essere qui!";
+	mes "Uscite adesso!";
+	close;
+
+L_Info:
+	mes "Guillotine Cross è un tutore.";
+	mes "Un'arma offensiva vivente...";
+	next;
+	mes "[Bercasell]";
+	mes "Chi è il nemico naturale di un assassino?";
+	mes "Spadaccino? Sacerdote?";
+	mes "Procedura guidata?";
+	mes "Cose malvagie in grande abbondanza?";
+	next;
+	mes "[Bercasell]";
+	mes "No, il nemico naturale di un assassino sono gli altri assassini.";
+	mes "La cosa più minacciosa per noi siamo noi.";
+	next;
+	mes "[Bercasell]";
+	mes "Nell'oscurità della gilda, nell'ombra ci sono le Croci Ghigliottina.";
+	mes "Manteniamo la legge e l'ordine all'interno della Gilda degli Assassini.";
+	next;
+	mes "[Bercasell]";
+	mes "A volte diamo l'esempio ai nostri pari, a volte puntiamo le spade al collo dei nostri membri in nome della Gilda.";
+	mes "Noi siamo la Croce Ghigliottina, la spada della Gilda degli Assassini.";
+	next;
+	mes "[Bercasell]";
+	mes "Abbiamo la capacità di trovare membri che sono nell'oscurità e tu sei troppo invadente.";
+	next;
+	mes "[Bercasell]";
+	mes "Abbiamo abilità di combattimento altamente avanzate.";
+	next;
+	return;
+}
+
+// Warp Portals
+//============================================================
+job3_guil01,80,77,0	script	#gate_to_guil05	45,1,1,{
+	end;
+OnTouch:
+	if (job_3rd_gc > 3)
+		warp "job3_guil01",60,50;
+	else {
+		mes "[Daora]";
+		mes "Ehilà!";
+		mes "Nessuna violazione di domicilio!";
+		close;
+	}
+	end;
+}
+job3_guil01,51,55,0	script	#gate_to_guil07	45,1,1,{
+	end;
+OnTouch:
+	if (job_3rd_gc == 4 || job_3rd_gc == 14 || job_3rd_gc > 17)
+		warp "job3_guil01",12,7;
+	else {
+		mes " [-----------------------------]";
+		mes " Nessuna violazione di domicilio senza ";
+		mes " permesso. ";
+		mes " Non sono un ";
+		mes " persona generosa. ";
+		mes " - Mayshell ";
+		mes " [-----------------------------]";
+		close;
+	}
+	end;
+}
+job3_guil01,51,44,0	script	#gate_to_guil09	45,1,1,{
+	end;
+OnTouch:
+	if (job_3rd_gc == 11 || job_3rd_gc == 12)
+		warp "job3_guil01",79,23;
+	else if (job_3rd_gc > 19)
+		warp "job3_guil01",144,57;
+	else {
+		mes "Non hai niente da fare.";
+		close;
+	}
+	end;
+}
+
+job3_guil02,1,3,0	script	#GMhelper01_gc	844,{
+	callfunc "F_GM_NPC";
+	mes "Cosa posso fare per lei?";
+	next;
+	if (callfunc("F_GM_NPC",1854,0) == 1) {
+		set .@room01, $@3rdgc_room01;
+		mes "Controllo la situazione recente.";
+		mes "La situazione di battaglia dello stoccaggio: "+.@room01+"";
+		mes "1: In corso. 0: stato di attesa.";
+		next;
+		switch(select("Resettare una situazione di storage:Smettila.")) {
+		case 1:
+			mes "Desideri ripristinare una situazione di archiviazione?";
+			mes "Controlla all'interno che ci sia o meno una persona, per favore.";
+			next;
+			switch(select("NO.:Reset.")) {
+			case 1:
+				mes "Non ho fatto niente.";
+				close;
+			case 2:
+				mes "Resettare una situazione di storage.";
+				donpcevent "Dandelion#3rdgc12::OnDisable";
+				donpcevent "A man with black clothes::OnDisable";
+				donpcevent "#3rdgc_room01_mag01::OnEnable";
+				set $@3rdgc_room01, 0;
+				next;
+				mes "Completa un ripristino.";
+				close;
+			}
+		case 2:
+			mes "Una gestione per il palazzo è in palazzo.";
+			close;
+		}
+	} else {
+		mes "-_-.";
+		close;
+	}
+}
+
+job3_guil03,1,8,0	script	#GMhelper02_gc	844,{
+	callfunc "F_GM_NPC";
+	mes "Cosa posso fare per lei?";
+	next;
+	if (callfunc("F_GM_NPC",1854,0) == 1) {
+		set .@room02, $@3rdgc_room02;
+		mes "Controlla la situazione recente.";
+		mes "La situazione di battaglia della villa è: "+.@room02+"";
+		mes "1: In corso. 0: stato di attesa.";
+		next;
+		switch(select("Ripristina la villa:Smettila.")) {
+		case 1:
+			mes "Vuoi resettare la villa?";
+			mes "Al termine del riposo tutti i giocatori interni verranno espulsi.";
+			next;
+			switch(select("NO.:Reset.")) {
+			case 1:
+				mes "Non faccio niente.";
+				close;
+			case 2:
+				mes "Ripristina la villa.";
+				donpcevent "#3rdgc_guard::OnStop";
+				donpcevent "#3rdgc_guardoff::OnReset";
+				donpcevent "#3rdgc_hide01::OnStop";
+				donpcevent "#3rdgc_hide02::OnStop";
+				donpcevent "#3rdgc_hide03::OnStop";
+				donpcevent "#3rdgc_sunchal_kill01::OnStop";
+				donpcevent "#3rdgc_sunchal_kill02::OnStop";
+				donpcevent "#3rdgc_sunchal_kill03::OnStop";
+				donpcevent "#3rdgc_gojung_kill01::OnStop";
+				donpcevent "#3rdgc_gojung_kill02::OnStop";
+				donpcevent "#3rdgc_gojung_kill03::OnStop";
+				donpcevent "Guard Dog#dog01::OnReset";
+				donpcevent "Guard Dog#dog02::OnReset";
+				donpcevent "#3rdgc_sunchal_nomal::OnReset";
+				donpcevent "#3rdgc_sunchal_kill01::OnReset";
+				donpcevent "#3rdgc_sunchal_kill02::OnReset";
+				donpcevent "#3rdgc_sunchal_kill03::OnReset";
+				donpcevent "#3rdgc_gojung_kill01::OnReset";
+				donpcevent "#3rdgc_gojung_kill02::OnReset";
+				donpcevent "#3rdgc_gojung_kill03::OnReset";
+				donpcevent "Priest from Rachel::OnReset";
+				donpcevent "Barbed-Wire Entanglement::OnDisable";
+				donpcevent "Guard Dog#dog01::OnDisable";
+				donpcevent "Guard Dog#dog02::OnDisable";
+				donpcevent "#3rdgc_gojung_kill01::OnDisable";
+				donpcevent "#3rdgc_gojung_kill02::OnDisable";
+				donpcevent "#3rdgc_gojung_kill03::OnDisable";
+				donpcevent "Priest from Rachel::OnDisable";
+				donpcevent "Renzak#3rdgc16::OnDisable";
+				next;
+				mes "Completa un ripristino dell'NPC all'interno.";
+				mes "La var globale è organizzata.";
+				mes "Iniziamo ad espellere con la forza.";
+				mes "Basta inserire il pulsante Invio ora.";
+				donpcevent "#3rdgc_event01::OnEnable";
+				set $@3rdgc_room02, 0;
+				close2;
+				mapwarp "job3_guil03","ve_fild02",330,379;	//Pre-RE: ve_fild05 (341,303)
+				end;
+			}
+		case 2:
+			mes "La gestione dello stoccaggio avviene in un deposito.";
+			close;
+		}
+	} else {
+		mes "-_-.";
+		close;
+	}
+}

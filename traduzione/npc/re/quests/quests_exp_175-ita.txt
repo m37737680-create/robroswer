@@ -1,0 +1,920 @@
+//===== rAthena Script =======================================
+//= Quests EXP
+//===== Description: =========================================
+//= [Walkthrough Conversion]
+//--- NPC quests related to new dungeons.
+//===== Changelog: ===========================================
+//= 1.0 Initial release of Glast Heim Abyss quests. [OptimusM]
+//= 1.1 Corrections here and there. [Capuche]
+//= 1.2 Initial release of Magma Dungeon 3 quests. [Capuche]
+//= 1.3 Initial release of Einbech Dungeon 3 quests. [Capuche]
+//============================================================
+
+glast_01,191,273,3	script	Magician Nillem#glabyss01	4_M_JOB_WIZARD,{
+	if (BaseLevel < 175) {
+		mes "[Nillem]";
+		mes "Cosa stai facendo qui?";
+		mes "Esatto, sto aspettando un forte avventuriero che soddisfi la mia curiosità!";
+		next;
+		mes "[Nillem]";
+		mes "Se raggiungi il livello 175, sarai il mio avversario predestinato-¡Ù";
+		close;
+	}
+	mes "[Nillem]";
+	mes "Penso di aver fatto una grande scoperta, quindi perché non vieni con me?";
+	next;
+	switch( select( "Andiamo!", "Per favore spiegamelo.", "Quello che ho trovato", "Rifiutare." )) {
+	case 1:
+		mes "[Nillem]";
+		mes "Questa è la mia ragazza!";
+		mes "Salterai nell'abisso con me! Non posso fare a meno di amarti.";
+		close2;
+		warp "gl_cas01_",200,26;
+		end;
+	case 2:
+		mes "[Nillem]";
+		mes "Come sai, sono un buon mago di corte, vero?";
+		mes "Un mago geniale che può fare questo e quello nella dimensione!";
+		next;
+		mes "[Nillem]";
+		mes "C'era una segnalazione di uno strano potere magico vicino al castello centrale di Glast Heim.";
+		mes "Sono venuto qui per indagare e l'ho trovato.";
+		next;
+		mes "[Nillem]";
+		mes "Una settimana di crack dimensionale!";
+		mes "Sai, questo mago geniale è bravo a collegare l'incrinatura delle dimensioni.";
+		next;
+		mes "[Nillem]";
+		mes "Quindi ho forzato la connessione e sono entrato....";
+		mes "Un pezzo di tempo che si è fermato nel flusso.... Hmmm... È così difficile da spiegare..";
+		next;
+		mes "[Nillem]";
+		mes "Ad ogni modo, il flusso di creature intrappolate da molto tempo mi raggiunse come onde!";
+		next;
+		mes "[Nillem]";
+		mes "Quasi D - i - e - d lì.";
+		mes "Quindi sto cercando avventurieri che si uniscano a me in questa spedizione.";
+		close;
+	case 3:
+		mes "[Nillem]";
+		mes "Esatto, qui non c'è una missione, ma la curiosità segue la scoperta!";
+		mes "Hai notato prima che ti dicessi che c'erano alcune cose che volevo fare con te, Mio - Caro -.";
+		next;
+		switch( select( "Una cosa vuota", "Una cosa con un punto di congelamento elevato", "Una cosa come uno specchio", "Beh, sto bene." )) {
+		case 1:
+			mes "[Nillem]";
+			mes "Al di là delle crepe di questa dimensione, ci sono Cose Vuote..";
+			mes "^0000FFRaydric contaminato^000000 e ^0000FFRaydric Archer contaminato^000000...";
+			mes "Contaminazione";
+			next;
+			mes "[Nillem]";
+			mes "^0000FF20 Raydrics contaminati^000000,";
+			mes "^0000FF20 Arcieri Raydric contaminati^000000!! Sconfiggili e torna indietro. Poi questo geniale mago lo studierà.";
+			mes "Cosa ne pensi, tesoro?";
+			next;
+			if (select( "Non è difficile.", "Sono occupato." ) == 2) {
+				mes "[Nillem]";
+				mes "Se sei occupato, non puoi aiutarmi.";
+				mes "Ma tesoro, per favore aiutami quando - Hai - Tempo - libero -!";
+				close;
+			}
+			switch( checkquest(8542,PLAYTIME) ) {
+			case -1:
+				break;
+			case 0:
+			case 1:
+				mes "[Nillem]";
+				mes "Ti ho chiesto troppo oggi, tesoro.";
+				mes "Invece, domani condividerai un'altra nuova scoperta. VA BENE -?";
+				close;
+			case 2:
+				mes "^4d4dff - Puoi riprendere questa missione. Parla ancora una volta con Mage Nillem per accettarlo. - ^000000";
+				erasequest 8542;
+				break;
+			}
+			switch( checkquest(8541,HUNTING) ) {
+			case -1:
+				mes "[Nillem]";
+				mes "Quello è il mio bambino!";
+				mes "È difficile vedere l'impatto lì a causa della strana magia.";
+				mes "Se finisci la missione, prima usciamo di lì e poi controlla!";
+				setquest 8541;
+				close;
+			case 0:
+			case 1:
+				mes "[Nillem]";
+				mes "^0000FF20 Raydrics contaminati^000000,";
+				mes "^0000FF20 Arcieri Raydric contaminati^000000.";
+				mes "Woo-hoo, non sei entusiasta degli effetti delle cose vuote?";
+				close;
+			case 2:
+				mes "[Nillem]";
+				mes "Ah~ È così ovvio qui fuori. Potresti mostrarmi la tua... arma e... armatura? Hmm...";
+				mes "Hmm!!";
+				mes "Ahah, che scoperta del secolo!";
+				next;
+				select( "Cosa ottieni?" );
+				mes "[Nillem]";
+				mes "È difficile spiegartelo, ma in breve, Tu - L'hai - Fatto -!!";
+				mes "Ma questo non basta, quindi per favore fallo di nuovo domani.";
+				erasequest 8541;
+				setquest 8542;
+				getexp 8142552,5674080;
+				close;
+			}
+			end;
+		case 2:
+			mes "[Nillem]";
+			mes "Ci sono cose che hanno un punto di congelamento elevato oltre la fessura di questa dimensione.";
+			mes "^0000FFFrozen Gargoyle^000000 e ^0000FFPrison Breaker^000000...";
+			next;
+			mes "[Nillem]";
+			mes "^0000FF5 Gargoyle congelati^000000,";
+			mes "^0000FF5 Scassinatori^000000!! Sconfiggili e torna indietro. Poi questo geniale mago lo studierà.";
+			mes "Cosa ne pensi, tesoro?";
+			next;
+			if (select( "Non è difficile.", "Sono occupato." ) == 2) {
+				mes "[Nillem]";
+				mes "Se sei occupato, non puoi aiutarmi.";
+				mes "Ma tesoro, per favore aiutami quando - Hai - Tempo - libero -!";
+				close;
+			}
+			switch( checkquest(8545,PLAYTIME) ) {
+			case -1:
+				break;
+			case 0:
+			case 1:
+				mes "[Nillem]";
+				mes "Ti ho chiesto troppo oggi, tesoro.";
+				mes "Invece, domani condividerai un'altra nuova scoperta. VA BENE -?";
+				close;
+			case 2:
+				mes "^4d4dff - Puoi riprendere questa missione. Parla ancora una volta con Mage Nillem per accettarlo. - ^000000";
+				erasequest 8545;
+				break;
+			}
+			switch( checkquest(8544,HUNTING) ) {
+			case -1:
+				mes "[Nillem]";
+				mes "Quello è il mio bambino!";
+				mes "È difficile vedere l'impatto lì a causa della strana magia.";
+				mes "Se finisci la missione, prima usciamo di lì e poi controlla!";
+				setquest 8544;
+				close;
+			case 0:
+			case 1:
+				mes "[Nillem]";
+				mes "^0000FF5 Gargoyle congelati^000000,";
+				mes "^0000FF5 Scassinatori^000000!!";
+				mes "Woo-hoo, non sei entusiasta delle cose con un punto di congelamento elevato?";
+				close;
+			case 2:
+				mes "[Nillem]";
+				mes "Ah~ È così ovvio qui fuori. Potresti mostrarmi la tua... arma e... armatura? Hmm...";
+				mes "Hmm!!";
+				mes "Ahah, che scoperta del secolo!";
+				next;
+				select( "Cosa ottieni?" );
+				mes "[Nillem]";
+				mes "È difficile spiegartelo, ma in breve, Tu - L'hai - Fatto -!!";
+				mes "Ma questo non basta, quindi per favore fallo di nuovo domani.";
+				erasequest 8544;
+				setquest 8545;
+				getexp 2036754,1425726;
+				close;
+			}
+			end;
+		case 3:
+			mes "[Nillem]";
+			mes "Al di là della fessura di questa dimensione, ci sono gli specchi l'uno dell'altro.";
+			mes "^0000FFFantasma del Ghiaccio^000000 e ^0000FFFantasma della Fiamma^000000...";
+			mes "Sembra completamente diverso, ma la differenza di dimensioni è molto sconosciuta.";
+			next;
+			mes "[Nillem]";
+			mes "^0000FF10 Fantasmi di ghiaccio^000000,";
+			mes "^0000FF10 Fantasmi di Fiamma^000000!! Sconfiggili e torna indietro. Poi questo geniale mago lo studierà.";
+			mes "Cosa ne pensi, tesoro?";
+			next;
+			if (select( "Non è difficile.", "Sono occupato." ) == 2) {
+				mes "[Nillem]";
+				mes "Se sei occupato, non puoi aiutarmi.";
+				mes "Ma tesoro, per favore aiutami quando - Hai - Tempo - libero -!";
+				close;
+			}
+			switch( checkquest(8548,PLAYTIME) ) {
+			case -1:
+				break;
+			case 0:
+			case 1:
+				mes "[Nillem]";
+				mes "Ti ho chiesto troppo oggi, tesoro.";
+				mes "Invece, domani condividerai un'altra nuova scoperta. VA BENE -?";
+				close;
+			case 2:
+				mes "^4d4dff - Puoi riprendere questa missione. Parla ancora una volta con Mage Nillem per accettarlo. - ^000000";
+				erasequest 8548;
+				break;
+			}
+			switch( checkquest(8547,HUNTING) ) {
+			case -1:
+				mes "[Nillem]";
+				mes "Quello è il mio bambino!";
+				mes "È difficile vedere l'impatto lì a causa della strana magia.";
+				mes "Se finisci la missione, prima usciamo di lì e poi controlla!";
+				setquest 8547;
+				close;
+			case 0:
+			case 1:
+				mes "[Nillem]";
+				mes "^0000FF10 Fantasmi di ghiaccio^000000,";
+				mes "^0000FF10 Fantasmi di Fiamma^000000!!";
+				mes "Woo-hoo, non sei entusiasta di Things Like A Mirror?";
+				close;
+			case 2:
+				mes "[Nillem]";
+				mes "Ah~ È così ovvio qui fuori. Potresti mostrarmi la tua... arma e... armatura? Hmm...";
+				mes "Hmm!!";
+				mes "Ahah, che scoperta del secolo!";
+				next;
+				select( "Cosa ottieni?" );
+				mes "[Nillem]";
+				mes "È difficile spiegartelo, ma in breve, Tu - L'hai - Fatto -!!";
+				mes "Ma questo non basta, quindi per favore fallo di nuovo domani.";
+				erasequest 8547;
+				setquest 8548;
+				getexp 4138800,2897160;
+				close;
+			}
+			end;
+		case 4:
+			mes "[Nillem]";
+			mes "Lì, lì. Tesoro, hai ragione.";
+			mes "Se sei stanco, riposati.";
+			mes "Non - Spingerti - da solo --- !";
+			close;
+		}
+		end;
+	case 4:
+		mes "[Nillem]";
+		mes "Oh, tesoro mio, sei così cattiva oggi.";
+		mes "Nillem è saaaad. *Lacrime*";
+		close;
+	}
+	end;
+
+OnInit:
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8541,HUNTING) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8544,HUNTING) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8547,HUNTING) == 2" );
+
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8542,PLAYTIME) == -1 && checkquest(8541,HUNTING) == -1" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8545,PLAYTIME) == -1 && checkquest(8544,HUNTING) == -1" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8548,PLAYTIME) == -1 && checkquest(8547,HUNTING) == -1" );
+
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8542,PLAYTIME) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8545,PLAYTIME) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8548,PLAYTIME) == 2" );
+	end;
+}
+
+gl_cas01_,205,36,5	script	Magician Nillem#glabyss02	4_M_JOB_WIZARD,{
+	mes "[Nillem]";
+	mes "Woo-hoo! Sono così emozionato ogni volta che vengo qui!";
+	mes "Adoro questa desolazione!";
+	next;
+	if (select( "Usciamo di qui!", "Vorrei guardarmi intorno." ) == 2) {
+		mes "[Nillem]";
+		mes "Ci vediamo!";
+		close;
+	}
+	mes "[Nillem]";
+	mes "Sicuro!";
+	mes "Andiamo - fuori - a lato -!";
+	close2;
+	warp "glast_01",191,270;
+	end;
+}
+
+
+// mag_dun03
+yuno_fild03,38,146,5	script	Lily Blanc	-1,{
+	if (BaseLevel < 175) {
+		mes "[Giglio]";
+		mes "...?";
+		mes "...beh, non credo che le guardie ti lasceranno entrare...";
+		next;
+		mes "[Giglio]";
+		mes "Se fossi qualificato per entrare al 3° piano di Nogg Road, accetteresti una missione?";
+		mes "Abbiamo bisogno di molto lavoro.";
+		mes "Le guardie hanno detto che il livello 175 è sufficiente...";
+		close;
+	}
+	mes "[Giglio]";
+	mes "Gentile avventuriero, ti dispiacerebbe aiutarci con la ricerca per il resoconto della nostra conferenza?";
+	mes "Solo l'occhio di un avventuriero è l'unico modo per noi di vivere.";
+	next;
+	switch( select( "Ascolta la richiesta", "Sospettoso...", "Rifiutare" ) ) {
+	case 1:
+		mes "[Giglio]";
+		mes "Avventuriero generoso! Grazie.";
+		mes "La richiesta è al terzo piano di Nogg Road, un posto in cui non posso ancora entrare, ma la conferenza vuole un rapporto...";
+		next;
+		setarray .@quest_list[1], 8550, 8553, 8556, 8559;
+		.@s = select( "Rivenditore che ha causato un'evoluzione anomala", "Sradicare l'incubo che è diventato realtà", "Controlla la densità", "Piccole cose che si sgretolano", "La prossima volta" );
+
+		if (.@s < 5) {
+			.@quest_first = .@quest_list[.@s];
+			.@quest_delay = .@quest_first + 1;
+			.@quest_daily = .@quest_first + 2;
+
+			callsub( S_CheckDelay, .@quest_delay );
+
+			if (isbegin_quest(.@quest_first) < 2)
+				.@quest_ongoing = .@quest_first;
+			else
+				.@quest_ongoing = .@quest_daily;
+		}
+
+		switch( .@s ) {
+		case 1:
+			switch( checkquest(.@quest_ongoing,HUNTING) ) {
+			case -1:
+				if (.@quest_ongoing == .@quest_first) {
+					mes "[Giglio]";
+					mes "Il nostro medico ha detto che i mostri cambiano caratteristiche e aspetto quando vivono in luoghi diversi...";
+					mes "Anche il dottor e io... Perché il combattimento non è la mia specializzazione.";
+					next;
+					mes "[Giglio]";
+					mes "Quindi ecco... Vediamo.";
+					mes "^0000FFC'è un rapporto secondo cui " + getmonsterinfo("DELETER2_H", MOB_NAME) + " E " + getmonsterinfo("DELETER1_H", MOB_NAME) + "^000000 ha causato un'evoluzione anomala.";
+					mes "Ma non posso nemmeno avvicinarmi a loro a causa della loro personalità feroce...";
+					next;
+				}
+				mes "[Giglio]";
+				mes "Infestato al terzo piano di Nogg Road,";
+				mes "^0000FFUccidi 15 " + getmonsterinfo("DELETER1_H", MOB_NAME) + "^000000";
+				mes "e 15 ^0000FF" + getmonsterinfo("DELETER2_H", MOB_NAME) + "^000000 e dimmi quanto sono stati difficili.";
+				callsub( S_Give, .@quest_ongoing );
+			case 0:
+			case 1:
+				mes "[Giglio]";
+				mes "Infestato al terzo piano di Nogg Road,";
+				mes "^0000FFUccidi 15 " + getmonsterinfo("DELETER1_H", MOB_NAME) + "^000000";
+				mes "e 15 ^0000FF" + getmonsterinfo("DELETER2_H", MOB_NAME) + "^000000 e dimmi quanto sono stati difficili.";
+				close;
+			case 2:
+				mes "[Giglio]";
+				mes "Come è stato?";
+				mes "In cosa era diverso da un semplice deleter aereo o terrestre?";
+				next;
+				mes "[Giglio]";
+				mes "Hmm... stai bene?";
+				mes "Hmmmm. Va bene";
+				callsub( S_SetDelay, .@quest_ongoing, .@quest_first, .@quest_delay, 4852278,3396600 );
+			}
+			end;
+		case 2:
+			switch( checkquest(.@quest_ongoing,HUNTING) ) {
+			case -1:
+				if (.@quest_ongoing == .@quest_first) {
+					mes "[Giglio]";
+					mes "" + getmonsterinfo("NIGHTMARE_TERROR_H", MOB_NAME) + " è un terrore da incubo indurito...";
+					mes "Ho visto solo il terrore da incubo. Il solo guardarlo mi rendeva rigido e incapace di muovermi. Anche se il professore mi ha trascinato fuori...";
+					next;
+					mes "[Giglio]";
+					mes "Quindi ecco... Vediamo.";
+				}
+				else {
+					mes "[Giglio]";
+				}
+				mes "Infestato al terzo piano di Nogg Road,";
+				mes "^0000FFSconfiggi 10 " + getmonsterinfo("NIGHTMARE_TERROR_H", MOB_NAME) + "^000000 e dimmi quanto è difficile.";
+				callsub( S_Give, .@quest_ongoing );
+			case 0:
+			case 1:
+				mes "[Giglio]";
+				mes "Infestato al terzo piano di Nogg Road";
+				mes "^0000FF Sconfiggi 10 " + getmonsterinfo("NIGHTMARE_TERROR_H", MOB_NAME) + "^000000 e dimmi quanto è difficile.";
+				close;
+			case 2:
+				mes "[Giglio]";
+				mes "Come è stato?";
+				mes "In cosa era diverso da un semplice Nightmare Terror?";
+				next;
+				mes "[Giglio]";
+				mes "Eh... Davvero?";
+				mes "Cosa dovrei fare... mio Dio. È reale?";
+				mes "Hmmmm. Va bene";
+				callsub( S_SetDelay, .@quest_ongoing, .@quest_first, .@quest_delay, 1661868,1163304 );
+			}
+			end;
+		case 3:
+			switch( checkquest(.@quest_ongoing,HUNTING) ) {
+			case -1:
+				if (.@quest_ongoing == .@quest_first) {
+					mes "[Giglio]";
+					mes "Ho sentito che c'è un'enorme differenza di densità tra un Golem di lava e un " + getmonsterinfo("LAVA_GOLEM_H", MOB_NAME) + ".";
+				}
+				else {
+					mes "[Giglio]";
+				}
+				mes "Infestato al terzo piano di Nogg Road";
+				mes "^0000FFSconfiggi 10 " + getmonsterinfo("LAVA_GOLEM_H", MOB_NAME) + "^000000 e dimmi la differenza di densità.";
+				callsub( S_Give, .@quest_ongoing );
+			case 0:
+			case 1:
+				mes "[Giglio]";
+				mes "Infestato al terzo piano di Nogg Road";
+				mes "^0000FFSconfiggi 10 " + getmonsterinfo("LAVA_GOLEM_H", MOB_NAME) + "^000000 e dimmi la differenza di densità.";
+				close;
+			case 2:
+				mes "[Giglio]";
+				mes "Come è stato?";
+				mes "In cosa era diverso dal semplice Golem di lava?";
+				next;
+				mes "[Giglio]";
+				mes "Ehm... è vero. La conchiglia...";
+				mes "SÌ? Le piante dei piedi? Infatti...";
+				mes "Hmmmm. Va bene";
+				callsub( S_SetDelay, .@quest_ongoing, .@quest_first, .@quest_delay, 1590396,1113275 );
+			}
+			end;
+		case 4:
+			switch( checkquest(.@quest_ongoing,HUNTING) ) {
+			case -1:
+				if (.@quest_ongoing == .@quest_first) {
+					mes "[Giglio]";
+					mes "" + getmonsterinfo("ESPLOSIONE_H", MOB_NAME) + " E " + getmonsterinfo("BLAZER_H", MOB_NAME) + " si dice che si sbriciolino molto meglio dei normali Explosion e Blazers.";
+					mes "...il nostro professore.";
+					next;
+					mes "[Giglio]";
+					mes "Infestato al terzo piano di Nogg Road,";
+					mes "^0000FFUccidi 10 " + getmonsterinfo("ESPLOSIONE_H", MOB_NAME) + "^000000";
+					mes "^0000FFe 10 " + getmonsterinfo("BLAZER_H", MOB_NAME) + "^000000 e racconta loro come si sentono.";
+					mes "Non devi toccarlo. Lo si capisce solo guardandolo...";
+				}
+				else {
+					mes "[Giglio]";
+					mes "Infestato al terzo piano di Nogg Road,";
+					mes "^0000FFUccidi 10 " + getmonsterinfo("ESPLOSIONE_H", MOB_NAME) + "^000000";
+					mes "^0000FFe 10 " + getmonsterinfo("BLAZER_H", MOB_NAME) + "^000000 e racconta loro come si sentono.";
+				}
+				callsub( S_Give, .@quest_ongoing );
+			case 0:
+			case 1:
+				mes "[Giglio]";
+				mes "Infestato al terzo piano di Nogg Road,";
+				mes "^0000FFUccidi 10 " + getmonsterinfo("ESPLOSIONE_H", MOB_NAME) + "^000000";
+				mes "^0000FFe 10 " + getmonsterinfo("BLAZER_H", MOB_NAME) + "^000000 e racconta loro come si sentono.";
+				close;
+			case 2:
+				mes "[Giglio]";
+				mes "Come è stato?";
+				mes "In cosa è diverso solo da Explosion o Blazer?";
+				next;
+				mes "[Giglio]";
+				mes "Ehm... è vero. Passaggio...";
+				mes "E' molto più friabile...";
+				mes "Aha, c'è molta più polvere.";
+				mes "Hmmmm. Va bene";
+				callsub( S_SetDelay, .@quest_ongoing, .@quest_first, .@quest_delay, 3251388,2275966 );
+			}
+			end;
+		case 5:
+			mes "[Giglio]";
+			mes "Ah...";
+			mes "Quando mai potrò sfuggire alla magia del professore...";
+			close;
+		}
+		end;
+	case 2:
+		mes "[Giglio]";
+		mes "Come puoi vedere, sono solo un saggio incompetente.";
+		mes "Il professore che servo è un po' testardo... insomma, qualcuno deve pur indagare.";
+		next;
+		mes "[Giglio]";
+		mes "Ma non mi è ancora permesso entrare al terzo piano di Nogg Road.";
+		mes "Come sono arrivato all'ingresso e hanno detto che non mi avrebbero mai fatto entrare.";
+		mes "Esatto... non è un posto in cui Sage possa adattarsi.";
+		next;
+		mes "[Giglio]";
+		mes "Allora cosa posso fare? Perché tutti i bardi non cantano solo ciò che vedono e sentono?";
+		mes "Alcune persone hanno sentito parlare di questo e quello, altri me lo hanno detto, quindi deve essere così.";
+		next;
+		mes "[Giglio]";
+		mes "Non preoccuparti. Utilizzerò il nome dell'avventuriero quando lo segnalerò al professore...";
+		mes "SÌ...  " + strcharinfo(0) + ".";
+		mes "Va bene.";
+		next;
+		mes "[Giglio]";
+		mes "C'è un elenco di mostri che costituiranno materiale di ricerca, quindi controlla le missioni se sei interessato.";
+		close;
+	case 3:
+		mes "[Giglio]";
+		mes "Ah, no...!";
+		mes "Generoso avventuriero, ti prego, liberami dalla magia del professore...!";
+		close;
+	}
+	end;
+
+S_CheckDelay:
+	switch( checkquest(getarg(0),PLAYTIME) ) {
+	case -1:
+		break;
+	case 0:
+	case 1:
+		mes "[Giglio]";
+		mes "Hai già completato il rapporto di oggi.";
+		mes "Mi aiuterai con il rapporto di domani...?";
+		close;
+	case 2:
+		erasequest getarg(0);
+		break;
+	}
+	return;
+
+S_Give:
+	next;
+	if (select( "Accetto.", "Sono occupato." ) == 2) {
+		mes "[Giglio]";
+		mes "Originariamente, la ricerca riguarda la persistenza.";
+		mes "Aiutami quando non sei occupato.";
+		close;
+	}
+	mes "[Giglio]";
+	mes "Grazie!";
+	mes "Aspetterò qui.";
+	setquest getarg(0);
+	close;
+
+S_SetDelay:
+	.@quest_ongoing = getarg(0);
+	.@quest_first = getarg(1);
+	.@quest_delay = getarg(2);
+	next;
+	mes "[Giglio]";
+	mes "Grazie per la tua gentile spiegazione";
+	mes "Ma non credo che si possa capire tutta la storia solo da questo. Anche se questo è il bello di richiedere un'indagine...";
+	mes "Te lo chiederò di nuovo domani.";
+	if (.@quest_ongoing == .@quest_first)
+		completequest .@quest_ongoing;
+	else
+		erasequest .@quest_ongoing;
+	setquest .@quest_delay;
+	getexp getarg(3), getarg(4);
+	close;
+
+OnInit:
+	setunitdata getnpcid(0), UNPC_CLASS, JOB_SAGE;
+	setunitdata getnpcid(0), UNPC_SEX, SEX_FEMALE;
+	setunitdata getnpcid(0), UNPC_HAIRCOLOR, 6;
+	setunitdata getnpcid(0), UNPC_HAIRSTYLE, 22;
+	setunitdata getnpcid(0), UNPC_HEADTOP, 316;
+
+	// completed first quest
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8550,HUNTING) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8553,HUNTING) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8556,HUNTING) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8559,HUNTING) == 2" );
+
+	// completed daily
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8552,HUNTING) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8555,HUNTING) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8558,HUNTING) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8561,HUNTING) == 2" );
+
+	// timeout
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8551,PLAYTIME) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8554,PLAYTIME) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8557,PLAYTIME) == 2" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "checkquest(8560,PLAYTIME) == 2" );
+
+	// not started first quest
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "isbegin_quest(8550) == 0 && checkquest(8551,PLAYTIME) == -1" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "isbegin_quest(8553) == 0 && checkquest(8553,PLAYTIME) == -1" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "isbegin_quest(8556) == 0 && checkquest(8555,PLAYTIME) == -1" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "isbegin_quest(8559) == 0 && checkquest(8557,PLAYTIME) == -1" );
+
+	// not started daily
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "isbegin_quest(8550) == 2 && isbegin_quest(8552) == 0 && checkquest(8551,PLAYTIME) == -1" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "isbegin_quest(8553) == 2 && isbegin_quest(8555) == 0 && checkquest(8554,PLAYTIME) == -1" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "isbegin_quest(8556) == 2 && isbegin_quest(8558) == 0 && checkquest(8557,PLAYTIME) == -1" );
+	questinfo( QTYPE_QUEST, QMARK_YELLOW, "isbegin_quest(8559) == 2 && isbegin_quest(8561) == 0 && checkquest(8560,PLAYTIME) == -1" );
+	end;
+}
+
+
+// ein_dun03
+einbech,143,244,3	script	Apprentice Researcher Sally#extdq01	4_F_LGTGIRL,{
+	if (BaseLevel < 180) {
+		mes "[Sally]";
+		mes "Ciao, avventuriero!";
+		mes "Per favore, presentami un avventuriero di talento!";
+		mes "Una questione molto, molto importante sulla quale è in gioco il mio lavoro..!";
+		next;
+		mes "^4d4dffCi sono missioni superiori a 180 Lv.^000000";
+		close;
+	}
+	if (checkquest(7879,HUNTING) == 2) {
+		mes "[Sally]";
+		mes "Siamo stati in grado di raccogliere dati sufficienti per " + getmonsterinfo("VELENOSO", MOB_NAME) + " E " + getmonsterinfo("TOSSICO", MOB_NAME) + "!";
+		erasequest 7879;
+		setquest 7880;
+		getexp 27512240,19258560;
+		next;
+	}
+	if (checkquest(7881,HUNTING) == 2) {
+		mes "[Sally]";
+		mes "Ho raccolto dati sufficienti per " + getmonsterinfo("MINERALE_G", MOB_NAME) + " E " + getmonsterinfo("MINERALE_R", MOB_NAME) + "!";
+		erasequest 7881;
+		setquest 7882;
+		getexp 27836640,19485600;
+		next;
+	}
+	if (checkquest(7883,HUNTING) == 2) {
+		mes "[Sally]";
+		mes "I dati per " + getmonsterinfo("MINERALE_W", MOB_NAME) + " E " + getmonsterinfo("MINERALE_P", MOB_NAME) + " sono i seguenti. È stato molto utile";
+		erasequest 7883;
+		setquest 7884;
+		getexp 27838400,19486880;
+		next;
+	}
+	if (checkquest(7885,HUNTING) == 2) {
+		mes "[Sally]";
+		mes "" + getmonsterinfo("ABISSO", MOB_NAME) + "I dati sono sempre sorprendenti.";
+		erasequest 7885;
+		setquest 7886;
+		getexp 6938800,4857160;
+		next;
+	}
+	if (checkquest(7887,HUNTING) == 2) {
+		mes "[Sally]";
+		mes "Hai ottenuto con successo " + getmonsterinfo("GIOIELLO", MOB_NAME) + " E " + getmonsterinfo("PORCELLIO_W", MOB_NAME) + " dati!";
+		erasequest 7887;
+		setquest 7888;
+		getexp 13854240,9697960;
+		next;
+	}
+	mes "[Sally]";
+	mes "Quando finirà questo povero apprendistato?";
+	next;
+	mes "[Sally]";
+	mes "Cerco disperatamente aiuto da un avventuriero di talento.";
+	mes "Proprio come te!";
+	mes "Vorresti contribuire a proteggere il lavoro di questo povero ricercatore in formazione?";
+	next;
+	switch( select( "Nuova ricerca sui veleni", "Ricerca sui minerali speciali 1", "Ricerca sui minerali speciali 2", "Ricerca sull'Uomo degli Abissi", "Ricerca sui vermi", "Perché lo stai facendo?" ) ) {
+	case 1:
+		switch( checkquest(7880,PLAYTIME) ) {
+		case -1:
+			break;
+		case 0:
+		case 1:
+			mes "[Sally]";
+			mes "Ehm, non esagerare.";
+			mes "Le opportunità arrivano sempre.";
+			close;
+		case 2:
+			erasequest 7880;
+			break;
+		}
+		switch( checkquest(7879,HUNTING) ) {
+		case -1:
+			mes "[Sally]";
+			mes "Mi servono dati per ricercare il mostro di gas velenoso appena scoperto nella prigione della miniera di Einbech.";
+			mes "È difficile affrontare i mostri che occupano le miniere con la forza lavoro qui, quindi dobbiamo affrontarli entrambi.";
+			next;
+			mes "[Sally]";
+			mes "Sto raccogliendo dati mentre l'avventuriero combatte ^4d4dff" + getmonsterinfo("VELENOSO", MOB_NAME) + " E " + getmonsterinfo("TOSSICO", MOB_NAME) + "^000000.";
+			mes "Non è un buon affare?";
+			next;
+			if (select( "Ricevuta una richiesta", "Respinto" ) == 2) {
+				mes "[Sally]";
+				mes "Va bene.";
+				mes "Il mondo è vasto e ci sono molti avventurieri.";
+				close;
+			}
+			mes "[Sally]";
+			mes "Allora per favore prenditi cura di ^4d4dff" + getmonsterinfo("VELENOSO", MOB_NAME) + " E " + getmonsterinfo("TOSSICO", MOB_NAME) + "^000000 che appaiono al ^4d4dff3° piano dell'Einbech Mine Dungeon^000000!";
+			setquest 7879;
+			close;
+		case 0:
+		case 1:
+			mes "[Sally]";
+			mes "" + getmonsterinfo("VELENOSO", MOB_NAME) + " E " + getmonsterinfo("TOSSICO", MOB_NAME) + " sono qui al 3° piano dell'Einbech Mine Dungeon.";
+			mes "Sono difficili da affrontare per la gente comune come me, quindi dovrò nascondermi e guardarti mentre fai il lavoro e poi raccogli i dati.";
+			close;
+		case 2:
+			end;
+		}
+		end;
+	case 2:
+		switch( checkquest(7882,PLAYTIME) ) {
+		case -1:
+			break;
+		case 0:
+		case 1:
+			mes "[Sally]";
+			mes "Ehm, non esagerare.";
+			mes "Le opportunità arrivano sempre.";
+			close;
+		case 2:
+			erasequest 7882;
+			break;
+		}
+		switch( checkquest(7881,HUNTING) ) {
+		case -1:
+			mes "[Sally]";
+			mes "Esistono diversi tipi di minerali. I minerali che vogliamo indagare questa volta sono ^4d4dff" + getmonsterinfo("MINERALE_G", MOB_NAME) + " E " + getmonsterinfo("MINERALE_R", MOB_NAME) + "^000000.";
+			mes "Raccogliamo i dati necessari per la ricerca controllando il numero di individui!";
+			next;
+			if (select( "Ricevuta una richiesta", "Respinto" ) == 2) {
+				mes "[Sally]";
+				mes "Va bene.";
+				mes "Il mondo è vasto e ci sono molti avventurieri.";
+				close;
+			}
+			mes "[Sally]";
+			mes "Allora per favore prenditi cura di ^4d4dff" + getmonsterinfo("MINERALE_G", MOB_NAME) + " E " + getmonsterinfo("MINERALE_R", MOB_NAME) + "^000000 che appaiono al ^4d4dff3° piano della prigione della miniera di Einbech^000000!";
+			setquest 7881;
+			close;
+		case 0:
+		case 1:
+			mes "[Sally]";
+			mes "" + getmonsterinfo("MINERALE_G", MOB_NAME) + " E " + getmonsterinfo("MINERALE_R", MOB_NAME) + " si trovano qui al 3° piano dell'Einbech Mine Dungeon.";
+			mes "Attenzione, sono pericolosi.";
+			close;
+		case 2:
+			end;
+		}
+		end;
+	case 3:
+		switch( checkquest(7884,PLAYTIME) ) {
+		case -1:
+			break;
+		case 0:
+		case 1:
+			mes "[Sally]";
+			mes "Ehm, non esagerare.";
+			mes "Le opportunità arrivano sempre.";
+			close;
+		case 2:
+			erasequest 7884;
+			break;
+		}
+		switch( checkquest(7883,HUNTING) ) {
+		case -1:
+			mes "[Sally]";
+			mes "Esistono diversi tipi di minerali. I minerali che vogliamo indagare questa volta sono ^4d4dff" + getmonsterinfo("MINERALE_W", MOB_NAME) + " E " + getmonsterinfo("MINERALE_P", MOB_NAME) + "s^000000.";
+			mes "Raccogliamo i dati necessari per la ricerca controllando il numero di individui!";
+			next;
+			if (select( "Ricevuta una richiesta", "Respinto" ) == 2) {
+				mes "[Sally]";
+				mes "Va bene.";
+				mes "Il mondo è vasto e ci sono molti avventurieri.";
+				close;
+			}
+			mes "[Sally]";
+			mes "Allora per favore prenditi cura di ^4d4dff" + getmonsterinfo("MINERALE_W", MOB_NAME) + " E " + getmonsterinfo("MINERALE_P", MOB_NAME) + "^000000 che appaiono al ^4d4dff3° piano dell'Einbech Mine Dungeon^000000!";
+			setquest 7883;
+			close;
+		case 0:
+		case 1:
+			mes "[Sally]";
+			mes "" + getmonsterinfo("MINERALE_W", MOB_NAME) + " E " + getmonsterinfo("MINERALE_P", MOB_NAME) + " si trovano qui al 3° piano dell'Einbech Mine Dungeon.";
+			mes "Attenzione, sono pericolosi.";
+			close;
+		case 2:
+			end;
+		}
+		end;
+	case 4:
+		switch( checkquest(7886,PLAYTIME) ) {
+		case -1:
+			break;
+		case 0:
+		case 1:
+			mes "[Sally]";
+			mes "Ehm, non esagerare.";
+			mes "Le opportunità arrivano sempre.";
+			close;
+		case 2:
+			erasequest 7886;
+			break;
+		}
+		switch( checkquest(7885,HUNTING) ) {
+		case -1:
+			mes "[Sally]";
+			mes "Se guardi in un abisso, si dice che l'abisso viene mangiato, non miagolato.";
+			mes "Penso che il nome popolare " + getmonsterinfo("ABISSO", MOB_NAME) + " è anche così.";
+			mes "Quindi abbiamo bisogno dei dati di ^4d4dff" + getmonsterinfo("ABISSO", MOB_NAME) + "^000000.";
+			next;
+			if (select( "Ricevuta una richiesta", "Respinto" ) == 2) {
+				mes "[Sally]";
+				mes "Va bene.";
+				mes "Il mondo è vasto e ci sono molti avventurieri.";
+				close;
+			}
+			mes "[Sally]";
+			mes "Quindi, per favore, prenditi cura di ^4d4dff" + getmonsterinfo("ABISSO", MOB_NAME) + "^000000 che appaiono nel ^4d4dff3° piano dell'Einbech Mine Dungeon^000000!";
+			setquest 7885;
+			close;
+		case 0:
+		case 1:
+			mes "[Sally]";
+			mes "IL " + getmonsterinfo("ABISSO", MOB_NAME) + " sono qui al 3° piano dell'Einbech Mine Dungeon.";
+			mes "Attenzione, sono pericolosi.";
+			close;
+		case 2:
+			end;
+		}
+		end;
+	case 5:
+		switch( checkquest(7888,PLAYTIME) ) {
+		case -1:
+			break;
+		case 0:
+		case 1:
+			mes "[Sally]";
+			mes "Ehm, non esagerare.";
+			mes "Le opportunità arrivano sempre.";
+			close;
+		case 2:
+			erasequest 7888;
+			break;
+		}
+		switch( checkquest(7887,HUNTING) ) {
+		case -1:
+			mes "[Sally]";
+			mes "Gli insetti specializzati vivono in luoghi bui come i sotterranei.";
+			mes "I dati da raccogliere questa volta sono ^4d4dff" + getmonsterinfo("PORCELLIO_W", MOB_NAME) + " E " + getmonsterinfo("GIOIELLO", MOB_NAME) + "^000000, noto anche come Mineworms.";
+			mes "È molto diverso dal Porcellio normale?";
+			next;
+			if (select( "Ricevuta una richiesta", "Respinto" ) == 2) {
+				mes "[Sally]";
+				mes "Va bene.";
+				mes "Il mondo è vasto e ci sono molti avventurieri.";
+				close;
+			}
+			mes "[Sally]";
+			mes "Quindi, per favore, prenditi cura di ^4d4dff" + getmonsterinfo("PORCELLIO_W", MOB_NAME) + " E " + getmonsterinfo("GIOIELLO", MOB_NAME) + "^000000 che appaiono nel ^4d4dff3° piano dell'Einbech Mine Dungeon^000000!";
+			setquest 7887;
+			close;
+		case 0:
+		case 1:
+			mes "[Sally]";
+			mes "" + getmonsterinfo("PORCELLIO_W", MOB_NAME) + " E " + getmonsterinfo("GIOIELLO", MOB_NAME) + " sono qui al 3° piano dell'Einbech Mine Dungeon.";
+			mes "Attenzione, sono pericolosi.";
+			close;
+		case 2:
+			end;
+		}
+		end;
+	case 6:
+		mes "[Sally]";
+		mes "Ehm? Questo significa essere un dipendente a tempo pieno!";
+		mes "Non molto tempo fa sono entrato a Regenschrum come ricercatore tirocinante, ma questo è il motivo per cui sono stato nominato.";
+		mes "Si tratta di raccogliere dati sui mostri minerari, quindi la mia valutazione dipende da questo.";
+		next;
+		mes "[Sally]";
+		mes "E c'erano continue lamentele da parte del quartier generale che chiedevano cosa fare con i mostri della miniera.";
+		mes "Durante la raccolta dei dati, regola anche il numero di individui. Questa valutazione è vantaggiosa per tutti, vantaggiosa per tutti!";
+		close;
+	}
+	end;
+
+OnInit:
+	// completed
+	questinfo( QTYPE_QUEST2, QMARK_YELLOW, "checkquest(7879,HUNTING) == 2" );
+	questinfo( QTYPE_QUEST2, QMARK_YELLOW, "checkquest(7881,HUNTING) == 2" );
+	questinfo( QTYPE_QUEST2, QMARK_YELLOW, "checkquest(7883,HUNTING) == 2" );
+	questinfo( QTYPE_QUEST2, QMARK_YELLOW, "checkquest(7885,HUNTING) == 2" );
+	questinfo( QTYPE_QUEST2, QMARK_YELLOW, "checkquest(7887,HUNTING) == 2" );
+
+	// timeout
+	questinfo( QTYPE_DAILYQUEST, QMARK_YELLOW, "checkquest(7880,PLAYTIME) == 2" );
+	questinfo( QTYPE_DAILYQUEST, QMARK_YELLOW, "checkquest(7882,PLAYTIME) == 2" );
+	questinfo( QTYPE_DAILYQUEST, QMARK_YELLOW, "checkquest(7884,PLAYTIME) == 2" );
+	questinfo( QTYPE_DAILYQUEST, QMARK_YELLOW, "checkquest(7886,PLAYTIME) == 2" );
+	questinfo( QTYPE_DAILYQUEST, QMARK_YELLOW, "checkquest(7888,PLAYTIME) == 2" );
+
+	// not started
+	questinfo( QTYPE_DAILYQUEST, QMARK_YELLOW, "BaseLevel >= 180 && isbegin_quest(7879) == 0 && checkquest(7880,PLAYTIME) == -1" );
+	questinfo( QTYPE_DAILYQUEST, QMARK_YELLOW, "BaseLevel >= 180 && isbegin_quest(7881) == 0 && checkquest(7882,PLAYTIME) == -1" );
+	questinfo( QTYPE_DAILYQUEST, QMARK_YELLOW, "BaseLevel >= 180 && isbegin_quest(7883) == 0 && checkquest(7884,PLAYTIME) == -1" );
+	questinfo( QTYPE_DAILYQUEST, QMARK_YELLOW, "BaseLevel >= 180 && isbegin_quest(7885) == 0 && checkquest(7886,PLAYTIME) == -1" );
+	questinfo( QTYPE_DAILYQUEST, QMARK_YELLOW, "BaseLevel >= 180 && isbegin_quest(7887) == 0 && checkquest(7888,PLAYTIME) == -1" );
+	end;
+}
+
+einbech,156,243,3	script	Need help#exsk	1_M_SMITH,{
+	mes "[Oliva]";
+	mes "Gli ordini continuano ad arrivare e tutti quelli che lavorano lì scappano... È un grosso problema, un grosso problema.";
+	close;
+}
+
+einbech,154,244,5	script	Need help#exsk_	4_F_JOB_BLACKSMITH,{
+	mes "[Atri]";
+	mes "Dopotutto, sarebbe più veloce per me imparare a usare la spada! Sono solo 10 anni che scelgo il piccone, quindi lo imparerò presto.";
+	close;
+}

@@ -1,0 +1,191 @@
+//===== rAthena Script ======================================= 
+//= Blessed Refiner
+//===== Description: =========================================
+//= [Official Conversion]
+//= Refiners that use Blessed ores to refine equipment.
+//= Upon failure, the equipment is not destroyed. The success
+//= rate is identical to that for Enriched ores.
+//= - "Blacksmith Dister" only refines from +6~12.
+//= NOTE: This NPC is currently disabled on official servers.
+//===== Changelog: ===========================================
+//= 1.0 First version. [Euphy]
+//= 1.1 Removed re-roll behavior. [Secret]
+//============================================================
+
+// Main NPC :: new_smelting612
+//============================================================
+-	script	::BlacksmithDister	-1,{
+	disable_items;
+	mes "[Dister del fabbro]";
+	mes "In questa società altamente competitiva, dobbiamo essere diversi per sopravvivere!";
+	mes "Perfeziono l'equipaggiamento solo ai livelli +6 ~ 12.";
+	next;
+	mes "[Dister del fabbro]";
+	mes "Avrò bisogno di ^ff9999Blessed Oridecon^000000 per le armi e ^ff9999Blessed Elunium^000000 per le armature.";
+	mes "I perfezionamenti non riusciti ^FF0000 non interromperanno né ridurranno il livello di perfezionamento^000000.";
+	next;
+	mes "[Dister del fabbro]";
+	mes "Che ne dici? Vuoi perfezionare?";
+	next;
+	setarray .@indices[1], EQI_HEAD_TOP, EQI_ARMOR, EQI_HAND_L, EQI_HAND_R, EQI_GARMENT, EQI_SHOES, EQI_ACC_L, EQI_ACC_R, EQI_HEAD_MID, EQI_HEAD_LOW;
+	for(set .@i,1; .@i<=10; set .@i,.@i+1)
+		set .@menu$, .@menu$ + ( getequipisequiped(.@indices[.@i]) ? getequipname(.@indices[.@i]) : F_getpositionname(.@indices[.@i]) +"-[Unequipped]" ) +":";
+	set .@part, .@indices[ select(.@menu$) ];
+	if (!getequipisequiped(.@part)) {
+		mes "[Dister del fabbro]";
+		switch(.@part) {
+		case EQI_HEAD_TOP:
+			mes "Sono un fabbro, non un parrucchiere.";
+			break;
+		case EQI_ARMOR:
+			mes "Con il mio martello farò di te una stella del cielo.";
+			break;
+		case EQI_HAND_L:
+		case EQI_HAND_R:
+			mes "Fare mani artificiali non è la mia specialità.";
+			break;
+		case EQI_GARMENT:
+			mes "Tira fuori l'oggetto così posso perfezionarlo!";
+			break;
+		case EQI_SHOES:
+			mes "Da dove viene questo strano odore?";
+			break;
+		case EQI_ACC_L:
+		case EQI_ACC_R:
+			mes "Dov'è l'accessorio?";
+			break;
+		case EQI_HEAD_MID:
+			mes "Cosa vuoi che perfezioni?";
+			break;
+		case EQI_HEAD_LOW:
+			mes "Eh? Cosa vuoi che faccia?";
+			break;
+		}
+		close;
+	}
+	if (!getequipisenableref(.@part)) {
+		mes "[Dister del fabbro]";
+		mes "Questo oggetto non può essere raffinato.";
+		close;
+	}
+	.@equip_id = getequipid(.@part);
+	.@itemtype = getiteminfo( .@equip_id, ITEMINFO_TYPE );
+	.@equip_refine = getequiprefinerycnt(.@part);
+	setarray .@card[0], getequipcardid(.@part,0), getequipcardid(.@part,1), getequipcardid(.@part,2), getequipcardid(.@part,3);
+
+	if (.@equip_refine < 6 || .@equip_refine > 12) {
+		mes "[Dister del fabbro]";
+		mes "Questa attrezzatura è stata perfezionata "+.@equip_refine+". Gestisco solo oggetti con livelli di perfezionamento da +6 a +12!";
+		close;
+	}
+	if( .@itemtype == IT_ARMOR ){
+		.@equip_lv = getequiparmorlv( .@part );
+		.@type$ = "Armor";
+
+		switch(.@equip_lv) {
+			case 1:
+				set .@price,20000;
+				set .@material,6439; //Unbreakable_Def
+				break;
+			default:
+				// TODO:
+				close;
+		}
+	}else if( .@itemtype == IT_WEAPON ){
+		.@equip_lv = getequipweaponlv( .@part );
+		.@type$ = "Weapon";
+
+		switch( .@equip_lv ){
+			case 1:
+				set .@price,1000;
+				set .@material,6438; //Unbreakable_Weap
+				break;
+			case 2:
+				set .@price,2000;
+				set .@material,6438; //Unbreakable_Weap
+				break;
+			case 3:
+				set .@price,20000;
+				set .@material,6438; //Unbreakable_Weap
+				break;
+			case 4:
+				set .@price,40000;
+				set .@material,6438; //Unbreakable_Weap
+				break;
+			default:
+				// TODO:
+				close;
+		}
+	}else{
+		// TODO:
+		close;
+	}
+	set .@ore$,"^ff9999Blessed "+.@type$+" Ore^000000";
+	mes "[Dister del fabbro]";
+	mes "Questo "+.@type$+" è stato perfezionato "+.@equip_refine+". Per perfezionarlo, ho bisogno "+.@ore$+" e un "+callfunc("F_InserisciComma",.@price)+" tassa di raffinazione zeny.";
+	mes "Vuoi procedere?";
+	next;
+	if(select("SÌ:NO") == 2) {
+		mes "[Dister del fabbro]";
+		mes "Sono occupato, non scherzare con me!";
+		close;
+	}
+	if (getequippercentrefinery(.@part) < 100) {
+		mes "[Dister del fabbro]";
+		mes "Questo "+.@type$+" è stato perfezionato molte volte. Anche se non scomparirà in caso di fallimento, il file "+.@ore$+" scomparirà!";
+		next;
+		mes "[Dister del fabbro]";
+		mes "Naturalmente, la tassa di raffinazione non verrà restituita! Vuoi continuare?";
+		next;
+		if(select("SÌ:NO") == 2) {
+			mes "[Dister del fabbro]";
+			mes "Bene. Anche io sarei triste se fallisse.";
+			close;
+		}
+	}
+	if (countitem(.@material) == 0 || Zeny < .@price) {
+		mes "[Dister del fabbro]";
+		mes "Materiali insufficienti.";
+		mes "Per perfezionare un livello "+.@equip_lv+" "+.@type$+", Ho bisogno "+.@ore$+" e un "+callfunc("F_InserisciComma",.@price)+" tassa di raffinazione zeny.";
+		close;
+	}
+	delitem .@material,1;
+	set Zeny, Zeny-.@price;
+
+	// anti-hack
+	if (callfunc("F_IsEquipIDHack", .@part, .@equip_id) || callfunc("F_IsEquipCardHack", .@part, .@card[0], .@card[1], .@card[2], .@card[3]) || callfunc("F_IsEquipRefineHack", .@part, .@equip_refine))
+		close;
+
+	mes "[Dister del fabbro]";
+	mes "Tac! Tac! Tac!";
+	if (getequippercentrefinery(.@part, true) > rand(100)) {
+		specialeffect EF_BLESSING;
+		successrefitem .@part;
+		next;
+		mes "[Dister del fabbro]";
+		mes "Ahahahahahah!!!";
+		next;
+		mes "[Dister del fabbro]";
+		mes "Refine è stato un enorme successo~ Hahaha!";
+		close;
+	}
+	specialeffect EF_CURSEATTACK;
+	specialeffect2 EF_SUI_EXPLOSION;
+	next;
+	emotion (!rand(5))?ET_ANGER:ET_HUK;
+	mes "[Dister del fabbro]";
+	mes "Oh mio Dio!!!!";
+	next;
+	mes "[Dister del fabbro]";
+	mes "OH! Sebbene sia stato benedetto da "+.@ore$+" conservare l'attrezzatura...";
+	next;
+	mes "[Dister del fabbro]";
+	mes "Il mio umore peggiora quando fallisco!!";
+	close;
+}
+prt_in,52,56,3	duplicate(BlacksmithDister)	Blacksmith Dister#prt	826
+payon,148,172,3	duplicate(BlacksmithDister)	Blacksmith Dister#pay	826
+alberta_in,20,56,3	duplicate(BlacksmithDister)	Blacksmith Dister#alb	826
+yuno_in01,175,18,3	duplicate(BlacksmithDister)	Blacksmith Dister#yuno	826
+ein_in01,26,82,3	duplicate(BlacksmithDister)	Blacksmith Dister#ein	826
+lhz_in02,280,15,3	duplicate(BlacksmithDister)	Blacksmith Dister#lhz	826

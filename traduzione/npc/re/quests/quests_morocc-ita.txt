@@ -1,0 +1,258 @@
+//===== rAthena Script =======================================
+//= Morocc Quest NPCs
+//===== By: ==================================================
+//= Euphy
+//===== Current Version: =====================================
+//= 1.1
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official Conversion]
+//= Quest NPCs related to Morocc.
+//===== Additional Comments: =================================
+//= 1.0 First Version.
+//= 1.0a Gathered remaining dialogues. [Euphy]
+//= 1.1 Added new warpers for Satan Morocc maps. [Euphy]
+//============================================================
+
+// Stop Post Quest
+// ============================================================
+morocc,152,167,4	duplicate(William)	William#moc	89
+
+// Binoculars Quest
+// ============================================================
+morocc,169,168,4	duplicate(Alchemist)	Alchemist#moc	64
+
+// Resurrection of Satan Morocc
+// ============================================================
+-	script	Continental Guard#man	-1,{
+	mes "[Guardia Continentale]";
+	mes "Abbiamo ricevuto ordine dal quartier generale di bloccare l'accesso a quest'area poiché è stato rilevato un insolito fenomeno spazio-temporale.";
+	next;
+	mes "[Guardia Continentale]";
+	mes "Se vuoi davvero andare alla prossima area, sarai responsabile della tua sicurezza.";
+	next;
+	switch(select("Non importa.:Entra nel campo.")) {
+	case 1:
+		mes "[Guardia Continentale]";
+		mes "Scelta saggia.";
+		mes "Buon viaggio.";
+		close;
+	case 2:
+		mes "[Guardia Continentale]";
+		mes "Vedo.";
+		mes "Ti manderò sul campo a breve.";
+		close2;
+		warp "moc_fild20",208,207;
+		end;
+	}
+}
+moc_fild07,380,202,1	duplicate(Continental Guard#man)	Continental Guard#man1	852
+moc_fild11,189,360,6	duplicate(Continental Guard#man)	Continental Guard#man2	852
+prt_fild10,263,23,1	duplicate(Continental Guard#man)	Continental Guard#man3	852
+prt_fild09,95,19,1	duplicate(Continental Guard#man)	Continental Guard#man4	852
+prt_fild09,246,17,1	duplicate(Continental Guard#man)	Continental Guard#man5	852
+moc_fild13,32,171,6	duplicate(Continental Guard#man)	Continental Guard#man6	852
+moc_fild16,124,381,4	duplicate(Continental Guard#man)	Continental Guard#man7	852
+moc_fild16,333,380,4	duplicate(Continental Guard#man)	Continental Guard#man8	852
+moc_fild01,84,19,1	duplicate(Continental Guard#man)	Continental Guard#man9	852
+
+morocc,176,101,3	duplicate(Continental Official)	Continental Official#mor	754
+
+// Pyramids Nightmare Mode :: nightmare_pry
+//============================================================
+moc_prydb1,103,54,3	script	Suspicious Cat#night	547,{
+	mes "[Gatto sospettoso]";
+	mes "Non posso credere che una mummia possa farmi questo. Oh cavolo, fa male. Nessuno dovrebbe scoprirlo....";
+	next;
+	if(select("Mummia? Quello che è successo?:Fai finta di non sapere nulla.") == 2)
+		close;
+	mes "[Gatto sospettoso]";
+	mes "Mi hai preso! Dannazione... non mi aspettavo che la mia reputazione di Tomb Raider venisse danneggiata in questo modo...";
+	next;
+	mes "[Gatto sospettoso]";
+	mes "Ma andiamo, sono così strani! Sono mummie! Solo mummie, sai? Non dovrebbero essere così forti!";
+	next;
+	if(select("Mummie forti? Dove sono?:Termina la conversazione.") == 2) {
+		mes "[Gatto sospettoso]";
+		mes "Cos'è~ non vuoi sentire la mia storia? Bene! Faresti meglio a non menzionare il mio nome da nessun'altra parte!";
+		close;
+	}
+	mes "[Gatto sospettoso]";
+	mes "Ahah, è un segreto.";
+	mes "L'ho scoperto mentre rubavo... No, voglio dire, semplicemente camminando attraverso la piramide.";
+	next;
+	mes "[Gatto sospettoso]";
+	mes "Quando ho visto una mummia venire verso di me, ho pensato 'non importa' e non mi importava. Ma poi mi ha buttato a terra con uno schiaffo in faccia! Come ha potuto fare una cosa del genere a un gatto carino come me! Tu, mostro bendato... aspetta e vedrai!";
+	next;
+	if(select("Vorrei andare anch'io.:Termina la conversazione.") == 2)
+		close;
+	mes "[Gatto sospettoso]";
+	mes "Non c'è modo! Ho passato così tanto tempo a trovare quel percorso!!";
+	next;
+	mes "[Gatto sospettoso]";
+	mes "Hmm... ma se insisti, dammi solo 5000 Zeny. Ti guiderò.";
+	mes "Cosa~? Non lanciarmi quello sguardo! Hai idea di quanto sia difficile per un gatto sopravvivere a Midgard!";
+	next;
+	mes "[Gatto sospettoso]";
+	mes "^FF0000Ma ora che ci penso, un debole come te non sopravviverà lì. Forse per un secondo se sei fortunato?^000000";
+	mes "Beh, non sono affari miei. Ma ti avevo comunque avvisato!";
+	next;
+	switch(select("Paga 5.000 zeny e parti.:Lasci perdere.")) {
+	case 1:
+		if (Zeny < 5000) {
+			mes "[Gatto sospettoso]";
+			mes "Dove pensi di andare! Sei così al verde!";
+			close;
+		}
+		set Zeny, Zeny-5000;
+		mes "[Gatto sospettoso]";
+		mes "Bah, che succede con questi vecchi soldi... non hai niente di scintillante o luccicante?!";
+		mes "Ahh, seguimi!";
+		close2;
+		warp "moc_prydn1",93,96;
+		end;
+	case 2:
+		mes "[Gatto sospettoso]";
+		mes "Cavolo, non hai nemmeno 5000 Zeny, vero?";
+		close;
+	}
+}
+
+moc_prydn1,94,98,3	script	Suspicious Cat#night2	547,{
+	mes "[Gatto sospettoso]";
+	mes "Quella stupida mamma mi ha dato ancora uno schiaffo mentre tu guardavi altrove! Sniff sniff... Torniamo indietro, miao!";
+	next;
+	switch(select("Torna alla Gilda dei Ladri:Elimina la verità:Elimina l'antica mummia:Non è niente")) {
+	case 1:
+		mes "[Gatto sospettoso]";
+		mes "Va bene, va bene... torniamo indietro.";
+		close2;
+		warp "moc_prydb1",100,57;
+		end;
+	case 2:
+		set .@playtime, checkquest(2290,PLAYTIME);
+		if (.@playtime == 0 || .@playtime == 1) {
+			mes "[Gatto sospettoso]";
+			mes "Guarda quel Verit, ha paura di noi! Kyaahaha! Siamo al sicuro, almeno per un po'!";
+			close;
+		} else if (.@playtime == 2)
+			erasequest 2290;
+		set .@hunting, checkquest(2289,HUNTING);
+		if (.@hunting == -1) {
+			mes "[Gatto sospettoso]";
+			mes "Sapevi che cani e gatti non vanno d'accordo?";
+			next;
+			mes "[Gatto sospettoso]";
+			mes "Guarda quella Verit brutta e orribile. È accigliato, scodinzola e cerca di avvicinarsi.";
+			mes "Oh, non hai la coda, vero? Pensa che io sia una spina nel fianco e sta cercando di iniziare una rissa proprio adesso!";
+			next;
+			mes "[Gatto sospettoso]";
+			mes "Guardalo, così avido e sbavante... non mi piace neanche il modo in cui respira. Non sopporto come fa quei suoni divorati...";
+			mes "È così ovvio che sta aspettando di attaccarmi da dietro.";
+			next;
+			mes "[Gatto sospettoso]";
+			mes "Cavolo, avrei potuto graffiargli la faccia così forte se non fosse stato per il mal di pancia!";
+			mes "Ehi, non è perché ho paura di Majoruros!";
+			next;
+			mes "[Gatto sospettoso]";
+			mes "Se vuoi andare a casa, faresti meglio a picchiare quel brutto cagnolino! Altrimenti ti morderà!";
+			next;
+			switch(select("Aiutalo:Stai lontano")) {
+			case 1:
+				mes "[Gatto sospettoso]";
+				mes "Bene, il numero obiettivo è 20! Buona fortuna!";
+				setquest 2289;
+				close;
+			case 2:
+				mes "[Gatto sospettoso]";
+				mes "Bah! Non ti importa di me? Va bene, traditore!";
+				close;
+			}
+		} else if (.@hunting == 0 || .@hunting == 1) {
+			mes "[Gatto sospettoso]";
+			mes "L'allenamento di Verit sta andando bene?";
+			next;
+			switch(select("Sicuro.:Voglio fermarmi.")) {
+			case 1:
+				mes "[Gatto sospettoso]";
+				mes "Bene. Continuate così!";
+				close;
+			case 2:
+				mes "[Gatto sospettoso]";
+				mes "Che cosa? Sei così irresponsabile!";
+				erasequest 2289;
+				close;
+			}
+		} else if (.@hunting == 2) {
+			mes "[Gatto sospettoso]";
+			mes "Ehi, sei davvero utile! Buon lavoro!";
+			mes "Che Verit non oserebbe venire da queste parti per un po', vero? Muhahah!";
+			changequest 2289,2290;
+			getexp 300000,100000;
+			close;
+		}
+	case 3:
+		set .@playtime, checkquest(2291,PLAYTIME);
+		if (.@playtime == 0 || .@playtime == 1) {
+			mes "[Gatto sospettoso]";
+			mes "Bene, farò buon uso del tempo che hai guadagnato! Ma prima devo fare qualcosa per questo mal di stomaco...";
+			close;
+		} else if (.@playtime == 2)
+			erasequest 2291;
+		set .@hunting, checkquest(2292,HUNTING);
+		if (.@hunting == -1) {
+			mes "[Gatto sospettoso]";
+			mes "Si suppone che tesori preziosi siano nascosti nei profondi luoghi segreti qui!";
+			mes "Sono sicuro che i preziosi tesori della mummia siano nascosti nel secondo livello del seminterrato.";
+			next;
+			mes "[Gatto sospettoso]";
+			mes "Ma le Antiche Mummie mi hanno colto di sorpresa e mi hanno sbattuto la testa prima che me ne rendessi conto!";
+			next;
+			mes "[Gatto sospettoso]";
+			mes "Sono sicuro che stanno cercando di impedirmi di trovare i tesori diminuendo le mie cellule cerebrali superiori!!";
+			next;
+			mes "[Gatto sospettoso]";
+			mes "Non possono fermarmi! Andiamo a sbarazzarci delle Antiche Mummie!!";
+			next;
+			mes "[Gatto sospettoso]";
+			mes "Non chiedere perché! Sono sicuro che neanche tu vorresti che quei bellissimi tesori fossero nascosti nell'oscurità!";
+			next;
+			switch(select("Aiutalo:Stai lontano")) {
+			case 1:
+				mes "[Gatto sospettoso]";
+				mes "Va bene, il numero target è 20! Buona fortuna!";
+				setquest 2292;
+				close;
+			case 2:
+				mes "[Gatto sospettoso]";
+				mes "Bah, hai un cuore così freddo.";
+				close;
+			}
+		} else if (.@hunting == 0 || .@hunting == 1) {
+			mes "[Gatto sospettoso]";
+			mes "La lotta contro le Antiche Mummie sta andando bene?";
+			next;
+			switch(select("Sicuro.:Voglio fermarmi.")) {
+			case 1:
+				mes "[Gatto sospettoso]";
+				mes "Bene. Continuate così!";
+				close;
+			case 2:
+				mes "[Gatto sospettoso]";
+				mes "Che cosa? Sei così irresponsabile!";
+				erasequest 2292;
+				close;
+			}
+		} else if (.@hunting == 2) {
+			mes "[Gatto sospettoso]";
+			mes "Ehi, sei davvero utile! Buon lavoro!";
+			mes "Quell'Antica Mummia non oserebbe venire da queste parti per un po', vero? Muhahah!";
+			changequest 2292,2291;
+			getexp 600000,200000;
+			close;
+		}
+	case 4:
+		close;
+	}
+}

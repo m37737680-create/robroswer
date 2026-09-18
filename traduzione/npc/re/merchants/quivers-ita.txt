@@ -1,0 +1,152 @@
+//===== rAthena Script =======================================
+//= Arrow Quivers
+//===== By: ==================================================
+//= Muad_Dib (Prometheus Project); L0ne_W0lf
+//===== Current Version: =====================================
+//= 1.1
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official Conversion]
+//= Turns arrows into Arrow Quivers.
+//= Breakdown of Subroutine "S_BuyQuiver"
+//= arg(0): Type of Arrow to be packaged (item ID).
+//= arg(1): How many of each 'getarg(0)' arrow per quiver.
+//= arg(2): The cost of making a 'getarg(0)' quiver.
+//= arg(3): The quiver given by the NPC (item ID).
+//===== Additional Comments: =================================
+//= 1.0 Added Mora NPC. [Euphy]
+//= 1.1 Updated to match the official scripts. [Euphy]
+//= 1.2 Update regarding the Barter Shop [JohnnyPlayy, Capuche]
+//============================================================
+
+// Mora :: ep14_1_tre
+//============================================================
+mora,106,117,3	script	Quiver Maker#mora	4_M_RAFLE_GR,{
+	if (checkweight(1201,1) == 0) {
+		mes "[Creatore di faretre]";
+		mes "Hai troppe cose con te.";
+		mes "Fai spazio nel tuo inventario e torna indietro. Ti dirò qualcosa di interessante.";
+		close;
+	}
+	if (MaxWeight - Weight < 2000) {
+		mes "[Creatore di faretre]";
+		mes "Sembri stanco di tutta quella roba.";
+		mes "Fai spazio nel tuo inventario e torna indietro. Ti dirò qualcosa di interessante.";
+		close;
+	}
+	mes "[Creatore di faretre]";
+	mes "Gli abitanti del villaggio di Mora chiedono cosa siano le buone faretre. Semplicemente non sanno come funziona il mondo.";
+	mes "Non c'è da stupirsi che non sappiano nulla delle faretre: spargono marmellata sulle foglie tutto il giorno.";
+	next;
+	if (getbattleflag("feature.barter")) {
+		.@menu$ = "Voglio le frecce";
+	}
+	switch( select("Per favore, fammi un fremito.", .@menu$, "Cos'è una faretra?") ) {
+	case 1:
+		if (getbattleflag("feature.barter")) {
+			mes "[Creatore di faretre]";
+			mes "Finalmente è apparso qualcuno che conosce il vero valore di una faretra. Lo farò per coloro che ne conoscono il valore.";
+			close2;
+			callshop "Quiver_Archer", 1;
+			end;
+		}
+		mes "[Creatore di faretre]";
+		mes "Finalmente qualcuno apprezza una faretra!";
+		mes "Posso realizzare faretre elfiche e faretre da caccia.";
+		mes "Di quale hai bisogno?";
+		next;
+		switch(select("Una faretra elfica:Una faretra da caccia:Non ho bisogno di una faretra.")) {
+		case 1: callsub S_BuyQuiver,1773,500,500,12575; //Arrow_Of_Elf_Cntr
+		case 2: callsub S_BuyQuiver,1774,500,500,12576; //Hunting_Arrow_Cntr
+		case 3:
+			mes "[Creatore di faretre]";
+			mes "Puoi comprare le frecce dal commerciante di utensili accanto a me.";
+			close;
+		}
+		end;
+	case 2:
+		if (getbattleflag("feature.barter")) {
+			mes "[Creatore di faretre]";
+			mes "Non vendo frecce normali. Queste sono frecce artigianali che possono essere acquistate solo qui. Riconosceresti davvero il suo valore, vero?";
+			close2;
+			callshop "Catch_Arrows", 1;
+		}
+		end;
+	case 3:
+		mes "[Creatore di faretre]";
+		mes "Una freccia può essere sottile e leggera, ma trasportare centinaia e migliaia di frecce è come trasportare un intero tronco.";
+		next;
+		mes "[Creatore di faretre]";
+		mes "Ma quando hai le faretre, puoi inserirvi le frecce e risparmiare peso e spazio.";
+		mes "Se ti interessa, te ne cucirò uno.";
+		close;
+	}
+	end;
+
+S_BuyQuiver:
+	.@item_req = getarg(0);
+	.@req_amount = getarg(1);
+	if (countitem(getarg(0)) < .@req_amount) {
+		mes "[Creatore di faretre]";
+		mes "Porta più di "+ .@req_amount +" "+ getitemname(.@item_req) +" e ti farò una faretra.";
+		close;
+	}
+	mes "[Creatore di faretre]";
+	mes "Oh, vedo che lo hai fatto "+ getitemname(.@item_req) +" nella tua mano!";
+	mes "Ti interessa usare una faretra? È davvero conveniente!";
+	mes "Se interessato posso fare scambio "+ .@req_amount +" di quelle frecce per una di queste faretre per ^FF3131"+getarg(2)+" zeny^000000.";
+	next;
+	switch(select("Scambia tutte le frecce che hai:Ottieni solo una faretra:Non commerciare")) {
+	case 1:
+		set .@arrows, countitem(.@item_req);
+		set .@quiver, .@arrows / .@req_amount;
+		set .@arrows_used, .@quiver * .@req_amount;
+		set .@arrow_zeny01, .@quiver * getarg(2);
+		mes "Il numero di frecce che hai: ^3131FF"+.@arrows+"^000000";
+		mes "Il numero di faretre disponibili: ^3131FF"+.@quiver+"^000000";
+		mes "Zeny necessario per lo scambio: ^3131FF"+.@arrow_zeny01+" zeny^000000";
+		next;
+		mes "Commercio?";
+		next;
+		if(select("Commercio:Non commerciare") == 2) {
+			mes "[Creatore di faretre]";
+			mes "Ehi, non dubiti delle mie capacità, vero?";
+			close;
+		}
+		break;
+	case 2:
+		set .@quiver, 1;
+		set .@arrows_used, .@req_amount;
+		set .@arrow_zeny01, getarg(2);
+		set .@zeny_mes,1;
+		break;
+	case 3:
+		mes "[Creatore di faretre]";
+		mes "Ehi, non dubiti delle mie capacità, vero?";
+		close;
+	}
+	if (Zeny < .@arrow_zeny01) {
+		mes "[Creatore di faretre]";
+		if (.@zeny_mes == 1)
+			mes "Ho detto che avrei accettato monete umane solo per te, e tu ancora non vuoi spendere quei soldi?";
+		else
+			mes "Davvero non ti aspetterai di mettere le mani su un capolavoro per niente, vero?";
+		close;
+	}
+	mes "[Creatore di faretre]";
+	mes "Ehi, eccoti qui.";
+	mes "C'è ^3131FFqualcosa che devi sapere^000000: prova a ricordarlo.";
+	mes "^FF0000Non puoi usare le faretre quando il tuo ingombro è superiore al 70%.^000000";
+	mes "Faresti meglio a tenerlo a mente, altrimenti potresti trovarti nei guai più tardi.";
+	set Zeny, Zeny-.@arrow_zeny01;
+	delitem .@item_req,.@arrows_used;
+	getitem getarg(3),.@quiver;
+	close;
+}
+
+//= Basic Shops
+//============================================================
+
+//= Arrows
+-	marketshop	Catch_Arrows	HIDDEN_NPC,1773:5:-1,1774:5:-1

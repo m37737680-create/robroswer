@@ -1,0 +1,1044 @@
+//===== rAthena Script ======================================= 
+//= Wanderer Job Quest
+//===== By: ================================================== 
+//= Muad_Dib, Meyraw
+//===== Current Version: ===================================== 
+//= 1.5
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Job change Quest from Dancer / Gypsy -> Wanderer.
+//===== Additional Comments: ================================= 
+//= 1.0 First Version.
+//= 1.1 Updated dialogue to be more official / accurate. Huge thanks to Muad_Dib! [Masao]
+//= 1.2 Fixed an endless loop in dialogue.
+//= 1.3 Fixed a typo and added checkquest. [Joseph]
+//= 1.4 Updated script, optimized. [Euphy]
+//= 1.5 Added VIP features. [Euphy]
+//============================================================
+
+xmas,162,209,5	script	Aspiring Wanderer, Soy	714,{
+	if (job_wan == 0) {
+		mes "[Soia]";
+		mes "Mimi, cosa devo fare?";
+		mes "Il mio cuore batte così velocemente. Ahhh~";
+		next;
+		mes "[Mimi]";
+		mes "Perché sei così arrossato? Ah ah ah.";
+		next;
+		mes "[Soia]";
+		mes "Non prendermi in giro, Mimi~";
+		mes "Sogno da molto tempo di essere sul palco della ballerina Kim!";
+		emotion ET_SHY, getnpcid(0, "Aspiring Wanderer, Soy");
+		next;
+		mes "[Soia]";
+		mes "Potrei perdere i sensi se la vedessi davvero ballare come un bellissimo angelo inviato dall'alto.";
+		next;
+		mes "[Mimi]";
+		mes "Calmati, Soy.";
+		mes "Svenirai ancor prima dell'inizio dello spettacolo. Ah ah.";
+		next;
+		mes "[Mimi]";
+		mes "Ma ti capisco.";
+		mes "Molte persone non vedono l'ora di incontrare il miglior Vagabondo del mondo.";
+		if (BaseJob != Job_Dancer || BaseLevel < 99) close;
+		next;
+		select("La ballerina Kim?:Vagabondo?");
+		emotion ET_HUK, getnpcid(0, "Aspiring Wanderer, Soy");
+		mes "[Soia]";
+		mes "Che cosa? Non conosci il famoso Vagabondo, il Ballerino Kim?";
+		mes "Oh mio Dio, oh mio!!!";
+		mes "Sembra che tu conosca l'arte della danza, ma come mai non la conosci?";
+		mes "Oh no!";
+		next;
+		mes "[Mimi]";
+		mes "Un Vagabondo è una persona dallo spirito libero che vaga per il mondo con il vento e le stelle.";
+		mes "Il ritmo e la musica li accompagnano ovunque vadano.";
+		next;
+		mes "[Mimi]";
+		mes "La ballerina Kim è il vagabondo più famoso che gira il mondo con il Maestro Guitar Dong come squadra <Nollio>.";
+		next;
+		mes "[Mimi]";
+		mes "Io e Soy siamo Aspiranti Erranti, e presto ci sarà uno spettacolo di <Nollio> in questa città, quindi non vediamo l'ora di vederlo.";
+		next;
+		mes "[Soia]";
+		mes "Se sei una vera Ballerina, devi rimanere colpito dalla sua Danza!";
+		mes "Incontrerò mai un Maestro come Guitar Song un giorno, Mimi?";
+		next;
+		emotion ET_SMILE, getnpcid(0, "Aspiring Wanderer, Soy");
+		mes "[Mimi]";
+		mes "Tieni duro, Soy. Ah ah.";
+		next;
+		switch(select("Dov'è lo spettacolo?:Termina la conversazione.")) {
+		case 1:
+			mes "[Soia]";
+			mes "Proprio davanti all'albero di Natale!";
+			mes "Neve bianca, bellissima melodia e la mia danza accattivante.";
+			mes "Non pensi che sarebbe una grande prestazione?";
+			set job_wan,1;
+			close;
+		case 2:
+			mes "[Mimi]";
+			mes "Se sei interessato a diventare un Vagabondo, torna da me in qualsiasi momento. Anche se non sono perfetto, farò del mio meglio per aiutarti.";
+			close;
+		}
+	} else if (job_wan == 1) {
+		if (strnpcinfo(0) == "Aspiring Wanderer, Soy") {
+			mes "[Soia]";
+			mes "Lo spettacolo si terrà davanti all'albero di Natale qui a Lutie.";
+			mes "Non vedo l'ora! Ah~ Sto perdendo i sensi, Mimi.";
+		} else {
+			mes "[Mimi]";
+			mes "Il fascino danzante di un Vagabondo è superiore a quello di un ballerino o di uno zingaro, tutti perderanno l'anima quando vedranno la loro esibizione.";
+			next;
+			mes "[Mimi]";
+			mes "Voglio diventare un Vagabondo, ma sono ancora un ballerino.";
+			mes "Ma penso che^3131FF sia meglio imparare prima le abilità uniche di Gypsy e poi diventare un Vagabondo^000000. Soy non vede l'ora di diventare un Vagabondo.";
+		}
+		close;
+	} else if (job_wan == 10) {
+		mes "[Soia]";
+		mes "<Nollio> è il migliore!!";
+		close;
+	} else {
+		if (strnpcinfo(0) == "Aspiring Wanderer, Soy") {
+			mes "[Soia]";
+			mes "Anch'io voglio diventare un famoso Vagabondo, Mimi.";
+		} else {
+			mes "[Mimi]";
+			mes "Non sono sicuro di essere avido, ma devo imparare tutte le abilità di Ballerino e Zingaro prima di poter diventare un Vagabondo.";
+		}
+		close;
+	}
+}
+xmas,163,209,3	duplicate(Aspiring Wanderer, Soy)	Aspiring Wanderer, Mimi	714
+
+xmas,132,143,5	script	Performance Manager#wnd	713,{
+	mes "[Gestore delle prestazioni]";
+	if (job_wan == 0) {
+		mes "Oh, cosa dovrei fare?";
+		close;
+	} else if (job_wan == 1) {
+		mes "Oh, cosa dovrei fare?";
+		mes "Perché hanno fatto questo?";
+		next;
+		emotion ET_SHY, getnpcid(0, "Aspiring Wanderer, Soy");
+		mes "[Gestore delle prestazioni]";
+		mes "Ehi, sei lì!";
+		mes "Per favore ascolta la mia storia.";
+		mes "In realtà non dovrei dirlo a nessuno.";
+		mes "Ma sono così sopraffatto che potrei impazzire. Ahhhh~~!";
+		next;
+		while (1) {
+			set .@loop,0;
+			switch(select("Mi dispiace, non mi interessa.:Qual è il problema?:Perché mi stai dicendo questo?")) {
+			case 1:
+				mes "[Gestore delle prestazioni]";
+				mes "È un po' duro, non credi?";
+				close;
+			case 2:
+				mes "[Gestore delle prestazioni]";
+				mes "Lo spettacolo dovrebbe essere presto!";
+				next;
+				mes "[Gestore delle prestazioni]";
+				mes "Queste persone non sentono alcuna responsabilità..";
+				mes "Li aspettiamo tutti e li ho promossi molto.";
+				next;
+				set .@loop,1;
+				break;
+			case 3:
+				emotion ET_ANGER;
+				mes "[Gestore delle prestazioni]";
+				mes "Te l'ho detto che sono sopraffatto!";
+				mes "Non mi capisci!";
+				next;
+				break;
+			}
+			if (.@loop) break;
+		}
+		while (1) {
+			set .@loop,0;
+			switch(select("C'è un problema?:Chi intendi?:Non ha niente a che fare con me.")) {
+			case 1:
+				mes "[Gestore delle prestazioni]";
+				mes "Come potrebbero farlo?";
+				mes "La gente lancerà palle di neve!";
+				mes "Magari lanceranno anche un grosso pupazzo di neve, no!";
+				next;
+				emotion ET_KEK;
+				mes "[Gestore delle prestazioni]";
+				mes "La gente potrebbe prendermi per il colletto!!";
+				mes "Altalena altalena, penzolante penzolante!!";
+				mes "Questo è terribile.";
+				next;
+				set .@loop,1;
+				break;
+			case 2:
+				mes "[Gestore delle prestazioni]";
+				mes "Chi?!";
+				mes "È <Nollio>!";
+				mes "Questa la chiami una domanda?";
+				mes "Sono le persone peggiori del mondo.";
+				next;
+				break;
+			case 3:
+				mes "[Gestore delle prestazioni]";
+				mes "Che cosa senza cuore da dire!";
+				close;
+			}
+			if (.@loop) break;
+		}
+		while (1) {
+			set .@loop,0;
+			switch(select("Hai paura delle persone?:Gli artisti hanno causato problemi?:Ignoralo.")) {
+			case 1:
+				mes "[Gestore delle prestazioni]";
+				mes "Se fossi in me, non avresti paura degli sguardi di tutte le persone?";
+				mes "Sono responsabile di questa performance! Tantissime persone aspettano con ansia di vederlo e tanti sono gli sponsor che ci sostengono! Sono così stressato.";
+				next;
+				break;
+			case 2:
+				mes "[Gestore delle prestazioni]";
+				mes "SÌ!";
+				mes "<Nollio> ha cancellato la loro esibizione!";
+				next;
+				mes "[Gestore delle prestazioni]";
+				mes "E non mi hanno dato alcun motivo!";
+				next;
+				mes "[Gestore delle prestazioni]";
+				mes "Oltre ai soldi che ho speso per la promozione e l'allestimento del palco..";
+				mes "Come posso gestire tutte le persone arrabbiate?";
+				next;
+				set .@loop,1;
+				break;
+			case 3:
+				mes "[Gestore delle prestazioni]";
+				mes "Ehi, dove stai andando!";
+				close;
+			}
+			if (.@loop) break;
+		}
+		mes "[" + strcharinfo(0) + "]";
+		mes "Vedo che sei preoccupato che la performance stia andando a rotoli.";
+		mes "Volevi fare una performance di successo per soddisfare le aspettative dei fan.";
+		next;
+		mes "[Gestore delle prestazioni]";
+		mes "Non so davvero come dovrei gestire la cosa.";
+		mes "Perché hanno improvvisamente annullato lo spettacolo?";
+		mes "Sai?";
+		next;
+		mes "[Gestore delle prestazioni]";
+		mes "Perché <Nollio> ha questo atteggiamento nei miei confronti?";
+		mes "Ho commesso degli errori? Dopo aver stipulato un contratto con loro, ho fatto tutto ciò che mi chiedevano!";
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "È perché...";
+		input .@inputstr$;
+		mes "^3131FF" + .@inputstr$ + "^000000";
+		mes "......";
+		next;
+		emotion ET_ANGER;
+		mes "[Gestore delle prestazioni]";
+		mes "Di che diavolo stai parlando?";
+		mes "Mi stai prendendo in giro perché sono emotivamente instabile?";
+		next;
+		mes "[Gestore delle prestazioni]";
+		mes "Oh, sono così preoccupato che mi vengono le palpitazioni cardiache e comincio ad avere le vertigini!";
+		next;
+		mes "[Gestore delle prestazioni]";
+		mes "EHI! Puoi uscire e trovare la canzone del Maestro Guitar?";
+		next;
+		switch(select("Ah, va bene.:Perché dovrei farlo?:Non lo farò!")) {
+		case 1:
+			break;
+		case 2:
+			emotion ET_FRET;
+			mes "[Gestore delle prestazioni]";
+			mes "Mi stai chiedendo perché!?";
+			mes "Ahah, no.....";
+			mes "È perché sembri un artista simile.";
+			mes "Anche tu volevi vedere lo spettacolo, vero?";
+			next;
+			break;
+		case 3:
+			mes "[Gestore delle prestazioni]";
+			mes "Sei così freddo dal cuore....";
+			close;
+		}
+		if (VIP_SCRIPT) {
+			callfunc "VIP_Third_Class";
+			set job_wan,2;
+			setquest 2218;
+			next;
+		}
+		mes "[Gestore delle prestazioni]";
+		mes "Se potessi, li prenderei per il colletto!";
+		mes "Gli direi: perché stai rovinando lo spettacolo? ma per ora, avere a che fare con gli sponsor arrabbiati è già abbastanza difficile... Oh, no!";
+		next;
+		mes "[Gestore delle prestazioni]";
+		mes "Non so dove sia Guitar Song, ma è chiaro che gli piace visitare il Casinò Comodo!";
+		mes "Eh, sbrigati!! Oh, ho davvero le vertigini! Canzone per chitarra!!!";
+		set job_wan,2;
+		setquest 2218;
+		close;
+	} else if (job_wan == 2) {
+		mes "Non sono sicuro che Guitar Song sia a Comodo, dovresti andare lì e trovarlo!";
+		close;
+	} else if (job_wan == 9) {
+		mes "Sono tornati!!";
+		close;
+	} else if (job_wan == 10) {
+		mes "Grazie a te, lo spettacolo ha avuto successo.";
+		mes "Sei così competente!";
+		mes "In cambio, un giorno preparerò il palco per te.";
+		close;
+	}
+	mes "Ahhh, così distraente!";
+	close;
+}
+
+comodo,140,86,5	script	Cheerless Maestro	479,{
+	if (job_wan < 2) {
+		mes "[Maestro triste]";
+		mes "Puoi ballare ~";
+		mes "Puoi fare il tuo lavoro ~";
+		mes "Tu sei la regina danzante ~";
+		mes "Io sono il re del tamburello ~";
+		next;
+		mes "[Maestro triste]";
+		mes "Vabbeh...";
+		close;
+	} else if (job_wan == 2) {
+		mes "[Maestro triste]";
+		mes "Puoi ballare ~";
+		mes "Puoi fare il tuo lavoro ~";
+		mes "Tu sei la regina danzante ~";
+		mes "Io sono il re del tamburello ~";
+		next;
+		mes "- Hai trovato un Maestro -";
+		mes "- cantando una canzone strana. -";
+		next;
+		if(select("E' una canzone strana.:Ignoralo.") == 2) {
+			mes "- Che persona strana, è meglio che stia lontano. -";
+			close;
+		}
+		emotion ET_HUK;
+		mes "[Maestro triste]";
+		mes "Che cosa?!";
+		mes "Stai ignorando il mio capolavoro immortale <Tambourine King>? Sei la prima persona che mi abbia mai dato uno schiaffo in faccia.";
+		next;
+		select("Non ti ho schiaffeggiato.");
+		emotion ET_SURPRISE;
+		mes "[Maestro triste]";
+		mes "OH! Signora, a giudicare dal tuo aspetto devi essere una ballerina, vero?";
+		next;
+		mes "[Maestro triste]";
+		mes "Hai un Bardo o un Menestrello che viaggia insieme a te?";
+		mes "Se non lo fai, che ne dici di creare una troupe itinerante con me?";
+		next;
+		mes "[Maestro triste]";
+		mes "Il nome della squadra è <Guitar Song's Agony>.";
+		mes "Questo nome esprime il dolore lancinante necessario per creare opere d'arte.";
+		next;
+		mes "[Maestro triste]";
+		mes "Ha un nome tagliente quindi penso che sarà un gruppo molto popolare.";
+		next;
+		select("Sei una canzone per chitarra?");
+		emotion ET_SHY;
+		mes "[Canzone della chitarra]";
+		mes "Eh... sono un po' deluso dal fatto che tu finalmente mi riconosca.";
+		mes "Sì, sono il bel Guitar Song del famoso gruppo <Nollio>.";
+		mes "Ah ah ah!";
+		next;
+		mes "[Canzone della chitarra]";
+		mes "Allora, che ne dici? Non è un'offerta allettante per te?";
+		mes "Sono un Maestro davvero famoso all'apice della mia popolarità. La gente muore dalla voglia di lavorare con me, ma tu sei indifferente nei miei confronti, signora.";
+		next;
+		select("Dov'è la ballerina Kim?:Perché hai annullato lo spettacolo?");
+		mes "[Canzone della chitarra]";
+		mes "Perché mi fai questa domanda così all'improvviso?";
+		mes "Andiamo, parliamo solo di una questione piacevole.";
+		mes "La ballerina Kim e lo spettacolo non hanno niente a che fare con me.";
+		next;
+		select("Cosa intendi?");
+		mes "[Canzone della chitarra]";
+		mes "Ehi, ti avevo detto di smetterla di parlare di questa faccenda....";
+		mes "Non voglio pensarci. Fa solo male ai miei sentimenti.";
+		next;
+		mes "- Guitar Song si rifiuta categoricamente di parlare. Cosa devo fare per ascoltare la storia di <Nollio>? -";
+		set job_wan,3;
+		close;
+	} else if (job_wan == 3) {
+		mes "[" + strcharinfo(0) + "]";
+		mes "(Sarebbe possibile farmi raccontare cosa è successo con Nollio?)";
+		next;
+		switch(select("Usa Dazzler:Usa la ninna nanna:Usa la fortuna")) {
+		case 1:
+			if (getskilllv("DC_UGLYDANCE") == 5 || rand(100) >= 80) {
+				mes "- Ti avvicini all'orecchio di Song. -";
+				next;
+				mes "[" + strcharinfo(0) + "]";
+				mes "Va bene-";
+				next;
+				mes "[" + strcharinfo(0) + "]";
+				mes "Ehi-!!!!!";
+				specialeffect EF_STUNATTACK;
+				next;
+				mes "[Canzone della chitarra]";
+				mes "Co...cosa!! Cosa fai?!?";
+				mes "Mi hai quasi danneggiato il timpano.";
+				emotion ET_FRET;
+				next;
+				mes "[" + strcharinfo(0) + "]";
+				mes "Ehi, rallegrati!!!";
+				next;
+				mes "[Canzone della chitarra]";
+				mes "Di cosa stai parlando?";
+				next;
+				mes "[" + strcharinfo(0) + "]";
+				mes "Dovresti saperlo, le persone sono dipendenti dalla tua musica?";
+				mes "Così tante persone ti supportano con anticipazione.";
+				mes "Romperesti la tua promessa e deluderesti le persone? Non dare alcuna ragione alla gente?";
+				next;
+			} else {
+				mes "[" + strcharinfo(0) + "]";
+				mes "Va bene-";
+				next;
+				mes "[" + strcharinfo(0) + "]";
+				mes "Aaaaahhh!!!!!";
+				next;
+				mes "[Canzone della chitarra]";
+				mes "Cosa... cosa stai facendo?!! Cos'hai che non va!";
+				mes "Sicurezza!!!";
+				next;
+				mes "[Guardie in abito nero]";
+				mes "Per favore, smettila.";
+				close2;
+				warp "comodo",117,98;
+				end;
+			}
+			break;
+		case 2:
+			if (getskilllv("BD_LULLABY") == 0) {
+				mes "- Non puoi usare questa abilità senza impararla. -";
+				close;
+			}
+			mes "[" + strcharinfo(0) + "]";
+			mes "Sembra che non otterrò risposta anche se lo costringo.";
+			close;
+		case 3:
+			if (getskilllv("DC_FORTUNEKISS") == 0) {
+				mes "- Non puoi usare questa abilità senza impararla. -";
+				close;
+			}
+			emotion ET_QUESTION, playerattached();
+			mes "[" + strcharinfo(0) + "]";
+			mes "Ah, ah, la mia canzone per chitarra~";
+			next;
+			mes "[Canzone della chitarra]";
+			mes "Che cosa? Ho la pelle d'oca.";
+			next;
+			emotion ET_QUESTION, playerattached();
+			mes "[" + strcharinfo(0) + "]";
+			mes "Guardo <Nollio> da anni.";
+			next;
+			mes "[Canzone della chitarra]";
+			mes "So che siamo così popolari! Ah ah ah!";
+			next;
+			emotion ET_QUESTION, playerattached();
+			mes "[" + strcharinfo(0) + "]";
+			mes "Ho visto le esibizioni di altri Maestro ma non c'era nessuno migliore di Guitar Song.";
+			next;
+			mes "[Canzone della chitarra]";
+			mes "Eh eh eh! Sì, lo so, sono super fantastico!";
+			next;
+			emotion ET_BEST, playerattached();
+			mes "[" + strcharinfo(0) + "]";
+			mes "Oh... Quando ascolto la performance di Guitar Song per la prima volta mi viene subito una cotta per te.";
+			next;
+			mes "[" + strcharinfo(0) + "]";
+			mes "Sembrava di sentire la ninna nanna della mamma~ Era così bello e commovente... Sei il miglior artista del nostro tempo.";
+			next;
+			specialeffect EF_STEAL;
+			mes "[Canzone della chitarra]";
+			mes "Ah ah ah. Lo so bene, ma è bello sentire un tuo complimento!";
+			next;
+			mes "[" + strcharinfo(0) + "]";
+			mes "Quindi non vedevo l'ora di vedere la tua performance in Lutie questa volta.";
+			mes "Ma dopo aver saputo che lo spettacolo era stato cancellato, mi sono sentito così triste.";
+			next;
+			emotion ET_CRY, playerattached();
+			mes "[" + strcharinfo(0) + "]";
+			mes "Ora non riesco a sentire la melodia di Guitar Song~~";
+			mes "Volevo ballare al ritmo della tua musica come una bellissima farfalla.";
+			mes "Non c'è modo che il mio sogno diventi realtà adesso? Singhiozzo...";
+			next;
+			mes "[Canzone della chitarra]";
+			mes "Eh eh! No, non è così...";
+			next;
+			emotion ET_CRY, playerattached();
+			mes "[" + strcharinfo(0) + "]";
+			mes "Sono davvero felice di incontrarti di persona, ma spero di vedere la tua esibizione nella bellissima città innevata, Lutie.. Sob sob...";
+			next;
+			emotion ET_CRY, playerattached();
+			mes "[" + strcharinfo(0) + "]";
+			mes "Perché diavolo non ci mostri la performance, Guitar Song?";
+			mes "Non ti piaccio? Singhiozzo..";
+			next;
+			emotion ET_HUK;
+			mes "[Canzone della chitarra]";
+			mes "No, non è quel tipo di motivo!";
+			next;
+			mes "[" + strcharinfo(0) + "]";
+			mes "Allora per favore dimmi, amo davvero la tua musica... ma ora mi sento così triste...";
+			emotion ET_QUESTION;
+			next;
+			break;
+		}
+		mes "[Canzone della chitarra]";
+		mes "Oh no! Sai...";
+		mes "Anch'io voglio fare uno spettacolo!";
+		mes "Ma non posso fare tutto da solo!";
+		next;
+		emotion ET_ANGER;
+		mes "[Canzone della chitarra]";
+		mes "È tutta colpa della ballerina Kim!";
+		mes "Un giorno, all'improvviso, si è arrabbiata e mi ha detto che avrebbe lasciato <Nollio>!";
+		mes "Anch'io ero stanco di sentimenti imprevedibili!";
+		next;
+		mes "[Canzone della chitarra]";
+		mes "Pshaw.";
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "Perché si è arrabbiata così all'improvviso?";
+		next;
+		emotion ET_SWEAT;
+		mes "[Canzone della chitarra]";
+		mes "Non lo so! Deve portare rancore per qualcosa.";
+		mes "Lei è fatta così.";
+		mes "È improvvisamente scomparsa e mi ha inviato una lettera dicendomi che la squadra sarebbe stata sciolta.";
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "Dov'è la ballerina Kim adesso?";
+		next;
+		mes "[Canzone della chitarra]";
+		mes "Ebbene, la lettera è stata inviata da Hugel.";
+		mes "Immagino che potrebbe essere tornata nella sua città natale.";
+		mes "È lì che l'ho incontrata per la prima volta.";
+		next;
+		emotion ET_THINK;
+		mes "[Canzone della chitarra]";
+		mes "Anche se perde facilmente la pazienza, la sua danza è meravigliosa....";
+		mes "Non so cosa sto facendo di sbagliato.";
+		set job_wan,4;
+		changequest 2218,2219;
+		next;
+		mes "[Canzone della chitarra]";
+		mes "Ha sorriso così felice che le piace così tanto la nuova canzone..";
+		mes "Chi può ballare la mia musica così meravigliosamente come ha fatto lei?";
+		mes "Ora la mia musica e la mia vita sono storia... (mormorando).";
+		close;
+	} else if (job_wan > 3 && job_wan < 8) {
+		mes "[Canzone della chitarra]";
+		mes "Probabilmente la ballerina Kim è di nuovo dipendente dalle corse dei mostri di Hugel!";
+		mes "Ai tempi in cui era dipendente dalle razze dei mostri, chi pensi che l'abbia tirata fuori da quella dipendenza?";
+		close;
+	} else if (job_wan == 8) {
+		emotion ET_SURPRISE;
+		mes "- Raccontagli cosa è successo a Hugel e chiedigli di tornare da Lutie. -";
+		next;
+		mes "[Canzone della chitarra]";
+		mes "Oh oh~";
+		mes "Sei una sciocca ballerina Kim~";
+		mes "Senza di me, chi altro può prendersi cura di una donna come te~";
+		next;
+		mes "[Canzone della chitarra]";
+		mes "Vado subito lì e la sgrido.";
+		set job_wan,9;
+		close;
+	} else if (job_wan == 9) {
+		mes "[Canzone della chitarra]";
+		mes "Ok, andrò all'albero di Natale a Lutie dove dovrebbe tenersi lo spettacolo.";
+		close;
+	}
+	mes "[Maestro triste]";
+	mes "Dov'è il mio compagno...?";
+	close;
+}
+
+hu_in01,305,251,5	script	Vacant Looking Lady#wnd	879,{
+	if (job_wan < 4) {
+		mes "[Signora dall'aspetto vacuo]";
+		mes "(vuoto...)";
+		close;
+	} else if (job_wan == 4) {
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Singhiozza... singhiozza...";
+		next;
+		select("Perché piangi?");
+		emotion ET_CRY;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Ho rinunciato al mio sogno...";
+		mes "*Singhiozzo *Singhiozzo.";
+		next;
+		select("Cosa intendi?");
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Ho salutato il mio compagno che lavorava con me da molto tempo.";
+		next;
+		select("Perché hai detto addio?");
+		emotion ET_CRY;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "è perché... singhiozzo... singhiozzo!";
+		next;
+		select("Puoi dirmi tutto.");
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Quando Wanderers e Maestro si uniscono, le loro abilità diventano più forti.";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Quindi, quando viaggiano, spesso si riuniscono ed eseguono duetti.";
+		mes "Si divertono ballando e suonando musica.";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Qualche giorno fa, con la mia compagna Guitar Song. Ho mostrato una bellissima danza sulla sua musica a molte persone come facciamo di solito.";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Ero davvero orgoglioso di essere un Vagabondo dopo aver attirato tutti quegli applausi entusiastici.";
+		mes "Anche Guitar Song mi ha elogiato.";
+		mes "Ero così felice quel giorno.";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Ma...";
+		next;
+		select("Cosa è successo dopo?");
+		mes "[Signora dall'aspetto vacuo]";
+		mes "La mattina seguente mi sono svegliato, ho lavato il mio preferito e stavo cercando qualcosa da mangiare in camera mia..";
+		next;
+		emotion ET_HUK;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Poi Guitar Song ha improvvisamente aperto la porta della mia stanza per qualche motivo e ha detto ^3131FFEhi! Che diavolo ci fai qui?^000000 e poi mi ha buttato fuori dalla mia stanza!";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Stiamo insieme da tanto tempo ma come può farmi una cosa del genere?";
+		mes "All'inizio pensavo che stesse scherzando con me! Ma quando mi ha buttato fuori dalla mia stanza...";
+		next;
+		emotion ET_CRY;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Perché non ha riconosciuto il mio volto?";
+		mes "Pensi che non voglia vedere la mia faccia senza trucco?";
+		mes "Buuuuuuuuu!";
+		next;
+		select("Quindi hai sciolto la squadra?");
+		emotion ET_CRY;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Stai ignorando anche il mio rispetto per me stesso ferito come donna?";
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "NO! È davvero un uomo premuroso!";
+		mes "Ma non penso che tu abbia sciolto la tua preziosa squadra solo per questo.";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Hai ragione.";
+		mes "Non è solo per questo.";
+		mes "Il vero motivo per cui ho sciolto la squadra è...";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Dopo quel giorno, sono andato nella mia città natale, Hugel e io siamo rimasti in casa.";
+		mes "Fu allora che Shide mi consolò con dolciumi.";
+		next;
+		emotion ET_SHY;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "La torta di Shide è così meravigliosa!";
+		mes "È la torta più famosa di Hugel con morbido pan di spagna e frutta fresca e dolce crema al cioccolato!";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Mi sentivo come se tutti gli angeli della felicità fossero venuti a consolarmi quando ho assaggiato quella dolce torta.";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Quindi l'ho mangiato ogni mattina e ogni sera.";
+		next;
+		select("Oh, non vorresti...");
+		emotion ET_CRY;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "L'angelo della felicità si è ripreso la mia tristezza e mi ha dato un sacco di grasso sulla pancia!";
+		mes "Buu-hoo-hoo!!";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Ora non posso indossare i miei vestiti da ballo!";
+		mes "Non sono più una ballerina che balla come una bellissima farfalla!";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Quel che è peggio, è diventato difficile piegare la vita in avanti!";
+		mes "Buuuuuuuuu!";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Il giorno dello spettacolo si avvicina, ma l'angelo della felicità mi ha portato un grosso ostacolo.";
+		mes "Ora sono caduto di nuovo nella disperazione!";
+		mes "Non posso lasciare che Guitar Song e i miei fan mi vedano così!";
+		next;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "<Nollio> è finito! Buuuuuuuuu!";
+		set job_wan,5;
+		close;
+	} else if (job_wan == 5) {
+		emotion ET_CRY;
+		mes "[Signora dall'aspetto vacuo]";
+		mes "Non molto tempo fa ero come una bellissima colomba, ma ora sono solo una gallina grassa.";
+		mes "Singhiozzo...!";
+		mes "Penso che la vita di Wanderer Dancer Kim sia finita adesso.";
+		mes "Buu-hoo-hoo!";
+		next;
+		if(select("Ehi, non arrenderti.:Mi dispiace per te.") == 2) {
+			mes "[Ballerina Kim]";
+			mes "La mia vita non può uscire dall'abisso adesso...";
+			close;
+		}
+		mes "[Ballerina Kim]";
+		mes "Ma ho già detto a Guitar Song che è tutto finito.";
+		mes "Anche se non è finita, non posso fare nulla per ora.";
+		next;
+		select("Se ti arrendi, sarà finita.");
+		mes "[Ballerina Kim]";
+		mes "Ma in questa situazione...";
+		mes "Ho davvero un modo per cambiarlo?";
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "L'esercizio fisico è il modo migliore!";
+		mes "Se lavori duro, il tuo capo sarà più leggero di prima!";
+		next;
+		mes "[Ballerina Kim]";
+		mes "Ma mi stanco e mi arrendo facilmente.";
+		mes "Penso che mi arrenderò.";
+		next;
+		if(select("Beh, non c'è altro modo.:Lavoriamo insieme.") == 1) {
+			mes "[Ballerina Kim]";
+			mes "Senza sogni e senza speranza...";
+			close;
+		}
+		emotion ET_HUK;
+		mes "[Ballerina Kim]";
+		mes "Ti allenerai insieme a me?";
+		mes "Veramente?";
+		next;
+		mes "[Ballerina Kim]";
+		mes "Sono sicuro che mi impegnerei di più se avessi qualcuno con cui allenarmi.";
+		next;
+		mes "[Ballerina Kim]";
+		mes "Mi sento meglio adesso!";
+		mes "Penso che sto guadagnando di nuovo forza!";
+		mes "Lavoriamo insieme!";
+		next;
+		select("Cosa dovremmo fare prima?");
+		mes "[Ballerina Kim]";
+		mes "Ho una buona idea!";
+		next;
+		mes "[Ballerina Kim]";
+		mes "Ci vediamo al Lago Abyss.";
+		mes "Ci vediamo lì.";
+		mes "Basta andare un campo a sud e uno a ovest da qui a Hugel.";
+		mes "Ci vediamo lì.";
+		set job_wan,6;
+		changequest 2219,2220;
+		close;
+	} else if (job_wan == 6 || job_wan == 7) {
+		mes "[Ballerina Kim]";
+		mes "Ci vediamo al Lago Abyss.";
+		close;
+	} else if (job_wan == 8) {
+		mes "[Ballerina Kim]";
+		mes "Per favore, di' a Guitar Song di andare da Lutie";
+		mes "Ci andrò dopo aver preparato i bagagli!";
+		close;
+	}
+	mes "[Signora dall'aspetto vacuo]";
+	mes "Dov'è il mio compagno?...";
+	close;
+}
+
+hu_fild05,342,130,5	script	Dancer Kim#fild	879,{
+	if (job_wan == 6) {
+		mes "[Ballerina Kim]";
+		mes "Fare esercizio insieme fa bene, ma se competiamo per farlo, penso che otterremo un effetto migliore!";
+		next;
+		mes "[Ballerina Kim]";
+		mes "D'ora in poi gareggiamo per vedere chi sconfigge per primo lo Yellow Novus!";
+		next;
+		mes "[Ballerina Kim]";
+		mes "Devi sconfiggere 50 Yellow Novus!";
+		mes "Sei pronto?";
+		next;
+		if(select("NO.:SÌ.") == 1) {
+			mes "[Ballerina Kim]";
+			mes "Sbrigati prima che perda interesse!";
+			close;
+		}
+		mes "[Ballerina Kim]";
+		mes "Bene! Allora pronto, partenza~~";
+		mes "Andare!";
+		set job_wan,7;
+		changequest 2220,2221;
+		close;
+	} else if (job_wan == 7) {
+		if (checkquest(2221,PLAYTIME) == 0 || checkquest(2221,PLAYTIME) == 1) {
+			if (checkquest(2221,HUNTING) == 2) {
+				mes "[Ballerina Kim]";
+				mes "Wow!";
+				mes "Sembra che ho perso!";
+				next;
+				mes "[Ballerina Kim]";
+				mes "Questa sensazione mi ricorda il passato in cui ho attraversato i confini di molti continenti.";
+				next;
+				mes "[Ballerina Kim]";
+				mes "Ah! Guarda questo!";
+				mes "Sto dimagrendo, lo vedi?";
+				next;
+				mes "[Ballerina Kim]";
+				mes "Sento che il mio corpo è pieno di potere.";
+				mes "All'improvviso voglio vedere il mio buon partner Guitar Song.";
+				mes "Voglio ricominciare a ballare.";
+				next;
+				select("Che ne dici di ballare a Lutie?");
+				emotion ET_SURPRISE;
+				mes "[Ballerina Kim]";
+				mes "Ah! Villaggio di Natale! SÌ! SÌ!";
+				mes "Il mio sogno di ballare a Lutie finalmente diventerà realtà.";
+				next;
+				mes "[Ballerina Kim]";
+				mes "Voglio ballare e saltare tutto il giorno per portare la felicità alle persone!";
+				mes "Quindi andrò da Lutie.";
+				next;
+				mes "[Ballerina Kim]";
+				mes "Ah, fammi un favore, per favore.";
+				mes "Puoi portare Guitar Song a Lutie?";
+				mes "Digli che il suo partner lo sta aspettando.";
+				next;
+				select("Nessun problema!");
+				mes "[Ballerina Kim]";
+				mes "Sei una brava persona. Sono davvero felice di averti incontrato.";
+				mes "Grazie a Dio per avermi mandato una persona così testarda!";
+				set job_wan,8;
+				changequest 2221,2222;
+				close;
+			} else {
+				mes "[Ballerina Kim]";
+				mes "Ti sembra facile?";
+				mes "Ma sono sicuro di avere maggiori possibilità di vincere.";
+				close;
+			}
+		} else if (checkquest(2221,PLAYTIME) == 2) {
+			mes "[Ballerina Kim]";
+			mes "Oh, sei tornato da me.";
+			mes "Sono così stanco. Non mi arrendo a metà strada. È un buon esercizio per me. Dovrò cedere Nollio ad un altro Viandante, è tutto finito....";
+			next;
+			mes "- La ballerina Kim è crollata per il dolore e la stanchezza -";
+			set job_wan,6;
+			changequest 2221,2220;
+			close;
+		} else {
+			mes "[Ballerina Kim]";
+			mes "Eh...?";
+			set job_wan,6;
+			close;
+		}
+	} else if (job_wan == 8) {
+		mes "[Ballerina Kim]";
+		mes "Per favore, di' a Song che lo aspetterò all'albero di Natale.";
+		close;
+	}
+	mes "[Ballerina Kim]";
+	mes "Credo che cacciare Novus sia l'esercizio migliore.";
+	close;
+}
+
+-	script	#fildshout00::wandererjcq	-1,{
+OnTouch:
+	if (job_wan == 7) {
+		switch(rand(3)) {
+		case 0:
+			mapannounce "hu_fild05",""Ballerina Kim: Ehi, come hai fatto ad essere così veloce? Ne ho solo pochi anch'io...",bc_map,"0xffff00"; //FW_NORMAL 12 0 0
+			break;
+		case 1:
+			mapannounce "hu_fild05",""Ballerina Kim: Errrgghh! Ehi Novus! Ti prenderò~",bc_map,"0xffff00"; //FW_NORMAL 12 0 0
+			break;
+		case 2:
+			mapannounce "hu_fild05",""Ballerina Kim: Oh, sei già stanco? È questa la mia vittoria? Oh oh oh.",bc_map,"0xffff00"; //FW_NORMAL 12 0 0
+			break;
+		}
+	}
+	end;
+}
+hu_fild05,81,111,0	duplicate(wandererjcq)	#fildshout01	139,20,20
+hu_fild05,193,98,0	duplicate(wandererjcq)	#fildshout02	139,20,20
+hu_fild05,252,74,0	duplicate(wandererjcq)	#fildshout03	139,20,20
+hu_fild05,323,175,0	duplicate(wandererjcq)	#fildshout04	139,20,20
+hu_fild05,334,225,0	duplicate(wandererjcq)	#fildshout05	139,20,20
+hu_fild05,301,287,0	duplicate(wandererjcq)	#fildshout06	139,20,20
+hu_fild05,229,315,0	duplicate(wandererjcq)	#fildshout07	139,20,20
+hu_fild05,146,309,0	duplicate(wandererjcq)	#fildshout08	139,20,20
+hu_fild05,80,239,0	duplicate(wandererjcq)	#fildshout09	139,20,20
+hu_fild05,69,147,0	duplicate(wandererjcq)	#fildshout10	139,20,20
+
+xmas,148,131,0	script	#wandergogo	139,3,3,{
+OnTouch:
+	if (job_wan == 9) {
+		enablenpc "Dancer Kim#xmas";
+		enablenpc "Guitar Song#xmas";
+		enablenpc "Spectator#xmas1";
+		enablenpc "Spectator#xmas2";
+		enablenpc "Spectator#xmas3";
+		enablenpc "Spectator#xmas4";
+		enablenpc "Soy#xmas";
+		enablenpc "Mimi#xmas";
+	}
+	end;
+}
+
+xmas,147,135,5	script	Dancer Kim#xmas	485,{
+	if (job_wan == 9) {
+		if (BaseJob != Job_Dancer && BaseLevel < 99 && JobLevel < 50) {
+			mes "- Non puoi continuare la missione perché le condizioni per la missione non sono appropriate. -";
+			close;
+		}
+		if (SkillPoint) {
+			mes "- Non puoi continuare la missione perché ti restano punti abilità. -";
+			close;
+		}
+		if (checkweight(1201,2) == 0) {
+			mes "- Devi svuotare il tuo inventario se vuoi continuare la missione. -";
+			close;
+		}
+		if (ismounting()) {
+			mes "[Ballerina Kim]";
+			mes "Per favore, scendi da quella creatura su cui stai cavalcando.";
+			mes "Allora parlami ancora.";
+			close;
+		}
+		mes "- <Nollio> si sta esibendo. -";
+		next;
+		emotion ET_DELIGHT, getnpcid(0, "Guitar Song#xmas");
+		emotion ET_DELIGHT;
+		mes "[Canzone della chitarra]";
+		mes "Uno! Due! Tre!";
+		mes "Pesce azzurro che balla~";
+		mes "Fan! Fan! Fan! Sono un tuo fan~";
+		mes "Con una mente forte e una forte volontà, completo la pesca~";
+		next;
+		emotion ET_DELIGHT, getnpcid(0, "Spectator#xmas1");
+		emotion ET_DELIGHT, getnpcid(0, "Spectator#xmas2");
+		emotion ET_DELIGHT, getnpcid(0, "Spectator#xmas3");
+		emotion ET_DELIGHT, getnpcid(0, "Spectator#xmas4");
+		emotion ET_DELIGHT, getnpcid(0, "Soy#xmas");
+		emotion ET_DELIGHT, getnpcid(0, "Mimi#xmas");
+		mes "[Spettatori]";
+		mes "AAAAhhhhhhhhh - - !!!";
+		mes "Così bello! Nollio è il migliore!!!";
+		next;
+		mes "[Canzone della chitarra]";
+		mes "Ciao, signore e signori!";
+		next;
+		emotion ET_THROB, getnpcid(0, "Spectator#xmas1");
+		emotion ET_THROB, getnpcid(0, "Spectator#xmas2");
+		emotion ET_THROB, getnpcid(0, "Spectator#xmas3");
+		emotion ET_THROB, getnpcid(0, "Spectator#xmas4");
+		emotion ET_THROB, getnpcid(0, "Soy#xmas");
+		emotion ET_THROB, getnpcid(0, "Mimi#xmas");
+		mes "[Spettatori]";
+		mes "Ciao!!!!!";
+		next;
+		mes "[Canzone della chitarra]";
+		mes "Siamo il romantico team di Viandanti <Nollio> che passeggia per il mondo seguendo l'amore e il vento!";
+		next;
+		emotion ET_THROB, getnpcid(0, "Spectator#xmas1");
+		emotion ET_THROB, getnpcid(0, "Spectator#xmas2");
+		emotion ET_THROB, getnpcid(0, "Spectator#xmas3");
+		emotion ET_THROB, getnpcid(0, "Spectator#xmas4");
+		emotion ET_THROB, getnpcid(0, "Soy#xmas");
+		emotion ET_THROB, getnpcid(0, "Mimi#xmas");
+		mes "[Spettatori]";
+		mes "Wowwww~!";
+		next;
+		emotion ET_BEST;
+		mes "[Ballerina Kim]";
+		mes "È così affascinante poter ballare in un bellissimo villaggio innevato,";
+		mes "Sono così felice di essere venuta qui, Lutie.";
+		next;
+		mes "[Spettatori]";
+		mes "Sìììì~";
+		next;
+		mes "[Ballerina Kim]";
+		mes "In effetti, questa meravigliosa esibizione sarebbe stata annullata a causa della mia disattenzione.";
+		next;
+		mes "[Canzone della chitarra]";
+		mes "L'ho fatta arrabbiare involontariamente.";
+		mes "Colgo l'occasione per dirle che mi dispiace.";
+		next;
+		mes "[Ballerina Kim]";
+		mes "Va bene.";
+		mes "Mi dispiace di essermi comportato come ho fatto.";
+		next;
+		mes "[Ballerina Kim]";
+		mes "In effetti c'è un amico che mi ha tirato su di morale e mi ha aiutato a superare le difficoltà che ho dovuto affrontare quando ero depresso nella mia città natale.";
+		next;
+		mes "[Ballerina Kim]";
+		mes "In futuro potresti amare il ballo del mio amico più del mio.";
+		mes "Ha un grande talento.";
+		next;
+		mes "[Ballerina Kim]";
+		mes "Presentazione!";
+		next;
+		mes "[Ballerina Kim]";
+		mapannounce "xmas",""Ballerina Kim: Presentiamo il Vagabondo nascente! " + strcharinfo(0) + "!",bc_map,"0xffff00"; //FW_NORMAL 12 0 0
+		mes "Questa stella nascente del Vagabondo, " + strcharinfo(0) + "!";
+		jobchange roclass(eaclass()|EAJL_THIRD);
+		set job_wan,10;
+		getitem 2795,1; //Green_Apple_Ring
+		getitem 5758,1; //Dying_Swan
+		completequest 2222;
+		next;
+		mes "[Ballerina Kim]";
+		mes "Ah ah ah, sei sorpreso?";
+		mes "Non sembri così perplesso?";
+		mes "Mi hai portato qui, te lo meriti.";
+		next;
+		mes "[Ballerina Kim]";
+		mes "OH! Sei come un bellissimo cigno!";
+		mes "La dea deve essere gelosa per vedere la tua bellezza.";
+		next;
+		mes "[Ballerina Kim]";
+		mes "" + strcharinfo(0) + "! Spero di vedere le tue belle imprese in futuro.";
+		mes "Inoltre, spero che tu possa incontrare il tuo prezioso Maestro.";
+		mes "Suoniamo insieme più tardi, ok? Ah ah.";
+		next;
+		mes "[Canzone della chitarra]";
+		mes "Grazie a te, non ho perso il mio prezioso partner.";
+		mes "Grazie mille.";
+		mes "Presto farò una canzone per te, quindi aspetta.";
+		close2;
+		disablenpc "Dancer Kim#xmas";
+		disablenpc "Guitar Song#xmas";
+		disablenpc "Spectator#xmas1";
+		disablenpc "Spectator#xmas2";
+		disablenpc "Spectator#xmas3";
+		disablenpc "Spectator#xmas4";
+		disablenpc "Soy#xmas";
+		disablenpc "Mimi#xmas";
+		end;
+	}
+OnInit:
+	disablenpc "Dancer Kim#xmas";
+	end;
+}
+
+-	script	#wander_xmas	-1,{
+	end;
+OnInit:
+	disablenpc();
+	end;
+}
+xmas,149,135,3	duplicate(#wander_xmas)	Guitar Song#xmas	479
+xmas,142,130,7	duplicate(#wander_xmas)	Spectator#xmas1	711
+xmas,145,127,7	duplicate(#wander_xmas)	Spectator#xmas2	712
+xmas,148,127,7	duplicate(#wander_xmas)	Soy#xmas	714
+xmas,149,127,1	duplicate(#wander_xmas)	Mimi#xmas	714
+xmas,151,127,1	duplicate(#wander_xmas)	Spectator#xmas3	716
+xmas,154,129,1	duplicate(#wander_xmas)	Spectator#xmas4	797

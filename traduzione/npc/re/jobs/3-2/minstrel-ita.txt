@@ -1,0 +1,1926 @@
+//===== rAthena Script ======================================= 
+//= Minstrel Job Quest
+//===== By: ================================================== 
+//= Muad_Dib
+//===== Current Version: ===================================== 
+//= 1.4
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Job change Quest from Bard / Clown -> Minstrel.
+//===== Additional Comments: ================================= 
+//= 1.0 First Version. [Masao]
+//= 1.1 Fix the checking of requirements before job change to Minstel [JayPee]
+//= 1.2 Optimized. [Euphy]
+//= 1.3 Updated script. [Euphy]
+//= 1.4 Added VIP features. [Euphy]
+//============================================================
+
+alberta,196,133,4	script	Bard#job_min	486,{
+	if (job_min == 0) {
+		if (BaseJob == Job_Bard && BaseLevel > 98 && JobLevel > 49) {
+			mes "[Bardo]";
+			mes "La voce del cielo risuona nelle mie orecchie";
+			mes "come un vento errante,";
+			next;
+			mes "[Bardo]";
+			mes "Anche se chiudo gli occhi e mi copro le orecchie,";
+			mes "Posso sentire una voce da qualche parte,";
+			next;
+			mes "[Bardo]";
+			mes "Ha messo la tentazione nel sonno profondo del membro dell'equipaggio esausto,";
+			mes "li ha fatti sentire come se fossero in una terra di sogni.";
+			next;
+			mes "[Ragazza]";
+			mes "Ahhh!! Eccezionale!!";
+			next;
+			mes "[Ragazzo]";
+			mes "Bis!! Bis!!!";
+			next;
+			mes "[Il vecchio passa]";
+			mes "Eeeee~ non è una vera canzone...";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Applaudi.";
+			mes "Posso sentire il ritmo.";
+			mes "Posso ascoltare un'altra canzone?";
+			next;
+			mes "[Bardo]";
+			mes "Ronzio?";
+			mes "A giudicare dal tuo outfit penso che tu sia bravo a cantare, perché non ci canti una canzone?";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "??!!";
+			next;
+			mes "[Bardo]";
+			mes "Ahahah!";
+			mes "Stavo solo scherzando.";
+			mes "Eri serio? Ahah.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "...";
+			next;
+			mes "[Karian]";
+			mes "Scusa~";
+			mes "Non essere arrabbiato...";
+			mes "Mi chiamo Karian, sto solo andando in giro.";
+			next;
+			mes "[Karian]";
+			mes "Vuoi andare da qualche parte?";
+			mes "L'Alberta è perfetta per viaggiare.";
+			next;
+			mes "[Karian]";
+			mes "Ma quando vai per mare, devi stare attento.";
+			mes "Se incontri una sirena, sarà solo questione di tempo prima che ti uccida.";
+			next;
+			mes "[Karian]";
+			mes "Nessun uomo può sopravvivere dopo aver sentito ^f57d7dla voce di una sirena^000000.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Io sono "+strcharinfo(0)+".";
+			mes "Sei qui in Alberta per viaggiare?";
+			next;
+			mes "[Karian]";
+			mes "Uhm... non sto cercando di andarmene...";
+			mes "...";
+			next;
+			mes "[Karian]";
+			mes "SÌ!";
+			mes "Sto cercando '^f57d7dMaestro Song^000000'.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "^f57d7d'Maestro Song'^000000, intendi il poeta della leggenda?";
+			next;
+			mes "[Karian]";
+			mes "Giusto.";
+			mes "Secondo una voce che ho sentito, è un ricco nobile.";
+			mes "Ma a parte questo, non posso avere altre informazioni.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Perché non riesci ad avere più informazioni?";
+			next;
+			mes "[Karian]";
+			mes "BENE?";
+			mes "Ecco perché ho provato ad andare a Prontera...";
+			mes "Ehm...";
+			next;
+			mes "[Karian]";
+			mes "Se sei interessato, perché non mi aiuti a scoprire dov'è ^f57d7d'Maestro Song'^000000?";
+			next;
+			if(select("OK.:NO.") == 2) {
+				mes "["+strcharinfo(0)+"]";
+				mes "Non mi interessa.";
+				next;
+				mes "[Karian]";
+				mes "Sei? Non c'è niente da fare.";
+				mes "Ci vediamo più tardi~";
+				close;
+			}
+			if (VIP_SCRIPT) {
+				callfunc "VIP_Third_Class";
+				set job_min,1;
+				setquest 11135;
+				next;
+			}
+			mes "["+strcharinfo(0)+"]";
+			mes "Ok, lo farò.";
+			set job_min,1;
+			setquest 11135;
+			next;
+			mes "[Karian]";
+			mes "È bello viaggiare da solo, ma a volte hai la sensazione di voler avere degli amici intorno.";
+			next;
+			mes "[Karian]";
+			mes "Poi "+strcharinfo(0)+".";
+			mes "Puoi raccogliere alcune ^f57d7dInformazioni su 'Maestro Song'^000000 in ^f57d7dProntera^000000?";
+			mes "Perché ho qualcosa su cui indagare in Alberta.";
+			next;
+			mes "[Karian]";
+			mes "Per favore, torna qui dopo aver terminato le indagini.";
+			close;
+		}
+		mes "[Bardo]";
+		mes "Bisogna stare attenti quando si va per mare.";
+		mes "Se una sirena ti affascina, è solo questione di tempo prima che ti uccida.";
+		next;
+		mes "[Bardo]";
+		mes "Nessun uomo può sopravvivere dopo aver sentito ^f57d7dla voce di una sirena^000000.";
+		close;
+	} else if (job_min == 1) {
+		mes "[Karian]";
+		mes "È bello viaggiare da solo, ma a volte hai la sensazione di voler avere degli amici intorno.";
+		next;
+		mes "[Karian]";
+		mes "Poi "+strcharinfo(0)+".";
+		mes "Puoi raccogliere alcune ^f57d7dInformazioni su 'Maestro Song'^000000 in ^f57d7dProntera^000000?";
+		mes "Perché ho qualcosa su cui indagare in Alberta.";
+		next;
+		mes "[Karian]";
+		mes "Per favore, torna qui dopo aver terminato le indagini.";
+		close;
+	} else if (job_min > 1 && job_min < 4) {
+		mes "[Karian]";
+		mes "Puoi raccogliere alcune ^f57d7d informazioni su 'Maestro Song'^000000 in ^f57d7dProntera^000000?";
+		mes "Perché ho qualcosa su cui indagare in Alberta.";
+		next;
+		mes "[Karian]";
+		mes "Per favore, torna qui dopo aver terminato le indagini.";
+		close;
+	} else if (job_min == 4) {
+		mes "[Karian]";
+		mes strcharinfo(0)+"! Did you already go to Prontera?";
+		mes "Hai ricevuto qualche informazione utile?";
+		next;
+		mes "[Karian]";
+		mes "Hum~ vero?";
+		mes "Penso che non sia sufficiente da usare...";
+		next;
+		mes "[Karian]";
+		mes "Huhu~ Ma ho ricevuto alcune informazioni utili da alcuni capitani qui in Alberta.";
+		next;
+		mes "[Karian]";
+		mes "Ho sentito che c'è una nave che aveva un uomo che potrebbe essere ^f57d7dMaestro Song^000000.";
+		mes "Qualche anno fa, era una nave diretta a ^f57d7dHugel^000000.";
+		next;
+		mes "[Karian]";
+		mes "Non esiste più, quindi devo prendere un dirigibile...";
+		mes "E' la prima volta che lo prendo.";
+		next;
+		mes "[Karian]";
+		mes "Ehm...";
+		mes "Comunque incontriamoci al dirigibile di Izlude.";
+		set job_min,5;
+		changequest 11138,11139;
+		close;
+	} else if (job_min == 100) {
+		mes "[Karian]";
+		mes "La voce del cielo gira intorno alle mie orecchie";
+		mes "come un vento errante,";
+		next;
+		mes "[Bardo]";
+		mes "Anche se chiudo gli occhi e mi copro le orecchie,";
+		mes "Posso sentire una voce da qualche parte,";
+		next;
+		mes "[Bardo]";
+		mes "Ha messo la tentazione nel sonno profondo del membro dell'equipaggio esausto,";
+		mes "farli sentire come se fossero nella terra dei sogni.";
+		next;
+		mes "[Karian]";
+		mes "Ah!!! "+strcharinfo(0)+" È molto tempo che non ci si vede!";
+		mes "Che cosa? Cosa sto facendo qui?";
+		next;
+		mes "[Karian]";
+		mes "BENE?";
+		mes "Lasciami uscire di qui?";
+		next;
+		mes "[Canzone del menestrello]";
+		mes "Ogni volta che vuoi vedermi, vieni a trovarmi.";
+		mes "Se hai tempo passa a fare una chiacchierata con me.";
+		next;
+		switch(select("Accettare.:Rifiutare.")) {
+		case 1:
+			mes "[Canzone del menestrello]";
+			mes "Hai visitato un posto divertente?";
+			mes "Sono emozionato!";
+			close2;
+			warp "prt_in",101,174;
+			end;
+		case 2:
+			mes "[Canzone del menestrello]";
+			mes "Allora passa di qui la prossima volta.";
+			close;
+		}
+	}
+	mes "[Bardo]";
+	mes "La voce del cielo risuona nelle mie orecchie";
+	mes "come vento errante,";
+	next;
+	mes "[Bardo]";
+	mes "Anche se chiudo gli occhi e mi copro le orecchie,";
+	mes "Posso sentire la voce da qualche parte,";
+	next;
+	mes "[Bardo]";
+	mes "Ha messo la tentazione nel sonno profondo del membro dell'equipaggio esausto,";
+	mes "farli sentire come se fossero nella terra dei sogni.";
+	close;
+}
+
+prontera,141,97,4	script	Warmhearted woman	701,{
+	mes "[Donna dal cuore cordiale]";
+	if (job_min == 1) {
+		mes "Maestro Canzone?";
+		mes "Non ho mai sentito quel nome prima.";
+		next;
+		mes "[Donna dal cuore cordiale]";
+		mes "È un poeta leggendario?";
+		mes "Non so chi sia, ma immagino che sia un grand'uomo?";
+		next;
+		mes "[Donna dal cuore cordiale]";
+		mes "Ah! Chiedi a un ^f57d7duomo con gli occhiali vicino al cancello del castello^000000 di una canzone.";
+		mes "Realizzerà un libro con 100 canzoni di successo~";
+		next;
+		mes "[Donna dal cuore cordiale]";
+		mes "Deve sapere qualcosa sulla realizzazione di quel libro.";
+		set job_min,2;
+		changequest 11135,11136;
+		close;
+	} else if (job_min == 2) {
+		mes "Ah! Chiedi informazioni sulla canzone a un ^f57d7duomo con gli occhiali vicino al cancello del castello^000000.";
+		mes "Faranno un libro con 100 canzoni di successo~";
+		next;
+		mes "[Donna dal cuore cordiale]";
+		mes "Deve sapere qualcosa sulla realizzazione di quel libro.";
+		close;
+	}
+	mes "Ho sentito che un ^f57d7duomo con gli occhiali vicino al cancello del castello^000000 sta scrivendo un libro di canzoni da 100 successi~";
+	close;
+}
+
+prontera,140,331,6	script	Glasses-wearing Man	883,{
+	mes "[Uomo con gli occhiali]";
+	if (job_min == 2) {
+		mes "Intendi Maestro Song?";
+		mes "Non conosco i dettagli della sua vita ma ho sentito che ha scritto grandi canzoni.";
+		next;
+		mes "[Uomo con gli occhiali]";
+		mes "Non capisco come un ragazzo cresciuto in un ambiente ricco possa scrivere una canzone come questa.";
+		next;
+		mes "[Uomo con gli occhiali]";
+		mes "È ancora in viaggio, ma in questi giorni non abbiamo sentito nuove canzoni da lui.";
+		next;
+		mes "[Uomo con gli occhiali]";
+		mes "Quindi siamo preoccupati.";
+		next;
+		mes "[Uomo con gli occhiali]";
+		mes "Sarebbe meglio chiedere alla ^f57d7ddonna che sta davanti al negozio di attrezzi^000000.";
+		set job_min,3;
+		changequest 11136,11137;
+		close;
+	} else if (job_min == 3) {
+		mes "Sarebbe meglio chiedere alla ^f57d7ddonna che sta davanti al negozio di attrezzi^000000.";
+		close;
+	}
+	mes "100 canzoni di successo!!";
+	mes "Chiunque voglia diventare un menestrello dovrebbe saperlo!";
+	next;
+	mes "[Uomo con gli occhiali]";
+	mes "Una volta completato questo libro, sarò ricco!";
+	mes "Ahah!!";
+	close;
+}
+
+prontera,146,218,4	script	Woman#job_min	90,{
+	if (job_min == 3) {
+		mes "[Donna]";
+		mes "Sai chi è il Maestro Song?";
+		mes "Penso che debba essere il mio bambino.";
+		next;
+		mes "[Donna]";
+		mes "Qualche anno fa andò per mare ma non tornò mai più.";
+		next;
+		mes "[Donna]";
+		mes "Gli piaceva molto cantare ma non lo lasciavamo cantare.";
+		next;
+		mes "[Donna]";
+		mes "A suo padre non piaceva molto che cantasse.";
+		next;
+		mes "[Donna]";
+		mes "Quindi ha rotto tutti gli strumenti della casa...";
+		mes "È stato terribile.";
+		mes "Dov'è il mio bambino... annusa.";
+		next;
+		mes "- Non ne posso più -";
+		mes "- informazioni utili. -";
+		mes "- Tornerò in Alberta -";
+		mes "- e parla con quel Bardo. -";
+		set job_min,4;
+		changequest 11137,11138;
+		close;
+	} else if (job_min == 4) {
+		mes "- Non ne posso più -";
+		mes "- informazioni utili. -";
+		mes "- Torna in Alberta. -";
+		mes "- e parla con quel Bardo. -";
+		close;
+	}
+	mes "[Donna]";
+	mes "Dov'è il mio bambino... annusa.";
+	close;
+}
+
+airplane,222,67,6	script	Karian#job_min1	486,{
+	mes "[Karian]";
+	mes "Sì!!!!!!!!!!!!!!!!!!";
+	next;
+	mes "[Karian]";
+	mes "Per favore, lasciami in pace.";
+	mes "Mi sento nauseato.";
+	next;
+	mes "[Karian]";
+	mes "Acc...";
+	if (job_min == 5) {
+		set job_min,6;
+		changequest 11139,11140;
+		close2;
+		warp "hu_in01",267,8;
+		end;
+	}
+	close;
+}
+
+hu_in01,267,5,3	script	Karian#job_min2	486,{
+	mes "[Karian]";
+	if (job_min == 6) {
+		mes "Eeeeh è così doloroso.";
+		mes "Non voglio sentirmi così mai più.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Stai bene?";
+		next;
+		mes "[Karian]";
+		mes "...";
+		mes "NO...";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Mi sento bene.";
+		mes "Allora vado a cercare informazioni in città, tu puoi riposarti.";
+		next;
+		mes "[Karian]";
+		mes "Scusa, blech! mi sento ancora male...";
+		mes "Puoi ottenere buone informazioni dal ^f57d7dPub^000000. Owww...";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Non devi dirmi tutto. Posso occuparmene io.";
+		next;
+		mes "[Karian]";
+		mes "...";
+		set job_min,7;
+		changequest 11140,11141;
+		close;
+	} else if (job_min == 7) {
+		mes "Scusa... Owww!";
+		mes "Puoi ottenere buone informazioni dal ^f57d7dPub^000000. Owww...";
+		close;
+	} else if (job_min == 8) {
+		mes "Woo.";
+		mes "Hai ottenuto qualcosa?";
+		next;
+		mes "- Karian non guarda -";
+		mes "- come se stesse bene. -";
+		mes "- Puoi ottenere informazioni -";
+		mes "- da un uomo al pub. -";
+		close;
+	} else if (job_min == 9) {
+		mes "Owww...";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Come ti senti?";
+		next;
+		mes "[Karian]";
+		mes "Oww...";
+		mes "Mi sento meglio.";
+		next;
+		mes "[Karian]";
+		mes "Hai ottenuto qualcosa?";
+		mes "Mi dispiace di non poterti essere più utile.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "No, va bene.";
+		mes "Ho incontrato un uomo al pub, ha detto di aver preso una canzone da 'Maestro Song'.";
+		next;
+		mes "[Karian]";
+		mes "Pub?";
+		mes "Hai una canzone?";
+		mes ".....";
+		mes "Candeggina...";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "EHI! Sei sicuro di stare bene?";
+		next;
+		mes "[Karian]";
+		mes "Non soffro di mal d'aria,";
+		mes "Sono solo brutti ricordi.";
+		mes "Allora, hai sentito qualcosa?";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Ho sentito una canzone intitolata ^f57d7d'Metallic Sound'^000000.";
+		next;
+		mes "[Karian]";
+		mes "Che cosa?!?!?!?!!!!!";
+		mes "L'hai sentito?!";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Perché? Conosci quella canzone?";
+		next;
+		mes "[Karian]";
+		mes "Ahh...";
+		mes "S-sì...";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Hmm...";
+		next;
+		mes "[Karian]";
+		mes "L'ho incontrato prima.";
+		mes "Ha una voce fantastica...";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "SÌ.";
+		mes "Ho perso i sensi quando ho sentito quella canzone.";
+		next;
+		mes "[Karian]";
+		mes "Ha il potere distruttivo della voce.";
+		mes "E lui...";
+		mes "Cos'altro?";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Ah!!";
+		mes "^f57d7d'Maestro Song'^000000 è andato alla ^f57d7dTorre Thanatos^000000.";
+		mes "Non so perché sia ​​andato lì.";
+		next;
+		mes "[Karian]";
+		mes "L'ha fatto? Devo andare lì!";
+		set job_min,10;
+		changequest 11142,11143;
+		close;
+	} else if (job_min == 10) {
+		mes "Cosa fai? Andiamo alla torre di Thanatos.";
+		close;
+	}
+	mes "Naturalmente è facile prendere un dirigibile, ma a volte può essere bello camminare.";
+	next;
+	mes "[Karian]";
+	mes "Non è colpa della mia malattia.";
+	close;
+}
+
+hu_in01,361,103,3	script	Tone-deaf person	995,{
+	if (job_min == 7) {
+		mes "[Persona sorda]";
+		mes "Lala~ lala~";
+		mes "Canticchiando~?";
+		next;
+		mes "[Persona sorda]";
+		mes "lalala~";
+		mes "lulla~";
+		next;
+		mes "- È molto difficile da sentire. -";
+		mes "- Inizi ad avere dei dubbi -";
+		mes "- che tali suoni potessero -";
+		mes "- essere fatto da esseri umani. -";
+		next;
+		if(select("Ti sposti dall'altra parte.:Continua ad ascoltare.") == 1)
+			close;
+		mes "[Persona sorda]";
+		mes "Turuturu~";
+		mes "Dadada~";
+		next;
+		mes "[Persona sorda]";
+		mes "Shubashuba~ shaaa~";
+		mes "Blabla~";
+		mes "Lalala...";
+		mes "......!!";
+		next;
+		mes "[Persona sorda]";
+		mes "Ronzio!! Ehi tu, stavi ascoltando la mia canzone.";
+		mes "Sembri un "+((Class == Job_Clown)?"Clown":"Bardo")+", che ne dici di cantare per me come ricompensa per la mia canzone?";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Che cosa?!";
+		next;
+		mes "[Persona sorda]";
+		mes "Canta per me.";
+		mes "Andiamo~";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "OK...";
+		mes "Uhm uhm...";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Ti trovi nel mezzo del campo di Asgard.";
+		mes "Mi consegni il frutto del cielo~";
+		mes "Sei amato da ogni dio~";
+		next;
+		mes "[Persona sorda]";
+		mes "Hooo~ Canti bene. Mi sento meglio quando sento ^f57d7d'La mela di Idun'^000000~";
+		next;
+		mes "[Persona sorda]";
+		mes "Come potete vedere!";
+		mes "Sono un ragazzo a cui piacciono le canzoni!";
+		next;
+		mes "[Persona sorda]";
+		mes "Penso che non ci sia nulla di cui essere orgogliosi. Ma sono bravo a cantare.";
+		mes "Quando ero giovane ho provato a fare il Bardo ma dovevo riuscire nell'azienda di famiglia.";
+		next;
+		mes "[Persona sorda]";
+		mes "Per molto tempo ho perso il mio sogno, sono già vecchio.";
+		next;
+		mes "[Persona sorda]";
+		mes "Ho una famiglia che aveva bisogno della mia protezione.";
+		mes "Ma un giorno credo che i miei sogni diventino realtà!";
+		next;
+		mes "[Persona sorda]";
+		mes "Nel tempo libero ascoltavo i racconti di un turista al Pub.";
+		mes "Quando me ne sono andato, non volevo diventare uno zimbello.";
+		next;
+		mes "[Persona sorda]";
+		mes "E posso mostrare la mia canzone a coloro che la conoscono.";
+		next;
+		mes "[Persona sorda]";
+		mes "Di solito rimangono sorpresi quando sentono la canzone.";
+		mes "Sono sorpresi dalla mia abilità.";
+		mes "Uh";
+		next;
+		mes "[Persona sorda]";
+		mes "Ma ^f57d7d'Maestro Song'^000000 non si è lasciato scoraggiare dalla mia canzone.";
+		mes "Ovviamente non è abbastanza buono per me.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Hai incontrato ^f57d7d'Maestro Song'^000000?";
+		next;
+		mes "[Persona sorda]";
+		mes "Hmm? Lo hai incontrato?";
+		mes "L'ho fatto. Qualche anno fa.";
+		next;
+		mes "[Persona sorda]";
+		mes "Quando ha sentito la mia canzone, ha detto che non poteva sentire canzoni come questa da nessuna parte.";
+		next;
+		mes "[Persona sorda]";
+		mes "Potrei avere l'opportunità di cantare per lui in Hugel.";
+		mes "Non c'è nessuno che abbia un'abilità del genere.";
+		next;
+		mes "[Persona sorda]";
+		mes "Prima che se ne andasse, ho ricevuto una canzone che mi ricorda lui.";
+		next;
+		mes "[Persona sorda]";
+		mes "Ha detto che andrà a Thanatos.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Hai ricevuto una canzone?";
+		next;
+		mes "[Persona sorda]";
+		mes "SÌ!";
+		mes "Ha ammesso la mia capacità!";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Posso sentire la canzone?";
+		next;
+		mes "[Persona sorda]";
+		mes "Ronzio...";
+		mes "Aspettare.";
+		mes "Devo trovare un pezzo di carta.";
+		mes "L'ho messo nel mio gilet.";
+		next;
+		mes "[Persona sorda]";
+		mes "Frugando frugando.";
+		mes "Navigazione navigazione.";
+		set job_min,8;
+		close;
+	} else if (job_min == 8) {
+		mes "[Persona sorda]";
+		mes "Capito.";
+		mes "Ronzio!";
+		mes "Ascolta attentamente!";
+		mes "^f57d7d'Suono metallico!!'^000000";
+		next;
+		mes "[Persona sorda]";
+		mes "$$$$$$@@@@@!!!!";
+		mes "&&$%&@@@$#$~~";
+		mes "$#^#$####$$!!!@@#!!!!!";
+		percentheal -30,-30;
+		next;
+		mes "[Persona sorda]";
+		mes "!@@@$$%^@@#%^%!!!!!!";
+		mes "!!!!!!!##$$^^^#^!!!";
+		mes "&$$%@@@%@##%~~~";
+		percentheal -30,-30;
+		next;
+		mes "-Perdi conoscenza.-";
+		mes "-Questa voce deve avere-";
+		mes "-enorme distruttivo-";
+		mes "-energia.-";
+		percentheal -30,-30;
+		next;
+		mes "-E non ricordo-";
+		mes "-la fine di questa canzone.-";
+		next;
+		mes "[Persona sorda]";
+		mes "Ehi~";
+		next;
+		mes "[Persona sorda]";
+		mes "Apri gli occhi~";
+		next;
+		mes "[Persona sorda]";
+		mes "Applaudi";
+		mes "Ehi~";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Eeeee...";
+		next;
+		mes "[Persona sorda]";
+		mes "Penso che tu sia qualificato, ma sembra che tu abbia bisogno di più formazione.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "......";
+		next;
+		mes "-Sei così esausto.-";
+		mes "-Allora torna in albergo.-";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Grazie per la tua canzone";
+		mes "devo tornare indietro...";
+		next;
+		mes "[Persona sorda]";
+		mes "Ah?";
+		mes "Ok, ci vediamo dopo.";
+		mes "Se vuoi ascoltare la mia canzone, puoi venirmi a trovare.";
+		mes "Ahahah";
+		set job_min,9;
+		changequest 11141,11142;
+		close;
+	} else if (job_min == 9) {
+		mes "["+strcharinfo(0)+"]";
+		mes "......";
+		next;
+		mes "-Sono così esausto.-";
+		mes "-Hai delle informazioni-";
+		mes "-allora torna in albergo.-";
+		close;
+	} else if (job_min == 10) {
+		mes "[Persona sorda]";
+		mes "Te ne vai??";
+		mes "Se vuoi ascoltare la mia canzone, puoi venirmi a trovare.";
+		mes "Ahahah";
+		close;
+	} else if (job_min == 100) {
+		mes "[Persona sorda]";
+		mes "OH!!";
+		mes "Sembri forte!";
+		mes "Non sei meno competente di me.";
+		close;
+	}
+	mes "[Persona sorda]";
+	mes "Lala~ lalal~";
+	mes "Lulù~?";
+	next;
+	mes "[Persona sorda]";
+	mes "Lalalal~";
+	mes "Lululul~";
+	next;
+	mes "-È molto difficile da sentire.-";
+	mes "-Inizi ad avere dei dubbi-";
+	mes "-che un suono simile possa essere-";
+	mes "-uscendo da umano.-";
+	close;
+}
+
+tha_scene01,140,200,0	script	#min_receipt	139,3,3,{
+OnTouch:
+	if (job_min == 10 || (job_min == 11 && countitem(6271) == 0)) {
+		mes "-C'è un pezzo di carta per terra.-";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Cos'è questo?";
+		next;
+		mes "[Karian]";
+		mes "Cosa dice?";
+		donpcevent "Karian#cmd1::OnEnable";
+		next;
+		mes "===================";
+		mes "==scambio di foto==";
+		mes "======ricevuta======";
+		mes "===================";
+		mes "Nome: Maestro Canzone";
+		next;
+		mes "- Porta questa ricevuta e cambiala";
+		mes "- Direttore del negozio di Giunone: Mr. Click.";
+		next;
+		mes "- Indicazioni: intorno alla piazza di Giunone.";
+		getitem 6271,1; //Mins_Receipt
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Ricevuta di scambio foto?";
+		mes "Come ha fatto a lasciarlo cadere...";
+		next;
+		mes "[Karian]";
+		mes "Il negozio di Giunone...";
+		mes "Andiamo da Giunone...";
+		if (job_min == 10) {
+			set job_min,11;
+			changequest 11143,11144;
+		}
+		donpcevent "Karian#cmd1::OnDisable";
+		close;
+	}
+	end;
+}
+
+tha_scene01,139,204,6	script	Karian#cmd1	486,{
+	end;
+OnInit:
+	disablenpc "Karian#cmd1";
+	end;
+OnEnable:
+	enablenpc "Karian#cmd1";
+	initnpctimer;
+	end;
+OnDisable:
+	disablenpc "Karian#cmd1";
+	stopnpctimer;
+	end;
+OnTimer15000:
+	donpcevent "Karian#cmd1::OnDisable";
+	stopnpctimer;
+	end;
+}
+
+ve_fild07,129,132,5	script	Karian#cmd5	486,{
+	end;
+OnInit:
+	disablenpc "Karian#cmd5";
+	end;
+OnEnable:
+	enablenpc "Karian#cmd5";
+	initnpctimer;
+	end;
+OnDisable:
+	disablenpc "Karian#cmd5";
+	stopnpctimer;
+	end;
+OnTimer30000:
+	donpcevent "Karian#cmd5::OnDisable";
+	stopnpctimer;
+	end;
+}
+
+prontera,155,49,4	script	Karian#cmd9	486,{
+	end;
+OnInit:
+	disablenpc "Karian#cmd9";
+	end;
+OnEnable:
+	enablenpc "Karian#cmd9";
+	initnpctimer;
+	end;
+OnDisable:
+	disablenpc "Karian#cmd9";
+	stopnpctimer;
+	end;
+OnTimer300000:
+	donpcevent "Karian#cmd9::OnDisable";
+	stopnpctimer;
+	end;
+}
+
+yuno,146,168,0	script	Karian#cmd2	486,{
+	end;
+OnInit:
+	disablenpc();
+	end;
+OnEnable:
+	enablenpc();
+	initnpctimer;
+	end;
+OnDisable:
+	disablenpc();
+	stopnpctimer;
+	end;
+OnTimer100000:
+	donpcevent strnpcinfo(0)+"::OnDisable";
+	stopnpctimer;
+	end;
+}
+lighthalzen,160,124,6	duplicate(Karian#cmd2)	Karian#cmd3	486
+ra_in01,357,128,0	duplicate(Karian#cmd2)	Karian#cmd4	486
+comodo,184,109,0	duplicate(Karian#cmd2)	Karian#cmd6	486
+moc_fild16,204,231,0	duplicate(Karian#cmd2)	Karian#cmd7	486
+aldebaran,142,128,2	duplicate(Karian#cmd2)	Karian#cmd8	486
+
+yuno,143,170,6	script	Mr. Click#job_min	748,{
+	mes "[Sig. Clic]";
+	if (job_min == 11) {
+		mes "Ciao~ benvenuto~";
+		mes "Posso farti una foto.";
+		mes "Vuoi fare una foto?";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "NO...";
+		mes "Ricordi questa ricevuta?";
+		next;
+		mes "[Sig. Clic]";
+		mes "Fammi vedere~";
+		mes "Ehm...";
+		next;
+		mes "[Sig. Clic]";
+		mes "SÌ...";
+		mes "Sembra così vecchio.";
+		next;
+		mes "[Sig. Clic]";
+		mes "Va bene.";
+		mes "I turisti di solito non ritirano le loro foto.";
+		next;
+		mes "[Sig. Clic]";
+		mes "Quindi ci sono un sacco di foto a cui mi sono aggrappato.";
+		next;
+		mes "[Sig. Clic]";
+		mes "Posso trovarlo così facilmente.";
+		mes "Conservo un sacco di cose vecchie.";
+		mes "Nessun problema.";
+		next;
+		mes "[Sig. Clic]";
+		mes "navigazione~";
+		next;
+		mes "[Sig. Clic]";
+		mes "navigazione~";
+		next;
+		mes "[Sig. Clic]";
+		mes "Penso di averlo trovato!";
+		mes "La foto è crollata, ma va bene.";
+		mes "Nessun problema.";
+		next;
+		mes "[Sig. Clic]";
+		mes "Ecco, dai un'occhiata.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "La foto!";
+		mes "Fammelo vedere!";
+		next;
+		mes "[Karian]";
+		mes "Fretta.";
+		donpcevent "Karian#cmd2::OnEnable";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "...";
+		next;
+		mes "[Karian]";
+		mes "Oh~ Bella foto, vero?";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Mi aspettavo di vedere il volto di 'Maestro Song', ma indossa una maschera...";
+		mes "Indossa una maschera?!";
+		mes "Siamo venuti qui per questo?";
+		next;
+		mes "[Karian]";
+		mes "Ah! guarda questo!";
+		mes "C'è qualcosa sul retro della foto.";
+		next;
+		mes "-Voglio avere un orsacchiotto. Me ne servono 33?";
+		mes "-Di fronte alla torre di Thanatos.";
+		mes "-Maestro Canzone.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Cosa significa?";
+		next;
+		mes "[Karian]";
+		mes "BENE...";
+		next;
+		mes "[Karian]";
+		mes "Ehm... Orsacchiotto...";
+		mes "Tra Einbroch e Lighthalzen si trova una zona dove vivono gli orsacchiotti.";
+		next;
+		mes "[Karian]";
+		mes "Potremmo riuscire a ottenere qualcosa lì.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Allora perché avrebbe bisogno di 33?";
+		next;
+		mes "[Karian]";
+		mes "Beh... Vai lì e forse riusciremo a scoprire qualcosa.";
+		next;
+		mes "[Karian]";
+		mes "Uhm... Allora passo da Einbroch e vado a Lighthalzen. Perché non vai nel posto dove ci sono gli orsacchiotti?";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "OK. Allora incontriamoci all'hotel Lighthalzen.";
+		mes "Prenderò i 33 orsacchiotti.";
+		donpcevent "Karian#cmd2::OnDisable";
+		set job_min,12;
+		getitem 6270,1; //Mins_Picture
+		changequest 11144,11145;
+		close;
+	} else if (job_min == 12) {
+		mes "Allora fai attenzione.";
+		next;
+		mes "[Karian]";
+		mes "Andiamo lì!";
+		donpcevent "Karian#cmd2::OnEnable";
+		next;
+		mes "[Karian]";
+		mes "Poi passo da Einbroch e vado a Lighthalzen. Perché non vai nel posto dove ci sono gli orsacchiotti?";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Allora incontriamoci all'hotel Lighthalzen.";
+		mes "Prenderò i 33 orsacchiotti.";
+		donpcevent "Karian#cmd2::OnDisable";
+		close;
+	}
+	mes "Ciao~ benvenuto~";
+	mes "Posso farti una foto.";
+	mes "Vuoi fare una foto?";
+	close;
+}
+
+lighthalzen,155,119,3	script	Little girl#job_min	891,3,3,{
+OnTouch:
+	if (checkquest(11145,HUNTING) == 2) {
+		if (job_min == 12) {
+			mes "[Piccola ragazza]";
+			mes "Ah!!!!";
+			mes "Orsacchiotto di peluche!!!";
+			next;
+			mes "[Piccola ragazza]";
+			mes "Perché hai tanti orsacchiotti?";
+			mes "Dove li hai presi, vecchio?";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Ehi, non sono un vecchio.";
+			next;
+			mes "[Piccola ragazza]";
+			mes "E il mio nome non è 'Ehi'!";
+			mes "Il mio nome è 'Rion'!";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Scusa~ scusa~";
+			mes "E se ti regalassi un orsacchiotto?";
+			next;
+			mes "[Rione]";
+			mes "Ah!";
+			mes "Sei sicuro?";
+			mes "Evviva!!!";
+			next;
+			mes "[Rione]";
+			mes "Un uomo che avevo visto prima non mi ha regalato gli orsacchiotti anche se ne aveva tanti!";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "È lui il ragazzo in questa foto?";
+			next;
+			mes "[Rione]";
+			mes "Non ricordo bene.";
+			mes "Ma penso che lo sia.";
+			next;
+			mes "[Rione]";
+			mes "Mia madre ha detto che si stava rotolando in una stanza con gli orsacchiotti.";
+			next;
+			mes "[Rione]";
+			mes "E indossa abiti da orsacchiotto e va alla ^f57d7dIce Cave^000000.";
+			next;
+			mes "[Rione]";
+			mes "Mia madre lavora qui.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Grotta di ghiaccio?";
+			next;
+			mes "[Rione]";
+			mes "La mamma ha detto che fa freddo.";
+			next;
+			mes "[Karian]";
+			mes "Ehi~ "+strcharinfo(0)+"~";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Ah, Karian. Sei appena arrivato qui?";
+			next;
+			mes "[Karian]";
+			mes "SÌ.";
+			mes "Era molto più lontano di quanto mi aspettassi.";
+			donpcevent "Karian#cmd3::OnEnable";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Tu... sei venuto qui?";
+			next;
+			mes "[Karian]";
+			mes "...";
+			mes "Non volevo prendere di nuovo il dirigibile...";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Oh... capito.";
+			mes "Allora hai trovato qualcosa a Einbroch?";
+			next;
+			mes "[Karian]";
+			mes "Penso che 'Maestro Song' sia andato a Einbroch, ma se ne è andato presto a causa dell'aria.";
+			mes "E tu? Hai trovato qualcosa sugli orsacchiotti?";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "'Maestro Song' potrebbe essere in una grotta di ghiaccio.";
+			next;
+			mes "[Karian]";
+			mes "Potrebbe essere?";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Questo piccolo... ah... Rion l'ha visto.";
+			next;
+			mes "[Karian]";
+			mes "Allora è ora di andare alla Grotta di Ghiaccio?";
+			mes "Uuu... mi fanno male le gambe.";
+			mes "Ok, andiamo lì.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Va bene.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Grazie, Rione.";
+			mes "Ti darò tutti gli orsacchiotti che ho.";
+			next;
+			mes "[Rione]";
+			mes "Veramente?!";
+			mes "Waaah!!!!!!!!!!";
+			mes "Sono così felice!!!";
+			mes "Grazie, "+strcharinfo(0)+".";
+			set job_min,13;
+			changequest 11145,11146;
+			donpcevent "Karian#cmd3::OnDisable";
+			close;
+		} else if (job_min == 13) {
+			mes "[Rione]";
+			mes "Ho sentito quella 'Canzone del Maestro' quando sono andato alla Grotta di Ghiaccio.";
+			mes "Grazie per gli orsacchiotti!";
+			close;
+		} else if (job_min > 13) {
+			mes "[Rione]";
+			mes "Mi sto divertendo tantissimo a giocare con gli Orsetti!";
+			close;
+		} else {
+			mes "[Piccola ragazza]";
+			mes "Mi sto divertendo tantissimo a giocare con gli Orsetti!";
+			close;
+		}
+	}
+	mes "[Piccola ragazza]";
+	mes "Ti piacciono gli orsacchiotti?";
+	mes "Li adoro!!!!!";
+	close;
+}
+
+ice_dun01,157,15,0	script	#Minsicecave1	139,2,2,{
+OnTouch_:
+	if (job_min == 13) {
+		mes "-Molto tempo fa-";
+		close2;
+		warp "ice_dun01",157,23;
+		end;
+	}
+	end;
+}
+
+ice_dun01,157,23,0	script	#Minsicecave2	139,2,2,{
+OnTouch_:
+	if (job_min == 13) {
+		mes "-Il gigante nato dal ghiaccio-";
+		close2;
+		warp "ice_dun01",141,41;
+		end;
+	}
+	end;
+}
+
+ice_dun01,141,41,0	script	#Minsicecave3	139,2,2,{
+OnTouch_:
+	if (job_min == 13) {
+		mes "-morto-";
+		close2;
+		warp "ice_dun01",120,35;
+		end;
+	}
+	end;
+}
+
+ice_dun01,120,35,0	script	#Minsicecave4	139,2,2,{
+OnTouch_:
+	if (job_min == 13) {
+		mes "-Il suo corpo divenne la terra-";
+		close2;
+		warp "ice_dun01",104,30;
+		end;
+	}
+	end;
+}
+
+ice_dun01,104,30,0	script	#Minsicecave5	139,2,2,{
+OnTouch_:
+	if (job_min == 13) {
+		mes "-Le sue ossa diventarono una montagna-";
+		close2;
+		warp "ice_dun01",86,23;
+		end;
+	}
+	end;
+}
+
+ice_dun01,86,23,0	script	#Minsicecave6	139,2,2,{
+OnTouch_:
+	if (job_min == 13) {
+		mes "-La sua pelle divenne terra-";
+		close2;
+		warp "ice_dun01",75,19;
+		end;
+	}
+	end;
+}
+
+ice_dun01,75,19,0	script	#Minsicecave7	139,2,2,{
+OnTouch_:
+	if (job_min == 13) {
+		mes "-Il suo sangue divenne un fiume-";
+		close2;
+		warp "ice_dun01",56,12;
+		end;
+	}
+	end;
+}
+
+ice_dun01,56,12,0	script	#Minsicecave8	139,2,2,{
+OnTouch_:
+	if (job_min == 13) {
+		mes "-I suoi capelli diventarono una pianta-";
+		close2;
+		warp "ice_dun01",29,26;
+		end;
+	}
+	end;
+}
+
+ice_dun01,29,26,0	script	#Minsicecave9	139,2,2,{
+OnTouch_:
+	if (job_min == 13) {
+		mes "-La sua testa divenne il cielo-";
+		close2;
+		warp "ice_dun01",25,46;
+		end;
+	}
+	end;
+}
+
+ice_dun01,25,46,0	script	#Minsicecave10	139,2,2,{
+OnTouch_:
+	if (job_min == 13) {
+		mes "-Le sue lacrime dal suo-";
+		close2;
+		warp "ice_dun01",20,66;
+		end;
+	}
+	end;
+}
+
+ice_dun01,20,66,0	script	#Minsicecave11	139,2,2,{
+OnTouch_:
+	if (job_min == 13) {
+		mes "-gli occhi divennero rugiada-";
+		close2;
+		warp "ice_dun01",22,85;
+		end;
+	}
+	end;
+}
+
+ice_dun01,22,85,0	script	#Minsicecave12	139,2,2,{
+OnTouch_:
+	if (job_min == 13) {
+		mes "-sulle foglie-";
+		percentheal -90,0;
+		set job_min,14;
+		changequest 11146,11147;
+		close2;
+		warp "ra_in01",361,129;
+		end;
+	}
+	end;
+}
+
+ra_in01,361,129,0	script	#jmRachelHotel	139,2,2,{
+OnTouch:
+	if (job_min == 14) {
+		mes "[Vecchia]";
+		mes "Eh!!";
+		mes "Svegliati!";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Dove sono...?";
+		set job_min,15;
+		close;
+	}
+	end;
+}
+
+ra_in01,358,130,4	script	Old Woman#job_min	979,{
+	mes "[Vecchia]";
+	if (job_min == 14) {
+		mes "Eh!!";
+		mes "Svegliati!";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Dove sono...?";
+		set job_min,15;
+		close;
+	} else if (job_min == 15) {
+		mes "Sei a Rachel.";
+		mes "Sei strano. Devi indossare abiti più caldi se vuoi entrare nella Grotta di Ghiaccio.";
+		next;
+		mes "[Vecchia]";
+		mes "Sei fortunato che mio marito ti abbia trovata quando l'ha fatto.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Scusa.";
+		next;
+		mes "[Vecchia]";
+		mes "Comunque!! Stai attento!";
+		mes "Non credi che solo la tua giovinezza ti proteggerà.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Starò attento.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Conosci quella canzone scritta sul muro della grotta di ghiaccio?";
+		next;
+		mes "[Vecchia]";
+		mes "Sei andato lì a vedere?";
+		mes "Alcuni anni fa, un uomo che indossava una maschera l'ha scolpita nella grotta di ghiaccio.";
+		next;
+		mes "[Vecchia]";
+		mes "Non potevo vedere il suo volto a causa della maschera,";
+		next;
+		mes "[Vecchia]";
+		mes "ma ha preso il raffreddore e si è sentito molto doloroso.";
+		next;
+		mes "[Vecchia]";
+		mes "E poi ha deciso di andare a Comodo.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Comodo?";
+		next;
+		mes "[Vecchia]";
+		mes "Sì, ho sentito che Comodo è un posto molto divertente, voglio andarci prima di morire.";
+		next;
+		mes "[Vecchia]";
+		mes "Se vuoi andarci devi prendere un dirigibile per il Regno di Rune-Midgarts.";
+		next;
+		mes "[Vecchia]";
+		mes "Non è facile.";
+		next;
+		mes "[Karian]";
+		mes "Che cosa?! Un dirigibile?!";
+		mes "Eee non voglio più salire su un dirigibile!";
+		donpcevent "Karian#cmd4::OnEnable";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Calmati...";
+		mes "C'è un altro modo per andarci?";
+		next;
+		mes "[Vecchia]";
+		mes "Senza dirigibile?";
+		mes "Puoi camminare...";
+		mes "Ma ci vuole molto tempo...";
+		next;
+		mes "[Vecchia]";
+		mes "Ah! È Comodo sopra le Vene meridionali.";
+		next;
+		mes "[Vecchia]";
+		mes "Non abbiamo una barca vera e propria.";
+		mes "A sud delle Vene c'è un porto. Se sei fortunato puoi prenderlo...";
+		donpcevent "Karian#cmd4::OnDisable";
+		set job_min,16;
+		changequest 11147,11148;
+		close;
+	} else if (job_min == 16) {
+		mes "Ah! È Comodo sopra le Vene meridionali.";
+		next;
+		mes "[Vecchia]";
+		mes "Non abbiamo una barca vera e propria.";
+		mes "A sud delle Vene c'è un porto. Se sei fortunato puoi prenderlo...";
+		close;
+	}
+	mes "Ho sentito che Comodo è un posto molto divertente, voglio andarci prima di morire.";
+	next;
+	mes "[Vecchia]";
+	mes "Se vuoi andarci devi prendere un dirigibile per il Regno di Rune-Midgarts.";
+	next;
+	mes "[Vecchia]";
+	mes "E' il modo più veloce.";
+	close;
+}
+
+ve_fild07,131,132,5	script	=Notice=#job_min	837,{
+function Choice;
+	if (job_min == 16) {
+		mes "===Avviso===";
+		mes "Maestro Song, vai a Comodo in barca!";
+		mes "Sii ambizioso!";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Andrà bene...?";
+		next;
+		mes "[Karian]";
+		mes "Non preoccuparti, fidati di me!!";
+		donpcevent "Karian#cmd5::OnEnable";
+		next;
+		mes "-Non è facile fidarsi di lei-";
+		next;
+		if(select("Questo non mi piace.:Prendi il kayak.") == 1) {
+			mes "[Karian]";
+			mes "Non guido mai sui dirigibili, mai...";
+			donpcevent "Karian#cmd5::OnDisable";
+			close;
+		}
+		mes "[Karian]";
+		mes "Ok allora andiamo!!!!!";
+		next;
+		mes "-Se prendi una piccola barca,-";
+		mes "-e vai avanti-";
+		mes "-a Comodo,-";
+		mes "-Dovresti vedere-";
+		mes "-altre piccole imbarcazioni.-";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Hmm...";
+		mes "Non pensavo che ci fosse qualcuno che avrebbe attraversato questo mare con una barca.";
+		mes "Sei sicuro che vedrò altre barche?";
+		next;
+		mes "[Karian]";
+		mes "Saranno diretti nella direzione opposta.";
+		donpcevent "Karian#cmd5::OnDisable";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Dove stai andando?";
+		next;
+		mes "[Karian]";
+		mes "BENE? Non ho mai sentito parlare del nome del posto prima.";
+		mes "Si chiama semplicemente 'isola' da quello che ho sentito.";
+		next;
+		mes "-Per un po' il silenzio-";
+		mes "-continua. Karian inizia-";
+		mes "-canticchiare mentre rema.-";
+		next;
+		mes "-Ascoltando il ronzio di Karian-";
+		mes "-All'improvviso ti senti come-";
+		mes "-sei seduto nell'acqua.-";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "EHI! C'è una perdita d'acqua!!";
+		next;
+		mes "[Karian]";
+		mes "Ahhhh!!!!!!!!!!!!!!!";
+		next;
+		switch(rand(3)) {
+			case 0: Choice("Dance.","Row.","Throw the water out."); break;
+			case 1: Choice("Throw the water out.","Row.","Dance."); break;
+			case 2: Choice("Row.","Throw the water out.","Dance."); break;
+		}
+		switch(rand(3)) {
+			case 0: Choice("Sleep.","Row.","Throw the water out."); break;
+			case 1: Choice("Throw the water out.","Row.","Dance."); break;
+			case 2: Choice("Row.","Throw the water out.","Sleep."); break;
+		}
+		switch(rand(3)) {
+			case 0: Choice("Sing.","Row.","Throw the water out."); break;
+			case 1: Choice("Throw the water out.","Row.","Sleep."); break;
+			case 2: Choice("Row.","Throw the water out.","Sing."); break;
+		}
+		switch(rand(3)) {
+			case 0: Choice("Have some water.","Row.","Throw the water out."); break;
+			case 1: Choice("Throw the water out.","Row.","Have some water."); break;
+			case 2: Choice("Row.","Throw the water out.","Have some water."); break;
+		}
+		switch(rand(3)) {
+			case 0: Choice("Shout 'Viva'.","Row.","Throw the water out."); break;
+			case 1: Choice("Throw the water out.","Row.","Shout 'Viva'."); break;
+			case 2: Choice("Row.","Throw the water out.","Shout 'Viva'."); break;
+		}
+		switch(rand(3)) {
+			case 0: Choice("Go fishing.","Row.","Throw the water out."); break;
+			case 1: Choice("Throw the water out.","Row.","Go fishing."); break;
+			case 2: Choice("Row.","Throw the water out.","Go fishing."); break;
+		}
+		switch(rand(3)) {
+			case 0: Choice("Listen to my song.","Row.","Throw the water out."); break;
+			case 1: Choice("Throw the water out.","Row.","Listen to my song."); break;
+			case 2: Choice("Row.","Throw the water out.","Listen to my song."); break;
+		}
+		switch(rand(3)) {
+			case 0: Choice("Pray.","Row.","Throw the water out."); break;
+			case 1: Choice("Throw the water out.","Row.","Pray."); break;
+			case 2: Choice("Row.","Throw the water out.","Pray."); break;
+		}
+		switch(rand(3)) {
+			case 0: Choice("Eat some food.","Row.","Throw the water out."); break;
+			case 1: Choice("Throw the water out.","Row.","Eat some food."); break;
+			case 2: Choice("Row.","Throw the water out.","Eat some food."); break;
+		}
+		switch(rand(3)) {
+			case 0: Choice("Give up.","Row.","Throw the water out."); break;
+			case 1: Choice("Throw the water out.","Row.","Give up."); break;
+			case 2: Choice("Row.","Throw the water out.","Give up."); break;
+		}
+		mes "-Sono scappato dal-";
+		mes "-agonia della morte-";
+		mes "-innumerevoli volte.-";
+		set job_min,17;
+		changequest 11148,11149;
+		close2;
+		warp "comodo",184,108;
+		end;
+	}
+	mes "===Avviso===";
+	mes "Maestro Song, vai a Comodo in barca!";
+	mes "Sii ambizioso!";
+	close;
+
+	function Choice {
+		set .@i$, getarg(select(getarg(0),getarg(1),getarg(2))-1);
+		mes "[Karian]";
+		if (.@i$ == "Throw the water out.") {
+			mes "Io remerò e tu butterai via l'acqua!!";
+			next;
+			return;
+		}
+		if (.@i$ == "Row.") mes "La barca sta affondando!!!";
+		else mes "Che diavolo pensi di fare?";
+		close;
+	}
+}
+
+comodo,184,108,0	script	#jmComodo Almost Dead	139,2,2,{
+OnTouch:
+	if (job_min == 17) {
+		mes "["+strcharinfo(0)+"]";
+		mes "Sono... sono vivo~";
+		next;
+		mes "[Karian]";
+		mes "È stata una scommessa persa.";
+		donpcevent "Karian#cmd6::OnEnable";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Sei tu che hai insistito perché salissimo su quella barca. È così che siamo finiti così in primo luogo!";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Non avremmo sofferto così se avessimo semplicemente preso l'aeronave.";
+		next;
+		mes "[Karian]";
+		mes "Ma ti ho detto che non guido sui dirigibili!";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Non posso crederci!";
+		next;
+		mes "[Karian]";
+		mes "Bene, dimentichiamoci del passato!";
+		mes "Visto che siamo a Comodo, divertiamoci un po', ok?";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Allora cosa dovremmo fare per cercare 'Maestro Song'??";
+		next;
+		mes "[Karian]";
+		mes "O si...";
+		mes "Perché non chiediamo agli abitanti del villaggio?";
+		donpcevent "Karian#cmd6::OnDisable";
+		set job_min,18;
+		changequest 11149,11150;
+		close;
+	}
+	end;
+}
+
+comodo,192,119,0	script	Kayak Master#job_min	98,{
+	mes "[Maestro di kayak]";
+	if (job_min == 18) {
+		mes "Che cosa?";
+		mes "Maestro Canzone?";
+		mes "Non lo so~";
+		next;
+		mes "[Maestro di kayak]";
+		mes "Vai al ristorante situato nella parte settentrionale di Comodo.";
+		mes "Se visitasse questa città, probabilmente ci andrebbe prima.";
+		next;
+		mes "[Maestro di kayak]";
+		mes "La padrona di casa è brava a memorizzare i volti dei clienti.";
+		mes "Fa bene agli affari, sai?";
+		set job_min,19;
+		changequest 11150,11151;
+		close;
+	}
+	mes "Il mare è il sogno dell'uomo.";
+	next;
+	mes "[Maestro di kayak]";
+	mes "Spero di poter passare a Hugel un giorno!";
+	close;
+}
+
+comodo,159,316,4	script	Woman Roasting Meat	701,{
+	mes "[Donna che arrostisce la carne]";
+	if (job_min == 19) {
+		mes "Maestro Canzone?";
+		mes "Sì, ricordo quella faccia perché è venuto a trovarmi qualche anno fa.";
+		next;
+		mes "[Donna che arrostisce la carne]";
+		mes "Ha mangiato un intero piatto di costolette da solo...";
+		mes "Come posso dimenticare il suo volto?";
+		next;
+		mes "[Donna che arrostisce la carne]";
+		mes "È stata una specie di grande confusione.";
+		mes "Era così affollato a causa sua.";
+		next;
+		mes "[Donna che arrostisce la carne]";
+		mes "Alla fine si sentì esausto e volle andare in un posto tranquillo.";
+		next;
+		mes "[Donna che arrostisce la carne]";
+		mes "Gli ho detto che c'era un posto tranquillo vicino a Morocc e se n'è andato.";
+		next;
+		mes "[Donna che arrostisce la carne]";
+		mes "Me ne pento.";
+		next;
+		mes "[Donna che arrostisce la carne]";
+		mes "Ha aumentato molto le nostre entrate mentre era qui...";
+		set job_min,20;
+		changequest 11151,11152;
+		close;
+	} else if (job_min == 20) {
+		mes "Dov'è il posto tranquillo?";
+		mes "Beh, non ne sono sicuro, ma c'è un edificio misterioso nella parte sud-orientale del Marocco.";
+		next;
+		mes "[Donna che arrostisce la carne]";
+		mes "Ho sentito che alcune persone misteriose si riuniscono lì.";
+		mes "Penso che facciano parte di una gilda segreta chiamata ash... o assa... Oh, non ricordo...";
+		close;
+	}
+	mes "Ha mangiato un intero piatto di costolette da solo.";
+	next;
+	mes "[Donna che arrostisce la carne]";
+	mes "Non lo dimenticherò mai.";
+	close;
+}
+
+moc_fild16,206,232,0	script	#jmTransfer news	139,3,3,{
+OnTouch:
+	if (job_min == 20) {
+		mes "["+strcharinfo(0)+"]";
+		mes "Ehm? Cos'è questo?";
+		mes "Qualcosa coperto dalla sabbia?";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Ah lo è!!";
+		mes "Penso che 'Maestro Song' l'abbia lasciato cadere!";
+		next;
+		mes "[Karian]";
+		mes "Che cosa?! Come fai a sapere?";
+		donpcevent "Karian#cmd7::OnEnable";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Il testo dell'uomo che ho incontrato a Hugel sullo scontrino...";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "e questa poesia scritta su questo foglio.";
+		mes "Lo stile calligrafico è lo stesso.";
+		next;
+		mes "[Karian]";
+		mes "Voglio vedere la torre dell'orologio...";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Ma questa poesia non può essere un indizio...";
+		mes "...";
+		mes "Che cosa?";
+		next;
+		mes "[Karian]";
+		mes "......";
+		mes "Voglio vedere la torre dell'orologio.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Torre dell'orologio?";
+		mes "Cosa stai dicendo all'improvviso?";
+		next;
+		mes "[Karian]";
+		mes "L'enorme torre dell'orologio di Al De Baran.";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Lo so, ma...";
+		next;
+		mes "[Karian]";
+		mes "Ti unisci a me?";
+		next;
+		switch(select("Rifiutare.:Accettare.")) {
+		case 1:
+			mes "[Karian]";
+			mes "Andiamo~Andiamo~";
+			mes "Andiamo~Andiamo~";
+			mes "Andiamo~~~~~~~~~";
+			next;
+			mes "[Karian]";
+			mes "Non abbiamo più indizi.";
+			next;
+			mes "[Karian]";
+			break;
+		case 2:
+			mes "["+strcharinfo(0)+"]";
+			mes "Ok, non è una cattiva idea...";
+			next;
+			mes "[Karian]";
+			mes "OK!!!";
+			break;
+		}
+		mes "EHI! Andiamo~~";
+		donpcevent "Karian#cmd7::OnDisable";
+		set job_min,21;
+		changequest 11152,11153;
+		close;
+	}
+	end;
+}
+
+aldebaran,140,130,0	script	#jmAldebaran Clock Tower	139,3,3,{
+OnTouch:
+	if (job_min == 21) {
+		mes "["+strcharinfo(0)+"]";
+		mes "Comunque perché vuoi visitare questo posto?";
+		next;
+		mes "[Karian]";
+		mes "......";
+		donpcevent "Karian#cmd8::OnEnable";
+		next;
+		mes "[Karian]";
+		mes "Questo è il posto preferito del mio amico.";
+		mes "Quando ci sentiamo stanchi, vediamo quella torre.";
+		next;
+		mes "[Karian]";
+		mes "Lasciami tornare nella mia città natale.";
+		mes "Ci sono molti bellissimi fiori.";
+		mes "Gli uccelli cantano per me.";
+		mes "E' questa vecchia città.";
+		next;
+		mes "[Karian]";
+		mes "Raccolgo i raccolti";
+		mes "per la mia chiesa.";
+		mes "Non c'è più caldo";
+		mes "luogo rispetto a dove";
+		mes "Sono stato cresciuto.";
+		next;
+		mes "[Karian]";
+		mes "Lasciami tornare nella mia città natale.";
+		mes "Lasciami giocare nel lago finché non muoio.";
+		mes "Mi prenderò un periodo di riposo";
+		mes "alla fine della mia vita.";
+		next;
+		mes "[Karian]";
+		mes "Dove sono Misa e Masa?";
+		mes "Sono già andati al";
+		mes "montagna brillante dove";
+		mes "è pieno di libertà e";
+		mes "piacere, voglio andare";
+		mes "lì presto.";
+		next;
+		mes "[Karian]";
+		mes "È una canzone che il mio amico cantava sempre per me.";
+		mes "È da molto tempo che non la canto...";
+		next;
+		mes "[Karian]";
+		mes "Perché non torniamo a Prontera?";
+		next;
+		mes "[Karian]";
+		mes "Non riesco a liberarmi dei ricordi che mi hanno colpito quando ho varcato i cancelli di Prontera.";
+		set job_min,22;
+		changequest 11153,11154;
+		donpcevent "Karian#cmd8::OnDisable";
+		close;
+	} else if (job_min == 22) {
+		mes "[Karian]";
+		mes "Torniamo a Prontera?";
+		next;
+		mes "[Karian]";
+		mes "Non riesco a liberarmi dei ricordi che mi hanno colpito quando ho varcato i cancelli di Prontera.";
+		close;
+	}
+	end;
+}
+
+prontera,155,40,0	script	#jmprt1	139,2,2,{
+OnTouch:
+	if (job_min == 22) {
+		mes "[Karian]";
+		mes "Finalmente sono tornato.";
+		mes "Torniamo a Prontera...";
+		donpcevent "Karian#cmd9::OnEnable";
+		next;
+		mes "[Karian]";
+		mes "Sono così stanco.";
+		mes "Voglio riposarmi~";
+		mes "Vieni qui, "+strcharinfo(0)+".";
+		set job_min,23;
+		close;
+	}
+	end;
+}
+
+prontera,155,42,0	script	#prtjm1	139,1,1,{
+OnTouch:
+	if (job_min == 23) {
+		mes "-Lasciami tornare nella mia città natale.-";
+		set job_min,24;
+		close2;
+		warp "prontera",155,44;
+		end;
+	}
+	end;
+}
+
+prontera,155,44,0	script	#prtjm2	139,1,1,{
+OnTouch:
+	if (job_min == 24) {
+		mes "-Ci sono tanti fiori bellissimi.-";
+		set job_min,25;
+		close2;
+		warp "prontera",155,46;
+		end;
+	}
+	end;
+}
+
+prontera,155,46,0	script	#prtjm3	139,1,1,{
+OnTouch:
+	if (job_min == 25) {
+		mes "-Gli uccelli cantano per me.-";
+		set job_min,26;
+		close2;
+		warp "prontera",155,48;
+		end;
+	}
+	end;
+}
+
+prontera,155,48,0	script	#prtjm4	139,1,1,{
+OnTouch:
+	if (job_min == 26 || job_min == 27) {
+		mes "-È questa vecchia città.-";
+		next;
+		if (SkillPoint != 0) {
+			mes "[Karian]";
+			mes "Ehi... Non sai come usare i tuoi punti abilità?";
+			mes "Dovresti usarli.";
+			close;
+		}
+		if (checkweight(1201,1) == 0 || MaxWeight - Weight < 3500) {
+			mes "^3355FFAspetta un attimo! Tu sei";
+			mes "trasportare troppi oggetti";
+			mes "adesso, conservane alcuni";
+			mes "le tue cose extra a Kafra";
+			mes "Archiviazione e poi torna indietro.^000000";
+			close;
+		}
+		if (BaseLevel < 99 || JobLevel < 50) {
+			mes "[Karian]";
+			mes "Ehi... perché sei così giù?";
+			mes "Come hai perso i livelli?";
+			close;
+		}
+		if (BaseJob != Job_Bard) {
+			mes "[Karian]";
+			mes "Ehi... hai cambiato vestito?";
+			mes "Come hai fatto?";
+			close;
+		}
+		mes "["+strcharinfo(0)+"]";
+		mes "-È una poesia che hai raccolto nel deserto.-";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "-Come fa Karian a saperlo?";
+		mes "-quella canzone non è una poesia?-";
+		next;
+		mes "[Karian]";
+		mes "Perché mi stai guardando?";
+		mes "Come è stato? Divertiti??";
+		set job_min,27;
+		donpcevent "Karian#cmd9::OnDisable";
+		close2;
+		warp "prt_in",101,174;
+		end;
+	}
+	end;
+}
+
+prt_in,94,172,4	script	Karian#job_min3	480,{
+	if (job_min == 27) {
+		if (checkweight(1201,1) == 0 || MaxWeight - Weight < 3500) {
+			mes "Mentre sei in viaggio, ottieni molte cose. Renditi più leggero.";
+			close;
+		}
+		mes "[Karian]";
+		if (SkillPoint != 0) {
+			mes "Ah~! Sapevi che hai ancora punti abilità?";
+			mes "Gestiscilo rapidamente.";
+			close;
+		}
+		if (BaseLevel < 99 || JobLevel < 50) {
+			mes "Ah~! Il tuo livello sembra più basso di prima.";
+			mes "Come ti sei degradato?";
+			close;
+		}
+		if (ismounting()) {
+			mes "Per favore togli l'equipaggiamento al tuo animale domestico da equitazione e riprova!";
+			close;
+		}
+		if (BaseJob != Job_Bard) {
+			mes "Eh?";
+			close;
+		}
+		mes "Mi dispiace per la bugia.";
+		mes "La canzone scritta su questo foglio...";
+		next;
+		mes "[Karian]";
+		mes "Voglio davvero trovare l'articolo lasciato indietro dal mio amico.";
+		mes "Non sono riuscito a trovarlo da solo.";
+		next;
+		mes "[Karian]";
+		mes "L'ho regalato al mio amico ma lo ha tenuto prezioso...";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Glielo hai dato?";
+		mes "Aspetta un secondo!";
+		mes "Chi sei?";
+		next;
+		mes "[Canzone del Maestro]";
+		mes "SÌ! Sono 'Maestro Canzone'!";
+		mes "Sei sorpreso!?";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "......";
+		next;
+		mes "[Canzone del Maestro]";
+		mes "Questo è il mio regalo per te.";
+		next;
+		mes "[Canzone del Maestro]";
+		mes "Sei anche mio amico.";
+		set job_min,100;
+		jobchange roclass(eaclass()|EAJL_THIRD);
+		completequest 11154;
+		getitem 5751,1; //Minstrel_Song_Hat
+		getitem 2795,1; //Green_Apple_Ring
+		close;
+	} else if (job_min > 99) {
+		switch(select("Parlare.:Partire.")) {
+		case 1:
+			mes "[Canzone del Maestro]";
+			mes "Il nome 'Karian'?";
+			mes "Me lo ha dato.";
+			next;
+			mes "[Canzone del Maestro]";
+			mes "Ha detto che quando ascolta la mia canzone, si sente affettuoso.";
+			mes "'Kallianga' significa aria calda.";
+			next;
+			mes "[Canzone del Maestro]";
+			mes "Gli piace cantare...";
+			next;
+			mes "[Canzone del Maestro]";
+			mes "Ed è sicuramente bravo a cantare?";
+			next;
+			mes "[Canzone del Maestro]";
+			mes "Ah! Se per te va bene, voglio fare una foto con te a Giunone?";
+			next;
+			mes "[Canzone del Maestro]";
+			mes "Voglio avere qualcosa per ricordarti.";
+			close;
+		case 2:
+			mes "[Canzone del Maestro]";
+			mes "Ci vediamo.";
+			mes "È stato davvero divertente.";
+			close2;
+			warp "prontera",156,99;
+			end;
+		}
+	}
+	mes "[Karian]";
+	mes "Come sei arrivato qui?";
+	close;
+}

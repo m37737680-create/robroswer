@@ -1,0 +1,434 @@
+//===== rAthena Script =======================================
+//= Guild Mission - Core Script
+//===== Description: =========================================
+//= Template for guild mission added in episode 14.3
+//===== Changelogs: ==========================================
+//= [Official Conversion]
+//= 1.0 First version [Secretdataz]
+//= 1.1 Fixed potential exploit from original Aegis script. [Secretdataz]
+//============================================================
+
+-	script	gld_mission#core	-1,{
+function brief;
+function mob_brief;
+function calcexp;
+function calcjobexp;
+
+	if (!checkweight(1201,3)){
+		mes "Hai troppi oggetti per procedere con la missione.";
+		mes "Per favore, alleggerisci il carico e riprova.";
+		close;
+	}
+
+	.@zone$ = strnpcinfo(2);
+	if(.@zone$ == "gqaldeg"){
+		.@zoneid = 3;
+		.@edition = 1;
+	} else if(.@zone$ == "gqaru"){
+		.@zoneid = 4;
+		.@edition = 2;
+	} else if(.@zone$ == "gqgefg"){
+		.@zoneid = 2;
+		.@edition = 1;
+	} else if(.@zone$ == "gqpayg"){
+		.@zoneid = 1;
+		.@edition = 1;
+	} else if(.@zone$ == "gqprtg"){
+		.@zoneid = 0;
+		.@edition = 1;
+	} else if(.@zone$ == "gqsch"){
+		.@zoneid = 5;
+		.@edition = 2;
+	} else if(.@zone$ == "gqtealde"){
+		.@zoneid = 6;
+		.@edition = 3;
+	} else if(.@zone$ == "gqteprt"){
+		.@zoneid = 7;
+		.@edition = 3;
+	} else {
+		// Custom error message.
+		debugmes "Guild mission script called from an unknown agit region [" + .@zone$ + "].";
+		end;
+	}
+	.@npcname$ = .npcname$[.@zoneid];
+
+	mes .@npcname$;
+	mes "Forniamo missioni e missioni giornaliere che puoi completare nella regione di " + .region$[.@zoneid] + ".";
+	mes "Ci sono semplici missioni giornaliere e missioni che devi completare solo entro le ore dell'assedio. Quindi, pensaci~";
+	next;
+	switch(select("Conquistare " + .region$[.@zoneid], "Missioni giornaliere del dungeon della gilda", "A proposito di missioni", "Non ne ho bisogno.")){
+		case 1: // Conquering.
+			.@gid = getcharid(2);
+			if(.@gid && is_guild_leader() == true){
+				.@time_check1 = checkquest(.conquer_delay_questid[.@zoneid], PLAYTIME);
+				if(.@time_check1 == 0){
+					mes .@npcname$;
+					mes "È passata meno di un'ora dall'ultima volta che abbiamo controllato!";
+					mes "Torna quando il tempo di attesa è finito.";
+					next;
+					mes .@npcname$;
+					mes "Se hai la fortuna dalla tua parte, avrai buoni risultati.";
+					close;
+				} else if(.@time_check1 == 2){
+					erasequest .conquer_delay_questid[.@zoneid];
+					mes .@npcname$;
+					mes "Ho confermato che il tempo di attesa per la conquista delle missioni è terminato.";
+					mes "Eliminerò i record non necessari per te.";
+					close;
+				} else {
+					.@siege_check = (.@edition == 1 ? agitcheck() : .@edition == 2 ? agitcheck2() : agitcheck3());
+					.@time = atoi(gettimestr("%H%M",4));
+					.@after_time = ((.weekday[.@zoneid] == gettime(4)) && ((.@time > .start_time[.@zoneid]) && (.@time < .end_time[.@zoneid])));
+
+					if(.@siege_check && .@after_time){
+						mes .@npcname$;
+						mes "In base a ^4d4dffil numero di fortezze che la tua gilda ha conquistato in questo preciso momento,^000000 ti darò una ricompensa.";
+						mes "Vuoi controllare adesso? Sei consapevole che ^4d4dffil numero può cambiare anche mentre parliamo,^000000 vero?";
+						next;
+						if(select("Tornerò più tardi.","Controlliamo subito!") == 1){
+							mes .@npcname$;
+							mes "Giusto. La vita è tutta una questione di tempismo.";
+							mes "Torna quando splende di più.";
+							close;
+						} else {
+							.@total = 0;
+							for(.@i = 0; .@i < 5; ++.@i){
+								.@total += (.@gid == getcastledata(.castle$[.@i+.@zoneid*5],CD_GUILD_ID));
+							}
+
+							if(!.@total){
+								mes .@npcname$;
+								mes "Sfortunatamente, non esiste alcuna fortezza che la tua gilda abbia conquistato.";
+								mes "Riprova!";
+								close;
+							} else {
+								mes .@npcname$;
+								if(.@total == 5)
+									mes "Incredibile.";
+								else
+									mes "Attualmente, il numero totale di fortezze conquistate dalla tua gilda";
+								for(.@i = 0; .@i < 5; ++.@i){
+									mes getcastlename(.castle$[.@i+.@zoneid*5]) + (.@gid == getcastledata(.castle$[.@i+.@zoneid*5],CD_GUILD_ID) ? ": ^4d4dffOccupied^000000" : "");
+								}
+								if(.@total == 5)
+									mes "La tua gilda ha vinto " + .region$[.@zoneid] + "!";
+								else
+									mes "È " + .@total + "!";
+								next;
+								mes .@npcname$;
+								mes "Ti darò una ricompensa di conseguenza. Spero che ne farai buon uso.";
+								mes "Hai un'ora di attesa fino al prossimo rapporto. Tienilo a mente e riprova.";
+								setquest .conquer_delay_questid[.@zoneid];
+								getitem 6489,.@total;
+								getitem 6615,.@total;
+								getitem 12888,.@total;
+								close;
+							}
+						}
+					} else {
+						mes .@npcname$;
+						mes "Mi dispiace ma puoi completare questa missione solo durante le ore dell'assedio. Temo di non poter fare niente qui.";
+						close;
+					}
+				}
+			} else {
+				mes .@npcname$;
+				mes "Mi dispiace ma le missioni di conquista sono riservate ai maestri di gilda.";
+				mes "I membri dovrebbero invece provare le missioni giornaliere dei dungeon di gilda.";
+				close;
+			}
+			break;
+		case 2: // Daily Quests
+			mes .@npcname$;
+			mes "Queste sono missioni che puoi completare nei sotterranei della gilda " + .region$[.@zoneid] + " zona.";
+			mes "Puoi cancellarli se vuoi. Sentiti libero di sfidare te stesso.";
+			next;
+			.@cancel_index = (.@edition == 1 ? 3 : 2);
+			for(.@i = 0; .@i < 3; ++.@i){
+				if(.daily_hunting_questid[.@zoneid*3 + .@i])
+					.@menu$ = .@menu$ + .region$[.@zoneid] + " Missione " + (.@i+1) + (isbegin_quest(.daily_hunting_questid[.@zoneid*3 + .@i]) ? " ^4d4dffControlla il risultato^000000" : "") + ":";
+			}
+			.@sel = select(.@menu$) - 1;
+			.@index = .@zoneid*3 + .@sel;
+			if(.@sel == .@cancel_index){
+				mes .@npcname$;
+				mes "Non devi avere fretta poiché queste missioni si svolgono nei sotterranei della gilda.";
+				mes "Sentiti libero di provarlo ogni volta che vuoi.";
+				close;
+			}
+			if(BaseLevel < .level_req[.@index]){
+				mes .@npcname$;
+				mes "Hmm, sfortunatamente, questa missione è limitata agli utenti con livello ^4d4dff " + .level_req[.@index] + "Solo ^000000 o superiore.";
+				mes "Il tuo livello non è abbastanza alto.";
+				close;
+			}
+			.@hunting = checkquest(.daily_hunting_questid[.@index], HUNTING);
+			.@playtime = checkquest(.daily_delay_questid[.@index], PLAYTIME);
+			if(.@hunting > -1){
+				if(.@hunting == 2){
+					mes .@npcname$;
+					mes "Oh, hai fatto un buon lavoro.";
+					mes "Non è molto, ma spero che possa essere utile.";
+					setquest .daily_delay_questid[.@index];
+					erasequest .daily_hunting_questid[.@index];
+					getexp calcexp(.@zoneid,.@index),calcjobexp(.@edition);
+					getitem 6615,1;
+				} else {
+					mes .@npcname$;
+					mes "Hmm? Sembra che tu non abbia ancora completato la missione..";
+					mes "C'è qualche problema?";
+					next;
+					if(select("NO.","Rinuncia alla ricerca.") == 1){
+						mes .@npcname$;
+						mes "Non sono sicuro per quanto tempo potrai utilizzare il dungeon della gilda, ma buona fortuna.";
+						close;
+					} else {
+						mes .@npcname$;
+						mes "Beh, nessuno ti obbliga.";
+						mes "Fai quello che ti piace fare.";
+						mes "Allora annullerò la missione.";
+						erasequest .daily_hunting_questid[.@index];
+						close;
+					}
+				}
+			} else {
+				if(.@playtime == 0 || .@playtime == 1){
+					mes .@npcname$;
+					mes "La regola è impostata qui in modo che ti sia consentito completare solo una missione ogni giorno.";
+					mes "Vorrei che tornassi quando il tempo di attesa sarà finito.";
+					close;
+				} else if(.@playtime == 2){
+					erasequest .daily_delay_questid[.@index];
+					mes .@npcname$;
+					mes "Ho confermato che il tempo di attesa per questa missione è finito.";
+					mes "Eliminerò i record utilizzati per la conferma.";
+					mes "Ora prova a completare la missione!";
+					close;
+				} else {
+					mes .@npcname$;
+					mes "Questo è il " + .ordinal$[.@sel] + " missione dentro " + .region$[.@zoneid] + ".";
+					brief(.daily_hunting_questid[.@index]);
+					next;
+					mes .@npcname$;
+					if(mob_brief(.daily_hunting_questid[.@index]))
+						mes "Ti ricompenserò di conseguenza una volta completata questa missione.";
+					else
+						mes "Ti darò punti esperienza in cambio.";
+					next;
+					if(select("Accettalo.","Rifiutalo.") == 1){
+						mes .@npcname$;
+						mes "L'ingresso al dungeon della gilda è limitato. Ma non è nemmeno che tu non riesca a trovare un modo per arrivarci.";
+						mes "Pregherò per il tuo successo nella lotta contro quei mostri.";
+						setquest .daily_hunting_questid[.@index];
+						close;
+					} else {
+						mes .@npcname$;
+						mes "Bene, fai come desideri.";
+						close;
+					}
+				}
+			}
+			break;
+		case 3: // About quests
+			mes .@npcname$;
+			mes "Non è affatto difficile.";
+			mes "Offro una ricompensa ^4d4dffa seconda di quante fortezze hai conquistato.^000000";
+			mes "^4d4dffIl tipo e la qualità della ricompensa dipendono dal numero di fortezze conquistate nel momento stesso in cui controllo.^000000";
+			next;
+			mes .@npcname$;
+			mes "E ovviamente controllo solo durante le ore di assedio.";
+			mes "^4d4dffLa ricezione di un premio è seguita da un'ora di attesa. Quindi faresti meglio a capire anche il momento giusto.^000000";
+			next;
+			mes .@npcname$;
+			mes "Se sei il maestro di una gilda che sta attualmente partecipando a battaglie d'assedio, dovresti provarci.";
+			next;
+			mes .@npcname$;
+			mes "Le missioni giornaliere dei dungeon di gilda consistono in missioni di combattimento che puoi completare nei dungeon di gilda.";
+			mes "È semplice.";
+			close;
+		case 4: // I don't need it.
+			mes .@npcname$;
+			mes "Sei davvero qualcos'altro~!";
+			close;
+	}
+	end;
+
+OnInit:
+	setarray .castle$[0],
+		"prtg_cas01","prtg_cas02","prtg_cas03","prtg_cas04","prtg_cas05",
+		"payg_cas01","payg_cas02","payg_cas03","payg_cas04","payg_cas05",
+		"gefg_cas01","gefg_cas02","gefg_cas03","gefg_cas04","gefg_cas05",
+		"aldeg_cas01","aldeg_cas02","aldeg_cas03","aldeg_cas04","aldeg_cas05",
+		"arug_cas01","arug_cas02","arug_cas03","arug_cas04","arug_cas05",
+		"schg_cas01","schg_cas02","schg_cas03","schg_cas04","schg_cas05",
+		"te_aldecas1","te_aldecas2","te_aldecas3","te_aldecas4","te_aldecas5",
+		"te_prtcas01","te_prtcas02","te_prtcas03","te_prtcas04","te_prtcas05";
+	setarray .npcname$[0],
+		"[Altir]","[Alshine]","[Denev]","[Tarazed]","[Mirah]","[Almark]","[Becrux]","[Acrux]";
+	setarray .region$[0],
+		"Valkyrie Realm","Greenwood Lake","Britoria","Luina","Valfreyja","Nidhoggur","Kafragarten","Gloria";
+	setarray .weekday[0], // Day of the week. 0 = Sunday, 6 = Saturday.
+		0,0,0,0,0,0,6,6;
+	setarray .start_time[0],
+		2200,2200,2200,2200,2200,2200,2200,2200;
+	setarray .end_time[0],
+		2230,2230,2230,2230,2230,2230,2230,2230;
+	setarray .conquer_delay_questid[0], // Quest ID for cooldowns
+		7517,7520,7519,7518,7522,7521,7524,7523;
+	setarray .level_req[0], // Level requirement for quests. There are 2-3 quests per region
+		100,120,120,	//prt
+		100,120,120,	//pay
+		100,120,120,	//gef
+		100,120,120,	//alde
+		90,90,0,		//aru
+		90,90,0,		//sch
+		70,70,0,		//tealde
+		70,70,0;		//teprt
+	setarray .max_level[0], // Exp increase cap for quests. 0 for unlimited/not exist
+		130,140,0,	//prt
+		130,140,0,	//pay
+		130,140,0,	//gef
+		130,140,0,	//alde
+		120,120,0,	//aru
+		120,120,0,	//sch
+		99,99,0,	//tealde
+		99,99,0;	//teprt
+	setarray .daily_hunting_questid[0], //Quest ID for daily quests.
+		7525,7526,7527,	//prt
+		7534,7535,7536,	//pay
+		7531,7532,7533,	//gef
+		7528,7529,7530,	//alde
+		7539,7540,0,	//aru
+		7537,7538,0,	//sch
+		7561,7562,0,	//tealde
+		7541,7542,0;	//teprt
+	setarray .daily_delay_questid[0],	//Quest ID for mob hunting check.
+		7543,7544,7545,	//prt
+		7552,7553,7554,	//pay
+		7549,7550,7551,	//gef
+		7546,7547,7548,	//alde
+		7557,7558,0,	//aru
+		7555,7556,0,	//sch
+		7563,7564,0,	//tealde
+		7559,7560,0;	//teprt
+	setarray .ordinal$[0],"first","second","third";
+	end;
+
+	function brief {
+		switch(getarg(0)){
+			case 7527:
+			case 7530:
+			case 7533:
+			case 7536:
+				mes "Si tratta di affrontare le potenti creature che compaiono nel Corridoio dell'Abisso.";
+				break;
+			default:
+				mes "Serve per eliminare i mostri che appaiono nel dungeon della gilda.";
+				break;
+		}
+		return;
+	}
+
+	function mob_brief {
+		switch(getarg(0)){
+			case 7525:
+				mes "Dovresti dare la caccia a 50 o più mostri Bruchi e Paura Cremosa.";
+				break;
+			case 7526:
+				mes "Dai la caccia a 30 o più di tutti e 3 i tipi di Coboldi dell'Abisso.";
+				break;
+			case 7527:
+				mes "^4d4dffDovresti uccidere il furioso 'Pyuriel' e la guerriera 'Lora'.^000000";
+				return 1;
+			case 7528:
+				mes "^4d4dffCaccia rispettivamente 50 o più calabroni giganti e vermi antichi.^000000";
+				break;
+			case 7529:
+				mes "^4d4dffCaccia 40 o più Mantidi Killer e 50 o più Mantidi Angra.^000000";
+				break;
+			case 7530:
+				mes "Sono ^4d4dff'Elvira' e 'Gioia', che è una strana creatura meccanica creata dalle lacrime degli eroi.^000000";
+				return 1;
+			case 7531:
+				mes "^4d4dffCaccia rispettivamente 50 o più Zombie Masters e Wraith Deads.^000000";
+				break;
+			case 7532:
+				mes "^4d4dffCaccia 50 mostri GLD_DARK_SHADOW, 20 GLD_DARK_FRAME e 20 GLD_DARK_PRIEST.^000000";
+				break;
+			case 7533:
+				mes "Sono ^4d4dff'Kades' e 'Rudo' che vagano per la collina dei morti.^000000";
+				return 1;
+			case 7534:
+				mes "^4d4dffCaccia rispettivamente 50 o più Gullinbursti e Leib Olmai.^000000";
+				break;
+			case 7535:
+				mes "^4d4dffCaccia 45 o più Generali Scheletrici, 20 o più Am Mut e 25 o più Gajomart, rispettivamente.^000000";
+				break;
+			case 7536:
+				mes "^4d4dffSono il Generale del Vecchio Impero 'Daehyon' e la Guardia 'Soheon'.^000000";
+				return 1;
+			case 7537:
+				mes "^4d4dffCaccia 50 o più Hell Apocalypse e Zakudam, rispettivamente.^000000";
+				break;
+			case 7538:
+				mes "^4d4dffCaccia 35 o più metalli pesanti e minerali di cobalto, rispettivamente.^000000";
+				break;
+			case 7539:
+				mes "^4d4dffCaccia più di 50 Banshee Master e 30 Beholder Master.^000000";
+				break;
+			case 7540:
+				mes "^4d4dffCaccia 50 Aunoe e 20 Fanat.^000000";
+				break;
+			case 7541:
+				mes "^4d4dffCaccia rispettivamente 30 o più cavalieri, fabbri e assassini.^000000";
+				break;
+			case 7542:
+				mes "^4d4dffCaccia rispettivamente 30 o più maghi, preti e cacciatori.^000000";
+				break;
+			case 7561:
+				mes "^4d4dffCaccia 30 o più, rispettivamente Crociato, Ladro e Alchimista.^000000";
+				break;
+			case 7562:
+				mes "^4d4dffCaccia rispettivamente 30 o più Saggi, Monaci e Bardi.^000000";
+				break;
+		}
+		return 0;
+	}
+	
+	function calcexp {
+		.@zoneid = getarg(0);
+		.@index = getarg(1);
+		.@maxlevel = .max_level[.@index];
+		.@isboss = (.@zoneid < 4 && !((.@index+1)%3));
+		
+		if(!.@isboss && BaseLevel > .@maxlevel){
+			return 1000 * (100 + ((.@maxlevel - 100) * 3));
+		} else {
+			return 1000 * (100 + ((BaseLevel - 100) * 3)) * (1 + .@isboss);
+		}
+	}
+	
+	function calcjobexp {
+		.@edition = getarg(0);
+		
+		if(.@edition == 3){
+			if(jobcanentermap("te_prtcas01")){
+				if (JobLevel > 50)
+					return 1000 * (50 + ((JobLevel - 50) * 3));
+				else
+					return 5000;
+			} else {
+				debugmes "Unexpected case for Job: " + Class + "(" + jobname(Class) + ") for gld_mission#core::calcjobexp";
+				return 0;
+			}
+		} else if(.@edition == 2 ) {
+			if(JobLevel > 50)
+				return 1000 * (50 + ((JobLevel - 50) * 3));
+			else
+				return 3000;
+		} else {
+			return 5000 * JobLevel;
+		}
+		return 0;
+	}
+}

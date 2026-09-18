@@ -1,0 +1,1781 @@
+//===== rAthena Script ======================================= 
+//= Mora Enchants
+//===== By: ================================================== 
+//= Euphy
+//===== Current Version: ===================================== 
+//= 1.2
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Adds enchantments to various items in exchange for
+//= Mora coins.
+//===== Additional Comments: ================================= 
+//= 1.0 First Version. [Euphy]
+//= 1.1 Optimized. [Euphy]
+//= 1.1a Bug fixes. [Lemongrass]
+//= 1.2 Bug fixes (bugreport:7930) [DeadlySilence]
+//============================================================ 
+
+// Arch Bishop Enchants :: coin_arc
+//============================================================
+mora,88,89,5	script	Keeper of Secrets#pa082	495,{
+	if (checkweight(1201,1) == 0) {
+		mes "Hai troppi tipi di cose con te per farlo. Buttane alcuni e riprova.";
+		close;
+	}
+	if (MaxWeight - Weight < 1000) {
+		mes "Stai portando troppo peso per farlo. Ridurre il peso e riprovare.";
+		close;
+	}
+	disable_items;
+	if (countitem(6380) < 10) {
+		mes "[Artificio]";
+		mes "Le reliquie per gli arcivescovi sono destinate alla difesa e al sostegno!";
+		next;
+		mes "[Artificio]";
+		mes "Come gli altri guardiani, possono scambiare monete con le loro reliquie, quindi raccogli le monete Mora!";
+		next;
+		mes "[Artificio]";
+		mes "Se raccogli più di 10 monete, vieni da me per fare scambi!";
+		close;
+	}
+	mes "[Artificio]";
+	mes "Alla luce! Sembra che tu sia pronto per avere accesso alle nostre reliquie.";
+	next;
+	mes "[Artificio]";
+	mes "Anello, scarpe, scialle, tunica, scudo o arma.";
+	mes "Seleziona uno dei sei tipi di reliquie da ricevere.";
+	next;
+	mes "[Artificio]";
+	mes "Ti darò a caso uno dei 2 tipi di attrezzatura, a seconda del tempo e del mio umore.";
+	next;
+	mes "[Artificio]";
+	mes "Tutto ciò di cui ho bisogno sono 10 tue monete Mora per concederti una reliquia!";
+	next;
+	switch(select("Non penso di essere pronto.:Sono pronto a scambiare le mie monete Mora.:Scambia il mio anello.")) {
+	case 1:
+		mes "[Artificio]";
+		mes "Alla prossima volta!";
+		close;
+	case 2:
+		mes "[Artificio]";
+		// What does this even mean? (custom dialogue below)
+		//mes "You influence what part are you?";
+		mes "Che tipo di reliquia vuoi?";
+		next;
+		switch(select("Non sono pronto.:Squillo:Scarpe:Scialle:Veste:Scudo:Arma")) {
+		case 1:
+			mes "[Artificio]";
+			mes "Vai con la luce.";
+			close;
+		case 2:
+			if (countitem(2864) || countitem(2865) || countitem(2866)) {
+				mes "[Artificio]";
+				mes "Ti è già consentito l'accesso alle nostre reliquie se possiedi un Anello!";
+				close;
+			}
+			if (Class == Job_Arch_Bishop || Class == Job_Arch_Bishop_T || Class == Job_Baby_Arch_Bishop) {
+				setarray .@items[0],2864,2865,2866; //Light_Of_Cure,Seal_Of_Cathedral,Ring_Of_Archbishop
+				break;
+			} else {
+				mes "[Artificio]";
+				mes "Preferiamo trattare solo con gli Arcivescovi.";
+				close;
+			}
+		case 3:
+			setarray .@items[0],2471,2472; //Shoes_Of_Affection,Shoes_Of_Judgement
+			break;
+		case 4:
+			setarray .@items[0],2569,2570; //Shawl_Of_Affection,Shawl_Of_Judgement
+			break;
+		case 5:
+			setarray .@items[0],15029,15030; //Robe_Of_Affection,Robe_Of_Judgement
+			break;
+		case 6:
+			setarray .@items[0],2156; //Bible_Of_Promise1
+			break;
+		case 7:
+			setarray .@items[0],1657,16013; //Wand_Of_Affection,Mace_Of_Judgement
+			break;
+		}
+		set .@item, .@items[rand(getarraysize(.@items))];
+		delitem 6380,10; //Mora_Coin
+		getitem .@item,1;
+		mes "[Artificio]";
+		mes "Hai ottenuto ^aa00aa"+getitemname(.@item)+"^000000. Che la Benedizione della Luce sia con voi.";
+		close;
+	case 3:
+		if (Class == Job_Arch_Bishop || Class == Job_Arch_Bishop_T || Class == Job_Baby_Arch_Bishop) {
+			mes "[Artificio]";
+			mes "Scambiamo gli anelli in monete per coloro che non possono controllare l'anello.";
+			next;
+			mes "[Artificio]";
+			mes "Sembra che tu abbia il potere di controllare l'anello, quindi non posso cambiarlo in monete.";
+			close;
+		}
+		     if (countitem(2864)) set .@item,2864; //Light_Of_Cure
+		else if (countitem(2865)) set .@item,2865; //Seal_Of_Cathedral
+		else if (countitem(2866)) set .@item,2866; //Ring_Of_Archbishop
+		else {
+			mes "[Artificio]";
+			mes "Hai cambiato qualcosa?";
+			close;
+		}
+		mes "[Artificio]";
+		mes "Hai un "+getitemname(.@item)+". Vuoi davvero scambiarlo con 10 monete Mora?";
+		next;
+		switch(select("Non sono pronto:Scambia il mio "+getitemname(.@item))) {
+		case 1:
+			mes "[Artificio]";
+			mes "Se cambi idea, fermati di nuovo.";
+			close;
+		case 2:
+			delitem .@item,1;
+			getitem 6380,10; //Mora_Coin
+			mes "[Artificio]";
+			mes "Penso che sia stato uno scambio equilibrato.";
+			close;
+		}
+	}
+}
+
+mora,96,74,5	script	Master of Relics#pa0829	495,{
+	if (checkweight(1201,1) == 0) {
+		mes "Hai troppi tipi di cose con te per farlo. Buttane alcuni e riprova.";
+		close;
+	}
+	if (MaxWeight - Weight < 1000) {
+		mes "Stai portando troppo peso per farlo. Ridurre il peso e riprovare.";
+		close;
+	}
+	disable_items;
+	mes "[Reliquia]";
+	mes "Potenzia le reliquie utilizzate dai santi arcivescovi, ci vorranno 2 monete Mora e la reliquia per permettermi di tentare di migliorarla.";
+	next;
+	switch(select("Maggiori dettagli per favore.:Per favore migliora la mia reliquia.")) {
+	case 1:
+		mes "[Reliquia]";
+		mes "Lasciami spiegare brevemente, per 2 Monete Mora e la reliquia posso darti un singolo Incantesimo su quella reliquia.";
+		next;
+		mes "[Reliquia]";
+		mes "Anche se questa reliquia era già incantata, la incanteremo nuovamente senza verificarne lo stato.";
+		next;
+		mes "[Reliquia]";
+		mes "Quindi, se hai già incantato la reliquia, per favore mettila in un posto sicuro e torna indietro.";
+		next;
+		mes "[Reliquia]";
+		mes "Ah, ancora una cosa! È possibile però che io fallisca e, se ciò accade, la reliquia andrà perduta per sempre.";
+		close;
+	case 2:
+		mes "[Reliquia]";
+		mes "Ok, puoi ottenere una nuova reliquia da Artifice se fallisce.";
+		next;
+		mes "[Reliquia]";
+		mes "Se hai un rituale portafortuna, dovresti usarlo adesso!";
+		next;
+		set .@select, select("Apetta un minuto!:Luce di cura:Sigillo della Cattedrale:Anello dell'Arcivescovo:Scarpe dell'affetto:Scarpe del giudizio:Scialle dell'Affetto:Scialle del Giudizio:Veste di affetto:Veste del giudizio:Bibbia della promessa 1° vol:Bacchetta dell'Affetto:Mazza del Giudizio");
+		switch(.@select) {
+		case 1:
+			mes "[Reliquia]";
+			mes "Certamente. Vai con la Luce.";
+			close;
+		case 2:
+		case 3:
+		case 4:
+			setarray .@items[0],2864,2865,2866; //Light_Of_Cure,Seal_Of_Cathedral,Ring_Of_Archbishop
+			setarray .@special[0],4803,4804,4805; //Highness_Heal_3sec,Coluceo_Heal30,Heal_Amount2
+			set .@item, .@items[.@select-2];
+			set .@sp, .@special[.@select-2];
+			set .@enchant_type,1;
+			break;
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+			setarray .@items[0],2471,2472,2569,2570,15029,15030,2156; //Shoes_Of_Affection,Shoes_Of_Judgement,Shawl_Of_Affection,Shawl_Of_Judgement,Robe_Of_Affection,Robe_Of_Judgement,Bible_Of_Promise1
+			set .@item, .@items[.@select-5];
+			set .@enchant_type,2;
+			break;
+		case 12:
+			set .@item,1657; //Wand_Of_Affection
+			set .@enchant_type,3;
+			break;
+		case 13:
+			set .@item,16013; //Mace_Of_Judgement
+			set .@enchant_type,4;
+			break;
+		}
+		if (countitem(6380) < 2 || countitem(.@item) == 0) {
+			mes "[Reliquia]";
+			mes "Per 2 monete Mora posso rafforzare la reliquia che hai in molti modi!";
+			close;
+		}
+		specialeffect2 EF_REPAIRWEAPON;
+		delitem 6380,2; //Mora_Coin
+		delitem .@item,1;
+		switch(.@enchant_type) {
+		case 1:
+			set .@i, rand(1,1487);
+			if (.@i <= 1024) {
+				// Basic combinations
+				// (raw: .@i increments by 16, 4 repeats)
+				setarray .@enchant_slot2[0],4711,4720,4721,4740; //Inteligence2,Dexterity1,Dexterity2,Vitality1
+				setarray .@enchant_slot3[0],.@sp,4799,4766,4788; //[sp],HP500,Atk2,Mdef6
+				setarray .@enchants[2],
+					.@enchant_slot2[rand(getarraysize(.@enchant_slot2))],
+					.@enchant_slot3[rand(getarraysize(.@enchant_slot3))];
+			}
+			else if (.@i <= 1040) setarray .@enchants[2],.@sp,.@sp; //[sp] [sp]
+			else if (.@i <= 1487) {
+				mes "[Reliquia]";
+				mes "A volte le cose semplicemente non vanno come vorresti. Spero che la prossima volta le cose vadano meglio per te. Fino ad allora, arrivederci.";
+				close;
+			}
+			break;
+		case 2:
+			set .@i, rand(1,1487);
+			if (.@i <= 1024) {
+				// Basic combinations
+				// (raw: .@i increments by 16)
+				setarray .@enchant_slot1[0],4710,4711,4720,4721; //Inteligence1,Inteligence2,Dexterity1,Dexterity2
+				setarray .@enchant_slot2[0],4711,4720,4721,4740; //Inteligence2,Dexterity1,Dexterity2,Vitality1
+				setarray .@enchant_slot3[0],4764,4799,4766,4788; //Critical5,HP500,Atk2,Mdef6
+				setarray .@enchants[1],
+					.@enchant_slot1[rand(getarraysize(.@enchant_slot1))],
+					.@enchant_slot2[rand(getarraysize(.@enchant_slot2))],
+					.@enchant_slot3[rand(getarraysize(.@enchant_slot3))];
+			}
+			else if (.@i <= 1026) setarray .@enchants[1],4761,4761,4761; //Matk2 Matk2 Matk2
+			else if (.@i <= 1028) setarray .@enchants[1],4712,4713,4713; //Inteligence3 Inteligence4 Inteligence4
+			else if (.@i <= 1030) setarray .@enchants[1],4712,4761,4761; //Inteligence3 Matk2 Matk2
+			else if (.@i <= 1032) setarray .@enchants[1],4712,4713,4761; //Inteligence3 Inteligence4 Matk2
+			else if (.@i <= 1034) setarray .@enchants[1],4722,4723,4723; //Dexterity3 Dexterity4 Dexterity4
+			else if (.@i <= 1036) setarray .@enchants[1],4722,4703,4703; //Dexterity3 Strength4 Strength4
+			else if (.@i <= 1038) setarray .@enchants[1],4722,4767,4767; //Dexterity3 Atk3 Atk3
+			else if (.@i <= 1040) setarray .@enchants[1],4767,4767,4767; //Atk3 Atk3 Atk3
+			else if (.@i <= 1487) {
+				mes "[Reliquia]";
+				mes "A volte le cose semplicemente non vanno come vorresti. Spero che la prossima volta le cose vadano meglio per te. Fino ad allora, arrivederci.";
+				close;
+			}
+			break;
+		case 3:
+			set .@i, rand(1,2852);
+			if (.@i <= 1984) {
+				// Basic combinations
+				// (raw: .@i increments by 31, 4 repeats)
+				setarray .@enchant_slot2[0],4720,4740,4741,4801; //Dexterity1,Vitality1,Vitality2,SP100
+				setarray .@enchant_slot3[0],4710,4711,4721,4760; //Inteligence1,Inteligence2,Dexterity2,Matk1
+				setarray .@enchants[2],
+					.@enchant_slot2[rand(getarraysize(.@enchant_slot2))],
+					.@enchant_slot3[rand(getarraysize(.@enchant_slot3))];
+			}
+			else if (.@i <= 1986) setarray .@enchants[2],4761,4761; //Matk2 Matk2
+			else if (.@i <= 1988) setarray .@enchants[2],4761,4723; //Matk2 Dexterity4
+			else if (.@i <= 1990) setarray .@enchants[2],4761,4714; //Matk2 Inteligence5
+			else if (.@i <= 1992) setarray .@enchants[2],4714,4714; //Inteligence5 Inteligence5
+			else if (.@i <= 1994) setarray .@enchants[2],4714,4723; //Inteligence5 Dexterity4
+			else if (.@i <= 1996) setarray .@enchants[2],4723,4723; //Dexterity4 Dexterity4
+			else if (.@i <= 2852) {
+				mes "[Reliquia]";
+				mes "A volte le cose semplicemente non vanno come vorresti. Spero che la prossima volta le cose vadano meglio per te. Fino ad allora, arrivederci.";
+				close;
+			}
+			break;
+		case 4:
+			set .@i, rand(1,2852);
+			if (.@i <= 1984) {
+				// Basic combinations
+				// (raw: .@i increments by 31, 4 repeats)
+				setarray .@enchant_slot2[0],4720,4740,4741,4701; //Dexterity1,Vitality1,Vitality2,Strength2
+				setarray .@enchant_slot3[0],4700,4701,4721,4767; //Strength1,Strength2,Dexterity2,Atk3
+				setarray .@enchants[2],
+					.@enchant_slot2[rand(getarraysize(.@enchant_slot2))],
+					.@enchant_slot3[rand(getarraysize(.@enchant_slot3))];
+			}
+			else if (.@i <= 1986) setarray .@enchants[2],4767,4767; //Atk3 Atk3
+			else if (.@i <= 1988) setarray .@enchants[2],4767,4723; //Atk3 Dexterity4
+			else if (.@i <= 1990) setarray .@enchants[2],4767,4704; //Atk3 Strength5
+			else if (.@i <= 1992) setarray .@enchants[2],4704,4704; //Strength5 Strength5
+			else if (.@i <= 1994) setarray .@enchants[2],4704,4723; //Strength5 Dexterity4
+			else if (.@i <= 1996) setarray .@enchants[2],4723,4723; //Dexterity4 Dexterity4
+			else if (.@i <= 2852) {
+				mes "[Reliquia]";
+				mes "A volte le cose semplicemente non vanno come vorresti. Spero che la prossima volta le cose vadano meglio per te. Fino ad allora, arrivederci.";
+				close;
+			}
+			break;
+		}
+		getitem2 .@item,1,1,0,0,0,.@enchants[1],.@enchants[2],.@enchants[3];
+		mes "[Reliquia]";
+		mes "Il rafforzamento è andato bene, fortunato te!";
+		close;
+	}
+}
+
+// Warlock Enchants :: coin_warrock
+//============================================================
+mora,104,76,4	script	Guardian of Artifacts#p	495,{
+	if (checkweight(1201,1) == 0) {
+		mes "Hai troppi tipi di cose con te per farlo. Buttane alcuni e riprova.";
+		close;
+	}
+	if (MaxWeight - Weight < 1000) {
+		mes "Stai portando troppo peso per farlo. Ridurre il peso e riprovare.";
+		close;
+	}
+	if (countitem(6380) < 10) {
+		mes "[Guardiano degli artefatti]";
+		mes "Il mio compito è custodire gli antichi manufatti dello Stregone.";
+		next;
+		mes "[Guardiano degli artefatti]";
+		mes "Beh, non è un grosso problema in realtà. Distribuisco artefatti a coloro che li meritano al prezzo di poche monete Mora.";
+		next;
+		mes "[Guardiano degli artefatti]";
+		mes "Puoi scambiare con me quando hai 10 o più monete. Arrivederci.";
+		close;
+	}
+	mes "[Guardiano degli artefatti]";
+	mes "Wow~ Vedo che sei pronto per gli antichi artefatti dello stregone.";
+	next;
+	mes "[Guardiano degli artefatti]";
+	mes "Puoi scegliere tra quattro tipologie di articoli:";
+	mes "bastoni, sfere, scarpe e vesti.";
+	next;
+	mes "[Guardiano degli artefatti]";
+	mes "Sono disponibili quattro opzioni per ogni tipologia, ma l'oggetto disponibile cambierà di giorno in giorno, a seconda del mio umore.";
+	next;
+	mes "[Guardiano degli artefatti]";
+	mes "Vuoi acquistare un artefatto con le tue Monete Mora?";
+	next;
+	if(select("Forse più tardi... ho delle cose da fare.:Sì, certamente.") == 1) {
+		mes "[Guardiano degli artefatti]";
+		mes "Ok, ci vediamo più tardi allora.";
+		close;
+	}
+	mes "[Guardiano degli artefatti]";
+	mes "Che tipo di articolo vuoi acquistare?";
+	next;
+	switch(select("Esentato:Scarpe:Sfere:Vesti:Righi")) {
+	case 1:
+		mes "[Guardiano degli artefatti]";
+		mes "Ok, ci vediamo più tardi allora.";
+		close;
+ 	case 2:
+		setarray .@items[0],2467,2468,2469,2470; //Golden_Rod_Shoes,Aqua_Shoes,Crimson_Shoes,Forest_Shoes
+		set .@plural,1;
+		break;
+	case 3:
+		setarray .@items[0],2859,2860,2861,2862; //Golden_Rod_Orb,Aqua_Orb,Crimson_Orb,Forest_Orb
+		break;
+	case 4:
+		setarray .@items[0],15025,15026,15027,15028; //Golden_Rod_Robe,Aqua_Robe,Crimson_Robe,Forest_Robe
+		break;
+	case 5:
+		setarray .@items[0],2007,2008,2009,2010; //Golden_Rod_Staff,Aqua_Staff,Crimson_Staff,Forest_Staff
+		break;
+	}
+	if (countitem(6380) < 10) {
+		mes "[Guardiano degli artefatti]";
+		mes "Potresti tornare quando avrai abbastanza monete?";
+		close;
+	}
+	set .@item, .@items[rand(getarraysize(.@items))];
+	delitem 6380,10; //Mora_Coin
+	getitem .@item,1;
+	mes "[Guardiano degli artefatti]";
+	mes "Ho ^aa00aa"+getitemname(.@item)+"^000000 disponibile oggi. Spero "+((.@plural)?"Essi":"Esso")+" tornerà utile...";
+	close;
+}
+
+mora,99,93,5	script	Artifact Crafter#pa0829	495,{
+	if (checkweight(1201,1) == 0) {
+		mes "Hai troppi tipi di cose con te per farlo. Buttane alcuni e riprova.";
+		close;
+	}
+	if (MaxWeight - Weight < 1000) {
+		mes "Stai portando troppo peso per farlo. Ridurre il peso e riprovare.";
+		close;
+	}
+	disable_items;
+	mes "[Creatore di artefatti]";
+	mes "Il mio compito è conferire agli artefatti nuovo potere. Se hai abbastanza monete, puoi rinforzare uno dei seguenti oggetti.";
+	next;
+	if(select("Dimmi di più.:Voglio che il mio articolo venga rinforzato.") == 1) {
+		mes "[Creatore di artefatti]";
+		mes "Lasciami spiegare. Un rinforzo ti costa due monete.";
+		next;
+		set .@info_only,1;
+	}
+	mes "[Creatore di artefatti]";
+	mes "E lavorerò sull'oggetto indipendentemente dal fatto che sia già stato rinforzato o meno.";
+	next;
+	mes "[Creatore di artefatti]";
+	mes "Quindi se avete un manufatto rinforzato di vostro gradimento, mettetelo in un posto sicuro e tornate.";
+	next;
+	mes "[Creatore di artefatti]";
+	mes "E un'altra cosa: il manufatto verrà distrutto se i rinforzi falliscono. Per favore, tienilo a mente.";
+	if (.@info_only)
+		close;
+	next;
+	set .@select, select("Magari la prossima volta.:Bastone della Verga d'Oro:Bastone dell'Acqua:Bastone Cremisi:Personale forestale:Scarpe con verga d'oro:Scarpe acquatiche:Scarpe cremisi:Scarpe da foresta:Sfera della Verga d'Oro:Sfera acquatica:Sfera Cremisi:Sfera della foresta:Veste di Verga d'Oro:Veste acquatica:Veste cremisi:Veste della foresta");
+	switch(.@select) {
+	case 1:
+		mes "[Creatore di artefatti]";
+		mes "Come si desidera.";
+		close;
+	case 2:
+	case 3:
+	case 4:
+	case 5:
+		setarray .@items[0],2007,2008,2009,2010; //Golden_Rod_Staff,Aqua_Staff,Crimson_Staff,Forest_Staff
+		set .@enchant_type,1;
+		break;
+	case 6:
+	case 7:
+	case 8:
+	case 9:
+		setarray .@items[0],2467,2468,2469,2470; //Golden_Rod_Shoes,Aqua_Shoes,Crimson_Shoes,Forest_Shoes
+		set .@enchant_type,2;
+		break;
+	case 10:
+	case 11:
+	case 12:
+	case 13:
+		setarray .@items[0],2859,2860,2861,2862; //Golden_Rod_Orb,Aqua_Orb,Crimson_Orb,Forest_Orb
+		set .@enchant_type,2;
+		break;
+	case 14:
+	case 15:
+	case 16:
+	case 17:
+		setarray .@items[0],15025,15026,15027,15028; //Golden_Rod_Robe,Aqua_Robe,Crimson_Robe,Forest_Robe
+		set .@enchant_type,2;
+		break;
+	}
+	set .@item, .@items[(.@select-2)%4];
+	if (countitem(6380) < 2 || countitem(.@item) == 0) {
+		mes "[Creatore di artefatti]";
+		mes "Devi avere 2 monete Mora e un oggetto da rinforzare prima che io possa svolgere il mio lavoro.";
+		close;
+	}
+	specialeffect2 EF_REPAIRWEAPON;
+	delitem 6380,2; //Mora_Coin
+	delitem .@item,1;
+	switch(.@enchant_type) {
+	case 1:
+		set .@i, rand(1,2847);
+		if (.@i <= 1984) {
+			// Basic combinations
+			// (raw: .@i increments by 31, 4 repeats)
+			setarray .@enchant_slot2[0],4720,4796,4710,4801; //Dexterity1,HP200,Inteligence1,SP100
+			setarray .@enchant_slot3[0],4786,4760,4711,4721; //Mdef2,Matk1,Inteligence2,Dexterity2
+			setarray .@enchants[2],
+				.@enchant_slot2[rand(getarraysize(.@enchant_slot2))],
+				.@enchant_slot3[rand(getarraysize(.@enchant_slot3))];
+		}
+		else if (.@i <= 1986) setarray .@enchants[2],4713,4761; //Inteligence4 Matk2
+		else if (.@i <= 1988) setarray .@enchants[2],4713,4713; //Inteligence4 Inteligence4
+		else if (.@i <= 1990) setarray .@enchants[2],4761,4761; //Matk2 Matk2
+		else if (.@i <= 1992) setarray .@enchants[2],4761,4713; //Matk2 Inteligence4
+		else if (.@i <= 2847) {
+			mes "[Creatore di artefatti]";
+			mes "Oh no... si è rotto... Beh, succede. Più fortuna la prossima volta.";
+			close;
+		}
+		break;
+	case 2:
+		set .@i, rand(1,2858);
+		if (.@i <= 1984) {
+			// Basic combinations
+			// (raw: .@i increments by 31)
+			setarray .@enchant_slot1[0],4710,4711,4720,4721; //Inteligence1,Inteligence2,Dexterity1,Dexterity2
+			setarray .@enchant_slot2[0],4720,4796,4710,4801; //Dexterity1,HP200,Inteligence1,SP100
+			setarray .@enchant_slot3[0],4786,4760,4711,4721; //Mdef2,Matk1,Inteligence2,Dexterity2
+			setarray .@enchants[1],
+				.@enchant_slot1[rand(getarraysize(.@enchant_slot1))],
+				.@enchant_slot2[rand(getarraysize(.@enchant_slot2))],
+				.@enchant_slot3[rand(getarraysize(.@enchant_slot3))];
+		}
+		else if (.@i <= 1986) setarray .@enchants[1],4712,4713,4761; //Inteligence3 Inteligence4 Matk2
+		else if (.@i <= 1988) setarray .@enchants[1],4712,4713,4713; //Inteligence3 Inteligence4 Inteligence4
+		else if (.@i <= 1990) setarray .@enchants[1],4712,4761,4761; //Inteligence3 Matk2 Matk2
+		else if (.@i <= 1992) setarray .@enchants[1],4712,4761,4713; //Inteligence3 Matk2 Inteligence4
+		else if (.@i <= 1994) setarray .@enchants[1],4722,4713,4761; //Dexterity3 Inteligence4 Matk2
+		else if (.@i <= 1996) setarray .@enchants[1],4722,4713,4713; //Dexterity3 Inteligence4 Inteligence4
+		else if (.@i <= 1998) setarray .@enchants[1],4722,4761,4761; //Dexterity3 Matk2 Matk2
+		else if (.@i <= 2000) setarray .@enchants[1],4722,4761,4713; //Dexterity3 Matk2 Inteligence4
+		else if (.@i <= 2858) {
+			mes "[Creatore di artefatti]";
+			mes "Oh no... si è rotto... Beh, succede. Più fortuna la prossima volta.";
+			close;
+		}
+		break;
+	}
+	getitem2 .@item,1,1,0,0,0,.@enchants[1],.@enchants[2],.@enchants[3];
+	mes "[Creatore di artefatti]";
+	mes "Sembra che il mio sforzo abbia avuto successo.";
+	close;
+}
+
+// Rune Knight, Guillotine Cross, & Ranger Enchants :: new_artifact
+//============================================================
+mora,152,97,5	script	Guardian of Power#pa082	515,{
+	if (checkweight(1201,1) == 0) {
+		mes "Riduci la quantità di articoli presenti nel tuo inventario prima di continuare.";
+		close;
+	}
+	if (MaxWeight - Weight < 1000) {
+		mes "Stai trasportando troppo nel tuo inventario.";
+		close;
+	}
+	if (countitem(6380) < 10) {
+		mes "[Guardiano del potere]";
+		mes "Do ai Cavalieri delle Rune, alle Croci della Ghigliottina e ai Rangers antichi manufatti per aiutarli a portare a termine le loro missioni.";
+		next;
+		mes "[Guardiano del potere]";
+		mes "Ci sono guardiani che danno monete del Mora Village che puoi usare per scambiare questi artefatti.";
+		next;
+		mes "[Guardiano del potere]";
+		mes "Se raccogli 10 o più monete Mora, posso scambiarle con gli artefatti.";
+		close;
+	}
+	mes "[Guardiano del potere]";
+	mes "Penso che tu sia pronto per ricevere gli antichi manufatti.";
+	next;
+	mes "[Guardiano del potere]";
+	mes "In base alla classe specificata, sono disponibili vari artefatti.";
+	next;
+	mes "[Guardiano del potere]";
+	mes "^ff0000Scegli attentamente perché questi artefatti non sono facili da trovare^000000. Allora, per quale lezione lo vuoi?";
+	next;
+	setarray .@jobs$[0],"Rune Knight","Guillotine Cross","Ranger";
+	set .@job, select("Cancellare:Cavaliere delle Rune:Croce Ghigliottina:Ranger")-2;
+	if (.@job == -1) {
+		mes "[Guardiano del potere]";
+		mes "Parlami più tardi allora.";
+		close;
+	}
+	mes "[Guardiano del potere]";
+	mes .@jobs$[.@job]+"?";
+	mes "Quale manufatto vuoi?";
+	next;
+	switch(.@job) {
+	case 0: // Rune Knight
+		setarray .@items[0],2475,2476,2574,2575;
+		set .@i, select("Cancellare:Schinieri di Ur (scarpe):Schinieri di Peuz (scarpe):Manteau di Ur (indumento):Manteau di Peuz (indumento)")-2;
+		break;
+	case 1: // Guillotine Cross
+		setarray .@items[0],2477,2478,2577,2578;
+		set .@i, select("Cancellare:Scarpe Sapha (Scarpe):Scarpe Nab (Scarpe):Cappuccio Sapha (indumento):Strappa il cappuccio (indumento)")-2;
+		break;
+	case 2: // Ranger
+		setarray .@items[0],2479,2480,2580,2581;
+		set .@i, select("Cancellare:Stivali alari bianchi (scarpe):Stivali alari neri (scarpe):Manteau con ali bianche (indumento):Manteau dell'Ala Nera (indumento)")-2;
+		break;
+	}
+	if (.@i == -1) {
+		mes "[Guardiano del potere]";
+		mes "Parlami più tardi allora.";
+		close;
+	}
+	if (countitem(6380) < 10) {
+		mes "[Guardiano del potere]";
+		mes "Non ti avevo detto di portare con te la giusta quantità di Monete Mora?";
+		close;
+	}
+	delitem 6380,10; //Mora_Coin
+	getitem .@items[.@i],1;
+	mes "[Guardiano del potere]";
+	mes "Grazie per le 10 monete Mora. Ecco il tuo artefatto per il "+.@jobs$[.@job]+" lavoro. Torna ogni volta che ottieni più monete Mora.";
+	close;
+}
+
+mora,148,98,3	script	Artifact Researcher#new	521,{
+	if (checkweight(1201,1) == 0) {
+		mes "Riduci la quantità di articoli presenti nel tuo inventario prima di continuare.";
+		close;
+	}
+	if (MaxWeight - Weight < 1000) {
+		mes "Stai trasportando troppo nel tuo inventario.";
+		close;
+	}
+	disable_items;
+	mes "[Ricercatore di artefatti]";
+	mes "Piacere di conoscerti.";
+	mes "Sono qui a Mora a studiare antiche reliquie e manufatti. Le nuove scoperte degli Avventurieri hanno reso questo villaggio molto emozionante per me.";
+	next;
+	switch(select("Dimmi di più...:Dai abilità agli artefatti.:Ripristina le abilità potenziate.")) {
+	case 1:
+		mes "[Ricercatore di artefatti]";
+		mes "Sono stati trovati nuovi manufatti qui nel villaggio di Mora, non hai sentito la notizia?";
+		next;
+		mes "[Ricercatore di artefatti]";
+		mes "Se ti imbatti in uno di questi artefatti, ci sono poteri nascosti che possono essere estratti da essi.";
+		next;
+		mes "[Ricercatore di artefatti]";
+		mes "Continuerò la mia ricerca per questi artefatti. Noi ricercatori accettiamo le Monete Mora come pagamento per i nostri servizi...";
+		next;
+		mes "[Ricercatore di artefatti]";
+		mes "Offro i miei servizi per conferire abilità agli artefatti per 100.000 zeny e 1 moneta Mora.";
+		next;
+		mes "[Ricercatore di artefatti]";
+		mes "La parte migliore del mio servizio è che eventuali miglioramenti apportati a questi artefatti non verranno danneggiati.";
+		close;
+	case 2:
+		set @mora_enchant_select,1;
+		break;
+	case 3:
+		set @mora_enchant_select,2;
+		break;
+	}
+	if (Zeny < 100000 || countitem(6380) == 0) {
+		mes "[Ricercatore di artefatti]";
+		mes "Non fornirò questi servizi gratuitamente, amico. 100.000 zeny e 1 moneta Mora. È chiedere troppo?";
+		close;
+	}
+	mes "[Ricercatore di artefatti]";
+	mes "Ok, allora sei pronto? Prima di iniziare a lavorare su questo, che tipo di attrezzatura volevi che migliorassi?";
+	next;
+	set .@i, select("Non indosso l'attrezzatura:1. Arma:2. Scarpe:3. Indumento:4. Armatura:5. Accessorio")-2;
+	if (.@i == -1) {
+		mes "[Ricercatore di artefatti]";
+		mes "Assicurati prima di indossare l'attrezzatura.";
+		close;
+	}
+	setarray .@parts[0], EQI_HAND_R, EQI_SHOES, EQI_GARMENT, EQI_ARMOR, EQI_ACC_L;
+	set .@part, .@parts[.@i];
+	if (!getequipisequiped(.@part)) {
+		mes "[Ricercatore di artefatti]";
+		mes "Assicurati prima di indossare l'attrezzatura.";
+		close;
+	}
+	set .@equip_id, getequipid(.@part);
+	set @mora_equip_part, .@part;
+
+	//callsub L_Socket,<enchant type>,<bonus enchant type>,<4-x enchants possible>;
+	// Enchant types:
+	//   [1]ATK [2]CRIT [3]EVA [4]Healer [5]Spell 1 [6]Assist 1 [7]Assist 2 [8]STR [9]Range [10]Physical [11]Spell 2
+	switch(.@part) {
+	case EQI_HAND_R:
+		switch(.@equip_id) {
+			case 1660: callsub L_Socket,4,5,1;  //Wand_Of_Affection2
+			case 2011: callsub L_Socket,5,11,1; //Golden_Rod_Staff2
+			case 2012: callsub L_Socket,5,11,1; //Aqua_Staff2
+			case 2013: callsub L_Socket,5,11,1; //Crimson_Staff2
+			case 2014: callsub L_Socket,5,11,1; //Forest_Staff2
+			case 16018: callsub L_Socket,1,5,1; //Mace_Of_Judgement2
+		}
+		break;
+	case EQI_SHOES:
+		switch(.@equip_id) {
+			case 2475: callsub L_Socket,6,8,1;  //Ur_Greave
+			case 2476: callsub L_Socket,6,10,1; //Peuz_Greave
+			case 2477: callsub L_Socket,6,2,1;  //Sabah_Shoes
+			case 2478: callsub L_Socket,6,1,1;  //Nab_Shoes
+			case 2479: callsub L_Socket,6,2,1;  //White_Wing_Boots
+			case 2480: callsub L_Socket,6,1,1;  //Black_Wing_Boots
+		}
+		break;
+	case EQI_GARMENT:
+		switch(.@equip_id) {
+			case 2574: callsub L_Socket,3,8,1; //Ur_Manteau
+			case 2575: callsub L_Socket,3,2,1; //Peuz_Manteau
+			case 2577: callsub L_Socket,3,2,1; //Sabah_Hood
+			case 2578: callsub L_Socket,3,2,1; //Nab_Hood
+			case 2580: callsub L_Socket,3,1,1; //White_Wing_Manteau
+			case 2581: callsub L_Socket,3,1,1; //Black_Wing_Manteau
+		}
+		break;
+	case EQI_ARMOR:
+		switch(.@equip_id) {
+			case 15036: callsub L_Socket,8,1,1;  //Ur_Plate
+			case 15037: callsub L_Socket,10,2,1; //Peuz_Plate
+			case 15038: callsub L_Socket,2,10,1; //Sabah_Cloth
+			case 15039: callsub L_Socket,1,2,1;  //Nab_Cloth
+			case 15042: callsub L_Socket,2,9,1;  //White_Wing_Suits
+			case 15043: callsub L_Socket,1,9,1;  //Black_Wing_Suits
+		}
+		break;
+	case EQI_ACC_L:
+		switch(.@equip_id) {
+			case 2883: callsub L_Socket,6,0,2; //Ur_Seal
+			case 2884: callsub L_Socket,6,0,2; //Peuz_Seal
+			case 2886: callsub L_Socket,6,0,2; //Sabah_Ring
+			case 2887: callsub L_Socket,6,0,2; //Nab_Ring
+			case 2890: callsub L_Socket,6,0,2; //White_Wing_Brooch
+			case 2891: callsub L_Socket,6,0,2; //Black_wing_Brooch
+		}
+		break;
+	}
+	mes "[Ricercatore di artefatti]";
+	mes "^990099"+getequipname(.@part)+"^000000??";
+	mes "Voglio davvero studiare questa attrezzatura...";
+	set @mora_equip_part,0;
+	close;
+
+L_Socket:
+	set .@select, @mora_enchant_select;
+	set .@enchant_type, getarg(0);
+	.@bonus_enchant = getarg(1);
+	.@allowed_slot = getarg(2);
+	set .@part, @mora_equip_part;
+	set .@equip_id, getequipid(.@part);
+	set .@equip_name$, getitemname(.@equip_id);
+	set .@equip_refine, getequiprefinerycnt(.@part);
+	setarray .@equip_card[0], getequipcardid(.@part,0),getequipcardid(.@part,1),getequipcardid(.@part,2),getequipcardid(.@part,3);
+	set @mora_equip_part,0;
+	set @mora_enchant_select,0;
+
+	if (.@select == 1) {
+		// If refine is +9 or higher, unlock bonus enchant type.
+		if (.@equip_refine >= 9 && .@bonus_enchant > 0) {
+			if (.@enchant_type < 1 || .@enchant_type > 11 || .@bonus_enchant > 11) {
+				mes "[Ricercatore di artefatti]";
+				mes "Mm-hmm qualcosa non va.";
+				close;
+			}
+			setarray .@enchant_type$[1],"ATK Type","Critical Type","Evasion Type","Healer Type","Spell Ability 1","Assist Ability 1","Assist Ability 2","Strength","Range Type","Physical Type","Spell Ability 2";
+			mes "[Ricercatore di artefatti]";
+			mes "Si tratta di un notevole rinforzo per l'attrezzatura. In questo caso potranno essere concesse estese maggiorazioni. Quale statistica vuoi migliorare?";
+			next;
+			switch(select(.@enchant_type$[.@enchant_type],.@enchant_type$[.@bonus_enchant])) {
+			case 1:
+				break;
+			case 2:
+				set .@enchant_type, .@bonus_enchant;
+				break;
+			}
+		}
+		if (.@equip_card[3] == 0 && .@allowed_slot < 4) {
+			set .@slot,4;
+			mes "[Ricercatore di artefatti]";
+			mes "Tentativo di rafforzare ulteriormente la capacità. L'applicazione precedente non sarà influenzata. Vuoi continuare?";
+		} else if (.@equip_card[2] == 0 && .@allowed_slot < 3) {
+			set .@slot,3;
+			mes "[Ricercatore di artefatti]";
+			mes "Tentativo di secondo miglioramento. L'applicazione precedente non sarà influenzata.";
+			next;
+			mes "[Ricercatore di artefatti]";
+			mes "Potrei avere la possibilità di fallire ora con questo tentativo. Desideri continuare?";
+		} else if (.@equip_card[1] == 0 && .@allowed_slot < 2) {
+			set .@slot,2;
+			mes "[Ricercatore di artefatti]";
+			mes "Iniziamo il terzo miglioramento. Posso fornire le migliori statistiche in questa fase, ma ricorda, ^990000ora c'è la possibilità che l'artefatto venga distrutto e che i miglioramenti precedenti vengano cancellati^000000. Continuare?";
+		} else {
+			mes "[Ricercatore di artefatti]";
+			mes "Questo artefatto è stato rafforzato al limite. Allo stato attuale è impossibile un ulteriore miglioramento.";
+			close;
+		}
+		next;
+		if(select("Tornerò più tardi.:Per favore continua!") == 1) {
+			mes "[Ricercatore di artefatti]";
+			mes "Se cambi idea, per favore torna indietro.";
+			close;
+		}
+		switch(.@enchant_type) {
+		case 1: //Attack
+			     if (.@slot == 4) set .@i, rand(1,525);
+			else if (.@slot == 3) set .@i, rand(301,655);
+			else if (.@slot == 2) set .@i, rand(451,750);
+			else {
+				mes "[Ricercatore di artefatti]";
+				mes "Si è verificato un errore sconosciuto.";
+				close;
+			}
+			     if (.@i < 101) set .@enchant,4700; //Strength1
+			else if (.@i < 201) set .@enchant,4811; //Fighting_Spirit1
+			else if (.@i < 301) set .@enchant,4819; //Atk1
+			else if (.@i < 351) set .@enchant,4701; //Strength2
+			else if (.@i < 401) set .@enchant,4810; //Fighting_Spirit2
+			else if (.@i < 451) set .@enchant,4766; //Atk2
+			else if (.@i < 476) set .@enchant,4702; //Strength3
+			else if (.@i < 501) set .@enchant,4809; //Fighting_Spirit3
+			else if (.@i < 526) set .@enchant,4767; //Atk3
+			else if (.@i < 626) set .@enchant,0;
+			else if (.@i < 641) set .@enchant,4703; //Strength4
+			else if (.@i < 656) set .@enchant,4808; //Fighting_Spirit4
+			else if (.@i < 661) set .@enchant,4704; //Strength5
+			else if (.@i < 666) set .@enchant,4820; //Fighting_Spirit5
+			else if (.@i < 668) set .@enchant,4705; //Strength6
+			else if (.@i < 670) set .@enchant,4821; //Fighting_Spirit6
+			else set .@enchant,9;
+			break;
+		case 2: //Critical
+			     if (.@slot == 4) set .@i, rand(1,470);
+			else if (.@slot == 3) set .@i, rand(201,610);
+			else if (.@slot == 2) set .@i, rand(381,750);
+			else {
+				mes "[Ricercatore di artefatti]";
+				mes "Si è verificato un errore sconosciuto.";
+				close;
+			}
+			     if (.@i < 101) set .@enchant,4750; //Luck1
+			else if (.@i < 201) set .@enchant,4700; //Strength1
+			else if (.@i < 261) set .@enchant,4751; //Luck2
+			else if (.@i < 321) set .@enchant,4701; //Strength2
+			else if (.@i < 351) set .@enchant,4752; //Luck3
+			else if (.@i < 381) set .@enchant,4702; //Strength3
+			else if (.@i < 411) set .@enchant,4764; //Critical5
+			else if (.@i < 441) set .@enchant,4818; //Sharp1
+			else if (.@i < 471) set .@enchant,4752; //Luck3
+			else if (.@i < 571) set .@enchant,0;
+			else if (.@i < 586) set .@enchant,4753; //Luck4
+			else if (.@i < 601) set .@enchant,4754; //Luck5
+			else if (.@i < 606) set .@enchant,4765; //Critical7
+			else if (.@i < 611) set .@enchant,4817; //Sharp2
+			else if (.@i < 616) set .@enchant,4703; //Strength4
+			else if (.@i < 618) set .@enchant,4816; //Sharp3
+			else set .@enchant,9;
+			break;
+		case 3: //Evasion
+			     if (.@slot == 4) set .@i, rand(1,525);
+			else if (.@slot == 3) set .@i, rand(301,670);
+			else if (.@slot == 2) set .@i, rand(451,800);
+			else {
+				mes "[Ricercatore di artefatti]";
+				mes "Si è verificato un errore sconosciuto.";
+				close;
+			}
+			     if (.@i < 101) set .@enchant,4859; //Evasion1
+			else if (.@i < 201) set .@enchant,4750; //Luck1
+			else if (.@i < 301) set .@enchant,4730; //Agility1
+			else if (.@i < 351) set .@enchant,4860; //Evasion3
+			else if (.@i < 401) set .@enchant,4751; //Luck2
+			else if (.@i < 451) set .@enchant,4731; //Agility2
+			else if (.@i < 476) set .@enchant,4731; //Agility2
+			else if (.@i < 501) set .@enchant,4752; //Luck3
+			else if (.@i < 526) set .@enchant,4732; //Agility3
+			else if (.@i < 626) set .@enchant,0;
+			else if (.@i < 641) set .@enchant,4762; //Evasion6
+			else if (.@i < 656) set .@enchant,4753; //Luck4
+			else if (.@i < 671) set .@enchant,4733; //Agility4
+			else if (.@i < 676) set .@enchant,4763; //Evasion12
+			else if (.@i < 681) set .@enchant,4754; //Luck5
+			else if (.@i < 683) set .@enchant,4734; //Agility5
+			else set .@enchant,9;
+			break;
+		case 4: //Healer
+			     if (.@slot == 4) set .@i, rand(1,375);
+			else if (.@slot == 3) set .@i, rand(201,535);
+			else if (.@slot == 2) set .@i, rand(301,650);
+			else {
+				mes "[Ricercatore di artefatti]";
+				mes "Si è verificato un errore sconosciuto.";
+				close;
+			}
+			     if (.@i < 101) set .@enchant,4710; //Inteligence1
+			else if (.@i < 201) set .@enchant,4720; //Dexterity1
+			else if (.@i < 251) set .@enchant,4711; //Inteligence2
+			else if (.@i < 301) set .@enchant,4721; //Dexterity2
+			else if (.@i < 326) set .@enchant,4805; //Heal_Amount2
+			else if (.@i < 351) set .@enchant,4712; //Inteligence3
+			else if (.@i < 376) set .@enchant,4722; //Dexterity3
+			else if (.@i < 476) set .@enchant,0;
+			else if (.@i < 491) set .@enchant,4760; //Matk1
+			else if (.@i < 506) set .@enchant,4850; //Heal_Amount3
+			else if (.@i < 521) set .@enchant,4713; //Inteligence4
+			else if (.@i < 536) set .@enchant,4723; //Dexterity4
+			else if (.@i < 541) set .@enchant,4761; //Matk2
+			else if (.@i < 546) set .@enchant,4851; //Heal_Amount4
+			else if (.@i < 548) set .@enchant,4806; //Matk3
+			else if (.@i < 550) set .@enchant,4852; //Heal_Amount5
+			else set .@enchant,9;
+			break;
+		case 5: //Spell 1
+			     if (.@slot == 4) set .@i, rand(1,600);
+			else if (.@slot == 3) set .@i, rand(401,760);
+			else if (.@slot == 2) set .@i, rand(401,766);
+			else {
+				mes "[Ricercatore di artefatti]";
+				mes "Si è verificato un errore sconosciuto.";
+				close;
+			}
+			     if (.@i < 101) set .@enchant,4710; //Inteligence1
+			else if (.@i < 201) set .@enchant,4720; //Dexterity1
+			else if (.@i < 301) set .@enchant,4795; //HP100
+			else if (.@i < 401) set .@enchant,4815; //Spell1
+			else if (.@i < 451) set .@enchant,4711; //Inteligence2
+			else if (.@i < 501) set .@enchant,4721; //Dexterity2
+			else if (.@i < 551) set .@enchant,4796; //HP200
+			else if (.@i < 601) set .@enchant,4814; //Spell2
+			else if (.@i < 701) set .@enchant,0;
+			else if (.@i < 716) set .@enchant,4712; //Inteligence3
+			else if (.@i < 731) set .@enchant,4722; //Dexterity3
+			else if (.@i < 746) set .@enchant,4797; //HP300
+			else if (.@i < 761) set .@enchant,4813; //Spell3
+			else if (.@i < 763) set .@enchant,4713; //Inteligence4
+			else if (.@i < 765) set .@enchant,4723; //Dexterity4
+			else if (.@i < 767) set .@enchant,4812; //Spell4
+			else set .@enchant,9;
+			break;
+		case 6: //Assist 1
+			     if (.@slot == 4) set .@i, rand(1,520);
+			else if (.@slot == 3) set .@i, rand(321,720);
+			else if (.@slot == 2) set .@i, rand(521,850);
+			else {
+				mes "[Ricercatore di artefatti]";
+				mes "Si è verificato un errore sconosciuto.";
+				close;
+			}
+			     if (.@i < 81)  set .@enchant,4792; //Def6
+			else if (.@i < 161) set .@enchant,4787; //Mdef4
+			else if (.@i < 241) set .@enchant,4801; //SP100
+			else if (.@i < 321) set .@enchant,4796; //HP200
+			else if (.@i < 371) set .@enchant,4700; //Strength1
+			else if (.@i < 421) set .@enchant,4720; //Dexterity1
+			else if (.@i < 471) set .@enchant,4730; //Agility1
+			else if (.@i < 521) set .@enchant,4740; //Vitality1
+			else if (.@i < 621) set .@enchant,0;
+			else if (.@i < 646) set .@enchant,4793; //Def9
+			else if (.@i < 671) set .@enchant,4788; //Mdef6
+			else if (.@i < 696) set .@enchant,4802; //SP150
+			else if (.@i < 721) set .@enchant,4797; //HP300
+			else if (.@i < 731) set .@enchant,4701; //Strength2
+			else if (.@i < 741) set .@enchant,4721; //Dexterity2
+			else if (.@i < 751) set .@enchant,4731; //Agility2
+			else set .@enchant,9;
+			break;
+		case 7: //Assist 2
+			     if (.@slot == 4) set .@i, rand(1,520);
+			else if (.@slot == 3) set .@i, rand(321,720);
+			else if (.@slot == 2) set .@i, rand(521,850);
+			else {
+				mes "[Ricercatore di artefatti]";
+				mes "Si è verificato un errore sconosciuto.";
+				close;
+			}
+			     if (.@i < 81)  set .@enchant,4792; //Def6
+			else if (.@i < 161) set .@enchant,4787; //Mdef4
+			else if (.@i < 241) set .@enchant,4801; //SP100
+			else if (.@i < 321) set .@enchant,4796; //HP200
+			else if (.@i < 371) set .@enchant,4710; //Inteligence1
+			else if (.@i < 421) set .@enchant,4720; //Dexterity1
+			else if (.@i < 471) set .@enchant,4730; //Agility1
+			else if (.@i < 521) set .@enchant,4740; //Vitality1
+			else if (.@i < 621) set .@enchant,0;
+			else if (.@i < 646) set .@enchant,4793; //Def9
+			else if (.@i < 671) set .@enchant,4788; //Mdef6
+			else if (.@i < 696) set .@enchant,4802; //SP150
+			else if (.@i < 721) set .@enchant,4797; //HP300
+			else if (.@i < 731) set .@enchant,4711; //Inteligence2
+			else if (.@i < 741) set .@enchant,4721; //Dexterity2
+			else if (.@i < 751) set .@enchant,4741; //Vitality2
+			else set .@enchant,9;
+			break;
+		case 8: //Strength
+			     if (.@slot == 4) set .@i, rand(1,525);
+			else if (.@slot == 3) set .@i, rand(301,685);
+			else if (.@slot == 2) set .@i, rand(451,800);
+			else {
+				mes "[Ricercatore di artefatti]";
+				mes "Si è verificato un errore sconosciuto.";
+				close;
+			}
+			     if (.@i < 101) set .@enchant,4740; //Vitality1
+			else if (.@i < 201) set .@enchant,4797; //HP300
+			else if (.@i < 301) set .@enchant,4791; //Def3
+			else if (.@i < 351) set .@enchant,4741; //Vitality2
+			else if (.@i < 401) set .@enchant,4798; //HP400
+			else if (.@i < 451) set .@enchant,4792; //Def6
+			else if (.@i < 476) set .@enchant,4742; //Vitality3
+			else if (.@i < 501) set .@enchant,4793; //Def9
+			else if (.@i < 526) set .@enchant,4799; //HP500
+			else if (.@i < 626) set .@enchant,0;
+			else if (.@i < 641) set .@enchant,4742; //Vitality3
+			else if (.@i < 656) set .@enchant,4743; //Vitality4
+			else if (.@i < 671) set .@enchant,4794; //Def12
+			//else if (.@i < 686) set .@enchant,01; // ??
+			else if (.@i < 688) set .@enchant,4744; //Vitality5
+			//else if (.@i < 690) set .@enchant,02; // ??
+			else set .@enchant,9;
+			break;
+		case 9: //Range
+			     if (.@slot == 4) set .@i, rand(1,470);
+			else if (.@slot == 3) set .@i, rand(201,610);
+			else if (.@slot == 2) set .@i, rand(321,750);
+			else {
+				mes "[Ricercatore di artefatti]";
+				mes "Si è verificato un errore sconosciuto.";
+				close;
+			}
+			     if (.@i < 101) set .@enchant,4750; //Luck1
+			else if (.@i < 201) set .@enchant,4720; //Dexterity1
+			else if (.@i < 261) set .@enchant,4751; //Luck2
+			else if (.@i < 321) set .@enchant,4721; //Dexterity2
+			else if (.@i < 351) set .@enchant,4752; //Luck3
+			else if (.@i < 381) set .@enchant,4722; //Dexterity3
+			else if (.@i < 411) set .@enchant,4764; //Critical5
+			else if (.@i < 441) set .@enchant,4832; //Expert_Archer1
+			else if (.@i < 471) set .@enchant,4753; //Luck4
+			else if (.@i < 571) set .@enchant,0;
+			else if (.@i < 586) set .@enchant,4723; //Dexterity4
+			else if (.@i < 601) set .@enchant,4833; //Expert_Archer2
+			else if (.@i < 606) set .@enchant,4765; //Critical7
+			else if (.@i < 611) set .@enchant,4834; //Expert_Archer3
+			else if (.@i < 616) set .@enchant,4724; //Dexterity5
+			else if (.@i < 618) set .@enchant,4835; //Expert_Archer4
+			else set .@enchant,9;
+			break;
+		case 10: //Physical
+			     if (.@slot == 4) set .@i, rand(1,600);
+			else if (.@slot == 3) set .@i, rand(401,800);
+			else if (.@slot == 2) set .@i, rand(601,930);
+			else {
+				mes "[Ricercatore di artefatti]";
+				mes "Si è verificato un errore sconosciuto.";
+				close;
+			}
+			     if (.@i < 101) set .@enchant,4791; //Def3
+			else if (.@i < 201) set .@enchant,4730; //Agility1
+			else if (.@i < 301) set .@enchant,4750; //Luck1
+			else if (.@i < 401) set .@enchant,4795; //HP100
+			else if (.@i < 451) set .@enchant,4792; //Def6
+			else if (.@i < 501) set .@enchant,4731; //Agility2
+			else if (.@i < 551) set .@enchant,4751; //Luck2
+			else if (.@i < 601) set .@enchant,4796; //HP200
+			else if (.@i < 701) set .@enchant,0;
+			else if (.@i < 726) set .@enchant,4793; //Def9
+			else if (.@i < 751) set .@enchant,4732; //Agility3
+			else if (.@i < 776) set .@enchant,4752; //Luck3
+			else if (.@i < 801) set .@enchant,4797; //HP300
+			else if (.@i < 816) set .@enchant,4733; //Agility4
+			else if (.@i < 831) set .@enchant,4753; //Luck4
+			else if (.@i < 833) set .@enchant,4807; //Atk_Speed1
+			else set .@enchant,9;
+			break;
+		case 11: //Spell 2
+			     if (.@slot == 4) set .@i, rand(1,600);
+			else if (.@slot == 3) set .@i, rand(401,760);
+			else if (.@slot == 2) set .@i, rand(401,766);
+			else {
+				mes "[Ricercatore di artefatti]";
+				mes "Si è verificato un errore sconosciuto.";
+				close;
+			}
+			     if (.@i < 101) set .@enchant,4711; //Inteligence2
+			else if (.@i < 201) set .@enchant,4721; //Dexterity2
+			else if (.@i < 301) set .@enchant,4796; //HP200
+			else if (.@i < 401) set .@enchant,4814; //Spell2
+			else if (.@i < 451) set .@enchant,4712; //Inteligence3
+			else if (.@i < 501) set .@enchant,4722; //Dexterity3
+			else if (.@i < 551) set .@enchant,4760; //Matk1
+			else if (.@i < 601) set .@enchant,4813; //Spell3
+			else if (.@i < 701) set .@enchant,0;
+			else if (.@i < 716) set .@enchant,4713; //Inteligence4
+			else if (.@i < 731) set .@enchant,4723; //Dexterity4
+			else if (.@i < 746) set .@enchant,4761; //Matk2
+			else if (.@i < 761) set .@enchant,4812; //Spell4
+			else if (.@i < 763) set .@enchant,4714; //Inteligence5
+			else if (.@i < 765) set .@enchant,4724; //Dexterity5
+			else if (.@i < 767) set .@enchant,4806; //Matk3
+			else set .@enchant,9;
+			break;
+		default:
+			mes "[Ricercatore di artefatti]";
+			mes "Beh, immagino di essermi sbagliato...";
+			close;
+		}
+
+		// anti-hack
+		if (callfunc("F_IsEquipIDHack", .@part, .@equip_id) ||
+		    callfunc("F_IsEquipRefineHack", .@part, .@equip_refine) ||
+		    callfunc("F_IsEquipCardHack", .@part, .@equip_card[0], .@equip_card[1], .@equip_card[2], .@equip_card[3]))
+			close;
+
+		if (.@equip_card[3] == 0 && .@allowed_slot < 4) {
+			set .@equip_card[3],.@enchant;
+		} else if (.@equip_card[2] == 0 && .@allowed_slot < 3) {
+			set .@equip_card[2],.@enchant;
+			if (.@enchant == 0) {
+				set .@equip_card[3],0;
+			}
+		} else if (.@equip_card[1] == 0 && .@allowed_slot < 2) {
+			set .@equip_card[1],.@enchant;
+			if (.@enchant == 0) {
+				set .@equip_card[2],0;
+				set .@equip_card[3],0;
+			}
+		} else {
+			mes "[Ricercatore di artefatti]";
+			mes "Penso che ci fosse un limite al potenziamento degli artefatti.";
+			close;
+		}
+		if (Zeny < 100000 || countitem(6380) == 0) {
+			mes "[Ricercatore di artefatti]";
+			mes "Non farò il lavoro a meno che tu non paghi la tariffa.";
+			close;
+		}
+		delitem 6380,1; //Mora_Coin
+		set Zeny, Zeny-100000;
+		delequip .@part;
+		if (.@enchant == 9) {
+			specialeffect2 EF_SUI_EXPLOSION;
+			mes "[Ricercatore di artefatti]";
+			mes "Questo!";
+ 			mes "Io... mi dispiace ma l'attrezzatura è stata distrutta.";
+			close;
+		}
+		if (.@enchant == 0) {
+			specialeffect2 EF_SHIELDCHARGE;
+			mes "[Ricercatore di artefatti]";
+			mes "Poiché l'equilibrio di potere non corrisponde, la capacità esistente è stata distrutta. È un peccato, ma riprova la prossima volta.";
+		} else {
+			specialeffect2 EF_REPAIRWEAPON;
+			mes "[Ricercatore di artefatti]";
+			// Replacing original dialogue since it doesn't make sense.
+			//mes "The artifact ^990000"+.@slot+" will have the first enhancement retained.";
+			mes "Ho migliorato con successo l'artefatto ^990000"+.@equip_name$+"^000000 alla presa "+.@slot+".";
+		}
+
+//		GetNonSlotItemSock2 .@equip_refine .@equip_id .@equip_card[0] .@equip_card[1] .@equip_card[2] .@equip_card[3]
+		getitem2 .@equip_id,1,1,.@equip_refine,0,.@equip_card[0],.@equip_card[1],.@equip_card[2],.@equip_card[3];
+
+		close;
+	} else if (.@select == 2) {
+		if (Zeny < 100000 || countitem(6380) == 0) {
+			mes "[Ricercatore di artefatti]";
+			mes "Devi pagare se vuoi i servizi.";
+			close;
+		}
+		specialeffect2 EF_REPAIRWEAPON;
+		mes "[Ricercatore di artefatti]";
+		mes "Resta la capacità di potenziamento.";
+		delitem 6380,1; //Mora_Coin
+		set Zeny, Zeny-100000;
+
+		// anti-hack
+		if (callfunc("F_IsEquipIDHack", .@part, .@equip_id) || callfunc("F_IsEquipCardHack", .@part, .@equip_card[0], .@equip_card[1], .@equip_card[2], .@equip_card[3]) || callfunc("F_IsEquipRefineHack", .@part, .@equip_refine))
+			close;
+
+		delequip .@part;
+
+//		GetNonSlotItemSock2 .@equip_refine .@equip_id .@equip_card[0] .@equip_card[1] .@equip_card[2] .@equip_card[3]
+		for ( .@i = getiteminfo(.@equip_id, ITEMINFO_SLOT); .@i < MAX_SLOTS; .@i++ ) {
+			if (getiteminfo(.@equip_card[.@i], ITEMINFO_SUBTYPE) == CARD_ENCHANT)
+				.@equip_card[.@i] = 0;// Armor Enchant System
+		}
+		getitem2 .@equip_id,1,1,.@equip_refine,0,.@equip_card[0],.@equip_card[1],.@equip_card[2],.@equip_card[3];
+
+		close;
+	}
+}
+
+// Arch Bishop & Warlock Empowering :: relic_change
+//============================================================
+mora,124,82,4	script	Artifact Collector#blan	522,{
+	if (checkweight(1201,1) == 0) {
+		mes "Riduci la quantità di articoli presenti nel tuo inventario prima di continuare.";
+		close;
+	}
+	if (MaxWeight - Weight < 1000) {
+		mes "Stai trasportando troppo nel tuo inventario.";
+		close;
+	}
+	disable_items;
+	emotion ET_DELIGHT;
+	mes "Quei manufatti di Mora sembrano così perfetti!";
+	mes "Ma so che vuoi che siano ancora migliori!";
+	next;
+	mes "[Collezionista di artefatti]";
+	mes "Saluti avventuriero. Diventeremo grandi amici tra un attimo dopo che ti avrò spiegato come potenziare i tuoi artefatti!";
+	next;
+	switch(select("Facciamolo!:Potenziare gli artefatti?:No, non per me!")) {
+	case 1:
+		break;
+	case 2:
+		emotion ET_OK;
+		mes "[Collezionista di artefatti]";
+		mes "Sembri un buon giudice dei caratteri.";
+		next;
+		mes "[Collezionista di artefatti]";
+		mes "Da oltre 200 anni lavoro con gli Artifacts qui a Mora. Faticando per ottenere il +9 perfetto!";
+		next;
+		select("Gulp... +9?!");
+		emotion ET_HUK, playerattached();
+		mes "[Collezionista di artefatti]";
+		mes "Il mio compito è raccogliere le antiche reliquie e raffinarle fino alla loro essenza!";
+		next;
+		emotion ET_CRY;
+		mes "[Collezionista di artefatti]";
+		mes "Trovare l'Artefatto perfetto su cui sperimentare è il lavoro della mia vita.";
+		mes "Inoltre vedere la meraviglia dell'eredità dei nostri antenati è altrettanto gratificante.";
+		next;
+		select("Posso vedere come potrebbe essere divertente.");
+		emotion ET_GOODBOY;
+		mes "[Collezionista di artefatti]";
+		mes "Grazie umano.";
+		next;
+		mes "[Collezionista di artefatti]";
+		mes "Lo faccio da oltre 200 anni e, onestamente, le scorte prontamente disponibili sono esaurite e Artificer e Artifact Crafter non mi scambieranno più...";
+		next;
+		emotion ET_THINK;
+		mes "[Collezionista di artefatti]";
+		mes "Ma forse gli Umani che stanno iniziando a visitare possono portare qualche nuova scorta!";
+		next;
+		select("Umani... Stock?");
+		emotion ET_QUESTION, playerattached();
+		mes "[Collezionista di artefatti]";
+		mes "SÌ! Se gli umani riescono a portarmi nuovi artefatti, posso lavorare al mio risultato finale!";
+		next;
+		select("Obiettivo finale?");
+		emotion ET_QUESTION, playerattached();
+		emotion ET_OK;
+		mes "[Collezionista di artefatti]";
+		mes "Pazienza, ci arriveremo...";
+		next;
+		mes "[Collezionista di artefatti]";
+		mes "Sono un collezionista di mestiere, ma il mio risultato più grande è conferire maggiore potere ad alcuni artefatti!";
+		mes "Finora ho perfezionato la mia abilità solo su alcuni tipi di artefatti.";
+		next;
+		mes "[Collezionista di artefatti]";
+		mes "Potresti essere l'umano che mi aiuta a completare il mio piano.";
+		next;
+		emotion ET_OTL;
+		mes "[Collezionista di artefatti]";
+		mes "Oh quanto amo il modo in cui funziona il destino a volte...";
+		next;
+		mes "[Collezionista di artefatti]";
+		mes "+1, +2, +3, +4, +5, +6 questi perfezionamenti non sono abbastanza forti per lavorare sulla mia arte.";
+		next;
+		emotion ET_OTL;
+		mes "[Collezionista di artefatti]";
+		mes "Ma +7! +7 è raro e appena abbastanza forte da funzionare nei miei tentativi di creazione.";
+		next;
+		select("Verrò abusato di nuovo...");
+		emotion ET_SCRATCH, playerattached();
+		mes "[Collezionista di artefatti]";
+		mes "Esatto! So che è naturale per voi Umani aiutare un amico, anche senza che l'amico lo chieda...";
+		next;
+		select("Non sono sicuro se...");
+		emotion ET_QUESTION, playerattached();
+		mes "[Collezionista di artefatti]";
+		mes "Naturalmente accetterò il tuo aiuto!  Trovami...";
+		next;
+		mes "- Bastone della Verga d'Oro -";
+		mes "- Bastone dell'Acqua -";
+		mes "- Bastone Cremisi -";
+		mes "- Personale forestale -";
+		mes "- Bastone della Misericordia -";
+		mes "- Mazza del Giudizio -";
+		next;
+		select("Qualunque altra cosa?");
+		emotion ET_QUESTION, playerattached();
+		mes "[Collezionista di artefatti]";
+		mes "Beh, a parte il +7, ci sono incantesimi molto specifici che devono essere presenti sull'artefatto e che aiutano a catalizzare il processo.";
+		next;
+		mes "[Collezionista di artefatti]";
+		mes "Se manca il +7 o l'incantesimo specifico non posso farlo.";
+		next;
+		select("Quindi la Raffinazione verrà preservata?");
+		emotion ET_HUK, playerattached();
+		emotion ET_FRET;
+		mes "[Collezionista di artefatti]";
+		mes "No, ma quello che riavrai è molto meglio!";
+		next;
+		mes "[Collezionista di artefatti]";
+		mes "Ormai ti stai chiedendo di più sugli artefatti che sto cercando?";
+		next;
+		emotion ET_QUESTION;
+		mes "[Collezionista di artefatti]";
+		mes "Vai avanti e chiedi!";
+		next;
+		setarray .@artifacts[0],1657,16013,2007,2008,2009,2010;
+		setarray .@empowered[0],1660,16018,2011,2012,2013,2014;
+		while(1) {
+			set .@i, select("Non penso di essere interessato:Bastone della Misericordia:Mazza del Giudizio:Bastone della Verga d'Oro:Bastone dell'Acqua:Bastone Cremisi:Personale forestale")-2;
+			if (.@i == -1) {
+				emotion ET_QUESTION;
+				mes "[Collezionista di artefatti]";
+				mes "Ok, beh forse un giorno lo sarai.";
+				close;
+			}
+			mes "[Collezionista di artefatti]";
+			mes getitemname(.@artifacts[.@i])+" must of course be refined to +7 or higher for me to distill it to an enchantment.";
+			next;
+			switch(.@i) {
+			case 0:
+				setarray .@enchants[0],4761,4723,4714;
+				set .@str$, "MATK+2%, DEX+4, INT+5";
+				break;
+			case 1:
+				setarray .@enchants[0],4767,4723,4704;
+				set .@str$, "ATK+3%, DEX+4, STR+5";
+				break;
+			default:
+				setarray .@enchants[0],4761,4713;
+				set .@str$, "MATK+2%, INT+4";
+				break;
+			}
+			mes "[Collezionista di artefatti]";
+			mes "Deve anche trasportare uno di questi incantesimi: "+.@str$+" essere realizzabile da me.";
+			next;
+			select(getitemname(.@empowered[.@i])+" attributi?");
+			callsub L_ShowInfo, .@empowered[.@i];
+			mes "[Collezionista di artefatti]";
+			mes "Ma per favore, se ne ottieni uno, per favore lasciami lavorarci sopra, ti prego.";
+			next;
+		}
+	case 3:
+		mes "[Collezionista di artefatti]";
+		mes "Passa una bella giornata. Ciao~";
+		close;
+	}
+	emotion ET_SPARK;
+	mes "[Collezionista di artefatti]";
+	mes "Fammi dare un'occhiata a quello che mi hai portato.";
+	next;
+	if (!getequipisequiped(EQI_HAND_R)) {
+		emotion ET_FRET;
+		mes "[Collezionista di artefatti]";
+		mes "Non so cosa stai cercando di fare... non posso migliorare ciò che non hai.";
+		close;
+	}
+	set .@equip_id, getequipid(EQI_HAND_R);
+	.@equip_refine = getequiprefinerycnt(EQI_HAND_R);
+	setarray .@equip_card[0], getequipcardid(EQI_HAND_R,0), getequipcardid(EQI_HAND_R,1), getequipcardid(EQI_HAND_R,2),getequipcardid(EQI_HAND_R,3);
+	switch(.@equip_id) {
+	case 2007: //Golden_Rod_Staff
+	case 2008: //Aqua_Staff
+	case 2009: //Crimson_Staff
+	case 2010: //Forest_Staff
+		if (.@equip_card[2] == 4761 || .@equip_card[3] == 4761 || //Matk2
+		    .@equip_card[2] == 4713 || .@equip_card[3] == 4713)   //Inteligence4
+			set .@empowered,.@equip_id+4; //Golden_Rod_Staff2,Aqua_Staff2,Crimson_Staff2,Forest_Staff2
+		break;
+	case 1657: //Wand_Of_Affection
+		if (.@equip_card[2] == 4761 || .@equip_card[3] == 4761 || //Matk2
+		    .@equip_card[2] == 4714 || .@equip_card[3] == 4714 || //Inteligence5
+		    .@equip_card[2] == 4723 || .@equip_card[3] == 4723)   //Dexterity4
+			set .@empowered,1660; //Wand_Of_Affection2
+		break;
+	case 16013: //Mace_Of_Judgement
+		if (.@equip_card[2] == 4723 || .@equip_card[3] == 4723 || //Dexterity4
+		    .@equip_card[2] == 4704 || .@equip_card[3] == 4704 || //Strength5
+		    .@equip_card[2] == 4767 || .@equip_card[3] == 4767)   //Atk3
+			set .@empowered,16018; //Mace_Of_Judgement2
+		break;
+	default:
+		emotion ET_FRET;
+		mes "[Collezionista di artefatti]";
+		mes "L'arma che hai non è uno degli artefatti con cui posso lavorare.";
+		close;
+	}
+	if (.@equip_refine < 7) {
+		emotion ET_FRET;
+		mes "[Collezionista di artefatti]";
+		mes "Devo insistere affinché il livello di raffinazione dell'Artefatto sia almeno +7!";
+		close;
+	}
+	if (!.@empowered) {
+		emotion ET_FRET;
+		mes "[Collezionista di artefatti]";
+		mes "Questi attributi semplicemente non sono adatti al mio processo di ricerca, prova a riordinarli in modo casuale.";
+		close;
+	}
+	emotion ET_SEXY;
+	mes "[Collezionista di artefatti]";
+	mes "Sto fremendo dall'eccitazione!";
+	mes "Mi hai portato tutto ciò di cui ho bisogno!!";
+	next;
+	emotion ET_OK;
+	mes "[Collezionista di artefatti]";
+	mes "Se sei pronto, sto per mostrarti cosa posso fare con il tuo +" + .@equip_refine + " Artefatto!";
+	next;
+	mes "[Collezionista di artefatti]";
+	mes "Vado a prendere il tuo ^FF0000"+getequipname(EQI_HAND_R)+"^000000 e scambialo, sei pronto?";
+	next;
+	switch(select("NOOO!:Sì, sono pronto!:Cosa sarà dopo?")) {
+	case 1:
+		emotion ET_FRET;
+		mes "[Collezionista di artefatti]";
+		mes "Stai scherzando... hai alimentato le mie speranze...";
+		close;
+	case 2:
+		break;
+	case 3:
+		callsub L_ShowInfo, .@empowered;
+		mes "[Collezionista di artefatti]";
+		mes "Sicuramente vuoi continuare?";
+		next;
+		if(select("No, non lo so.:Sì, fallo!") == 1) {
+			emotion ET_FRET;
+			mes "[Collezionista di artefatti]";
+			mes "Stai scherzando... hai alimentato le mie speranze...";
+			close;
+		}
+		break;
+	}
+	emotion ET_SMILE;
+
+	// anti-hack
+	if (callfunc("F_IsEquipIDHack", EQI_HAND_R, .@equip_id) || callfunc("F_IsEquipCardHack", EQI_HAND_R, .@equip_card[0], .@equip_card[1], .@equip_card[2], .@equip_card[3]) || callfunc("F_IsEquipRefineHack", EQI_HAND_R, .@equip_refine))
+		close;
+
+	delequip EQI_HAND_R;
+	getitem .@empowered,1;
+	mes "[Collezionista di artefatti]";
+	mes "È fatto alla perfezione, sarai così felice! Addio amico~";
+	close;
+
+L_ShowInfo:
+	mes "[Collezionista di artefatti]";
+	mes getitemname(getarg(0));
+	switch(getarg(0)) {
+	case 1660: //Wand_Of_Affection2
+		mes "Bastone/Attacco a una mano: 30";
+		mes "Peso: 50 / Qualsiasi sesso";
+		mes "Solo arcivescovo";
+		mes "Livello arma: 4 / ^ff0000Livello richiesto: 130^000000";
+		mes "MAT + 180, INT + 4.";
+		mes "Aggiunge un bonus di guarigione del 20%.";
+		mes "Se indossato con vesti, scarpe e veste della misericordia, aumenta il bonus di cura di un ulteriore 45% e il consumo di SP di 'Guarigione' di 50.";
+		mes "Quando riceve un attacco fisico ravvicinato, il Silentium Lv.1 verrà eseguito ad una certa velocità.";
+		mes "Riduce 3 secondi di ritardo dopo aver eseguito le abilità Clearance, Laudaramus e Laudaagnus.";
+		break;
+	case 16018: //Mace_Of_Judgement2
+		mes "Mazza/Attacco: 170";
+		mes "Peso: 120 / Qualsiasi sesso";
+		mes "Solo arcivescovo";
+		mes "Livello arma: 4 / ^ff0000Livello richiesto: 130^000000";
+		mes "MAT + 180, FOR + 2, INT + 2.";
+		mes "Gli attacchi fisici e magici hanno la possibilità di aumentare il danno del 40% ai mostri Demone per 7 secondi.";
+		mes "Se indossato con i guanti, le scarpe e lo scialle del Giudizio, aumenta i danni contro i non morti del 30%.";
+		mes "Aumenta il danno di Adoramus del 200% e aumenta il costo in SP di Adoramus di 30.";
+		break;
+	case 2011: //Golden_Rod_Staff2
+		mes "Bastone/Attacco: 30";
+		mes "Peso: 90 / Qualsiasi sesso";
+		mes "Solo stregone";
+		mes "Livello arma: 4 / ^ff0000Livello richiesto: 130^000000";
+		mes "INT + 5, MAT + 270.";
+		mes "Aumenta i danni di Jupitel Thunder del 30%.";
+		mes "Se indossato con Veste d'oro, Scarpe d'oro e Sfera d'oro Aumenta i danni della magia del vento del 60%.";
+		mes "Riduci i danni della magia della Terra del 60% e la resistenza alla Terra del 50%.";
+		break;
+	case 2012: //Aqua_Staff2
+		mes "Bastone/Attacco: 30";
+		mes "Peso: 90 / Qualsiasi sesso";
+		mes "Solo stregone";
+		mes "Livello arma: 4 / ^ff0000Livello richiesto: 130^000000";
+		mes "INT + 5, MAT + 270.";
+		mes "Aumenta i danni di Dardo Freddo e Tuffatore Gelido del 30%.";
+		mes "Se indossato con Aqua Robe, Shoes e Orb aumenta i danni della magia dell'acqua del 60%.";
+		mes "Riduce i danni della magia del vento del 60% e la resistenza al vento del 50%.";
+		break;
+	case 2013: //Crimson_Staff2
+		mes "Bastone/Attacco: 30";
+		mes "Peso: 90 / Qualsiasi sesso";
+		mes "Solo stregone";
+		mes "Livello arma: 4 / ^ff0000Livello richiesto: 130^000000";
+		mes "INT + 5, MAT + 270.";
+		mes "Aumenta i danni di Dardo di fuoco e Palla di fuoco del 30%.";
+		mes "Se indossato con Veste Cremisi, Scarpe e Sfera Aumenta i danni della Magia del Fuoco del 60%.";
+		mes "Riduce i danni della magia dell'acqua del 60% e la resistenza all'acqua del 50%.";
+		break;
+	case 2014: //Forest_Staff2
+		mes "Bastone/Attacco: 30";
+		mes "Peso: 90 / Qualsiasi sesso";
+		mes "Solo stregone";
+		mes "Livello arma: 4 / ^ff0000Livello richiesto: 130^000000";
+		mes "INT + 5, MAT + 270.";
+		mes "Aumenta i danni di Earth Spike e Heaven's Drive del 30%.";
+		mes "Se indossato con Veste della Foresta, Scarpe e Sfera Aumenta i danni della Magia della Terra del 60%.";
+		mes "Riduce i danni della magia del fuoco del 60% e la resistenza al fuoco del 50%.";
+		break;
+	}
+	next;
+	return;
+}
+
+// Other Enchants :: sangjo
+//============================================================
+function	script	F_Mora_Enchant	{
+	specialeffect2 EF_REPAIRWEAPON;
+	progressbar "ffff00",3;
+	delitem 6380,5; //Mora_Coin
+	if (countitem(getarg(0)) < 1)
+		return 0;
+	delitem getarg(0),1;
+	set .@i, rand(1,4568);
+	if (.@i <= 3168) {
+		// Basic combinations
+		// (raw: .@i increments by 11)
+		setarray .@enchant_slot1[0],4766,4767,4764,4765,4762,4763,4760,4761; //Atk2,Atk3,Critical5,Critical7,Evasion6,Evasion12,Matk1,Matk2
+		setarray .@enchant_slot2[0],4720,4721,4710,4711,4750,4751; //Dexterity1,Dexterity2,Inteligence1,Inteligence2,Luck1,Luck2
+		setarray .@enchant_slot3[0],4700,4701,4730,4731,4740,4741; //Strength1,Strength2,Agility1,Agility2,Vitality1,Vitality2
+		setarray .@enchants[1],
+			.@enchant_slot1[rand(getarraysize(.@enchant_slot1))],
+			.@enchant_slot2[rand(getarraysize(.@enchant_slot2))],
+			.@enchant_slot3[rand(getarraysize(.@enchant_slot3))];
+	}
+	else if (.@i <= 3179) setarray .@enchants[1],4761,4720,4700; //Matk2 Dexterity1 Strength1
+	else if (.@i <= 3181) setarray .@enchants[1],4761,4712,4712; //Matk2 Inteligence3 Inteligence3
+	else if (.@i <= 3183) setarray .@enchants[1],4765,4732,4732; //Critical7 Agility3 Agility3
+	else if (.@i <= 3185) setarray .@enchants[1],4763,4752,4753; //Evasion12 Luck3 Luck4
+	else if (.@i <= 3187) setarray .@enchants[1],4763,4742,4742; //Evasion12 Vitality3 Vitality3
+	else if (.@i <= 3189) setarray .@enchants[1],4763,4722,4722; //Evasion12 Dexterity3 Dexterity3
+	else if (.@i <= 3191) setarray .@enchants[1],4742,4742,4742; //Vitality3 Vitality3 Vitality3
+	else if (.@i <= 3193) setarray .@enchants[1],4761,4722,4722; //Matk2 Dexterity3 Dexterity3
+	else if (.@i <= 3195) setarray .@enchants[1],4767,4702,4702; //Atk3 Strength3 Strength3
+	else if (.@i <= 3197) setarray .@enchants[1],4763,4732,4732; //Evasion12 Agility3 Agility3
+	else if (.@i <= 4568) return 0;
+
+	getitem2 getarg(0),1,1,0,0,0,.@enchants[1],.@enchants[2],.@enchants[3];
+	return 1;
+}
+mora,105,176,4	script	Master Tailor#pa0829	509,{
+	disable_items;
+	if (checkweight(1201,1) == 0) {
+		mes "Hai troppi tipi di cose con te per farlo. Buttane alcuni e riprova.";
+		close;
+	}
+	if (MaxWeight - Weight < 1000) {
+		mes "Stai portando troppo peso per farlo. Ridurre il peso e riprovare.";
+		close;
+	}
+	if (countitem(6380) < 5 || countitem(15024) < 1) {
+		mes "[Maestro Sarto]";
+		mes "Con il mio tocco posso trasformare una tipica imbottitura militare in un'opera d'arte. Sono Kay, il maestro sarto, e creo opere d'arte con imbottiture militari.";
+		next;
+		mes "[Maestro Sarto]";
+		mes "Ebbene, cosa c'è in un nome? Posso trasformare la tua imbottitura militare in un'opera d'arte se porti ^ff00005 monete Mora e un'imbottitura militare^000000.";
+		if (countitem(6380)) {
+			next;
+			mes "[Maestro Sarto]";
+			mes "Mi capita di avere alcune imbottiture militari in stock. Vorresti acquistarne uno? Il prezzo è 1 moneta Mora. Così economico.";
+			next;
+			switch(select("Magari la prossima volta.:Ne comprerò uno adesso.")) {
+	 		case 1:
+				mes "[Maestro Sarto]";
+				mes "Ok, capisco.";
+				mes "Torna per uno se cambi idea.";
+				close;
+			case 2:
+				delitem 6380,1; //Mora_Coin
+				getitem 15024,1; //Army_Padding
+				mes "[Maestro Sarto]";
+				mes "Ecco qui.";
+				mes "È molto carino e soffice. Per favore torna indietro.";
+				close;
+			}
+		}
+		close;
+	}
+	mes "[Maestro Sarto]";
+	mes "Sei venuto ad aggiungere arte a una delle tue imbottiture militari?";
+	next;
+	switch(select("Per favore dimmi di più.:Sì, l'ho fatto.")) {
+	case 1:
+		mes "[Maestro Sarto]";
+		mes "Una tipica imbottitura militare non è abbastanza calda. Sembra ruvido sulla pelle e non ha un bell'aspetto. E il valore artistico? Non ne ha quasi nessuno.";
+		next;
+		mes "[Maestro Sarto]";
+		mes "Tuttavia, lo ricamerò con fili di velluto e aggiungerò tre opzioni.";
+		next;
+		mes "[Maestro Sarto]";
+		mes "Portami ^8888005 monete Mora^000000 e un'imbottitura militare e possiamo aggiungere un po' di arte insieme!";
+		close;
+	case 2:
+		mes "[Maestro Sarto]";
+		mes "Te lo dico, per ogni evenienza: farò tutto ciò che devo fare con la tua imbottitura militare, che sia nuova di zecca o che sia stata riparata in precedenza.";
+		next;
+		mes "[Maestro Sarto]";
+		mes "Quindi se hai con te un'imbottitura militare riparata a tuo piacimento, riponila in un posto sicuro e torna indietro.";
+		next;
+		mes "[Maestro Sarto]";
+		mes "E un'altra cosa: se non riesco ad aggiungervi l'immagine, diventa inutilizzabile... in questo caso dovrai comprarne uno nuovo.";
+		next;
+		switch(select("Andiamo, che fretta c'è?:Va bene! Facciamolo!!")) {
+		case 1:
+			mes "[Maestro Sarto]";
+			mes "Cos'hai che non va?";
+			mes "Gli abitanti del villaggio mi tengono abbastanza occupato.";
+			close;
+		case 2:
+			if (countitem(6380) < 5 || countitem(15024) == 0) {
+				mes "[Maestro Sarto]";
+				mes "Sembra che tu non abbia tutto ciò di cui hai bisogno.";
+				next;
+				mes "[Maestro Sarto]";
+				mes "Devi avere con te 5 monete Mora e un'imbottitura militare prima che io possa svolgere il mio lavoro.";
+				close;
+			}
+			if (callfunc("F_Mora_Enchant",15024) == 0) {
+				mes "[Maestro Sarto]";
+				mes "OH......";
+				mes "Non posso credere di aver sbagliato.";
+				next;
+				mes "[Maestro Sarto]";
+				mes "Vorrei stare da solo. Andare via!";
+				close;
+			}
+			mes "[Maestro Sarto]";
+			mes "La mia arte sembra fantastica.";
+			close;
+		}
+	}
+}
+
+mora,123,177,6	script	Pendant Crafter#pa0829	509,{
+	disable_items;
+	if (checkweight(1201,1) == 0) {
+		mes "Hai troppi tipi di cose con te per farlo. Buttane alcuni e riprova.";
+		close;
+	}
+	if (MaxWeight - Weight < 1000) {
+		mes "Stai portando troppo peso per farlo. Ridurre il peso e riprovare.";
+		close;
+	}
+	if (countitem(6380) < 5 || countitem(2858) == 0) {
+		mes "[Creatore di ciondoli]";
+		mes "Il mio compito è lucidare la pietra del ciondolo del guardiano e poi incidervi sopra un simbolo con un potere speciale.";
+		next;
+		mes "[Creatore di ciondoli]";
+		mes "Il processo conferisce al Ciondolo del Guardiano più potere di un normale accessorio.";
+		next;
+		mes "[Creatore di ciondoli]";
+		mes "Se sei interessato, posso lavorare sul tuo ciondolo per ^ff00005 Mora Coins^000000. Ovviamente devi avere un ciondolo del guardiano così posso lavorare con te.";
+		close;
+	}
+	mes "[Creatore di ciondoli]";
+	mes "Sei venuto a far aggiornare il tuo ciondolo del guardiano?";
+	next;
+	switch(select("Per favore dimmi di più.:Sì, l'ho fatto.")) {
+	case 1:
+		mes "[Creatore di ciondoli]";
+		mes "Il mio compito è lucidare la pietra del ciondolo del guardiano e poi incidervi sopra un simbolo con un potere speciale.";
+		next;
+		mes "[Creatore di ciondoli]";
+		mes "Il processo conferisce al Ciondolo del Guardiano più potere di un normale accessorio.";
+		next;
+		mes "[Creatore di ciondoli]";
+		mes "Se sei interessato, posso lavorare sul tuo ciondolo per ^ff00005 Mora Coins^000000. Ovviamente devi avere un ciondolo del guardiano così posso lavorare con te.";
+		close;
+	case 2:
+		mes "[Creatore di ciondoli]";
+		mes "Te lo dico, per ogni evenienza... ";
+		mes "Se lavoro su un ciondolo del guardiano che è stato potenziato in precedenza, perde il suo potere originale.";
+		next;
+		mes "[Creatore di ciondoli]";
+		mes "E peggio ancora, può perdere il suo potere e diventare un normale ciondolo. Naturalmente, la pietra non è suscettibile ai danni come il tessuto, quindi non perderai il ciondolo stesso.";
+		next;
+		switch(select("Andiamo, che fretta c'è?:Va bene! Facciamolo!!")) {
+		case 1:
+			mes "[Creatore di ciondoli]";
+			mes "Torna quando non hai fretta. Ho sempre molto tempo a disposizione.";
+			close;
+		case 2:
+			if (countitem(6380) < 5 || countitem(2858) == 0) {
+				mes "[Creatore di ciondoli]";
+				mes "Sembra che tu non abbia tutto ciò di cui hai bisogno.";
+				next;
+				mes "[Creatore di ciondoli]";
+				mes "Devi avere con te 5 monete Mora e un ciondolo del guardiano prima che possa svolgere il mio lavoro.";
+				close;
+			}
+			if (callfunc("F_Mora_Enchant",2858) == 0) {
+				getitem 2858,1; //Pendant_Of_Guardian
+				mes "[Creatore di ciondoli]";
+				mes "Cosa~!!";
+				mes "Cosa diavolo c'è che non va!!";
+				close;
+			}
+			mes "[Creatore di ciondoli]";
+			mes "Sembra che ce l'abbia fatta!";
+			close;
+		}
+	}
+}
+
+mora,134,166,4	script	Bulberry Westhood#pa0829	509,{
+	disable_items;
+	if (checkweight(1201,1) == 0) {
+		mes "Hai troppi tipi di cose con te per farlo. Buttane alcuni e riprova.";
+		close;
+	}
+	if (MaxWeight - Weight < 1000) {
+		mes "Stai portando troppo peso per farlo. Ridurre il peso e riprovare.";
+		close;
+	}
+	if (countitem(6380) < 5 || countitem(2568) == 0) {
+		mes "[Westhood del bulbo]";
+		mes "Sono Bulberry Westhood e mantengo viva la tradizione delle cappe di qualità.";
+		next;
+		mes "[Westhood del bulbo]";
+		mes "Tratto solo articoli di qualità, non sciarpe casuali da un mercato.";
+		next;
+		mes "[Westhood del bulbo]";
+		mes "Se hai qualcosa che ritieni sia di qualità sufficientemente alta, vieni a trovarmi con ^ff00005 Mora Coins^000000.";
+		next;
+		mes "[Westhood del bulbo]";
+		mes "Posso migliorare la sua alta qualità con le mie mani.";
+		close;
+	}
+	mes "[Westhood del bulbo]";
+	mes "Quindi hai una sciarpa di Loki 1042 edizione speciale. Hai davvero occhio per la qualità. Posso iniziare a lavorarci subito?";
+	next;
+	switch(select("Non capisco.:Sì, per favore.")) {
+	case 1:
+		mes "[Westhood del bulbo]";
+		mes "Come ho detto, tratto solo articoli di qualità, non sciarpe casuali da un mercato.";
+		next;
+		mes "[Westhood del bulbo]";
+		mes "Questa sciarpa di Loki che hai è fantastica. È un prodotto in edizione limitata con sopra lo stemma di Loki!";
+		next;
+		mes "[Westhood del bulbo]";
+		mes "La mia specialità è far emergere il potere nascosto al piccolo costo di... ";
+		mes "5 monete Mora.";
+		next;
+		mes "[Westhood del bulbo]";
+		mes "Torna se cambi idea.";
+		close;
+	case 2:
+		mes "[Westhood del bulbo]";
+		mes "Te lo dico, per ogni evenienza... ";
+		mes "Se lavoro su una Sciarpa di Loki che è stata potenziata in precedenza, perde il suo potere originale.";
+		next;
+		mes "[Westhood del bulbo]";
+		mes "E peggio ancora, può perdere tutto il suo potere diventando una normale sciarpa.";
+		next;
+		mes "[Westhood del bulbo]";
+		mes "Naturalmente, la Sciarpa di Loki è un articolo di qualità, quindi non perderai la sciarpa stessa nel processo.";
+		next;
+		switch(select("Forse più tardi, signore...:Mi piacerebbe possedere un oggetto di qualità!")) {
+		case 1:
+			mes "[Westhood del bulbo]";
+			mes "Ah...!";
+			mes "Dici 'più tardi' quando puoi avere subito l'articolo della migliore qualità? Beh, fai a modo tuo.";
+			close;
+		case 2:
+			if (countitem(6380) < 5 || countitem(2568) == 0) {
+				mes "[Westhood del bulbo]";
+				mes "Sembra che tu non abbia tutto ciò di cui hai bisogno.";
+				next;
+				mes "[Westhood del bulbo]";
+				mes "Devi avere 5 monete Mora e una sciarpa di Loki con te prima di poter avere l'oggetto della migliore qualità.";
+				close;
+			}
+			if (callfunc("F_Mora_Enchant",2568) == 0) {
+				getitem 2568,1; //Muffler_Of_Roki
+				mes "[Westhood del bulbo]";
+				mes "Aaarrgghh, questo è impossibile!";
+				mes "Mio! La mia sciarpa di Loki!....";
+				next;
+				mes "[Westhood del bulbo]";
+				mes "Oh, mi scuso per il mio comportamento vergognoso. Ero troppo arrabbiato.";
+				next;
+				mes "[Westhood del bulbo]";
+				mes "Fortunatamente, è ancora nel suo stato originale prima che iniziassi a lavorarci. Non è strappato o allungato. Dopotutto è un articolo di qualità. Oh oh oh~";
+				close;
+			}
+			mes "[Westhood del bulbo]";
+			mes "Wow~ missione completata!";
+			close;
+		}
+	}
+}

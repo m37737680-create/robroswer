@@ -1,0 +1,274 @@
+//===== rAthena Script =======================================
+//= Renters
+//===== Description: =========================================
+//= [Official Conversion]
+//= Renewal-specific breeder NPCs.
+//===== Changelogs: ==========================================
+//= 2.1 Moved some renters to a separate renewal file. [Daegaladh]
+//= 2.2 Updated to match the official scripts. [Euphy]
+//= 2.3 Added fourth class support. [Emistry]
+//============================================================
+
+// Dragon Breeder :: dragon
+//============================================================
+job3_rune01,88,62,5	script	Dragon Breeder	105,{
+	mes "[Allevatore di draghi]";
+	if ((eaclass()&EAJ_THIRDMASK)==EAJ_RUNE_KNIGHT) {
+		mes "Benvenuto. Vuoi noleggiare un Drago?";
+		next;
+		switch(select("SÌ:NO")) {
+		case 1:
+			//if (!getskilllv("RK_DRAGONTRAINING")) {
+			if (!getskilllv("KN_RIDING")) {
+				mes "[Allevatore di draghi]";
+				mes "Per favore, prima impara a cavalcare un drago.";
+				close;
+			}
+			else if (checkdragon()) {
+				mes "[Allevatore di draghi]";
+				mes "Hai già un drago.";
+				close;
+			}
+			else if (ismounting()) {
+				mes "[Allevatore di draghi]";
+				mes "Rimuovi la somma in contanti.";
+				close;
+			}
+			setdragon;
+			close;
+		case 2:
+			mes "[Allevatore di draghi]";
+			mes "Vedo. Allora buona giornata.";
+			close;
+		}
+	}
+	mes "Cosa stai facendo qui?";
+	mes "Solo i Cavalieri delle Rune possono noleggiare un Drago.";
+	close;
+}
+
+// Dragon/Gryphon Master :: dragon
+//============================================================
+prontera,130,213,5	script	Riding Creature Master	105,{
+	mes "[Maestro delle creature in sella]";
+	if ((eaclass()&EAJ_THIRDMASK)==EAJ_RUNE_KNIGHT) {
+		mes "Benvenuto. Vuoi noleggiare un Drago?";
+		next;
+		switch(select("SÌ:NO")) {
+		case 1:
+			//if (!getskilllv("RK_DRAGONTRAINING")) {
+			if (!getskilllv("KN_RIDING")) {
+				mes "[Maestro delle creature in sella]";
+				mes "Per favore, prima impara a cavalcare un drago.";
+				close;
+			}
+			else if (checkdragon()) {
+				mes "[Maestro delle creature in sella]";
+				mes "Hai già un drago.";
+				close;
+			}
+			else if (ismounting()) {
+				mes "[Maestro delle creature in sella]";
+				mes "Rimuovi la somma in contanti.";
+				close;
+			}
+			setdragon;
+			close;
+		case 2:
+			mes "[Maestro delle creature in sella]";
+			mes "Vedo. Allora buona giornata.";
+			close;
+		}
+	}
+	if ((eaclass()&EAJ_THIRDMASK)==EAJ_ROYAL_GUARD) {
+		mes "Benvenuto. Vuoi noleggiare un Grifone?";
+		next;
+		switch(select("SÌ:NO")) {
+		case 1:
+			if (!getskilllv("KN_RIDING")) {
+				mes "[Maestro delle creature in sella]";
+				mes "Per favore, impara prima a cavalcare un Grifone.";
+				close;
+			}
+			else if (checkriding()) {
+				mes "[Maestro delle creature in sella]";
+				mes "Hai già un Grifone.";
+				close;
+			}
+			else if (ismounting()) {
+				mes "[Maestro delle creature in sella]";
+				mes "Rimuovi la somma in contanti.";
+				close;
+			}
+			setriding;
+			close;
+		case 2:
+			mes "[Maestro delle creature in sella]";
+			mes "Vedo. Allora buona giornata.";
+			close;
+		}
+	}
+	mes "Sono qui per fornire ai Cavalieri delle Rune e alle Guardie Reali creature che cavalcano.";
+	close;
+}
+geffen,100,55,3	duplicate(Riding Creature Master)	Riding Creature Master#2	105
+payon,166,102,5	duplicate(Riding Creature Master)	Riding Creature Master#3	105
+aldebaran,133,109,5	duplicate(Riding Creature Master)	Riding Creature Master#4	105
+yuno,171,187,3	duplicate(Riding Creature Master)	Riding Creature Master#5	105
+rachel,106,130,5	duplicate(Riding Creature Master)	Riding Creature Master#6	105
+
+// Peco removing NPC :: dragon
+//============================================================
+prontera,125,208,5	script	Peco Peco Remover	105,{
+	mes "[Soldato]";
+	mes "Se non riesci a scendere da un Peco Peco";
+	mes "per qualche motivo sconosciuto,";
+	mes "sentitevi liberi di utilizzare i miei servizi.";
+	if (checkriding()) {
+		next;
+		mes "[Soldato]";
+		mes "Stai guidando un Peco Peco.";
+		mes "Desideri smontare?";
+		next;
+		switch(select("SÌ:NO")) {
+		case 1:
+			setriding 0;
+			mes "[Soldato]";
+			mes "Dimmi, come ci si sente?";
+			mes "metterti a terra da solo";
+			mes "di nuovo i piedi?";
+			close;
+		case 2:
+			mes "[Soldato]";
+			mes "Vedo. Per favore, sentitevi liberi di chiedermelo";
+			mes "se cambi idea";
+			close;
+		}
+	}
+	close;
+}
+
+// Mado Gear Renter :: madogear
+//============================================================
+-	script	::mgm	-1,{
+	mes "[Mado Armaiolo di equipaggiamento]";
+	if ((eaclass()&EAJ_THIRDMASK)==EAJ_MECHANIC) {
+		mes "Benvenuto, meccanico.";
+		mes "Desideri noleggiare un carretto o";
+		mes "guidare un Mado Gear?";
+		next;
+		switch(select("Noleggia un carretto:Guida un Mado Gear:Acquista l'attrezzatura di emergenza Mado:Aggiorna il dispositivo di raffreddamento:Cancellare")) {
+		case 1:
+			if (checkcart()) {
+				mes "[Mado Armaiolo di equipaggiamento]";
+				mes "Mi dispiace, ma già tu";
+				mes "avere un carretto.";
+				close;
+			}
+			setcart;
+			mes "[Mado Armaiolo di equipaggiamento]";
+			mes "Ecco qua!";
+			close;
+		case 2:
+			if (checkmadogear()) {
+				mes "[Mado Armaiolo di equipaggiamento]";
+				mes "Mi dispiace, ma lo sei già";
+				mes "in sella a un Mado Gear.";
+				close;
+			}
+			else if (!getskilllv("NC_MADOLICENCE")) {
+				mes "[Mado Armaiolo di equipaggiamento]";
+				mes "Si prega di apprendere prima l'abilità per ottenere la licenza Mado Gear.";
+				close;
+			}
+			else if(ismounting()) {
+				mes "[Mado Armaiolo di equipaggiamento]";
+				mes "Rimuovi la somma in contanti.";
+				close;
+			}
+			setmadogear;
+			mes "[Mado Armaiolo di equipaggiamento]";
+			mes "Buon divertimento e, per favore, torna di nuovo!";
+			close;
+		case 3:
+			mes "[Mado Armaiolo di equipaggiamento]";
+			mes "Emergency Mado Gear è davvero utile per le situazioni di emergenza e viene venduto a 1.000.000 di Zeny.";
+			next;
+			if (select("Acquistare:Cancellare") == 2) {
+				mes "[Mado Armaiolo di equipaggiamento]";
+				mes "Vedo. Per favore, sentitevi liberi di chiedermelo";
+				mes "se cambi idea";
+				close;
+			}
+			if (countitem(23277) > 0) {
+				mes "[Mado Armaiolo di equipaggiamento]";
+				mes "Mi dispiace, ma hai già un Mado Gear d'emergenza.";
+				close;
+			}
+			if (Zeny < 1000000) {
+				mes "[Mado Armaiolo di equipaggiamento]";
+				mes "Mi dispiace, ma non hai abbastanza Zeny per acquistare l'Emergenza Mado Gear.";
+				close;
+			}
+			Zeny -= 1000000;
+			getitem 23277,1; //Mado_Box
+			mes "[Mado Armaiolo di equipaggiamento]";
+			mes "Ecco qua!";
+			close;
+		case 4:
+			mes "[Mado Armaiolo di equipaggiamento]";
+			mes "Quale dispositivo vuoi aggiornare?";
+			next;
+			if (select("Dispositivo di raffreddamento:Dispositivo di raffreddamento di alta qualità") == 1) {
+				mes "[Mado Armaiolo di equipaggiamento]";
+				mes "Per potenziare il dispositivo di raffreddamento in un dispositivo di raffreddamento di alta qualità sono necessari 1 dispositivo di raffreddamento e 2.000.000 di Zeny.";
+				next;
+				.@itemid = 2804;
+				.@cost = 2000000;
+			} else {
+				mes "[Mado Armaiolo di equipaggiamento]";
+				mes "Per aggiornare il frigorifero di alta qualità in un frigorifero speciale sono necessari 1 frigorifero di alta qualità e 4.000.000 di Zeny.";
+				next;
+				.@itemid = 2809;
+				.@cost = 4000000;
+			}
+			if (select("Aggiornamento:Cancellare") == 2) {
+				mes "[Mado Armaiolo di equipaggiamento]";
+				mes "Vedo. Per favore, sentitevi liberi di chiedermelo";
+				mes "se cambi idea";
+				close;
+			}
+			if (!countitem(.@itemid)) {
+				mes "[Mado Armaiolo di equipaggiamento]";
+				mes "Mi dispiace, ma non hai il " + getitemname(.@itemid) + ".";
+				close;
+			}
+			if (Zeny < .@cost) {
+				mes "[Mado Armaiolo di equipaggiamento]";
+				mes "Mi dispiace, ma non hai abbastanza Zeny per aggiornare il dispositivo.";
+				close;
+			}
+			Zeny -= .@cost;
+			delitem .@itemid,1;
+			getitem (.@itemid == 2804 ? 2809 : 2810),1; //High_Quality_Cooler,Special_Cooler
+			mes "[Mado Armaiolo di equipaggiamento]";
+			mes "Ecco! Il tuo " + getitemname(.@itemid) + ".";
+			close;
+		case 5:
+			close;
+		}
+	}
+	mes "Come posso aiutarti?";
+	mes "Gli ingranaggi Mado sono disponibili solo per i meccanici.";
+	close;
+}
+prontera,163,178,3	duplicate(mgm)	Mado Gear Armorer#prt	105
+geffen,103,55,5	duplicate(mgm)	Mado Gear Armorer#gef	105
+payon,166,106,5	duplicate(mgm)	Mado Gear Armorer#pay	105
+aldebaran,133,112,5	duplicate(mgm)	Mado Gear Armorer#alde	105
+yuno,167,187,3	duplicate(mgm)	Mado Gear Armorer#yuno	105
+rachel,106,134,5	duplicate(mgm)	Mado Gear Armorer#ra	105
+dicastes01,187,207,3	duplicate(mgm)	Mado Gear Armorer#dic	105
+manuk,273,212,5	duplicate(mgm)	Mado Gear Armorer#man	105
+splendide,180,174,5	duplicate(mgm)	Mado Gear Armorer#spl	105
+mid_camp,242,243,3	duplicate(mgm)	Mado Gear Armorer#mid	105

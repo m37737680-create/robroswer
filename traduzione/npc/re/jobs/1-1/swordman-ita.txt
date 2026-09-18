@@ -1,0 +1,126 @@
+//===== rAthena Script ======================================= 
+//= Renewal Swordman Job Quest
+//===== By: ================================================== 
+//= Kisuka
+//===== Current Version: ===================================== 
+//= 1.1
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Job Change to Swordman Class
+//===== Additional Comments: ================================= 
+//= 1.0 First Version. [Kisuka]
+//= 1.1 Added support for Baby classes. [Euphy]
+//============================================================ 
+izlude_in,74,172,4	script	Swordman#swd	119,{
+	if (Upper == 1) {
+		if (Class == Job_Novice_High && (ADVJOB == Job_Lord_Knight || ADVJOB == Job_Paladin)) {
+			mes "[Spadaccino]";
+			mes "Esso...";
+			mes "Non può essere...";
+			mes "Sei rinato, vero?";
+			next;
+			mes "[Spadaccino]";
+			mes "Vedo che stai ripercorrendo il sentiero dello Spadaccino! Una volta che ti sei abituato a brandire una spada, non potrai più tornare indietro!!";
+			next;
+			if (!callfunc("F_CanChangeJob")) {
+				mes "[Spadaccino]";
+				mes "Hmm? Ah, devi prima padroneggiare le abilità di base prima di essere pronto per diventare uno spadaccino.";
+				next;
+				mes "[Spadaccino]";
+				mes "Torna da me quando avrai finito di apprendere le abilità di base per principianti.";
+				close;
+			}
+			mes "[Spadaccino]";
+			mes "Eccellente! Permettimi di promuoverti subito a Spadaccino!";
+			next;
+			skill "NV_TRICKDEAD",0,SKILL_PERM;
+			jobchange Job_Swordman_High;
+			skill "SM_MOVINGRECOVERY",1,SKILL_PERM;
+			skill "SM_FATALBLOW",1,SKILL_PERM;
+			skill "SM_AUTOBERSERK",1,SKILL_PERM;
+			mes "[Spadaccino]";
+			mes "Hmm... Sembri uno spadaccino esperto. Tuttavia, sono sicuro che devi allenarti per migliorare le tue capacità e acquisire forza!";
+			close;
+		}else{
+			mes "[Spadaccino]";
+			mes "Mhm...?";
+			mes "Sei un rinato";
+			mes "guerriero, vero?";
+			next;
+			mes "[Spadaccino]";
+			mes "Hmm...";
+			mes "Sembra che l'essere";
+			mes "uno Spadaccino non fa parte";
+			mes "del tuo destino. Mi dispiace,";
+			mes "ma sembra che non ci sia nulla";
+			mes "Posso fare per te.";
+			close;
+		}
+	}
+	mes "[Uomo della Gilda Spadaccino]";
+	mes "Questa è la Gilda degli Spadaccini.";
+	mes "Perché sei qui?";
+	next;
+	switch(select("Raccontami di essere uno spadaccino.:Voglio essere uno spadaccino.:Niente.")) {
+	case 1:
+		mes "[Uomo della Gilda Spadaccino]";
+		mes "Quindi desideri saperne di più sul potente Spadaccino? Va bene!";
+		next;
+		mes "[Uomo della Gilda Spadaccino]";
+		mes "La caratteristica più distintiva dello Spadaccino è che lo Spadaccino può mostrarci le sue reali abilità nel combattimento ravvicinato.";
+		mes "Ci sono tre ragioni!";
+		next;
+		mes "[Uomo della Gilda Spadaccino]";
+		mes "Innanzitutto, Swordman ha HP più alti rispetto ad altri lavori.";
+		mes "In secondo luogo, ad eccezione di archi e bacchette, lo spadaccino può usare tutte le altre armi in modo da poter combattere al massimo delle sue capacità.";
+		mes "E in terzo luogo, la maggior parte delle abilità dello Spadaccino fornisce potenti attacchi fisici.";
+		next;
+		mes "[Uomo della Gilda Spadaccino]";
+		mes "Anche se ti ho dato una spiegazione semplice, credo che tu capisca il significato fondamentale di cosa significhi essere uno Spadaccino.";
+		mes "Secondo me Swordman è il miglior lavoro di sempre!";
+		close;
+	case 2:
+		mes "[Uomo della Gilda Spadaccino]";
+		if(BaseJob != Job_Novice) {
+			if(BaseJob == Job_Swordman) {
+				mes "Sei già un eccellente spadaccino, vero?";
+				mes "Dedicati semplicemente a diventare un grande spadaccino.";
+			}else{
+				mes "Hai già uno degli altri lavori, vero?";
+				mes "Hai esagerato con quella battuta.";
+			}
+			close;
+		}else{
+			if (!callfunc("F_CanChangeJob")) {
+				mes "Mi dispiace dirtelo ma per essere uno spadaccino devi raggiungere almeno il ^4A4AFFlivello di lavoro 10^000000.";
+				mes "e ^4A4AFFLivello di abilità di base 9^000000.";
+				next;
+				mes "[Uomo della Gilda Spadaccino]";
+				mes "Vuoi essere uno spadaccino senza avere il requisito minimo?";
+				mes "Pensi che essere uno spadaccino sia così facile?";
+				close;
+			}
+			mes "Hmm, controlla sia il tuo livello di lavoro che il tuo livello di abilità di base.";
+			mes "Bene. Vuoi essere subito uno spadaccino?";
+			next;
+			if(select("Sì, certamente.:Lo prenderò in considerazione di nuovo.") == 2) {
+				mes "[Uomo della Gilda Spadaccino]";
+				mes "Sì. Per scegliere un lavoro è necessaria una decisione prudente.";
+				mes "Ma mi dispiace... che tu ci riprenda in considerazione dopo aver superato tutte le difficoltà....";
+				close;
+			}
+			mes "[Uomo della Gilda Spadaccino]";
+			mes "Congratulazioni! D'ora in poi vivrai una vita da spadaccino!";
+			mes "Facciamolo adesso!";
+			next;
+			mes "[Uomo della Gilda Spadaccino]";
+			mes "Ancora congratulazioni per essere uno Spadaccino e spero che parteciperai a tante attività per la rinascita della nostra gilda.";
+			callfunc "Job_Change",Job_Swordman;
+			getitem 13415,1; // N_Falchion
+			close;
+		}
+	case 3:
+		close;
+	}
+}

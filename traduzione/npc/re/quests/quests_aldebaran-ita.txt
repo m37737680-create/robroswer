@@ -1,0 +1,109 @@
+//===== rAthena Script =======================================
+//= NPCs related to Aldebaran Clock Tower (Nightmare)
+//===== By: ==================================================
+//= Ridley8819
+//===== Current Version: =====================================
+//= 1.0
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Additional Comments: =================================
+//= 1.0 Initial release [Ridley8819]
+//= 1.1 Dialogue cleanup [Aleos]
+//============================================================
+
+c_tower1,232,222,5	script	Belljamin Button#ct	968,{
+	mes "[Pulsante campanello]";
+	mes "I mostri qui sono in grado di controllare il tempo.";
+	if( BaseLevel < 150 ){
+		mes "Torna quando avrai raggiunto il ^0000FFLivello 150^000000.";
+		close;
+	}
+	mes "Tempo, ricordi, ambienti... tutto può deformarsi qui.";
+	next;
+	mes "[Pulsante campanello]";
+	mes "Ti prego di non chiedere altro a riguardo. Potrebbe mettere in pericolo la tua vita.";
+	next;
+	.@menu = select("Non chiedere:Vai al 2° piano della torre deformata:Vai al 3° piano della torre deformata");
+	switch(.@menu){
+		case 1:
+			break;
+		case 2:
+		case 3:
+			if( .@menu == 2 ){
+				.@map$ = "c_tower2_";
+				.@x = 268;
+				.@y = 26;
+			}else{
+				.@map$ = "c_tower3_";
+				.@x = 65;
+				.@y = 147;
+			}
+			mes "[Pulsante campanello]";
+			mes "Fai attenzione alla tua scelta.";
+			next;
+			mes "[Pulsante campanello]";
+			mes "Mi servono ^0000FF10.000z^000000 per farti entrare. È un posto piuttosto pericoloso dove stare.";
+			next;
+			switch( select( "Esentato:Paga 10.000 z:Perché hai bisogno di soldi?" ) ){
+				case 1:
+					break;
+				case 2:
+					if( Zeny < 10000 ){
+						mes "[Pulsante campanello]";
+						mes "Veramente? Non hai i soldi e mi hai chiesto di portarti lì?";
+						close;
+					}
+					Zeny -= 10000;
+					mes "[Pulsante campanello]";
+					mes "Non sono sicuro di come farai a tenere traccia del tempo lì dentro, ma stai più attento che puoi.";
+					close2;
+					warp .@map$, .@x, .@y;
+					end;
+				case 3:
+					mes "[Pulsante campanello]";
+					mes "Sono qui tutto il giorno per la sicurezza degli avventurieri. Li avverto sempre del pericolo. Ecco perché ho bisogno di una qualche forma di pagamento.";
+					emotion ET_SWEAT;
+					close;
+			}
+			break;
+	}
+	mes "[Pulsante campanello]";
+	mes "Uff... hai fatto una buona scelta. Questo posto è brutale, quindi probabilmente dovresti tornare in una zona sicura.";
+	close;
+}
+
+c_tower2_,274,26,3	script	Belljamin Button#nct1	962,{
+	mes "[Pulsante campanello]";
+	mes "Forse mi hai già visto?";
+	next;
+	mes "[Pulsante campanello]";
+	mes "Mi hai visto in un posto diverso, con uno sguardo diverso.";
+	next;
+	if( select( "Chi sei?:Portami fuori di qui!" ) == 1 ){
+		mes "[Pulsante campanello]";
+		mes "Puoi spiegarmi cosa hai visto, cosa hai fatto?";
+		next;
+		mes "[Pulsante campanello]";
+		mes "Anche io. Potresti anche essere uno scomparso. Inconsapevole, senza scopo né idea.";
+		next;
+		mes "[Pulsante campanello]";
+		mes "E' ora di tornare indietro. Per favore, apprezza di più il tuo tempo.";
+		next;
+		if( select( "Rimani ancora un po':Per favore, riportami indietro" ) == 1 ){
+			mes "[Pulsante campanello]";
+			mes "Questo posto ti deve davvero piacere. Bene, fai quello che vuoi.";
+			close;
+		}
+	}else{
+		mes "[Pulsante campanello]";
+		mes "È ora di andare avanti. Hai una bevanda preferita?";
+		next;
+	}
+	mes "[Pulsante campanello]";
+	mes "Pensa alla bevanda in una tazza. Mescola lentamente la tazza con un cucchiaio e osserva mentre la bevanda cambia colore.";
+	close2;
+	warp "c_tower1", 235, 223;
+	end;
+}
+
+c_tower3_,59,148,5	duplicate(Belljamin Button#nct1)	Belljamin Button#nct2	574

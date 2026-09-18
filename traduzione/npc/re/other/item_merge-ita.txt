@@ -1,0 +1,74 @@
+//===== rAthena Script =======================================
+//= Mergician
+//===== By: ==================================================
+//= Euphy
+//===== Current Version: =====================================
+//= 1.1
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official Conversion]
+//= Merges items taking up multiple slots in a player's
+//= inventory.
+//===== Additional Comments: =================================
+//= 1.0 First version, currently useless/disabled.
+//= 1.1 Implemented the 'mergeitem' script command. [Cydh]
+//= 1.2 Updated and moved to Cash Mall [Lemongrass]
+//============================================================
+
+//prontera,146,95,3	script	Mergician#pron	1_M_WIZARD,{
+itemmall,35,75,3	script	Mergician#mall	1_M_WIZARD,{
+	if (checkweight(1301,1) == 0) {
+		mes "- Aspetta un secondo!! -";
+		mes "- Stai trasportando troppi oggetti -";
+		mes "- o troppo peso per procedere. -";
+		mes "- Torna dopo -";
+		mes "- organizzare il tuo inventario. -";
+		close;
+	}
+	mes "[Mergiciano]";
+	mes "Credi nel miracolo del dio Merge?? Se è così, ripeti il ​​mio incantesimo ad alta voce mentre lo pronuncio!!!";
+	mes "Unisci Unisci, Merrrrge!!!";
+	next;
+	switch(select("Merrrrrge!!!!:Qual è il miracolo di Merge?:Abbandono...")) {
+	case 2:
+		mes "[Mergiciano]";
+		mes "Esiste un ordine che governa il mondo e fa sì che il mondo vada bene.";
+		next;
+		mes "[Mergiciano]";
+		mes "Ma c'è stato un fattore negativo che ha messo totalmente a repentaglio questa regola!!";
+		next;
+		mes "[Mergiciano]";
+		mes "Quelle cose che sono separate anche se composte della stessa materia!!";
+		next;
+		mes "[Mergiciano]";
+		mes "Non vi è mai capitato questo brutto episodio??";
+		mes "Il fatto che avessi ^3131FFla stessa pozione, ma apparisse più di due volte nel tuo inventario!!^000000 Che spiacevole!!!";
+		next;
+		mes "[Mergiciano]";
+		mes "Credi nel Mergismo. Questa è la verità.";
+		mes "Allora posso aiutarti a essere felice e contento.";
+		close;
+	case 1:
+		mes "[Mergiciano]";
+		mes "Questo è il rituale sacro totale per pregare il Grande Dio, Unisciti! e prendo in prestito il potere per un po'!!";
+		next;
+		mes "[Mergiciano]";
+		mes "E se desideri ardentemente essere benedetto da Merge, sii umile e grida ad alta voce! Unisci Unisci, Merrrrge!!!";
+		next;
+		switch(select("Merrrrge!:Non seguire quello che dice.")) {
+		case 1:
+			mergeitem;
+			mes "[Mergiciano]";
+			mes "Merge ha appena ascoltato il tuo desiderio e lascia che si realizzi!";
+			mes "Apri il tuo inventario per verificare il miracolo!";
+			close;
+		case 2:
+			mes "[Mergiciano]";
+			mes "Stronzo!!! Hai appena rotto l'intero ritmo! Perché non riesci a seguire il mio flusso e seguirmi?! Idiota!";
+			close;
+		}
+	case 3:
+		close;
+	}
+}

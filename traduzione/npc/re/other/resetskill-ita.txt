@@ -1,0 +1,151 @@
+//===== rAthena Script =======================================
+//= Hypnotist
+//===== By: ==================================================
+//= Euphy
+//===== Current Version: =====================================
+//= 1.1
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official Conversion]
+//= Stat and skill resetter for expanded first class under
+//= base level 50 and normal first class.
+//===== Additional Comments: =================================
+//= 1.0 First version, Renewal script.
+//= 1.1 Added Izlude duplicates. [Euphy]
+//============================================================
+
+// Main NPC :: resetskill_novice
+//============================================================
+izlude,127,175,3	script	Hypnotist#novice	124,{
+	mes "[Ipnotizzatore]";
+	mes "Saluti, avventuriero.";
+	mes "Sono un membro dell'Ipnotizzatore";
+	mes "L'Accademia è stata mandata qui a Izlude";
+	mes "per fornire servizi di ripristino abilità";
+	mes "ad alcuni personaggi di Prima Classe a un prezzo davvero vantaggioso: gratis!";
+	next;
+	mes "[Ipnotizzatore]";
+	mes "Anche se offro illimitato";
+	mes "reset di statistiche/abilità per ora, l'ho fatto";
+	mes "due condizioni che devono verificarsi";
+	mes "soddisfatto. Innanzitutto devi esserlo";
+	mes "inferiore al ^FF0000Livello base 50^000000.";
+	next;
+	mes "[Ipnotizzatore]";
+	mes "Secondo, devi essere a";
+	mes "^FF0000Spadaccino, Accolito, Mago,";
+	mes "Ladro, Arciere, Mercante,";
+	mes "Taekwon Boy, o Taekwon Girl,";
+	mes "Pistolero e Ninja^000000";
+	mes "Carattere lavorativo per qualificarsi.";
+	mes "Ora, hai qualche domanda?";
+	next;
+	switch(select("^FF0000Reimpostazione statistiche/abilità?:Reimposta le statistiche:Reimposta competenze^000000:Cancellare")) {
+	case 1:
+		mes "[Ipnotizzatore]";
+		mes "I ripristini di statistiche/abilità consentono agli avventurieri";
+		mes "per ridistribuire la loro Abilità";
+		mes "Punti se sono infelici";
+		mes "con le loro attuali competenze.";
+		next;
+		mes "[Ipnotizzatore]";
+		mes "Prima di procedere con";
+		mes "un ripristino di statistiche/abilità, è necessario";
+		mes "ridurre tutto il peso";
+		mes "di tutti gli oggetti trasportati sul tuo";
+		mes "carattere su 0. Puoi mettere";
+		mes "oggetti extra nel magazzino Kafra.";
+		next;
+		mes "[Ipnotizzatore]";
+		mes "Ah, è anche importante";
+		mes "per rimuovere il tuo ^FF0000carrello^000000";
+		mes "se ne hai uno attrezzato.";
+		mes "Altrimenti, l'ipnosi non lo farà";
+		mes "funzionerà o si ritorcerà contro...";
+		close;
+	case 2:
+		set .@str$,"Stat";
+	case 3:
+		if (.@str$ == "")
+			set .@str$,"Skill";
+		mes "[Ipnotizzatore]";
+		mes "Sei sicuro che tu";
+		mes "desidera procedere";
+		mes "il mio ^FF0000"+.@str$+" Reimpostare il servizio^000000?";
+		next;
+		if(select("SÌ:Cancellare") == 1)
+			break;
+	case 4:
+		mes "[Ipnotizzatore]";
+		mes "Grazie e bene";
+		mes "fortuna per le tue avventure.";
+		mes "Per favore, viaggia in sicurezza~";
+		close;
+	}
+	if ((Class >= Job_Swordman && Class <= Job_Thief) || Class == Job_Taekwon || Class == Job_Gunslinger || Class == Job_Ninja) {
+		if (checkcart()) {
+			mes "[Ipnotizzatore]";
+			mes "OH! Per favore rimuovi il tuo";
+			mes "Carrello prima di procedere";
+			mes "con il "+.@str$+" Ripristina il servizio.";
+			mes "Grazie per la collaborazione~";
+			close;
+		}
+		if (Weight != 0) {
+			mes "[Ipnotizzatore]";
+			mes "Se sei qui per il mio "+.@str$;
+			mes "Ripristina il servizio, per favore";
+			mes "ricordati che non puoi";
+			mes "ripristina il tuo "+.@str$+"s fino al";
+			mes "^FF0000peso degli oggetti trasportati in";
+			mes "il tuo inventario è ridotto a 0^000000.";
+			next;
+			mes "[Ipnotizzatore]";
+			mes "Perché non metti il ​​tuo";
+			mes "cose nel magazzino Kafra";
+			mes "per ora? In questo modo puoi";
+			mes "conserva in sicurezza tutti i tuoi beni.";
+			close;
+		}
+		if (BaseLevel >= 50 && (Class == Job_Taekwon || Class == Job_Gunslinger || Class == Job_Ninja)) {
+			mes "[Ipnotizzatore]";
+			mes "Mi dispiace, ma i personaggi";
+			mes "con livelli base più alti";
+			mes "più di 50 non sono idonei per il";
+			mes .@str$+" Reset service I provide.";
+			close;
+		}
+		mes "[Ipnotizzatore]";
+		mes "Grazie per aver utilizzato";
+		mes "Mio "+.@str$+" Ridistribuzione";
+		mes "servizi. Oh, e meglio";
+		mes "buona fortuna a te per il tuo";
+		mes "viaggi, avventuriero.";
+		if (.@str$ == "Stat")
+			resetstatus;
+		else
+			resetskill;
+		close;
+	} else {
+		mes "[Ipnotizzatore]";
+		mes "Mi dispiace, ma il tuo";
+		mes "La classe lavorativa non è idonea";
+		mes "per il "+.@str$+" Ripristina il servizio";
+		mes "che fornisco. Posso solo";
+		mes "offerta "+.@str$+" Ripristina il";
+		mes "seguenti lavori...";
+		next;
+		mes "[Ipnotizzatore]";
+		mes "^FF0000Spadaccino, Accolito,";
+		mes "Mago, Ladro, Arciere,";
+		mes "Mercante, Taekwon";
+		mes "Ragazzo, ragazza Taekwon,";
+		mes "Pistolero e Ninja^000000.";
+		close;
+	}
+}
+izlude_a,127,175,3	duplicate(Hypnotist#novice)	Hypnotist#novice_a	124
+izlude_b,127,175,3	duplicate(Hypnotist#novice)	Hypnotist#novice_b	124
+izlude_c,127,175,3	duplicate(Hypnotist#novice)	Hypnotist#novice_c	124
+izlude_d,127,175,3	duplicate(Hypnotist#novice)	Hypnotist#novice_d	124

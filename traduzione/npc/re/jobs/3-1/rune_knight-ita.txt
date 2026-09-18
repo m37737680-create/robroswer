@@ -1,0 +1,2166 @@
+//===== rAthena Script =======================================
+//= Rune Knight Job Quest
+//===== By: ==================================================
+//= L0ne_W0lf, Muad_Dib
+//===== Current Version: =====================================
+//= 1.6
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= Job change Quest from Knight / Lord Knight -> Rune Knight.
+//===== Additional Comments: =================================
+//= 1.0 First version.
+//= 1.1 Added forgotten Header. [Masao]
+//= 1.2 Added Energy Rune item reward. [Masao]
+//= 1.3 Updated script, optimized. [Euphy]
+//= 1.3a Added 'npcskill' command. [Euphy]
+//= 1.4 Fixed a few bugs. [Euphy]
+//= 1.4a Moved Kafra to main file. [Euphy]
+//= 1.5 Added GM management function. [Euphy]
+//= 1.6 Added VIP features. [Euphy]
+//============================================================
+
+prt_in,162,24,3	script	Splendid-Looking Knight	470,2,2,{
+	mes "[Cavaliere delle Rune Manuel]";
+	if (Class == Job_Rune_Knight || Class == Job_Rune_Knight_T || Class == Job_Baby_Rune_Knight) {
+		mes "Ora sei un membro dei nostri fratelli selezionati. Ricordo ancora la prima volta che ti ho incontrato.";
+		next;
+		mes "[Cavaliere delle Rune Manuel]";
+		mes "Sforzati di vivere la via della spada con onore...";
+		next;
+		mes "[Cavaliere delle Rune Manuel]";
+		mes "Saluti al nostro nuovo futuro...";
+		close;
+	}
+	if (job_rune_edq == 0) {
+		mes "Sono tante le strade che si possono intraprendere nel mondo. La maggior parte delle persone riesce a vedere il proprio percorso ma non lo segue realmente...";
+		next;
+		mes "[Cavaliere delle Rune Manuel]";
+		mes "Comunque le bevande qui sono davvero buone. Ti piacerebbe averne uno?";
+		next;
+		if(select("Certo, beviamo qualcosa.:Mi rifiuto.") == 2) {
+			mes "[Cavaliere delle Rune Manuel]";
+			mes "Sei sicuro? Non conosci la vera eleganza di questi drink...";
+			close;
+		}
+		mes "[Cavaliere delle Rune Manuel]";
+		if (BaseJob == Job_Knight) {
+			mes "Anche tu percorri la via della spada, vero? Allora potremo capirci. Le bevande hanno un sapore migliore quando è con un compagno Spadaccino.";
+			next;
+			mes "[Cavaliere delle Rune Manuel]";
+			mes "Comprerò questo giro.";
+			mes "Un brindisi all'amicizia~";
+			next;
+			mes "[Cavaliere delle Rune Manuel]";
+			if (BaseLevel > 98 && JobLevel > 49) {
+				mes "Secondo me sembri pronto per iniziare una nuova strada...";
+				next;
+				mes "[Cavaliere delle Rune Manuel]";
+				mes "Percorrere la via della spada è una battaglia perpetua. D'ora in poi potresti avere un viaggio difficile davanti a te...";
+				next;
+				mes "[Cavaliere delle Rune Manuel]";
+				mes "Se vuoi percorrere la tua nuova strada e superare i tuoi limiti attuali, sono disposto ad aiutarti.";
+				next;
+				mes "[Cavaliere delle Rune Manuel]";
+				mes "La vera via di uno Spadaccino che ha imparato l'armonia per superare i limiti di una spada è un Cavaliere delle Rune.";
+				next;
+				mes "[Cavaliere delle Rune Manuel]";
+				mes "Non ti unisci ai nostri fratelli? Sembra che tu sia pienamente qualificato per diventare uno di noi.";
+				next;
+				mes "[Cavaliere delle Rune Manuel]";
+				mes "Se sei interessato ti presenterò i maestri che con la mia raccomandazione ti guideranno sulla via del Cavaliere delle Rune.";
+				next;
+				switch(select("Non sono ancora pronto.:Sono pronto per essere un Cavaliere delle Rune.")) {
+				case 1:
+					mes "[Cavaliere delle Rune Manuel]";
+					mes "Giusto. Ogni sfida ha sempre bisogno di preparazione. Ok, ti ​​aspetto.";
+					next;
+					mes "[Cavaliere delle Rune Manuel]";
+					mes "Naturalmente ti accetterei solo se fossi sicuro al cento per cento della tua convinzione di diventare un Cavaliere delle Rune.";
+					close;
+				case 2:
+					if (VIP_SCRIPT) {
+						callfunc "VIP_Third_Class";
+						set job_rune_edq,1;
+						setquest 3200;
+						next;
+					}
+					mes "[Cavaliere delle Rune Manuel]";
+					mes "Sei sicuro adesso?";
+					mes "Permettimi di inviare un dispaccio ai miei compagni dicendo che sei disposto a unirti ai nostri ranghi.";
+					next;
+					set job_rune_edq,1;
+					setquest 3200;
+					mes "[Cavaliere delle Rune Manuel]";
+					mes "Conosci il posto chiamato Glast Heim? C'è un Rune Knight che ti aspetta lì, ti guiderà all'ingresso della Glast Heim Tower.";
+					next;
+					mes "[Cavaliere delle Rune Manuel]";
+					mes "Mi chiamo Manuele. Mi chiamano il Cavaliere delle Rune della Brillanza. Quando gli dirai che sei un candidato Rune Knight con la mia raccomandazione, lui si occuperà del resto.";
+					next;
+					mes "[Cavaliere delle Rune Manuel]";
+					mes "Aspetterò il giorno in cui diventerai nostro compagno come un vero Cavaliere delle Rune.";
+					close;
+				}
+			}
+			mes "Se percorri continuamente la via della spada, alla fine sentirai i limiti dei tuoi poteri. Come me prima...";
+			next;
+			mes "[Cavaliere delle Rune Manuel]";
+			mes "Quando arriverà il momento, ci sarà un modo per aiutarti a superare quel limite. Fino al giorno in cui le tue forze saranno cresciute, potremo almeno bere ancora insieme.";
+			next;
+			mes "[Cavaliere delle Rune Manuel]";
+			mes "Un brindisi al giorno in cui la tua forza potrà resistere ai poteri di un Cavaliere delle Rune!";
+			close;
+		}
+		mes "Credo che il vento del cambiamento non sia sempre buono.";
+		next;
+		mes "[Cavaliere delle Rune Manuel]";
+		mes "Proprio come il gusto di questa bevanda. Vorrei che il gusto di questa bevanda fosse conservato qui per sempre.";
+		close;
+	} else if (job_rune_edq == 1) {
+		mes "Il Cavaliere delle Rune ti aspetta a Glast Heim. Ti guiderà all'ingresso della Glast Heim Tower.";
+		next;
+		mes "[Cavaliere delle Rune Manuel]";
+		mes "Digli che sei un candidato per diventare un Cavaliere delle Rune e lui si occuperà del resto.";
+		next;
+		mes "[Cavaliere delle Rune Manuel]";
+		mes "Aspetterò il giorno in cui diventerai nostro compagno come un vero Cavaliere delle Rune.";
+		close;
+	}
+	mes "Non hai cose da fare in questo momento?";
+	next;
+	mes "[Cavaliere delle Rune Manuel]";
+	mes "NO? Beh, allora non importa.";
+	mes "Non ti piace l'odore dell'alcol?";
+	close;
+}
+
+glast_01,44,363,3	script	Rune Leader Jungberg	468,2,2,{
+	mes "[Capo delle rune Jungberg]";
+	if (Class == Job_Rune_Knight || Class == Job_Rune_Knight_T || Class == Job_Baby_Rune_Knight) {
+		mes "Oh, devi esserlo "+strcharinfo(0)+".";
+		mes "Benvenuto.";
+		next;
+		mes "[Capo delle rune Jungberg]";
+		mes "Non vediamo l'ora che tu aiuti i Rune Knights a diffondere l'onore in tutto il mondo.";
+		next;
+		mes "[Capo delle rune Jungberg]";
+		mes "Allora, in cosa posso aiutarti?";
+		next;
+		switch(select("Voglio andare al luogo di ritrovo.:Niente.")) {
+		case 1:
+			mes "[Capo delle rune Jungberg]";
+			mes "Giusto. Te lo mando subito. Ci vediamo presto.";
+			close2;
+			warp "job3_rune01",80,65;
+			end;
+		case 2:
+			close;
+		}
+	}
+	if (BaseJob != Job_Knight) {
+		mes "Sono l'unico cavaliere che mantiene la via dello Spadaccino in questo luogo maledetto di Glast Heim.";
+		next;
+		mes "[Capo delle rune Jungberg]";
+		mes "Dal momento che non percorri la via della Spada, non capiresti il ​​nostro spirito. Posso farcela da solo. Segui il tuo percorso.";
+		close;
+	}
+	if (job_rune_edq < 2) {
+		mes "Sei un fantasma maledetto di questo posto? Oppure sei un avventuriero ignorante?";
+		next;
+		mes "[Capo delle rune Jungberg]";
+		mes "Se sei un essere umano che respira, ascoltami attentamente. Non rischierei la vita qui esitando a parlare con chiunque.";
+		next;
+		if (job_rune_edq == 0) {
+			switch(select("Chi sei?:Cosa stai facendo qui?:Cancellare.")) {
+			case 1:
+				mes "[Capo delle rune Jungberg]";
+				mes "Sono l'unico cavaliere che mantiene la via dello Spadaccino in questo luogo maledetto di Glast Heim.";
+				next;
+				mes "[Capo delle rune Jungberg]";
+				mes "Se anche tu segui la via dello Spadaccino, le nostre strade si incroceranno sicuramente di nuovo quando avrai raggiunto il tuo pieno potenziale.";
+				close;
+			case 2:
+				mes "[Capo delle rune Jungberg]";
+				mes "Sono un uomo che percorre la via della Spada. Ma non sono esattamente come quelli come te, cavaliere di Rune-Midgarts.";
+				next;
+				mes "[Capo delle rune Jungberg]";
+				mes "Non siamo come gli altri Cavalieri che sono assorbiti dallo sfarzo e dalle circostanze, quindi potresti non conoscerci ancora.";
+				next;
+				mes "[Capo delle rune Jungberg]";
+				mes "Noi siamo i Cavalieri delle Rune. Un gruppo che guida il vero potere così come la forza fisica verso la retta via della Spada.";
+				next;
+				mes "[Capo delle rune Jungberg]";
+				mes "Viviamo in segreto qui nelle profondità di Glast Heim da mezzo secolo, ma è ora di far conoscere al mondo il nostro scopo.";
+				next;
+				mes "[Capo delle rune Jungberg]";
+				mes "Ora ci sono molti istruttori che cercano talentuosi maneggiatori di spade in vari luoghi di Rune-Midgarts. Stanno cercando un popolo che si unisca alla vera via della Spada.";
+				next;
+				mes "[Capo delle rune Jungberg]";
+				mes "Se desideri unirti ai Rune Knights. Per favore, fatti consigliare da una delle guide e vieni di nuovo da me.";
+				close;
+			case 3:
+				close;
+			}
+		} else if (job_rune_edq == 1) {
+			switch(select("Sono diventato un Cavaliere delle Rune.:Cancellare.")) {
+			case 1:
+				mes "[Capo delle rune Jungberg]";
+				mes "Uhm... sei tu il candidato Rune Knight di cui ha parlato Manuel?";
+				next;
+				mes "[Capo delle rune Jungberg]";
+				mes "Il tuo nome è "+strcharinfo(0)+", Giusto? Vedo chiaramente che sei qualificato per diventare nostro compagno.";
+				next;
+				mes "[Capo delle rune Jungberg]";
+				mes "Bene. Non devo chiederti altro sulla tua qualifica per unirti ai nostri fratelli....1.S... Ora ti darò il tuo primo incarico.";
+				next;
+				mes "[Capo delle rune Jungberg]";
+				mes "Trova il nostro luogo di ritrovo dei Rune Knight nascosto all'interno di Glast Heim.";
+				next;
+				mes "[Capo delle rune Jungberg]";
+				mes "C'è un luogo che conduce alla sala di ritrovo segreta del Cavaliere delle Rune all'interno della Cavalleria di Glast Heim. Trova quel posto da solo.";
+				next;
+				mes "[Capo delle rune Jungberg]";
+				mes "Se riesci a trovarlo, ci sarà una persona che ti aspetta per accoglierti, quindi iniziamo.";
+				next;
+				mes "[Capo delle rune Jungberg]";
+				mes "Ovviamente la tua vita potrebbe essere messa a rischio dai fantasmi di Glast Heim... ma superare il rischio non dovrebbe essere difficile per un candidato Rune Knight.";
+				set job_rune_edq,2;
+				changequest 3200,3201;
+				close;
+			case 2:
+				close;
+			}
+		}
+	} else if (job_rune_edq == 2) {
+		mes "Il primo incarico è scoprire il luogo di ritrovo dei Rune Knight nascosto all'interno di Glast Heim.";
+		next;
+		mes "[Capo delle rune Jungberg]";
+		mes "C'è un luogo che conduce al luogo di ritrovo segreto dei Cavalieri delle Rune all'interno di Glast Heim Chivalry. Trova quel posto da solo.";
+		next;
+		mes "[Capo delle rune Jungberg]";
+		mes "Se riesci a trovarlo, ci sarà una persona che ti aspetta per accoglierti, quindi iniziamo.";
+		next;
+		mes "[Capo delle rune Jungberg]";
+		mes "Ovviamente la tua vita potrebbe essere messa a rischio dai fantasmi di Glast Heim... ma superare il rischio non dovrebbe essere difficile per un candidato Rune Knight.";
+		close;
+	}
+	mes "Sembra che tu stia ancora facendo il test. Fai del tuo meglio e supera tutti i test.";
+	next;
+	switch(select("Voglio andare al luogo di ritrovo.:Chiudi la conversazione.")) {
+	case 1:
+		mes "[Capo delle rune Jungberg]";
+		mes "Va bene. Te lo mando subito. Ti controllo più tardi.";
+		close2;
+		warp "job3_rune01",80,65;
+		end;
+	case 2:
+		close;
+	}
+}
+
+gl_knt02,150,55,3	script	Rune Knight Staff	83,2,2,{
+	mes "[Bastone del Cavaliere delle Rune]";
+	if (Class == Job_Rune_Knight || Class == Job_Rune_Knight_T || Class == Job_Baby_Rune_Knight) {
+		mes "Benvenuto, "+strcharinfo(0)+". Andrai al luogo di ritrovo?";
+		next;
+		switch(select("Sì, portami lì.:Mi sto occupando di altri affari.:Cancellare.")) {
+		case 1:
+			mes "[Bastone del Cavaliere delle Rune]";
+			mes "Ok, entra. Ti guiderò.";
+			close2;
+			warp "job3_rune01",80,65;
+			end;
+		case 2:
+			mes "[Bastone del Cavaliere delle Rune]";
+			mes "Oh veramente? Quindi continua il tuo lavoro. Continuerò con la mia missione.";
+			close;
+		case 3:
+			close;
+		}
+	}
+	if (BaseJob == Job_Knight) {
+		if (job_rune_edq == 1) {
+			mes "Ah...questa zona è interdetta, è vietato stare qui. Per favore, non fate nulla che possa ostacolare i nostri sforzi.";
+			next;
+			mes "[Bastone del Cavaliere delle Rune]";
+			mes "Anche se... sembra che tu abbia il potenziale per diventare un compagno di coloro che seguono la via della spada.";
+			next;
+			mes "[Bastone del Cavaliere delle Rune]";
+			mes "Sono sicuro che presto incontreremo le nostre strade. Credo che ci incontreremo di nuovo.";
+			close;
+		} else if (job_rune_edq > 1) {
+			mes "Hai trovato questo posto correttamente. Jungberg mi ha mandato per mandarti al luogo di ritrovo.";
+			next;
+			mes "[Bastone del Cavaliere delle Rune]";
+			mes "Quando arrivi al luogo di ritrovo, parla con il Capitano Tigris. Aspetta sempre che arrivino nuovi membri.";
+			next;
+			mes "[Bastone del Cavaliere delle Rune]";
+			mes "Bene, per favore seguimi.";
+			close2;
+			warp "job3_rune01",80,65;
+			end;
+		}
+	}
+	mes "Aspettare! Questo posto è proibito. Non mi dispiace che tu vada in giro, ma non disturbarmi mai più.";
+	close;
+}
+
+job3_rune01,80,60,3	script	Rune Knight Captain	470,2,2,{
+	if (checkweight(1201,1) == 0 || MaxWeight - Weight < 1000) {
+		mes "Hai troppe cose. Non puoi più procedere. Riprova dopo aver perso peso.";
+		close;
+	}
+	if (Class == Job_Rune_Knight || Class == Job_Rune_Knight_T || Class == Job_Baby_Rune_Knight) {
+		mes "[Capitano Tigri]";
+		if (job_rune_edq == 23) {
+			mes "Oh, capisco... Per favore aspetta un momento.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Ho dimenticato di controllare se sei qualificato per ricevere il regalo celebrativo per aver cambiato lavoro...";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Fammi controllare il resoconto degli istruttori che si sono occupati dei tuoi test.";
+			next;
+			mes "[Capitano Tigri]";
+			if (job_rune_edq3 == 0) {
+				mes "Hm... Questo è perfetto. Siete venuti qui con dei dischi molto rari e buoni.";
+				set .@item,2140; //Energy_Rune_Guard
+			} else if (job_rune_edq3 > 2 && job_rune_edq3 < 6) {
+				mes "Hmm... È fantastico. Sei venuto qui con dei dischi decenti.";
+				set .@item,2794; //Magic_Stone_Ring
+			} else {
+				mes "Hmm, non male. Non è un gran disco ma hai fatto del tuo meglio.";
+				set .@item,15002; //Rune_Plate
+			}
+			next;
+			mes "[Capitano Tigri]";
+			mes "Ecco, prendi questo. È un regalo che mi piace fare alle giovani generazioni come te.";
+			getitem .@item,1; //Energy_Rune_Guard
+			set job_rune_edq,24;
+			close;
+		}
+		mes "Ehi, è da tanto che non ci vediamo "+strcharinfo(0)+". Non penso che tu abbia questioni importanti da discutere, ma mettiti comodo.";
+		close;
+	}
+	if (BaseJob == Job_Knight) {
+		if (job_rune_edq == 2) {
+			mes "Un uomo che indossa un'armatura gloriosa e passione nei suoi occhi è in piedi di fronte a me.";
+			next;
+			mes "Mi fissa con uno sguardo distratto e dopo un po' comincia a parlare.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Ehi, sei tu il candidato Rune Knight consigliato da Manuel? Sono il Capitano Tigris dei Rune Knights e il tuo nome è?";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Oh, l'ho già sentito ma l'ho dimenticato. Giusto, eri tu "+strcharinfo(0)+"? Ti do davvero il benvenuto dal cuore per essere venuto qui.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Vediamo. Quanti candidati sono venuti in questa stanza? Ehi Lunarea, che candidato è questo qui?";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "... 172esimo.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Lo dice lei, amico mio. In realtà non voglio vedere il prossimo. Quindi, per favore, fai bene.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Vediamo... Manuale e Jungberg devono aver finito la verifica di base, allora iniziamo subito il test.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Lunarea, procedere con la prima prova.";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "...";
+			next;
+			mes "Questa Cavaliere delle Rune dalla pelle pallida chiamata Lunarea annuisce tranquillamente e mi osserva.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "La prova comincia adesso. Innanzitutto, riceverai il primo test da quella bellissima signora ghiacciata, quindi fai del tuo meglio.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Quando il test sarà finito, parlami. In ogni caso dovrai preoccuparti dell'avanzamento dei test con altre persone.";
+			next;
+			set job_rune_edq,3;
+			changequest 3201,3202;
+			mes "[Capitano Tigri]";
+			mes "Bene, allora ti aspetto qui, quindi fai il test.";
+			close;
+		} else if (job_rune_edq == 3) {
+			mes "[Capitano Tigri]";
+			mes "Ora inizia la prova. Innanzitutto, riceverai il primo test da quella bellissima signora ghiacciata, quindi fai del tuo meglio.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Una volta terminato il test, parlami... comunque dovrai preoccuparti dell'andamento dei test con le altre persone.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Bene, allora ti aspetto qui, quindi fai il test.";
+			close;
+		} else if (job_rune_edq > 3 && job_rune_edq < 6) {
+			mes "[Capitano Tigri]";
+			mes "Ehi tu, non stavi facendo il test? Lunarea, cosa è successo? Il test è finito?";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "......";
+			next;
+			mes "Scuote la testa senza dire una parola e mi fissa. Ha gli occhi penetranti.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Ok Lunarea. Ehi, ascoltami attentamente. Lunarea è una parlatrice povera e silenziosa ma non dovresti ignorarla.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Anche per me... no, chiunque di noi la turbasse non sarebbe in grado di affrontare una cosa del genere.";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "......";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Whoa, non guardarmi così. Ok, lo vedi? Aspirante Cavaliere delle Rune. Torna a Lunarea e fai il test come dice lei. Ti farà bene.";
+			close;
+		} else if (job_rune_edq == 6) {
+			mes "[Capitano Tigri]";
+			mes "Umm, sembra che tu abbia superato il test di Lunarea? Immagino che non dovrò testare di più per le nozioni di base.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Innegabilmente i nostri Rune Knights presentano alcune differenze, ma non dobbiamo dimenticare le nostre radici di Spadaccini.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "D'ora in poi, questa sarà la vera prova come Cavaliere delle Rune che vorrai essere. Dovrai prepararti per sostenere il prossimo test.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Renoa, so che stai aspettando da molto tempo, ma è il tuo turno.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "È passato davvero tanto tempo ma il test di Lunarea e il mio sono diversi come il cielo dalla terra. Spero che non sarai solo uno stupido muscoloso.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Ahahah. l'hai sentito? Non sarà facile questa volta. Spero che tu possa superarlo amico mio.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Vai da quella focosa signora nella sala della biblioteca per fare il prossimo test e torna indietro.";
+			set job_rune_edq,7;
+			changequest 3204,3205;
+			close;
+		} else if (job_rune_edq > 6 && job_rune_edq < 16) {
+			mes "[Capitano Tigri]";
+			mes "Ora, questa sarà la vera prova come Rune Knight. Devi prepararti per sostenere il prossimo test.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Renoa, so che stai aspettando da molto tempo, ma è il tuo turno.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "È passato davvero tanto tempo ma il test di Lunarea e il mio sono diversi come il cielo dalla terra. Spero che non sarai solo uno stupido muscoloso.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Ahahah. l'hai sentito? Non sarà facile questa volta. Spero che tu possa superarlo amico mio.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Vai da quella focosa signora nella sala della biblioteca per fare il prossimo test e torna indietro.";
+			close;
+		} else if (job_rune_edq == 16) {
+			mes "[Capitano Tigri]";
+			mes "Oh, ho sentito che hai superato il test di Renoa che solo poche persone potrebbero superare.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Ho sentito che il numero di candidati che si sono arresi durante il test di Renoa è stato alto.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Devi capire. Penso che sia stato il test a mostrare esattamente la personalità dell'istruttore del test. Hmm...";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Adesso manca solo l'ultimo test. Una volta superato questo, sarai sulla buona strada per diventare ufficialmente un Rune Knight.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Sostieni il test finale dal Cavaliere delle Rune Velpino che si trova sul lato destro dell'arsenale.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Non sto scherzando, non vedo l'ora che tu inizi come Cavaliere delle Rune.";
+			mes "Quindi, per favore, fai del tuo meglio.";
+			set job_rune_edq,17;
+			changequest 3215,3216;
+			close;
+		} else if (job_rune_edq > 16 && job_rune_edq < 22) {
+			mes "[Capitano Tigri]";
+			mes "Sostieni il test finale dal Cavaliere delle Rune Velpino che si trova sul lato destro dell'arsenale.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Non sto scherzando, non vedo l'ora che tu inizi come Cavaliere delle Rune. Quindi, per favore, fai del tuo meglio.";
+			close;
+		} else if (job_rune_edq == 22) {
+			mes "[Capitano Tigri]";
+			mes "Congratulazioni. Ora hai superato tutte le prove e puoi percorrere la via di un Cavaliere delle Rune.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Sono felice dal profondo del mio cuore. Sono molto orgoglioso di te.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Ora puoi essere te stesso intorno a noi ed essere orgoglioso di essere uno di noi.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Ci sono le valutazioni di Lunarea, Renoa e Velpino che hanno curato i vostri test.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Non è molto, ma ci sono alcuni regali per i nuovi Rune Knights che hanno ottenuto buoni punteggi nei test.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Ci sarà una differenza a seconda dei punteggi, ma sono tutti utili per chiunque sia un Rune Knight.";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Infine, ci sono diverse cose di cui essere consapevoli come Cavaliere che ha sperimentato un cambio di lavoro in Lord Knight nel Valhalla.";
+			next;
+			callsub L_Warning;
+			mes "[Capitano Tigri]";
+			mes "Bene, il mio lavoro adesso è finito. Ti piacerebbe iniziare la tua nuova vita come Cavaliere delle Rune?";
+			next;
+			switch(select("Ogni preparazione è fatta.:Ho bisogno di più tempo per pensare.")) {
+			case 1:
+				if (SkillPoint != 0 || checkriding()) {
+					mes "[Capitano Tigri]";
+					mes "Non stavi ascoltando?";
+					next;
+					callsub L_Warning;
+					mes "[Capitano Tigri]";
+					mes "Se hai capito, fai i preparativi e torna indietro.";
+					close;
+				}
+				if (BaseLevel < 99 || JobLevel < 50) {
+					mes "[Capitano Tigri]";
+					mes "Sembra non abbastanza?";
+					close;
+				}
+				if (ismounting()) {
+					mes "[Capitano Tigri]";
+					mes "Per favore, togli l'equipaggiamento dalla tua cavalcatura e torna di nuovo.";
+					close;
+				}
+				mes "[Capitano Tigri]";
+				mes "Il nostro Maestro, Beljeve... e il Grande Saggio, Serpeone...";
+				next;
+				mes "[Capitano Tigri]";
+				mes "Questo Cavaliere percorrerà con noi la via dei Cavalieri delle Rune, quindi per favore dagli la tua benedizione.";
+				next;
+				getitem 5746,1; //Rune_Circlet
+				getitem 2795,1; //Green_Apple_Ring
+				set job_rune_edq,23;
+				completequest 3219;
+				jobchange roclass(eaclass()|EAJL_THIRD);
+				mes "[Capitano Tigri]";
+				mes "Congratulazioni.";
+				mes "Ora sei un onorevole Cavaliere delle Rune.";
+				mes "Ricorda questo giorno da oggi in poi!";
+				next;
+				mes "[Capitano Tigri]";
+				mes "C'è un regalo reale dal Regno di Rune-Midgarts per tutti i nuovi Cavalieri delle Rune.";
+				next;
+				mes "[Capitano Tigri]";
+				mes "Dammi un secondo per ricevere il regalo reale e parlami di nuovo.";
+				close;
+			case 2:
+				close;
+			}
+		}
+	}
+	mes "[Capitano Tigri]";
+	mes "Non so come hai potuto arrivare qui. Ma sembra che tu sia arrivato in un posto dove non dovresti essere.";
+	next;
+	mes "[Capitano Tigri]";
+	mes "Torna al luogo a cui appartieni.";
+	close2;
+	warp "gl_knt02",150,55;
+	end;
+L_Warning:
+	mes "[Capitano Tigri]";
+	mes "Se c'è qualche equipaggiamento che indossi adesso, o qualsiasi cosa tu abbia in mano. Si prega di svuotarlo per il momento del cambio lavoro.";
+	next;
+	mes "[Capitano Tigri]";
+	mes "Parla con il dipendente Kafra per utilizzare il magazzino.";
+	next;
+	mes "[Capitano Tigri]";
+	mes "Potresti già sapere che, se stai guidando un Peco Peco, avresti dovuto dimenticarlo. Se l'hai portato tu, lascialo e torna di nuovo.";
+	next;
+	mes "[Capitano Tigri]";
+	mes "Ancora una cosa. Se hai dei punti abilità rimanenti, usali tutti e apprendi le abilità. Non potrai cambiare lavoro se hai più punti abilità.";
+	next;
+	return;
+}
+
+job3_rune01,90,50,3	script	Rune Knight Lunarea	469,2,2,{
+	if (Class == Job_Rune_Knight || Class == Job_Rune_Knight_T || Class == Job_Baby_Rune_Knight) {
+		mes "Alza il mento in silenzio, annuisce leggermente e mi nota.";
+		next;
+		mes "Poi, dopo un attimo, abbassa il viso e sembra assorta in altri pensieri.";
+		close;
+	}
+	if (BaseJob == Job_Knight) {
+		if (job_rune_edq == 3) {
+			mes "Finalmente apre la bocca e comincia a parlare.";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "5 minuti... Quando resisti e ti sbarazzi di tutto, hai successo.";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "In questo test, Capitan Tigris, Renoa, Velpino e io visiteremo insieme.";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "Se vuoi puoi chiedere aiuto a uno di noi. Ma non pensare che aiuteremo sempre.";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "Dato che si tratta di un test, ricevere aiuto da noi è completamente una tua scelta. Non importa se fai il test con il nostro aiuto o da solo.";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "Quando sarai pronto per andare al campo di prova, parlami.";
+			next;
+			switch(select("Spostati ora sul campo di prova.:Dammi il tempo di prepararmi.")) {
+			case 1:
+				callsub L_Test,0;
+				close;
+			case 2:
+				close;
+			}
+		} else if (job_rune_edq == 4) {
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "Hai fallito? Ma non c'è limite al numero di volte che puoi provare.";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "Se vuoi rifare il test. Posso mandarti al campo di prova.";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "5 minuti... Quando resisti e ti sbarazzi di tutto, hai successo.";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "Se sei pronto per passare al campo di prova, parlami.";
+			next;
+			switch(select("Spostati ora sul campo di prova.:Per favore, dammi il tempo di prepararmi.")) {
+			case 1:
+				if (checkquest(3220,PLAYTIME) == 1) {
+					mes "[Cavaliere delle Rune, Lunarea]";
+					mes "Una volta che qualcuno entra nel campo di prova, non puoi entrare direttamente. Il test viene svolto uno per uno.";
+					next;
+					mes "[Cavaliere delle Rune, Lunarea]";
+					mes "Quando sarà il tuo turno di entrare verrai inviato direttamente lì.";
+					close;
+				}
+				callsub L_Test,1;
+				close;
+			case 2:
+				close;
+			}
+		} else if (job_rune_edq == 5) {
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "Il tuo test ha avuto successo?";
+			next;
+			mes "Fa un piccolo sorriso appena visibile e mi guarda.";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "Questa parte del test è terminata. Vai a parlare con il Capitano Tigris.";
+			set job_rune_edq,6;
+			changequest 3203,3204;
+			close;
+		} else if (job_rune_edq > 5) {
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "Questa parte del test è terminata. Vai a parlare con il Capitano Tigris.";
+			next;
+			mes "[Cavaliere delle Rune, Lunarea]";
+			mes "Ci sono altri test che devi completare. Spero che tu faccia un buon lavoro.";
+			close;
+		}
+	}
+	mes "A questa Cavaliere delle Rune dalla pelle pallida e dall'aspetto assente non sembra importare. Ovviamente non sembra interessata alla mia esistenza";
+	close;
+L_Test:
+	mes "Lei annuisce e allunga leggermente la mano. Quindi estrae la spada e fa un segnale.";
+	if ($@job_rune_test1 == 0) {
+		if (getarg(0) == 0) {
+			set job_rune_edq,4;
+			changequest 3202,3203;
+			setquest 3220; // ?
+		} else if (checkquest(3220) > -1) {
+			erasequest 3220;
+			setquest 3220;
+		}
+		set $@job_rune_test1,1;
+		close2;
+		warp "job3_rune02",38,40;
+		end;
+	}
+	// Custom translation
+	next;
+	mes "Ma la sua espressione cambiò improvvisamente un po' mentre guardava per parlare.";
+	next;
+	mes "[Cavaliere delle Rune, Lunarea]";
+	mes "Ora... la sala prove è attualmente occupata...";
+	next;
+	mes "[Cavaliere delle Rune, Lunarea]";
+	mes "Dovrete aspettare... è regolamento che le prove si svolgano uno per uno.";
+	next;
+	mes "[Cavaliere delle Rune, Lunarea]";
+	mes "Aspetta solo 5 minuti e dovrebbe essere il tuo turno.";
+	close;
+}
+
+job3_rune01,55,50,3	script	Rune Knight, Renoa	469,2,2,{
+	mes "[Cavaliere delle Rune, Renoa]";
+	if (Class == Job_Rune_Knight || Class == Job_Rune_Knight_T || Class == Job_Baby_Rune_Knight) {
+		mes "Congratulazioni per essere diventato uno di noi. Cavaliere delle Rune Junior, "+strcharinfo(0)+".";
+		next;
+		mes "[Cavaliere delle Rune, Renoa]";
+		mes "Presto vedrai chiaramente la strada che dobbiamo percorrere.";
+		next;
+		mes "[Cavaliere delle Rune, Renoa]";
+		mes "Fino ad allora, sarò qui per scoprire altri candidati come te.";
+		close;
+	}
+	if (BaseJob == Job_Knight) {
+		if (job_rune_edq < 7) {
+			mes "Sei tu quello che vuole essere un Cavaliere delle Rune? Ce ne sono stati così tanti oggi.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "È un peccato che non ci siano ancora molti candidati che sono riusciti a sostenere la mia parte del test, quindi mi sto prendendo un po' di riposo.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Se stai facendo il test Rune Knight, spero che farai del tuo meglio. Non sarà facile superarlo come il test di Lunarea, ok?";
+			close;
+		} else if (job_rune_edq == 7) {
+			mes "Finalmente! È il mio turno? Sono così felice.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Ci sono stati così tanti candidati che non hanno superato il test di Lunarea che ho rinunciato a contarli.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Sono Renoa. Sono responsabile dell'insegnamento e del test delle rune e della magia per i candidati Rune Knight.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Grazie per tutti i problemi che hai avuto finora nel sostenere il test. Va bene, comunque.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Beh, prima ti darò un compito. Cominciamo studiando. Vai in biblioteca e studia questi libri.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Umm, ^0000FFRune e Cavalieri delle Rune^000000, ^0000FFI principi delle rune^000000, ^0000FFLa creazione e l'uso delle rune^000000. Iniziamo con questi 3...";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Leggi attentamente il libro e torna. Se sei il tipo di persona a cui non piace leggere e studiare, non sarà facile per te vivere come Cavaliere delle Rune.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Non preoccuparti, non ti verrà richiesto di avere le stesse conoscenze dei maghi di Geffen o Giunone. Ma non puoi nemmeno essere un idiota.";
+			set job_rune_edq,8;
+			changequest 3205,3206;
+			close;
+		} else if (job_rune_edq > 7 && job_rune_edq < 11) {
+			mes "Beh, prima ti darò un compito. Cominciamo studiando. Vai in biblioteca e studia questi libri.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Umm, ^0000FFRune e Cavalieri delle Rune^000000, ^0000FFI principi delle rune^000000, ^0000FFLa creazione e l'uso delle rune^000000. Iniziamo con questi 3...";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Leggi attentamente il libro e torna. Se sei il tipo di persona a cui non piace leggere e studiare, non sarà facile per te vivere come Cavaliere delle Rune.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Non preoccuparti, non ti verrà richiesto di avere le stesse conoscenze dei maghi di Geffen o Giunone. Ma non puoi nemmeno essere un idiota.";
+			close;
+		} else if (job_rune_edq == 11) {
+			mes "Hai letto tutti i libri della biblioteca? Non sarà facile da leggere, ma se sei determinato a diventare un Rune Knight, devi avere questo tipo di conoscenza di base.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Fondamentalmente, il potere della magia non può essere utilizzato senza allenamento per sfruttare la forza della natura e degli elementi.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Pertanto, sono emersi lavori come Mago e Saggio e la magia è diventata il loro campo sacro.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "È noto che il leader dei Cavalieri delle Rune, Beljeve, era in contatto con le fate ancor prima che la porta dimensionale dell'Aspiracenere fosse realizzata quando Satana Morocc resuscitò.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Ho sentito una storia dagli studiosi di magia sulla tecnologia che può concretizzare l'essenza della magia. Ho iniziato uno studio per concretizzarlo in una runa ottenendo il loro aiuto.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Dal risultato di questo studio nascono i nostri Rune Knight, che permettono di praticare sia il potere della spada che la magia attraverso l'uso delle rune.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Sembra che tu non capisca perché sto ripetendo l'insegnamento della storia già scritta nel libro.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Quindi, per la seconda prova, devi visitare gli studiosi di magia Laphine che hanno dato l'aiuto diretto alla nascita dei Cavalieri delle Rune ad Ash-Vacuum.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Trova il saggio Serpeone che ha studiato e aiutato i Cavalieri delle Rune che si trovano nell'accampamento di Midgard ad Aspiracenere.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Il saggio è già in contatto con noi da molto tempo quindi non devi preoccuparti di comprendere la lingua di Serpeone.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Se sei pronto ti guiderò al teletrasporto che ti porterà direttamente a Serpeone. Incontrala e ricevi istruzioni da lei.";
+			set job_rune_edq_book,0;
+			set job_rune_edq,12;
+			changequest 3206,3207;
+			close;
+		} else if (job_rune_edq > 11 && job_rune_edq < 14) {
+			mes "Se sei pronto, aprirò la strada al saggio Serpeone che si trova nella postazione di Midgard ad Ash-Vacuum. Sei preparato?";
+			next;
+			switch(select("Sì, sono preparato.:Non ancora.")) {
+			case 1:
+				mes "[Cavaliere delle Rune, Renoa]";
+				mes "Bene. Allora ti manderò lì adesso. Ma c'è una cosa che devo dirti.";
+				next;
+				mes "[Cavaliere delle Rune, Renoa]";
+				mes "Verrai inviato all'Aspiracenere. Le persone inviate alla base di Midgard sono avventurieri e funzionari certificati.";
+				next;
+				mes "[Cavaliere delle Rune, Renoa]";
+				mes "Beljeve ha un accordo con gli altri paesi dell'alleanza che garantisce il libero comportamento dei nostri Cavalieri delle Rune ma...";
+				next;
+				mes "[Cavaliere delle Rune, Renoa]";
+				mes "Se vuoi muoverti liberamente per tutto l'Ash-Vacuum, dovrai seguire la via normale che sta acquisendo la qualificazione con l'alleanza di Midgard. Non ha niente a che fare con noi.";
+				next;
+				mes "[Cavaliere delle Rune, Renoa]";
+				mes "L'accordo ci consente di inviare candidati solo nel campo di Midgard e da nessun'altra parte.";
+				next;
+				mes "[Cavaliere delle Rune, Renoa]";
+				mes "Buona fortuna.";
+				close2;
+				warp "mid_camp",235,250;
+				end;
+			case 2:
+				mes "[Cavaliere delle Rune, Renoa]";
+				mes "Se sei pronto, parlami ancora. Sono libero in qualsiasi momento.";
+				close;
+			}
+		} else if (job_rune_edq == 14) {
+			mes "Uhm, sei tornato? Come va con l'aspiracenere?";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Beh, una persona con le tue forze dev'essere già stata lì no?";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Ora è il momento di fare il test sulle rune. So che hai attraversato un processo piuttosto complicato.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Ti farò un test che ti permetterà di gestire direttamente le rune.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "In questo test creerai tu stesso una pietra runica che verrà utilizzata anche per il tuo ultimo test.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Se ricordi quello che hai letto poco prima in biblioteca, potrai produrre qui una pietra runica senza la mia spiegazione.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Se riesci a creare la pietra runica, diventerà automaticamente la pietra runica che utilizzerai quando diventerai un Cavaliere delle Rune, quindi fai del tuo meglio.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Il numero totale di pietre runiche che devi realizzare è 20.";
+			mes "Ricordatelo bene.";
+			set job_rune_edq,15;
+			changequest 3213,3214;
+			close;
+		} else if (job_rune_edq == 15) {
+			mes "In questo test creerai tu stesso una pietra runica che verrà utilizzata per il tuo ultimo test.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Se ricordi i libri che hai letto in biblioteca poco prima, qui potrai produrre una pietra runica senza la mia spiegazione.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Se riesci a creare automaticamente la pietra runica, diventerà la pietra runica che utilizzerai per te stesso quando avrai successo, e verrà consegnata al Capitano Tigris... quindi provaci.";
+			next;
+			mes "[Cavaliere delle Rune, Renoa]";
+			mes "Il numero totale di pietre runiche che devi realizzare è esattamente 20. Ricordalo bene.";
+			next;
+			switch(select("Controllare il numero di rune create?:Ho realizzato tutte le 20 pietre runiche.")) {
+			case 1:
+				mes "[Cavaliere delle Rune, Renoa]";
+				mes "Il numero di pietre runiche prodotte finora è " + job_rune_edq2 + ".";
+				close;
+			case 2:
+				if (job_rune_edq2 < 20) {
+					mes "[Cavaliere delle Rune, Renoa]";
+					mes "EHI! Credo di averti detto di farne almeno 20.";
+					close;
+				}
+				if (job_rune_edq2 == 20) {
+					mes "[Cavaliere delle Rune, Renoa]";
+					mes "Hai portato la giusta quantità. Consegnerò tutte le pietre runiche finite al Capitano Tigris.";
+					next;
+				} else {
+					mes "[Cavaliere delle Rune, Renoa]";
+					mes "Oh! Che cos'è questo? Ne hai realizzati più di 20. Per ora va bene, ma ricordati di seguire le indicazioni la prossima volta.";
+					mes "Consegnerò tutte le pietre runiche realizzate al Capitano Tigris.";
+					next;
+				}
+				mes "[Cavaliere delle Rune, Renoa]";
+				mes "Perché c'è un test che ti aspetta che utilizza queste pietre runiche.";
+				next;
+				mes "[Cavaliere delle Rune, Renoa]";
+				mes "Ecco, sei passato. Torna dal Capitano Tigris e completa il test successivo.";
+				next;
+				mes "[Cavaliere delle Rune, Renoa]";
+				mes "Ah! Hai fatto un buon lavoro considerando quanto sia difficile il mio test. Se eri nervoso, puoi rilassarti ora.";
+				set job_rune_edq,16;
+				if (job_rune_edq2 == 20)
+					changequest 3214,3215;
+				close;
+			}
+		}
+		mes "Diventa un fiero cavaliere delle rune.";
+		close;
+	}
+	mes "Come... come sei arrivato qui?! Capitano, abbiamo una spia!";
+	next;
+	mes "[Capitano Tigri]";
+	mes "Ah? Di cosa stai parlando, Renoa? Non parlare in questo modo! Ci fai sembrare dei criminali.";
+	next;
+	mes "[Cavaliere delle Rune, Renoa]";
+	mes "Ebbene, qui c'è una persona non identificata.";
+	next;
+	mes "[Capitano Tigri]";
+	mes "Ah... ehi, amico, vieni qui e parliamo un minuto...";
+	close;
+}
+
+job3_rune01,58,51,1	script	Rune Furnace	844,{
+	if (job_rune_edq < 15) {
+		mes "[Cavaliere delle rune Renoa]";
+		mes "Non vuoi toccare quella cosa. Credimi, non sto scherzando.";
+		close;
+	} else if (job_rune_edq == 15) {
+		mes "Vedo un buco sotto l'enorme statua di pietra runica dietro Renoa. Chiaramente si tratta di una fornace per il riscaldamento delle rune prodotta in serie che ho letto nel libro.";
+		next;
+		if(select("Usa la fornace per il riscaldamento delle rune:Fermare.") == 2) close;
+		switch(rand(24)) {
+			case 0: setarray .@str$[0],"Ehwaz","This red hot spiral is..."; break;
+			case 1: setarray .@str$[0],"Osilia","The rune flashing with this violet oblique line shape is..."; break;
+			case 2: setarray .@str$[0],"Mannaz","This live emerald diamond rune is..."; break;
+			case 3: setarray .@str$[0],"Ansuz","The rune flashing with an emerald round shape is..."; break;
+			case 4: setarray .@str$[0],"Hagalas","The rune flashing with this sky-blue star shape is..."; break;
+			case 5: setarray .@str$[0],"Kano","The rune flashing with a red diamond shape is..."; break;
+			case 6: setarray .@str$[0],"Rhydo","The rune flashing with this sky-blue oblique line shape is..."; break;
+			case 7: setarray .@str$[0],"Turisus","The rune flashing with this yellow round shape is..."; break;
+			case 8: setarray .@str$[0],"Dagaz","The rune flashing with this emerald spiral line shape is..."; break;
+			case 9: setarray .@str$[0],"Sowilo","The rune flashing with this sky-blue fan-shape is..."; break;
+			case 10: setarray .@str$[0],"Laguz","The rune flashing with this yellow diamond shape is..."; break;
+			case 11: setarray .@str$[0],"Isia","The rune flashing with this violet spiral line is..."; break;
+			case 12: setarray .@str$[0],"Pertz","The rune flashing with this silver spiral shape is..."; break;
+			case 13: setarray .@str$[0],"Verkana","The rune flashing with this gold star shape is..."; break;
+			case 14: setarray .@str$[0],"Gebo","The rune flashing with this yellow cone shape is..."; break;
+			case 15: setarray .@str$[0],"Algiz","The rune flashing with this emerald oblique line is..."; break;
+			case 16: setarray .@str$[0],"Arwez","The rune flashing with this gray diamond is..."; break;
+			case 17: setarray .@str$[0],"Teiwaz","The rune flashing with this gold sphere is..."; break;
+			case 18: setarray .@str$[0],"Wunjo","The rune flashing with this emerald star shape is..."; break;
+			case 19: setarray .@str$[0],"Jera","The rune flashing with this yellow sphere is..."; break;
+			case 20: setarray .@str$[0],"Nosiege","The rune flashing with this yellow fan-shape is..."; break;
+			case 21: setarray .@str$[0],"Ingz","The rune flashing with this violet diamond shape is..."; break;
+			case 22: setarray .@str$[0],"Fehu","The rune flashing with this silver round shape is..."; break;
+			case 23: setarray .@str$[0],"Urj","The rune flashing with this violet spiral is..."; break;
+		}
+		progressbar "ffff00",5;
+		mes "Il potere magico della runa lancia e lancia mentre prende forma.";
+		next;
+		mes .@str$[1];
+		next;
+		input .@inputstr$;
+		if (.@inputstr$ == .@str$[0]) {
+			mes "[Cavaliere delle rune Renoa]";
+			mes "Oh! Questo è fantastico. L'immagine della pietra runica nella mia testa e la pietra runica modellata corrispondono perfettamente. È ben fatto.";
+			next;
+			mes "[Cavaliere delle rune Renoa]";
+			mes "1 "+.@str$[0]+" la runa è stata creata normalmente.";
+			set job_rune_edq2, job_rune_edq2+1;
+			close;
+		}
+		if (rand(1,(6 + job_rune_edq3)) == 3) {
+			mes "[Cavaliere delle rune Renoa]";
+			mes "Sono stato fortunato. L'immagine della pietra runica nella mia testa e la pietra runica modellata non corrispondevano, ma è stata realizzata normalmente. Questo caso è raro.";
+			next;
+			mes "[Cavaliere delle rune Renoa]";
+			mes "1 "+.@str$[0]+" la runa è stata creata normalmente.";
+			set job_rune_edq2, job_rune_edq2+1;
+			close;
+		}
+		mes "[Cavaliere delle rune Renoa]";
+		mes "È un risultato naturale. L'immagine della pietra runica nella mia testa e la pietra runica modellata non corrispondevano, quindi il tasso di successo è semplicemente diminuito.";
+		next;
+		mes "[Cavaliere delle rune Renoa]";
+		mes "La raffinazione della pietra runica non è riuscita... Per favore riprova.";
+		set job_rune_edq3, job_rune_edq3+1;
+		close;
+	}
+	mes "[Cavaliere delle rune Renoa]";
+	mes "Non vuoi toccare quella cosa. Credimi, non sto scherzando.";
+	close;
+}
+
+job3_rune01,40,54,1	script	Runes and Rune Knights	844,{
+	if (job_rune_edq < 8) {
+		mes "[Cavaliere delle rune Renoa]";
+		mes "Oltre a toccare cose in questo posto senza permesso. Sareste in grado di comprendere il contenuto del libro?";
+		next;
+		mes "[Capitano Tigri]";
+		mes "Ehi Renoa, vacci piano con quel cavaliere. Anche tu lì, faresti meglio a smettere di toccare cose qui senza permesso.";
+		close;
+	}
+	while(1) {
+		switch(select("La nascita dei Cavalieri delle Rune:Rune ed energia magica:Smetti di leggere")) {
+		case 1:
+			set .@book1,1;
+			mes "I Rune Knights sono il raduno di spadaccini evoluti che hanno raggiunto l'armonia tra spada e magia.";
+			next;
+			mes "È stato realizzato dal leggendario spadaccino Beljeve, conosciuto come maestro di spada e fondatore delle spese superflue.";
+			next;
+			mes "I Cavalieri delle Rune usano le pietre runiche come mezzo per il potere magico piuttosto che usare l'energia magica prodotta direttamente all'interno del corpo.";
+			next;
+			mes "Il potere magico in precedenza poteva essere utilizzato solo da coloro che riuscivano a sfruttare il potere magico all'interno del proprio corpo attraverso un lungo periodo di ricerca";
+			next;
+			mes "Tuttavia, la ricerca diretta sul potere magico delle rune che aveva infranto il concetto normale dell'essere umano è ora in corso.";
+			next;
+			mes "È noto che il maestro della spada Beljeve sentiva il limite del suo potere, quindi studiò il modo per superare la limitazione fisica dei mortali.";
+			next;
+			mes "Supponiamo che fosse già in contatto con la tribù Laphine molto prima che fosse scoperta la spaccatura dimensionale per raggiungere l'Aspiracenere.";
+			next;
+			mes "La tribù Laphine sono le fate dell'Ash-Vacuum e sono note per avere uno stretto rapporto con la nascita dei Cavalieri delle Rune.";
+			next;
+			mes "Ora è possibile, per coloro che normalmente non sono adatti all'uso del potere magico, portare con sé un medium in grado di trasportare la magia che i normali mortali prima non potevano brandire.";
+			next;
+			mes "Il risultato dello studio di queste tecniche sono le pietre runiche sintonizzate in armonia con il potere fisico delle spade.";
+			next;
+			mes "I discepoli di Beljeve che iniziarono ad apprendere il modo di impregnare le loro spade con le pietre runiche divennero noti come Cavalieri delle Rune.";
+			next;
+			break;
+		case 2:
+			set .@book2,1;
+			mes "Un gioiello chiamato Runa è un mezzo che contiene l'esistenza senza forma, il potere magico e la sua essenza può essere utilizzata direttamente.";
+			next;
+			mes "Il Saggio Laphine, Serpeone e il fondatore dei Rune Knights Beljeve hanno collaborato alla ricerca sulle rune e il risultato della loro ricerca è diventato noto al mondo solo di recente.";
+			next;
+			mes "È una fonte di energia alternativa illimitata e la ricerca su di essa è ancora in corso. ";
+			next;
+			mes "A differenza degli umani, gli esseri viventi nell'Aspiracenere preservano l'energia magica trattenendola nei loro corpi.";
+			next;
+			mes "La scoperta di trasferire questo potere magico nelle rune fu perfezionata da Beljeve e Serpeone e condivisa con i Cavalieri delle Rune.";
+			next;
+			break;
+		case 3:
+			if (.@book1 && .@book2 && job_rune_edq < 11 && (job_rune_edq_book & 1) == 0) {
+				set job_rune_edq_book, job_rune_edq_book | 1;
+				set job_rune_edq, job_rune_edq+1;
+			}
+			close;
+		}
+	}
+}
+
+job3_rune01,43,44,1	script	The Principles of Runes	844,{
+	if (job_rune_edq < 8) {
+		mes "[Cavaliere delle rune Renoa]";
+		mes "Oltre a toccare cose in questo posto senza permesso. Sareste in grado di comprendere il contenuto del libro?";
+		next;
+		mes "[Capitano Tigri]";
+		mes "Ehi Renoa, vacci piano con quel cavaliere. Anche tu lì, faresti meglio a smettere di toccare cose qui senza permesso.";
+		close;
+	}
+	while(1) {
+		switch(select("L'uso principale delle Rune:I tipi di rune:Smetti di leggere")) {
+		case 1:
+			set .@book1,1;
+			mes "Una runa è una sorta di simbolo utilizzato nel continente di Midgard fin dai tempi antichi. Finora è stato utilizzato solo dai circoli occulti.";
+			next;
+			mes "Le rune sono usate come sistema di simboli, tuttavia, secondo la storia tramandata oralmente, è noto che vengono utilizzate per predire il futuro o per far emergere il subconscio umano.";
+			next;
+			mes "Le rune hanno il loro sistema e i loro tipi e possono trarre vari poteri a seconda di come sono disposte. Ma il loro livello di potenza non può attualmente essere misurato con mezzi conosciuti.";
+			next;
+			mes "È una fortuna che i Cavalieri delle Rune abbiano scoperto il loro utilizzo con mezzi positivi. Le rune non sono state utilizzate per la magia oscura, ma è certamente possibile che il loro potere venga utilizzato in modo improprio se finiscono nelle mani sbagliate.";
+			next;
+			break;
+		case 2:
+			set .@book2,1;
+			mes "Le rune sono create da un totale di 25 piccole pietre e sono molto fragili agli urti fisici. Richiedono quindi una cura particolare durante la manipolazione.";
+			next;
+			mes "Le 25 pietre hanno significati diversi e tra queste, 14 se contrapposte possono avere potere e significato completamente diversi dall'originale quindi è fondamentale studiarne gli aspetti eccezionali.";
+			next;
+			mes "Le altre 11 rune hanno un potere costante, non influenzato da alcuna posizione, quindi se non padroneggi tutte le 11 rune ordinarie e le 14 rune inverse, non puoi estrarre tutto il potere completo.";
+			next;
+			mes "Tra le 11 rune ordinarie, la runa vuota è un'eccezione.";
+			next;
+			mes "I nomi delle 25 pietre runiche sono i seguenti:";
+			next;
+			mes "Ehwaz, Osilia, Mannaz, Ansuz, Hagalas, Kano, Rhydo, Turisus, Dagaz, Sowilo, Laguz, Isia, Pertz, Verkana, Gebo, Algiz, Arwez, Teiwaz, Wunjo, Jera, Nosiege, Ingz, Fehu, Urj.";
+			next;
+			break;
+		case 3:
+			if (.@book1 && .@book2 && job_rune_edq < 11 && (job_rune_edq_book & 2) == 0) {
+				set job_rune_edq_book, job_rune_edq_book | 2;
+				set job_rune_edq, job_rune_edq+1;
+			}
+			close;
+		}
+	}
+}
+
+job3_rune01,50,36,1	script	Runes, Make & Use	844,{
+	if (job_rune_edq < 8) {
+		mes "[Cavaliere delle rune Renoa]";
+		mes "Oltre a toccare cose in questo posto senza permesso. Sareste in grado di comprendere il contenuto del libro?";
+		next;
+		mes "[Capitano Tigri]";
+		mes "Ehi Renoa, vacci piano con quel cavaliere. Anche tu lì, faresti meglio a smettere di toccare cose qui senza permesso.";
+		close;
+	}
+	while(1) {
+		switch(select("La realizzazione delle pietre runiche:Dettagli sull'abilità della pietra runica:Smetti di leggere")) {
+		case 1:
+			set .@book1,1;
+			mes "La creazione delle pietre runiche si ottiene attraverso un'abilità chiamata padronanza delle rune che si apprende quando si diventa un cavaliere delle rune.";
+			next;
+			mes "La Maestria delle Rune è come un codice che è stato inserito nel corpo come segno di un Cavaliere delle Rune.";
+			next;
+			mes "Anche le persone comuni possono apprendere questa abilità e ha bisogno di una propria macchina chiamata Fornace delle Rune.";
+			next;
+			mes "Quando crei una pietra runica con una fornace runica, il tipo di runa è determinato dall'energia magica inserita in essa e non può essere modificato.";
+			next;
+			mes "Quando crei una pietra runica utilizzando Maestria delle Rune, può essere trasformata nella proprietà runica che desideri ma è classificata come abilità propria dei Rune Knights.";
+			next;
+			mes "Quando utilizzi la Fornace delle Rune, l'energia magica del corpo si concentra attraverso di essa e consente la trasformazione in una Pietra runica.";
+			next;
+			break;
+		case 2:
+			set .@book2,1;
+			switch(select("Capitolo uno:Capitolo due:Capitolo tre:Capitolo quattro:Smetti di leggere")) {
+			case 1:
+				mes "Ehwaz - Questa runa significa potenziamento della fortuna e del potere positivo. Dà forma alla fonte sotto forma di spirale rossa in una fornace runica.";
+				next;
+				mes "Osilia - Questa runa è uno scambio equivalente, il che significa che ne perdi uno e ne guadagni uno, e significa anche il potere che necessita di un costo. Questo ha la forma di una linea obliqua viola in una fornace runica.";
+				next;
+				mes "Mannaz - Questa runa significa speranza e un nuovo inizio e anche il potere positivo che può invertire una situazione disperata. Questo ha la forma di un diamante smeraldo in una fornace runica.";
+				next;
+				mes "Ansuz - Questa runa significa preparazione o disposizione e il potere che può superare il disagio del prossimo futuro. Questo ha la forma di un tondo di smeraldo in una fornace runica. ";
+				next;
+				mes "Hagalas - Questa runa significa libertà e potere che resiste alle restrizioni. Questo ha la forma di una stella di colore azzurro cielo in una fornace runica.";
+				next;
+				mes "Kano - Questa runa significa fiamma e passione e il potere che pone fine a tutto. La sua fonte ha la forma di un diamante rosso in una fornace runica.";
+				next;
+				break;
+			case 2:
+				mes "Rhydo - Questa runa significa combinazione e ricombinazione e il potere del completamento. Questo è modellato nella linea obliqua celeste in una fornace runica.";
+				next;
+				mes "Turisus - Questa runa significa il confine e il potere di limitazione. Questo ha la forma di un cerchio giallo in una fornace runica.";
+				next;
+				mes "Dagaz - Questa runa significa il talento e il potere di sopportare le avversità. Questo ha la forma di una spirale di smeraldo in una fornace runica.";
+				next;
+				mes "Sowilo - Questa runa significa vittoria e successo e il potere di organizzare e cessare. Questo ha la forma di un ventaglio azzurro cielo in una fornace runica.";
+				next;
+				mes "Laguz -Questa runa significa incertezza e il potere che protegge l'interno. Questo ha la forma di un diamante giallo in una fornace runica.";
+				next;
+				mes "Isia - Questa runa significa il potere che ferma tutto. Questo ha la forma di una spirale viola in una fornace runica.";
+				next;
+				break;
+			case 3:
+				mes "Pertz - Questa runa significa rivelazione e potere del caso. Questo ha la forma di una spirale d'argento in una fornace runica.";
+				next;
+				mes "Verkana - Questa runa significa ricchezza, nascita e potere di difesa e protezione. Questo ha la forma di una stella color oro in una fornace runica.";
+				next;
+				mes "Gebo - Questa runa significa cooperazione e potere dell'armonia. Questo ha la forma di un cono giallo in una fornace runica.";
+				next;
+				mes "Algiz - Questa runa significa possibilità e potere della sfida. Questo ha la forma di una linea obliqua di smeraldo in una fornace runica.";
+				next;
+				mes "Arwez - Questa runa significa cambiamento, convulsione e potere del movimento. Questo ha la forma di un diamante grigio in una fornace runica.";
+				next;
+				mes "Teiwaz - Questa runa significa vittoria perfetta e potere della soluzione assoluta. Questo ha la forma di un cerchio d'oro in una fornace runica.";
+				next;
+				break;
+			case 4:
+				mes "Wunjo - Questa runa significa intelligenza e potere della saggezza. Questo ha la forma di una stella di smeraldo in una fornace runica.";
+				next;
+				mes "Jera - Questa runa significa conforto e potere del riposo. Questo ha la forma di un cerchio giallo in una fornace runica.";
+				next;
+				mes "Nosiege - Questa runa significa debolezza e potere di attenuazione. Questo ha la forma di un ventaglio giallo in una fornace runica.";
+				next;
+				mes "Ingz - Questa runa significa interruzione e potere di separazione. Questo ha la forma di un diamante viola in una fornace runica.";
+				next;
+				mes "Fehu - Questa runa significa raggiungimento e potere di materializzazione. Questo ha la forma di un cerchio d'argento in una fornace runica.";
+				next;
+				mes "Urj - Questa runa significa destino e potere di restrizione. Questo ha la forma di una linea a spirale viola in una fornace runica.";
+				next;
+				break;
+			case 5:
+				close;
+			}
+			break;
+		case 3:
+			if (.@book1 && .@book2 && job_rune_edq < 11 && (job_rune_edq_book & 4) == 0) {
+				set job_rune_edq_book, job_rune_edq_book | 4;
+				set job_rune_edq, job_rune_edq+1;
+			}
+			close;
+		}
+	}
+}
+
+mid_camp,238,250,3	script	Rune Knight Sage Guard	468,2,2,{
+	mes "[Cavaliere delle Rune, Guardia Saggio]";
+	if (Class == Job_Rune_Knight || Class == Job_Rune_Knight_T || Class == Job_Baby_Rune_Knight) {
+		mes "Il saggio Serpeone è colui che è stato con noi fin dall'inizio dei Rune Knights.";
+		next;
+		mes "[Cavaliere delle Rune, Guardia Saggio]";
+		mes "Sono molto orgoglioso come Cavaliere delle Rune di servire al suo fianco.";
+		close;
+	}
+	if (BaseJob == Job_Knight) {
+		if (job_rune_edq < 11) {
+			mes "Potresti percorrere la via della spada ma non sei ancora un Cavaliere delle Rune. Non girovagare troppo qui se capisci cosa intendo.";
+			close;
+		}
+		mes "Splendide è la terra dei Laphine. Stiamo offrendo una comodità grazie ad un accordo tra i Rune Knights e la squadra di spedizione.";
+		next;
+		mes "[Cavaliere delle Rune, Guardia Saggio]";
+		mes "I nostri agenti stanno aprendo la strada a Splendide solo ai tirocinanti che stanno sostenendo il test di cambio lavoro di Rune Knight.";
+		next;
+		mes "[Cavaliere delle Rune, Guardia Saggio]";
+		mes "Ma quando diventerai un Cavaliere delle Rune, dovrai assicurarti di unirti alla squadra di spedizione per esplorare a fondo l'Aspiracenere.";
+		close;
+	}
+	mes "Stare con quest'uomo non ti farà bene. Continua nella direzione in cui stavi andando.";
+	close;
+}
+
+mid_camp,13,138,3	script	Dispatched Rune Knight#1	83,2,2,{
+	mes "[Cavaliere delle Rune inviato]";
+	if (Class == Job_Rune_Knight || Class == Job_Rune_Knight_T || Class == Job_Baby_Rune_Knight) {
+		mes "Grazie per il tuo lavoro Continueremo la nostra missione per i tester di Rune Knight.";
+		close;
+	}
+	if (BaseJob == Job_Knight && job_rune_edq > 10) {
+		mes "Ti stavo aspettando, candidato al Cavaliere delle Rune. Aiuto i candidati come favore alla signorina Serpeone.";
+		next;
+		mes "[Cavaliere delle Rune inviato]";
+		if (strnpcinfo(0) == "Dispatched Rune Knight#1") {
+			mes "Vuoi andare al campo Splendide?";
+			next;
+			if(select("Spostarsi nel campo Splendide:Cancellare.") == 1)
+				warp "spl_fild01",355,325;
+			close;
+		} else if (strnpcinfo(0) == "Dispatched Rune Knight#2") {
+			mes "Vuoi tornare al posto della squadra di spedizione?";
+			next;
+			if(select("Sì, per favore.:Non ancora.") == 1)
+				warp "mid_camp",50,153;
+			close;
+		}
+		close;
+	}
+	mes "Shh... La nostra missione non è qualcosa da rivelare al pubblico. Per favore, vai avanti e basta.";
+	close;
+}
+spl_fild01,361,327,3	duplicate(Dispatched Rune Knight#1)	Dispatched Rune Knight#2	83,2,2
+
+spl_fild02,13,241,0	script	#Barricade1	139,10,10,{
+	end;
+OnTouch:
+	if (job_rune_edq > 0 && job_rune_edq < 23) {
+		mes "- Mi vengono in mente i sussurri del saggio Serpeone. -";
+		next;
+		mes "[Saggio Serpeone]";
+		mes "Finché non diventerai un onorevole Cavaliere delle Rune non potrò aiutarti a controllare i tuoi poteri a Midgard.";
+		next;
+		mes "[Saggio Serpeone]";
+		mes "Per favore, comprendilo e dedicati a questo test.";
+		close2;
+		warp "spl_fild02",25,245;
+		end;
+	}
+	end;
+}
+
+mid_camp,235,250,3	script	Sage Serpeone	435,2,2,{
+	mes "[Saggio Serpeone]";
+	if (Class == Job_Rune_Knight || Class == Job_Rune_Knight_T || Class == Job_Baby_Rune_Knight) {
+		mes "Finalmente sei un onorevole Cavaliere delle Rune. Sono felice di aiutarti.";
+		next;
+		mes "[Saggio Serpeone]";
+		mes "Il potere delle rune non è perfetto e sono ancora necessarie ulteriori ricerche per renderlo perfettamente sicuro. Spetta a me e agli altri Rune Knights come te assicurarci di continuare questa ricerca.";
+		next;
+		mes "[Saggio Serpeone]";
+		mes "Per favore sii devoto alle Rune e spero che la tua vita ne sarà illuminata.";
+		close;
+	}
+	if (BaseJob == Job_Knight) {
+		if (job_rune_edq < 12) {
+			mes "Deve essere sorprendente che io, una Laphine, sia qui nella base della tua gente.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Alcuni di noi sono stati in contatto con gli esseri umani in situazioni speciali ancor prima che si aprisse la spaccatura dimensionale.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Ho una corrispondenza con gli esseri umani ormai da diversi anni. Era per interessi reciproci. Comunque è così che ho imparato la tua lingua.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Forse dovrebbe esserci una macchina in grado di tradurre la lingua Laphine per rendere più facile per gli esseri umani capirci.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Più di questo... non posso dirvi di più. Non posso parlare con noncuranza poiché sto parlando a nome della mia gente qui e ho un permesso speciale per essere ammesso nel vostro accampamento.";
+			close;
+		} else if (job_rune_edq == 12) {
+			mes "Benvenuto, sei tu a sostenere il test di formazione professionale dei Rune Knights. Sono Serpeone.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Tutti i Rune Knights che hai incontrato finora sono i discepoli che sono stati istruiti da me e Beljeve. Now you are on your way to joining them.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Penso che tu abbia già sentito una spiegazione di base e le istruzioni da Renoa. Ora sembra che sia il mio turno di aiutarti.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Il potere magico utilizzato dai Rune Knights non è tecnicamente lo stesso del potere magico creato nel mondo umano.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Proprio in questo posto... la nostra sfera che chiami Aspiracenere... è il potere magico con cui è stato creato";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Gli esseri viventi in questo luogo hanno preservato l'energia magica nei nostri corpi a differenza degli esseri viventi nel mondo umano.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Il potere delle pietre runiche è il modo di modellare il potere magico nei nostri corpi in rune che prendono il posto dei nostri corpi come mezzo.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Quindi per usare la pietra runica è necessaria una comprensione diretta degli esseri viventi dell'altra sfera.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Ma deve essere troppo per te estrarre l'energia magica dagli esseri viventi in questa terra.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Ora lancerò un incantesimo sul tuo corpo così potrai raccogliere energia magica da altri esseri viventi.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Temporaneamente potrai estrarre energia magica dalle creature malvagie nel mondo umano. Ovviamente non potrai utilizzare l'energia direttamente...";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Se accumuli l'energia sbarazzandoti delle creature malvagie nel mondo umano, la convertirò nell'energia che potrai usare.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Le anime viziose che conservano anche dopo essere morte sono la grande fonte di poteri magici.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Per favore, sbarazzati di ^0000FF10 Dullahan^000000, ^0000FF10 Disguise^000000, ^0000FF10 Quve^000000, ^0000FF10 Heirozoist^000000 e raccogli la loro energia.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Te lo dico in anticipo, ma non metto alla prova né giudico la tua qualifica. Un Cavaliere delle Rune ne sarà il giudice.";
+			next;
+			mes "[Saggio Serpeone]";
+			mes "Se avete problemi o domande, per favore parlate con me.";
+			set job_rune_edq,13;
+			changequest 3207,3208;
+			setquest 3209;
+			setquest 3210;
+			setquest 3211;
+			setquest 3212;
+			close;
+		} else if (job_rune_edq == 13) {
+			mes "Stai raccogliendo abbastanza energia magica? Oppure hai qualche domanda?";
+			next;
+			switch(select("Ho raccolto abbastanza energia.:Al luogo di ritrovo.:Interrompi la conversazione.")) {
+			case 1:
+				mes "[Saggio Serpeone]";
+				mes "È così? Allora controlliamo questo.";
+				next;
+				if (checkquest(3209,HUNTING) == 2 && checkquest(3210,HUNTING) == 2 && checkquest(3211,HUNTING) == 2 && checkquest(3212,HUNTING) == 2) {
+					mes "[Saggio Serpeone]";
+					mes "Uhm, è fantastico. Nel tuo corpo si è accumulata una quantità sufficiente di energia magica del corpo vivente.";
+					next;
+					mes "[Saggio Serpeone]";
+					mes "Rune Knight Renoa ti spiegherà come usare le pietre runiche.";
+					next;
+					mes "[Saggio Serpeone]";
+					mes "Ora penso che la mia parte sia finita. Spero che diventerai un onorevole Cavaliere delle Rune.";
+					next;
+					mes "[Saggio Serpeone]";
+					mes "Se hai qualche affare qui, ti manderò al luogo di ritrovo dei Rune Knight. Se sei pronto, per favore dimmelo.";
+					set job_rune_edq,14;
+					changequest 3208,3213;
+					completequest 3209;
+					completequest 3210;
+					completequest 3211;
+					completequest 3212;
+					close;
+				}
+				mes "[Saggio Serpeone]";
+				mes "Non hai ancora raccolto abbastanza energia magica.";
+				next;
+				mes "[Saggio Serpeone]";
+				mes "Per favore, preparati e raccogli abbastanza energia eliminando quei mostri.";
+				close;
+			case 2:
+				mes "[Saggio Serpeone]";
+				mes "Vuoi tornare al luogo di ritrovo? Se vuoi ti rimando subito lì. Ma per continuare il test dovrai venire a trovarmi di nuovo.";
+				next;
+				mes "[Saggio Serpeone]";
+				mes "Vuoi tornare al luogo di ritrovo dei Rune Knight?";
+				next;
+				if(select("Voglio tornare indietro.:Voglio annullare.") == 1)
+					warp "job3_rune01",80,65;
+				close;
+			case 3:
+				close;
+			}
+		} else if (job_rune_edq == 14) {
+			mes "Sei pronto per tornare al luogo di ritrovo dei Rune Knight?";
+			next;
+			if(select("Voglio tornare indietro adesso.:Non sono ancora pronto.") == 1)
+				warp "job3_rune01",80,65;
+			close;
+		}
+		mes "I preparativi stanno andando bene?";
+		next;
+		mes "[Saggio Serpeone]";
+		mes "Non sei nello stato sbagliato in questo momento?";
+		next;
+		mes "[Saggio Serpeone]";
+		mes "Poi ti manderò al luogo di ritrovo dei Rune Knight, dove dovresti essere.";
+		next;
+		if(select("Tornerò adesso.:Resterò.") == 1)
+			warp "job3_rune01",80,65;
+		close;
+	}
+	mes "Deve essere sorprendente che io, una Laphine, sia qui nella base della tua gente.";
+	next;
+	mes "[Saggio Serpeone]";
+	mes "Alcuni di noi sono stati in contatto con gli esseri umani in situazioni speciali ancor prima che si aprisse la spaccatura dimensionale.";
+	next;
+	mes "[Saggio Serpeone]";
+	mes "Ho una corrispondenza con gli esseri umani ormai da diversi anni. Era per interessi reciproci. Comunque è così che ho imparato la tua lingua.";
+	next;
+	mes "[Saggio Serpeone]";
+	mes "Forse dovrebbe esserci una macchina in grado di tradurre la lingua Laphine per rendere più facile per gli esseri umani capirci.";
+	next;
+	mes "[Saggio Serpeone]";
+	mes "Più di questo... non posso dirvi di più. Non posso parlare con noncuranza poiché sto parlando a nome della mia gente qui e ho un permesso speciale per essere ammesso nel vostro accampamento.";
+	close;
+}
+
+job3_rune01,114,50,3	script	Rune Knight Velpino	468,{
+	if (Class == Job_Rune_Knight || Class == Job_Rune_Knight_T || Class == Job_Baby_Rune_Knight) {
+		mes "[Cavaliere delle Rune Velpino]";
+		mes "Puzzi ancora come un involo. Porta onore ai Cavalieri delle Rune e aumenta il tuo potere...";
+		close;
+	}
+	if (BaseJob == Job_Knight) {
+		if (job_rune_edq < 17) {
+			mes "Una sensazione molto fredda. Rune Knight vestito di nero dalla testa ai piedi mi guarda accigliato.";
+			next;
+			mes "Perché tutti i Rune Knights sono chiacchieroni o poco comunicativi e combattivi...?";
+			next;
+			mes "[Capitano Tigri]";
+			mes "Ehi... E io? Non sono così!";
+			close;
+		} else if (job_rune_edq == 17) {
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "Non pensavo che un candidato sarebbe arrivato da me oggi...";
+			next;
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "Congratulazioni! Sei al tanto atteso test finale... Penso che tu abbia ormai padroneggiato le basi.";
+			next;
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "Il test finale è relativamente semplice. Tutto finisce quando ti sbarazzi di tutti i mostri magici in questo Glast Heim...";
+			next;
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "L'unica condizione è che devi sbarazzarti di questi mostri usando le pietre runiche che hai creato nel test precedente.";
+			next;
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "Per questa prova è possibile equipaggiare solo un'arma a una mano, uno scudo o un'arma a due mani.";
+			next;
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "L'unico set di armi che puoi utilizzare dovrebbe rientrare nel limite di peso di 400. Le pietre runiche da fornire sono 30 pietre runiche solo di attacco e 30 pietre runiche solo di difesa.";
+			next;
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "Per usare queste rune, lancerò su di te uno speciale incantesimo di potenziamento.";
+			next;
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "I mostri magici sono i 3 tipi di mostri magici di Glast Heim che potresti già conoscere... Non sarà un combattimento facile ma se superi questa sofferenza finale, percorrerai il cammino di un Cavaliere delle Rune.";
+			next;
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "Per aiutare la preparazione abbiamo stipulato un contratto con la sede centrale della Kafra ad Al De Baran impiegando un dipendente della Kafra appositamente per questo luogo di ritrovo. Quindi sarebbe bello visitarla.";
+			next;
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "Se sei pronto, parlami di nuovo.";
+			set job_rune_edq,18;
+			changequest 3216,3217;
+			close;
+		} else if (job_rune_edq > 17 && job_rune_edq < 21) {
+			if (countitem(12388)+countitem(12389)+countitem(12390) == 0) {
+				mes "[Cavaliere delle Rune Velpino]";
+				mes "Se tutti i tuoi preparativi saranno terminati, ti manderò al campo di prova finale.";
+				set job_rune_edq,18;
+				next;
+				if(select("Inserisci il campo di prova finale.:Non sono ancora pronto.") == 2) close;
+				if (getequipisequiped(EQI_HEAD_TOP) || getequipisequiped(EQI_ARMOR) || getequipisequiped(EQI_GARMENT) || getequipisequiped(EQI_SHOES) ||
+				    getequipisequiped(EQI_ACC_L) || getequipisequiped(EQI_ACC_R) || getequipisequiped(EQI_HEAD_MID) || getequipisequiped(EQI_HEAD_LOW)) {
+					mes "[Cavaliere delle Rune Velpino]";
+					mes "Per questa prova è possibile equipaggiare solo un'arma a una mano, uno scudo o un'arma a due mani. Tieni le altre attrezzature con il Dipendente Kafra al centro.";
+					close;
+				}
+				if (checkquest(3220,PLAYTIME) == 1) {
+					mes "[Cavaliere delle Rune Velpino]";
+					mes "Non hai fallito al test... Se fallisci una volta, non potrai rientrare per 10 minuti.";
+					next;
+					mes "[Cavaliere delle Rune Velpino]";
+					mes "È una considerazione per gli altri tester che stanno aspettando il test, proprio come te, quindi torna dopo l'orario stabilito.";
+					close;
+				}
+				if ($@job_rune_test1 == 0) {
+					if (Weight < 4001) {
+						set $@job_rune_test1,1;
+						sc_start SC_INCINT,300000,40;
+						getitem 12389,30; //Runstone_Storm
+						getitem 12390,30; //Runstone_Millennium
+						if (checkquest(3220) > -1) erasequest 3220;
+						setquest 3220;
+						warp "job3_rune02",38,40;
+						end;
+					}
+					mes "[Cavaliere delle Rune Velpino]";
+					mes "L'unico set di armi che puoi utilizzare dovrebbe rientrare nel limite di peso di 400. Le pietre runiche da fornire sono 30 pietre runiche solo di attacco e 30 pietre runiche solo di difesa.";
+					next;
+					mes "[Cavaliere delle Rune Velpino]";
+					mes "Il resto delle cose che hai in mano dovrebbe essere tenuto dal dipendente Kafra al centro.";
+					close;
+				}
+				// Custom translation
+				mes "[Cavaliere delle Rune Velpino]";
+				mes "Sembra che ci sia già un candidato nell'aula prove.";
+				next;
+				mes "[Cavaliere delle Rune Velpino]";
+				mes "Sii paziente e aspetta il tuo turno.";
+				close;
+			}
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "Aspetta, raccoglierò tutte le pietre runiche fornite prima. C'è un certo limite nell'uso delle pietre runiche realizzate per il test.";
+			if (countitem(12388)) delitem 12388,countitem(12388); //Runstone_Crush
+			if (countitem(12389)) delitem 12389,countitem(12389); //Runstone_Storm
+			if (countitem(12390)) delitem 12390,countitem(12390); //Runstone_Millennium
+			next;
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "Riceverò nuove pietre runiche, quindi se la tua preparazione è completa, per favore parlami di nuovo.";
+			close;
+		} else if (job_rune_edq == 21) {
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "Hai avuto molto successo fino all'ultimo test.";
+			next;
+			if (countitem(12388)+countitem(12389)+countitem(12390) == 0) {
+				mes "[Cavaliere delle Rune Velpino]";
+				mes "Ora tutti i test che devi sostenere sono finiti. Torna dal Capitano Tigris e informalo del risultato di questo test, e poi prova la profonda emozione di rinascere come Cavaliere delle Rune.";
+				next;
+				mes "[Cavaliere delle Rune Velpino]";
+				mes "Congratulazioni!";
+				mes "Bene, ora è meglio che vada per i restanti candidati.";
+				set job_rune_edq,22;
+				changequest 3218,3219;
+				close;
+			}
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "Aspetta, raccoglierò tutte le pietre runiche fornite prima. C'è un certo limite nell'uso delle pietre runiche realizzate per il test.";
+			if (countitem(12388)) delitem 12388,countitem(12388); //Runstone_Crush
+			if (countitem(12389)) delitem 12389,countitem(12389); //Runstone_Storm
+			if (countitem(12390)) delitem 12390,countitem(12390); //Runstone_Millennium
+			next;
+			mes "[Cavaliere delle Rune Velpino]";
+			mes "Dovrò riutilizzare queste pietre runiche inutilizzate. Parlami ancora una volta che avrò preso tutte le pietre runiche di prova.";
+			close;
+		}
+	}
+	mes "Una sensazione molto fredda. Rune Knight vestito di nero dalla testa ai piedi mi guarda accigliato.";
+	close;
+}
+
+job3_rune02,38,40,0	script	#RK Test Hidden Portal 1	139,15,15,{
+	end;
+OnEnable:
+	enablenpc "#RK Test Hidden Portal 1";
+	end;
+OnDisable:
+	disablenpc "#RK Test Hidden Portal 1";
+	end;
+OnTouch:
+	if (job_rune_edq == 4) {
+		donpcevent "job_rune_edq#1st_tb::OnEnable";
+		donpcevent "#RK Test Hidden Portal 1::OnDisable";
+		end;
+	} else if (job_rune_edq > 17 && job_rune_edq < 21) {
+		donpcevent "job_rune_edq#3rd_tb::OnEnable";
+		donpcevent "#RK Test Hidden Portal 1::OnDisable";
+		end;
+	} else {
+		donpcevent "#RK Test Hidden Portal 1::OnDisable";
+		donpcevent "job_rune_edq#1st_tb::OnDisable";
+		donpcevent "job_rune_edq#1st_tc::OnDisable";
+		donpcevent "job_rune_edq#1st_tcmc::OnDisable";
+		donpcevent "job_rune_edq#1st_tcmc2::OnDisable";
+		donpcevent "job_rune_edq#1st_tcnc::OnDisable";
+		donpcevent "job_rune_edq#3rd_tb::OnDisable";
+		donpcevent "job_rune_edq#3rd_tc::OnDisable";
+		set $@job_rune_test1,0;
+		set $@job_rune_test2,0;
+		donpcevent "#RK Test Hidden Portal 1::OnEnable";
+		mapwarp "job3_rune02","job3_rune01",80,65;
+		end;
+	}
+}
+
+job3_rune02,1,1,0	script	job_rune_edq#1st_tb	139,{
+	end;
+OnInit:
+	disablenpc "job_rune_edq#1st_tb";
+	end;
+OnEnable:
+	enablenpc "job_rune_edq#1st_tb";
+	initnpctimer;
+	end;
+OnDisable:
+	stopnpctimer;
+	disablenpc "job_rune_edq#1st_tb";
+	end;
+OnTimer5000:
+	mapannounce "job3_rune02",""Inizierò il primo test del cambio di lavoro del Rune Knight.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	end;
+OnTimer8000:
+	mapannounce "job3_rune02",""Il contenuto del test è sbarazzarsi di tutti i mostri per 5 minuti e sopravvivere.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	end;
+OnTimer11000:
+	mapannounce "job3_rune02",""Se non riesci a sopravvivere o non riesci a sbarazzarti di tutti i mostri entro il limite di tempo, lo considererò un fallimento.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	end;
+OnTimer14000:
+	mapannounce "job3_rune02",""Ora iniziamo il test.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	donpcevent "job_rune_edq#1st_tc::OnEnable";
+	donpcevent "job_rune_edq#1st_tb::OnDisable";
+	end;
+}
+
+job3_rune02,1,2,0	script	job_rune_edq#1st_tc	139,{
+	end;
+OnInit:
+	disablenpc "job_rune_edq#1st_tc";
+	end;
+OnEnable:
+	enablenpc "job_rune_edq#1st_tc";
+	initnpctimer;
+	donpcevent "job_rune_edq#1st_tcmc::OnEnable";
+	donpcevent "job_rune_edq#1st_tcnc::OnEnable";
+	end;
+OnDisable:
+	stopnpctimer;
+	disablenpc "job_rune_edq#1st_tc";
+	end;
+OnTimer300000:
+	killmonster "job3_rune02","job_rune_edq#1st_tc::OnMyMobDead";
+	mapannounce "job3_rune02",""Hai raggiunto il tempo limite quindi considererò il test un fallimento.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	end;
+OnTimer305000:
+	donpcevent "#RK Test Hidden Portal 1::OnDisable";
+	donpcevent "job_rune_edq#1st_tb::OnDisable";
+	donpcevent "job_rune_edq#1st_tc::OnDisable";
+	donpcevent "job_rune_edq#1st_tcmc::OnDisable";
+	donpcevent "job_rune_edq#1st_tcmc2::OnDisable";
+	donpcevent "job_rune_edq#1st_tcnc::OnDisable";
+	donpcevent "job_rune_edq#3rd_tb::OnDisable";
+	donpcevent "job_rune_edq#3rd_tc::OnDisable";
+	donpcevent "#RK Test Hidden Portal 1::OnEnable";
+	mapwarp "job3_rune02","job3_rune01",80,65;
+	set $@job_rune_test1,0;
+	set $@job_rune_test2,0;
+	stopnpctimer;
+	end;
+}
+
+job3_rune02,3,10,0	script	job_rune_edq#1st_tcmc	139,{
+	end;
+OnInit:
+	disablenpc "job_rune_edq#1st_tcmc";
+	end;
+OnEnable:
+	enablenpc "job_rune_edq#1st_tcmc";
+	initnpctimer;
+	end;
+OnDisable:
+	killmonster "job3_rune02","job_rune_edq#1st_tcmc::OnMyMobDead";
+	stopnpctimer;
+	disablenpc "job_rune_edq#1st_tcmc";
+	end;
+OnReset:
+	killmonster "job3_rune02","job_rune_edq#1st_tcmc::OnMyMobDead";
+	end;
+OnTimer5000:
+	monster "job3_rune02",0,0,"Raydric",1467,1,"job_rune_edq#1st_tcmc::OnMyMobDead";
+	monster "job3_rune02",0,0,"Raydric Archer",1453,2,"job_rune_edq#1st_tcmc::OnMyMobDead";
+	end;
+OnTimer50000:
+OnTimer100000:
+OnTimer150000:
+OnTimer200000:
+	switch(rand(6)) {
+	case 0:
+		monster "job3_rune02",0,0,"Raydric",1467,1,"job_rune_edq#1st_tcmc::OnMyMobDead";
+		monster "job3_rune02",0,0,"Raydric Archer",1453,2,"job_rune_edq#1st_tcmc::OnMyMobDead";
+		end;
+	case 1:
+	case 2:
+		monster "job3_rune02",0,0,"Rideword",1478,4,"job_rune_edq#1st_tcmc::OnMyMobDead";
+		end;
+	case 3:
+	case 4:
+		monster "job3_rune02",0,0,"Phendark",1484,1,"job_rune_edq#1st_tcmc::OnMyMobDead";
+		monster "job3_rune02",0,0,"Rybio",1483,1,"job_rune_edq#1st_tcmc::OnMyMobDead";
+		end;
+	case 5:
+		monster "job3_rune02",0,0,"Wraith Dead",1475,4,"job_rune_edq#1st_tcmc::OnMyMobDead";
+		end;
+	}
+	end;
+OnTimer250000:
+	killmonster "job3_rune02","job_rune_edq#1st_tcmc::OnMyMobDead";
+	donpcevent "job_rune_edq#1st_tcmc2::OnEnable";
+	donpcevent "job_rune_edq#1st_tcmc::OnDisable";
+	end;
+OnMyMobDead:
+	end;
+}
+
+job3_rune02,3,11,0	script	job_rune_edq#1st_tcmc2	139,{
+	end;
+OnInit:
+	disablenpc "job_rune_edq#1st_tcmc2";
+	end;
+OnEnable:
+	enablenpc "job_rune_edq#1st_tcmc2";
+	switch(rand(6)) {
+	case 0:
+		monster "job3_rune02",0,0,"Raydric",1467,1,"job_rune_edq#1st_tcmc2::OnMyMobDead";
+		monster "job3_rune02",0,0,"Raydric Archer",1453,2,"job_rune_edq#1st_tcmc2::OnMyMobDead";
+		end;
+	case 1:
+	case 2:
+		monster "job3_rune02",0,0,"Rideword",1478,4,"job_rune_edq#1st_tcmc2::OnMyMobDead";
+		end;
+	case 3:
+	case 4:
+		monster "job3_rune02",0,0,"Phendark",1484,1,"job_rune_edq#1st_tcmc2::OnMyMobDead";
+		monster "job3_rune02",0,0,"Rybio",1483,1,"job_rune_edq#1st_tcmc2::OnMyMobDead";
+		end;
+	case 5:
+		monster "job3_rune02",0,0,"Wraith Dead",1475,4,"job_rune_edq#1st_tcmc2::OnMyMobDead";
+		end;
+	}
+	end;
+OnDisable:
+	killmonster "job3_rune02","job_rune_edq#1st_tcmc2::OnMyMobDead";
+	disablenpc "job_rune_edq#1st_tcmc2";
+	end;
+OnMyMobDead:
+	if (mobcount("job3_rune02","job_rune_edq#1st_tcmc2::OnMyMobDead") < 1) {
+		set job_rune_edq,5;
+		erasequest 3220;
+		killmonster "job3_rune02","job_rune_edq#1st_tcmc2::OnMyMobDead";
+		mapannounce "job3_rune02",""Congratulazioni. Hai superato la prima prova.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		mapwarp "job3_rune02","job3_rune01",80,65;
+		donpcevent "job_rune_edq#1st_tb::OnDisable";
+		donpcevent "job_rune_edq#1st_tc::OnDisable";
+		donpcevent "job_rune_edq#1st_tcnc::OnDisable";
+		donpcevent "job_rune_edq#1st_tcmc::OnDisable";
+		donpcevent "job_rune_edq#1st_tcmc2::OnDisable";
+		donpcevent "#RK Test Hidden Portal 1::OnEnable";
+		set $@job_rune_test1,0;
+		set $@job_rune_test2,0;
+		end;
+	}
+	end;
+}
+
+job3_rune02,1,10,0	script	job_rune_edq#1st_tcnc	139,{
+	end;
+OnInit:
+	disablenpc "job_rune_edq#1st_tcnc";
+	end;
+OnEnable:
+	enablenpc "job_rune_edq#1st_tcnc";
+	initnpctimer;
+	end;
+OnDisable:
+	stopnpctimer;
+	set $@job_rune_test2,0;
+	donpcevent "Captain Tigris#jrt1::OnDisable";
+	donpcevent "Rune Knight Lunarea#jrt1::OnDisable";
+	donpcevent "Rune Knight Renoa#jrt1::OnDisable";
+	donpcevent "Rune Knight Velpino#jrt1::OnDisable";
+	disablenpc "job_rune_edq#1st_tcnc";
+	end;
+OnUse:
+	mapannounce "job3_rune02",""Capitano Tigris: Signori, guardiamo un po' il test.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	stopnpctimer;
+	set $@job_rune_test2,0;
+	donpcevent "Captain Tigris#jrt1::OnDisable";
+	donpcevent "Rune Knight Lunarea#jrt1::OnDisable";
+	donpcevent "Rune Knight Renoa#jrt1::OnDisable";
+	donpcevent "Rune Knight Velpino#jrt1::OnDisable";
+	donpcevent "job_rune_edq#1st_tcnc::OnEnable";
+	end;
+OnTimer30000:
+	mapannounce "job3_rune02",""Capitano Tigris: Candidati Cavalieri delle Rune... Se vuoi prendere in prestito il nostro potere, parla con uno di noi.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	donpcevent "Captain Tigris#jrt1::OnEnable";
+	donpcevent "Rune Knight Lunarea#jrt1::OnEnable";
+	donpcevent "Rune Knight Renoa#jrt1::OnEnable";
+	donpcevent "Rune Knight Velpino#jrt1::OnEnable";
+	end;
+OnTimer60000:
+	mapannounce "job3_rune02",""Capitano Tigris: Sembra che tu non abbia bisogno del nostro aiuto... Guardiamo un po' il test.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	stopnpctimer;
+	donpcevent "Captain Tigris#jrt1::OnDisable";
+	donpcevent "Rune Knight Lunarea#jrt1::OnDisable";
+	donpcevent "Rune Knight Renoa#jrt1::OnDisable";
+	donpcevent "Rune Knight Velpino#jrt1::OnDisable";
+	donpcevent "job_rune_edq#1st_tcnc::OnEnable";
+	end;
+}
+
+job3_rune02,34,46,5	script	Captain Tigris#jrt1	470,2,2,{
+	if (job_rune_edq != 4 || $@job_rune_test2 != 0) {
+		donpcevent "job_rune_edq#1st_tcnc::OnUse";
+		end;
+	}
+	switch(rand(6)) {
+	case 0:
+		mapannounce "job3_rune02",""Capitano Tigris: Che Beljeve ti benedica!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		npcskill "AL_BLESSING",1,0,0;
+		break;
+	case 1:
+	case 2:
+		mapannounce "job3_rune02",""Capitano Tigris: La Scintilla della vita... potrebbe ardere di nuovo.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		npcskill "AL_HEAL",8,70,99;
+		break;
+	case 3:
+		mapannounce "job3_rune02",""Capitano Tigris: Demoni malvagi! Vi rimanderò alle vostre tombe!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		specialeffect2 EF_METEORSTORM;
+		donpcevent "job_rune_edq#1st_tcmc::OnReset";
+		break;
+	case 4:
+		mapannounce "job3_rune02",""Capitano Tigris: Per un Cavaliere delle Rune, questo tipo di prova non è niente!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		sc_start SC_STUN,10000,0;
+		break;
+	case 5:
+		mapannounce "job3_rune02",""Capitano Tigris: Per un Cavaliere delle Rune, questo tipo di prova non è niente!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		sc_start SC_BLEEDING,10000,0;
+		break;
+	}
+	set $@job_rune_test2,1;
+	initnpctimer;
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Captain Tigris#jrt1";
+	end;
+OnEnable:
+	enablenpc "Captain Tigris#jrt1";
+	end;
+OnTimer5000:
+	donpcevent "job_rune_edq#1st_tcnc::OnUse";
+	set $@job_rune_test2,0;
+	stopnpctimer;
+	end;
+}
+
+job3_rune02,43,46,3	script	Rune Knight Lunarea#jrt1	469,2,2,{
+	if (job_rune_edq != 4 || $@job_rune_test2 != 0) {
+		donpcevent "job_rune_edq#1st_tcnc::OnUse";
+		end;
+	}
+	switch(rand(6)) {
+	case 0:
+		mapannounce "job3_rune02",""Rune Knight Lunarea: Presto... trova e colpisci i punti deboli del nemico!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		npcskill "AL_INCAGI",1,0,0;
+		break;
+	case 1:
+	case 2:
+		mapannounce "job3_rune02",""Rune Knight Lunarea: Non è finita... serve più potere...",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		npcskill "AL_HEAL",8,60,90;
+		break;
+	case 3:
+		mapannounce "job3_rune02",""Rune Knight Lunarea: Tutto inizia dall'inizio!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		npcskill "AL_CURE",1,0,0;
+		break;
+	case 4:
+		mapannounce "job3_rune02",""Rune Knight Lunarea: Non può esserci crescita senza prove.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		sc_start SC_POISON,30000,0;
+		break;
+	case 5:
+		mapannounce "job3_rune02",""Rune Knight Lunarea: Non può esserci crescita senza prove.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		sc_start SC_CURSE,30000,0;
+		break;
+	}
+	set $@job_rune_test2,1;
+	initnpctimer;
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Rune Knight Lunarea#jrt1";
+	end;
+OnEnable:
+	enablenpc "Rune Knight Lunarea#jrt1";
+	end;
+OnTimer5000:
+	donpcevent "job_rune_edq#1st_tcnc::OnUse";
+	set $@job_rune_test2,0;
+	stopnpctimer;
+	end;
+}
+
+job3_rune02,43,34,1	script	Rune Knight Renoa#jrt1	469,2,2,{
+	if (job_rune_edq != 4 || $@job_rune_test2 != 0) {
+		donpcevent "job_rune_edq#1st_tcnc::OnUse";
+		end;
+	}
+	switch(rand(6)) {
+	case 0:
+		mapannounce "job3_rune02",""Rune Knight Renoa: La runa del Vento! Che ti dia la forza!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		npcskill "AL_INCAGI",1,0,0;
+		break;
+	case 1:
+	case 2:
+		mapannounce "job3_rune02",""Rune Knight Renoa: La runa della nascita! Può darti il ​​potere della vita!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		npcskill "AL_HEAL",8,60,90;
+		break;
+	case 3:
+		mapannounce "job3_rune02",""Rune Knight Renoa: Sono più veloce di tutti loro! Diversi dagli altri!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		specialeffect2 EF_PIERCESELF;
+		donpcevent "job_rune_edq#1st_tcmc::OnReset";
+		break;
+	case 4:
+		mapannounce "job3_rune02",""Rune Knight Renoa: Per un Rune Knight, questo tipo di prova non è niente!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		sc_start SC_POISON,30000,0;
+		break;
+	case 5:
+		mapannounce "job3_rune02",""Rune Knight Renoa: Per un Rune Knight, questo tipo di prova non è niente!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		sc_start SC_CURSE,30000,0;
+		break;
+	}
+	set $@job_rune_test2,1;
+	initnpctimer;
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Rune Knight Renoa#jrt1";
+	end;
+OnEnable:
+	enablenpc "Rune Knight Renoa#jrt1";
+	end;
+OnTimer5000:
+	set $@job_rune_test2,0;
+	donpcevent "job_rune_edq#1st_tcnc::OnUse";
+	stopnpctimer;
+	end;
+}
+
+job3_rune02,34,34,7	script	Rune Knight Velpino#jrt1	468,2,2,{
+	if (job_rune_edq != 4 || $@job_rune_test2 != 0) {
+		donpcevent "job_rune_edq#1st_tcnc::OnUse";
+		end;
+	}
+	switch(rand(6)) {
+	case 0:
+		mapannounce "job3_rune02",""Cavaliere delle Rune Velpino: Non sei uno che cade in un posto del genere.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		npcskill "AL_HEAL",8,60,90;
+		break;
+	case 1:
+	case 2:
+		mapannounce "job3_rune02",""Cavaliere dei Ruhn Velpino: Vai avanti! Ci sono ostacoli da superare.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		npcskill "AL_INCAGI",1,0,0;
+		break;
+	case 3:
+		mapannounce "job3_rune02",""Cavaliere delle Rune Velpino: Non sei solo. Siamo al tuo fianco.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		npcskill "AL_BLESSING",1,0,0;
+		break;
+	case 4:
+		mapannounce "job3_rune02",""Cavaliere delle Rune Velpino: Combatti e vinci! Non cedere al dolore!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		sc_start SC_FREEZE,10000,0;
+		break;
+	case 5:
+		mapannounce "job3_rune02",""Cavaliere delle Rune Velpino: Non è una grande prova per un vero Cavaliere delle Rune!",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		sc_start SC_SLEEP,10000,0;
+		break;
+	}
+	set $@job_rune_test2,1;
+	initnpctimer;
+	end;
+OnInit:
+OnDisable:
+	disablenpc "Rune Knight Velpino#jrt1";
+	end;
+OnEnable:
+	enablenpc "Rune Knight Velpino#jrt1";
+	end;
+OnTimer5000:
+	set $@job_rune_test2,0;
+	donpcevent "job_rune_edq#1st_tcnc::OnUse";
+	stopnpctimer;
+	end;
+}
+
+job3_rune02,2,1,0	script	job_rune_edq#3rd_tb	139,{
+	end;
+OnInit:
+	disablenpc "job_rune_edq#3rd_tb";
+	end;
+OnEnable:
+	enablenpc "job_rune_edq#3rd_tb";
+	initnpctimer;
+	end;
+OnDisable:
+	stopnpctimer;
+	disablenpc "job_rune_edq#3rd_tb";
+	end;
+OnTimer5000:
+	mapannounce "job3_rune02",""Inizierò l'ultimo test del cambio di Rune Knight Job.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	end;
+OnTimer8000:
+	mapannounce "job3_rune02",""Sbarazzati dei mostri che appaiono qui entro 8 minuti utilizzando le pietre runiche fornite.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	end;
+OnTimer11000:
+	mapannounce "job3_rune02",""Se muori o non riesci a sbarazzarti di tutti i mostri entro il limite di tempo, considererò il tentativo un fallimento.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	end;
+OnTimer14000:
+	mapannounce "job3_rune02",""Ora inizierò il test.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	donpcevent "job_rune_edq#3rd_tc::OnEnable";
+	donpcevent "job_rune_edq#3rd_tb::OnDisable";
+	end;
+}
+
+job3_rune02,2,2,0	script	job_rune_edq#3rd_tc	139,{
+	end;
+OnInit:
+	disablenpc "job_rune_edq#3rd_tc";
+	end;
+OnEnable:
+	enablenpc "job_rune_edq#3rd_tc";
+	initnpctimer;
+	donpcevent "job_rune_edq#3rd_tc1::OnEnable";
+	end;
+OnDisable:
+	stopnpctimer;
+	donpcevent "job_rune_edq#3rd_tc1::OnDisable";
+	donpcevent "job_rune_edq#3rd_tc2::OnDisable";
+	donpcevent "job_rune_edq#3rd_tc3::OnDisable";
+	disablenpc "job_rune_edq#3rd_tc";
+	end;
+OnTimer480000:
+	killmonster "job3_rune02","job_rune_edq#3rd_tc::OnMyMobDead";
+	mapannounce "job3_rune02",""Hai raggiunto il tempo limite quindi considererò il test un fallimento.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+	end;
+OnTimer482000:
+	mapwarp "job3_rune02","job3_rune01",80,65;
+	donpcevent "job_rune_edq#1st_tb::OnDisable";
+	donpcevent "job_rune_edq#1st_tc::OnDisable";
+	donpcevent "job_rune_edq#1st_tcnc::OnDisable";
+	donpcevent "job_rune_edq#1st_tcmc2::OnDisable";
+	donpcevent "job_rune_edq#1st_tcmc::OnDisable";
+	donpcevent "job_rune_edq#3rd_tb::OnDisable";
+	donpcevent "job_rune_edq#3rd_tc::OnDisable";
+	donpcevent "#RK Test Hidden Portal 1::OnEnable";
+	set $@job_rune_test1,0;
+	set $@job_rune_test2,0;
+	stopnpctimer;
+	end;
+}
+
+job3_rune02,2,3,0	script	job_rune_edq#3rd_tc1	139,{
+	end;
+OnInit:
+	disablenpc "job_rune_edq#3rd_tc1";
+	end;
+OnEnable:
+	enablenpc "job_rune_edq#3rd_tc1";
+	monster "job3_rune02",40,40,"Executioner",2039,1,"job_rune_edq#3rd_tc1::OnMyMobDead";
+	end;
+OnDisable:
+	killmonster "job3_rune02","job_rune_edq#3rd_tc1::OnMyMobDead";
+	disablenpc "job_rune_edq#3rd_tc1";
+	end;
+OnMyMobDead:
+	if (mobcount("job3_rune02","job_rune_edq#3rd_tc1::OnMyMobDead") < 1) {
+		set job_rune_edq,19;
+		killmonster "job3_rune02","job_rune_edq#3rd_tc1::OnMyMobDead";
+		donpcevent "job_rune_edq#3rd_tc2::OnEnable";
+		donpcevent "job_rune_edq#3rd_tc1::OnDisable";
+		end;
+	}
+	end;
+}
+
+job3_rune02,2,4,0	script	job_rune_edq#3rd_tc2	139,{
+	end;
+OnInit:
+	disablenpc "job_rune_edq#3rd_tc2";
+	end;
+OnEnable:
+	enablenpc "job_rune_edq#3rd_tc2";
+	monster "job3_rune02",40,40,"Ogretooth",2040,1,"job_rune_edq#3rd_tc2::OnMyMobDead";
+	end;
+OnDisable:
+	killmonster "job3_rune02","job_rune_edq#3rd_tc2::OnMyMobDead";
+	disablenpc "job_rune_edq#3rd_tc2";
+	end;
+OnMyMobDead:
+	if (mobcount("job3_rune02","job_rune_edq#3rd_tc2::OnMyMobDead") < 1) {
+		set job_rune_edq,20;
+		killmonster "job3_rune02","job_rune_edq#3rd_tc2::OnMyMobDead";
+		donpcevent "job_rune_edq#3rd_tc3::OnEnable";
+		donpcevent "job_rune_edq#3rd_tc2::OnDisable";
+		end;
+	}
+	end;
+}
+
+job3_rune02,2,5,0	script	job_rune_edq#3rd_tc3	139,{
+	end;
+OnInit:
+	disablenpc "job_rune_edq#3rd_tc3";
+	end;
+OnEnable:
+	enablenpc "job_rune_edq#3rd_tc3";
+	monster "job3_rune02",40,40,"Mysteltainn",2041,1,"job_rune_edq#3rd_tc3::OnMyMobDead";
+	end;
+OnDisable:
+	killmonster "job3_rune02","job_rune_edq#3rd_tc3::OnMyMobDead";
+	disablenpc "job_rune_edq#3rd_tc3";
+	end;
+OnMyMobDead:
+	if (mobcount("job3_rune02","job_rune_edq#3rd_tc3::OnMyMobDead") < 1) {
+		set job_rune_edq,21;
+		changequest 3217,3218;
+		erasequest 3220;
+		killmonster "job3_rune02","job_rune_edq#3rd_tc3::OnMyMobDead";
+		mapannounce "job3_rune02",""Congratulazioni. Hai superato il test.",bc_map,"0xFFFF00"; //FW_NORMAL 12 0 0
+		mapwarp "job3_rune02","job3_rune01",80,65;
+		donpcevent "job_rune_edq#1st_tb::OnDisable";
+		donpcevent "job_rune_edq#1st_tc::OnDisable";
+		donpcevent "job_rune_edq#1st_tcnc::OnDisable";
+		donpcevent "job_rune_edq#1st_tcmc2::OnDisable";
+		donpcevent "job_rune_edq#1st_tcmc::OnDisable";
+		donpcevent "job_rune_edq#3rd_tb::OnDisable";
+		donpcevent "job_rune_edq#3rd_tc::OnDisable";
+		donpcevent "#RK Test Hidden Portal 1::OnEnable";
+		set $@job_rune_test1,0;
+		set $@job_rune_test2,0;
+		end;
+	}
+	end;
+}
+
+sec_in02,34,167,3	script	R.Knight Job Manager	470,1,1,{
+	callfunc "F_GM_NPC";
+	mes "Inserisci la password.";
+	next;
+	if (callfunc("F_GM_NPC","1854",1) == 1) {
+		mes "Avvio del modulo di gestione del cambio di lavoro di Rune Knight";
+		next;
+		switch(select("Controllo GlobalVar:Modifica Oneshot GlobalVar")) {
+		case 1:
+			mes "Rune Knight Job Change GlobalVar in questo momento lo è " + $@job_rune_test1 + ".";
+			mes "Il numero di campi di Rune Knight Test in questo momento è... " + getmapusers("job3_rune02") + ".";
+			close;
+		case 2:
+			set $@job_rune_test1,0;
+			mes "Rune Knight Job Change GlobalVar è stato modificato a 0. L'uso del campo test è ora disponibile.";
+			close;
+		}
+	}
+	close;
+}
+job3_rune01,1,1,3	duplicate(R.Knight Job Manager)	#renshucheck	844

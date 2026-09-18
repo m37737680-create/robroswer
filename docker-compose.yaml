@@ -78,8 +78,18 @@ services:
     container_name: ro-browser-renewal
     restart: always
     environment:
-      PACKETVER: ${PACKETVER}
-      RENEWAL: ${RENEWAL}
+
+      PACKETVER: "${PACKETVER}"
+      RENEWAL: "${RENEWAL}"
+
+      # Necessarie per renewal-entrypoint
+      RATHENA_HOST: "${RATHENA_HOST}"
+      WSPROXY_PORT: "${WSPROXY_PORT}"
+      WEB_PORT: "${WEB_PORT}"
+      LOGIN_PORT: "${LOGIN_PORT}"
+
+      # Permette di disabilitare Config.local.js
+      USE_LOCAL_CONFIG: "${USE_LOCAL_CONFIG:-true}"
     networks:
       - ragnarok-app-network
     depends_on:

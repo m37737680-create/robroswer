@@ -1,0 +1,63 @@
+//===== rAthena Script =======================================
+//= Izlude Dungeon Renewal Warp Script
+//===== By: ==================================================
+//= Athena (1.0)
+//= Nana (1.1)
+//===== Current Version: =====================================
+//= 1.3
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= Warp Points for Bibilyn Island & Undersea Cave
+//===== Additional Comments: =================================
+//= 1.2 Moved common warps to base path. [Euphy]
+//= 1.3 Added Undersea Tunnel 6th floor warper.
+//============================================================
+
+// Undersea Tunnel Warper :: iz_dun05
+//============================================================
+iz_dun04,130,234,5	script	Gatekeeper#iz_dun	413,{
+	mes "[Portiere]";
+	mes "Fermati!";
+	mes "Cosa ti porta qui, avventuriero?";
+	mes "Abbiamo scoperto un nuovo piano di questa città sottomarina.";
+	next;
+	mes "[Portiere]";
+	mes "Pensi di essere all'altezza della sfida?";
+	mes "I mostri qui sono tra i livelli 110 e 124.";
+	mes "E devi stare attento al Kraken!";
+	next;
+	switch(select("Libera il Kraken!:Starò qui.")) {
+	case 1:
+		mes "[Portiere]";
+		mes "Sii cauto e buona fortuna.";
+		mes "Se vedi il Kraken assicurati di avere i tuoi amici per aiutarti o fai quello che facciamo noi e scappa.";
+		close2;
+		warp "iz_dun05",141,187;
+		end;
+	case 2:
+		mes "[Portiere]";
+		mes "È sempre meglio essere preparati prima di esplorare una nuova area.";
+		mes "Torna quando sei pronto per partire.";
+		close;
+	}
+}
+
+iz_dun05,142,190,5	script	Guard#iz_dun	413,{
+	mes "[Portiere]";
+	mes "Quindi immagino che tu voglia tornare al quinto piano?";
+	next;
+	switch(select("SÌ!:No, resterò.")) {
+	case 1:
+		mes "[Portiere]";
+		mes "Stai attento, avventuriero.";
+		close2;
+		warp "iz_dun04",129,232;
+		end;
+	case 2:
+		mes "[Portiere]";
+		mes "Non ci vai?";
+		mes "Sei più coraggioso di quanto pensassi.";
+		close;
+	}
+}

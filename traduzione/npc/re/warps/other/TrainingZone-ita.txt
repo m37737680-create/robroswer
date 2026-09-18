@@ -1,0 +1,91 @@
+//===== rAthena Script =======================================
+//= Training Zone
+//===== Description: =========================================
+//= NPC warp related to the training zone.
+//===== Changelog: ===========================================
+//= 1.0 Initial Release [Capuche]
+//============================================================
+
+prontera,246,62,3	script	Training Instructor#sol1	8W_SOLDIER,{
+	mes "[Istruttore di formazione]";
+	mes "Se vuoi allenarti in un'area più ampia, ti faccio entrare.";
+	next;
+	mes "[Istruttore di formazione]";
+	mes "Il campo di allenamento è diviso in due aree principali.";
+	next;
+	mes "[Istruttore di formazione]";
+	mes "Area superiore dove puoi controllare la forza applicata in base alle dimensioni del mostro.";
+	next;
+	mes "[Istruttore di formazione]";
+	mes "L'area inferiore dove puoi controllare la forza applicata a seconda dell'attributo e della forma del mostro.";
+	next;
+	mes "[Istruttore di formazione]";
+	mes "Dove vorresti entrare?";
+	next;
+	switch( select( "Zona superiore", "Zona inferiore", "Accesso Vietato" ) ) {
+	case 1:
+		mes "[Istruttore di formazione]";
+		mes "Allora ti guiderò.";
+		close2;
+		warp "tra_fild",112,167;
+		end;
+	case 2:
+		mes "[Istruttore di formazione]";
+		mes "Allora ti guiderò.";
+		close2;
+		warp "tra_fild",111,74;
+		end;
+	case 3:
+		mes "[Istruttore di formazione]";
+		mes "Se hai bisogno di una guida, vieni da me.";
+		close;
+	}
+}
+
+tra_fild,111,79,3	script	Training Instructor#sol3	8W_SOLDIER,{
+	mes "[Istruttore di formazione]";
+	mes "Sei sicuro di voler passare alla sezione superiore?";
+	next;
+	switch( select( "Mossa", "Non si muova", "Andate a Prontera." ) ) {
+	case 1:
+		mes "[Istruttore di formazione]";
+		mes "Vai alla sezione superiore!!!";
+		close2;
+		warp "tra_fild",112,167;
+		end;
+	case 2:
+		mes "[Istruttore di formazione]";
+		mes "Parlami se hai bisogno di spostarti.";
+		close;
+	case 3:
+		mes "[Istruttore di formazione]";
+		mes "Ti deformerò.";
+		close2;
+		warp "prontera",246,60;
+		end;
+	}
+}
+
+tra_fild,112,171,3	script	Training Instructor#sol2	8W_SOLDIER,{
+	mes "[Istruttore di formazione]";
+	mes "Sei sicuro di voler passare alla sezione inferiore?";
+	next;
+	switch( select( "Mossa", "Non si muova", "Andate a Prontera." ) ) {
+	case 1:
+		mes "[Istruttore di formazione]";
+		mes "Vai alla sezione inferiore!!!";
+		close2;
+		warp "tra_fild",111,74;
+		end;
+	case 2:
+		mes "[Istruttore di formazione]";
+		mes "Parlami se hai bisogno di spostarti.";
+		close;
+	case 3:
+		mes "[Istruttore di formazione]";
+		mes "Ti deformerò.";
+		close2;
+		warp "prontera",246,60;
+		end;
+	}
+}

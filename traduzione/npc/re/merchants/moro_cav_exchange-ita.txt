@@ -1,0 +1,287 @@
+//===== rAthena Script =======================================
+//= Enchants NPCs.
+//===== Description: =========================================
+//= [Official Conversion]
+//= Hero Ring enchants NPCs
+//===== Changelogs: ==========================================
+//= 1.0 First Version. [Capuche]
+//= 1.1 Slight change to match official script. [Capuche]
+//============================================================
+
+moro_cav,32,73,5	script	Hero Token Exchanger#1	4_F_SHADOWCHASER,{
+	disable_items;
+	mes "[Scambiatore di gettoni eroe]";
+	mes "Se hai combattuto contro il Marocco";
+	mes "e raccolto";
+	mes "Gettoni Eroe,";
+	mes "Posso scambiarli con un anello speciale per te.";
+	mes "Vuoi dare un'occhiata al mio anello?";
+	while(true) {
+		next;
+		if (checkweight(2163,2) == 0) {
+			mes "[Scambiatore di gettoni eroe]";
+			mes "Il tuo pacchetto contiene molti articoli,";
+			mes "Per favore, torna di nuovo dopo averlo organizzato!";
+			close;
+		}
+		switch( select( "Descrizione dell'anello", "Scambio con l'anello.", "Termina la conversazione." ) ) {
+		case 1:
+			mes "[Scambiatore di gettoni eroe]";
+			mes "Questo anello dell'eroe";
+			mes "potrebbe non esserlo";
+			mes "Aspetto";
+			mes "impressionante,";
+			next;
+			mes "[Scambiatore di gettoni eroe]";
+			mes "ma portalo a";
+			mes "Incantatore esperto Byrnes,";
+			mes "e può incantare";
+			mes "tutte e 4 le prese al suo interno";
+			mes "e portare fuori";
+			mes "le sue capacità latenti.";
+			next;
+			mes "[Scambiatore di gettoni eroe]";
+			mes "Anello dell'eroe";
+			mes "può aiutarti";
+			mes "nel sottomettere";
+			mes "Marocco.";
+			mes "Altre domande?";
+			continue;
+		case 2:
+			mes "- Anello dell'Eroe -";
+			mes "^006400Un anello fatto per i guerrieri^000000";
+			mes "^006400nella missione per sconfiggere il Marocco..^000000";
+			mes "^006400Quando incantato,^000000";
+			mes "^006400presta al suo proprietario^000000";
+			mes "^006400il potere di affrontare il Marocco^000000";
+			mes "^006400Classe: Accessorio/DEF: 0^000000";
+			mes "^006400Peso: 20/Livello richiesto: 160^000000";
+			mes "^006400Slot: 0/Equipaggia a: Tutti i lavori^000000";
+			next;
+			mes "[Scambiatore di gettoni eroe]";
+			mes "L'Anello dell'Eroe richiede";
+			mes "30 gettoni eroe";
+			mes "per lo scambio.";
+			mes "Vuoi scambiare?";
+			next;
+			if (select( "Menù precedente.", "Scambia 30 gettoni eroe." ) == 1) {
+				mes "[Scambiatore di gettoni eroe]";
+				mes "Pensare";
+				mes "Ancora.";
+				continue;
+			}
+			if (countitem(6684) < 30) {
+				mes "[Scambiatore di gettoni eroe]";
+				mes "^006400Segnalino Eroe^000000";
+				mes "è dato a";
+				mes "coloro che hanno combattuto coraggiosamente il Marocco.";
+				mes "Non ce l'hai";
+				mes "30 ^006400Gettoni eroe^000000,";
+				mes "e quindi non posso aiutarti.";
+				continue;
+			}
+			mes "[Scambiatore di gettoni eroe]";
+			mes "Lo scambio";
+			mes "30 ^006400Gettoni Eroe^000000";
+			mes "con 1 ^006400Anello dell'Eroe^000000.";
+			mes "Qualunque altra cosa?";
+			delitem 6684,30;	// TokenOfHero
+			getitem 2981,1;		// RingOfHero
+			continue;
+		case 3:
+			mes "[Scambiatore di gettoni eroe]";
+			mes "Un giorno";
+			mes "ti ritroverai";
+			mes "ha bisogno dell'Anello dell'Eroe.";
+			close;
+		}
+	}
+}
+
+moro_cav,34,65,5	script	Expert Enchanter Byrnes	1_M_03,{
+	disable_items;
+	mes "[Byrnes]";
+	mes "Hai sentito parlare dell'Anello dell'Eroe? Solo i veri eroi meritano di possedere quel magnifico anello, e io ne stavo aspettando uno.";
+	mes "Cosa posso fare per lei?";
+	next;
+	switch( select( "Incanta l'anello dell'eroe.", "Ripristina gli incantesimi sull'anello dell'eroe.", "Cancellare." ) ) {
+	case 1:
+		mes "[Byrnes]";
+		mes "Posso incantare solo gli anelli equipaggiati. Quale degli anelli equipaggiati vuoi incantare?";
+		next;
+		setarray .@eqi_slot[0], EQI_ACC_L, EQI_ACC_R;
+		.@s = select( "Sinistra", "Giusto" ) - 1;
+		switch( getequipid(.@eqi_slot[.@s]) ) {
+		case -1:
+			mes "[Byrnes]";
+			mes "Per favore equipaggia l'Anello dell'Eroe che vuoi incantare.";
+			close;
+		case 2981:
+			break;
+		default:
+			mes "[Byrnes]";
+			mes "Per favore equipaggia il tuo Anello dell'Eroe. Non posso incantare nient'altro.";
+			close;
+		}
+		// custom at this point
+		setarray .@card[0],
+			getequipcardid(.@eqi_slot[.@s],0),
+			getequipcardid(.@eqi_slot[.@s],1),
+			getequipcardid(.@eqi_slot[.@s],2),
+			getequipcardid(.@eqi_slot[.@s],3);
+
+		if (.@card[0] > 0) {
+			mes "[Byrnes]";
+			mes "Un Anello dell'Eroe completamente incantato non può essere incantato ulteriormente.";
+			close;
+		}
+		if (.@card[3] == 0) {
+			setarray .@enchant_list$[0], "DEF", "MDEF";
+			.@slot = 4;
+		}
+		else if (.@card[2] == 0) {
+			setarray .@enchant_list$[0], "Max HP", "Max SP";
+			.@slot = 3;
+		}
+		else if (.@card[1] == 0) {
+			setarray .@enchant_list$[0], "Atk", "MAtk";
+			.@slot = 2;
+		}
+		else {
+			setarray .@enchant_list$[0], "STR", "INT", "AGI", "VIT", "DEX", "LUK";
+			.@slot = 1;
+		}
+		mes "[Byrnes]";
+		mes "Quale abilità vuoi come incantesimo sullo slot " + .@slot + "?";
+		next;
+		.@enchant_list_size = getarraysize(.@enchant_list$);
+		for ( .@i = 0; .@i < .@enchant_list_size; ++.@i )
+			.@menu$ += .@enchant_list$[.@i] + ":";
+		.@type = select(.@menu$) - 1;
+
+		switch(.@slot) {
+		case 4:
+			switch(.@type) {// enchant list index
+			case 0:	// DEF
+				setarray .@bonus[0], 4791, 4792, 4793, 4794, 4893;
+				break;
+			default:	// MDEF
+				setarray .@bonus[0], 4890, 4786, 4891, 4787, 4892;
+				break;
+			}
+			break;
+		case 3:
+			switch(.@type) {
+			case 0:	// Max HP
+				setarray .@bonus[0], 4861, 4862, 4867, 4868, 4900;
+				break;
+			default:	// Max SP
+				setarray .@bonus[0], 4800, 4870, 4871, 4801, 4802;
+				break;
+			}
+			break;
+		case 2:
+			switch(.@type) {
+			case 0:	// Atk
+				setarray .@bonus[0], 4882, 4766, 4767, 4894, 4895;
+				break;
+			default:	// Matk
+				setarray .@bonus[0], 4883, 4896, 4897, 4898, 4899;
+				break;
+			}
+			break;
+		case 1:
+			switch(.@type) {
+			case 0:	// STR
+				setarray .@bonus[0], 4700, 4701, 4702, 4703, 4704;
+				break;
+			case 1:	// INT
+				setarray .@bonus[0], 4710, 4711, 4712, 4713, 4714; 
+				break;
+			case 2:	// AGI
+				setarray .@bonus[0], 4730, 4731, 4732, 4733, 4734;
+				break;
+			case 3:	// VIT
+				setarray .@bonus[0], 4740, 4741, 4742, 4743, 4744;
+				break;
+			case 4:	// DEX
+				setarray .@bonus[0], 4720, 4721, 4722, 4723, 4724;
+				break;
+			default:	// LUK
+				setarray .@bonus[0], 4750, 4751, 4752, 4753, 4754;
+				break;
+			}
+			break;
+		}
+
+		// anti-hack
+		if (callfunc("F_IsEquipIDHack", .@eqi_slot[.@s], 2981) || callfunc("F_IsEquipCardHack", .@eqi_slot[.@s], .@card[0], .@card[1], .@card[2], .@card[3]))
+			close;
+
+		.@bonus_size = getarraysize(.@bonus);
+		.@card[.@slot-1] = .@bonus[ rand(.@bonus_size) ];	// unknown rates
+		specialeffect2 EF_ANGEL2;
+		mes "[Byrnes]";
+		mes "Incantesimo completato!";
+		delequip .@eqi_slot[.@s];
+		getitem2 2981,1,1,0,0,.@card[0],.@card[1],.@card[2],.@card[3];
+		close;
+	case 2:
+		mes "[Byrnes]";
+		mes "Per resettare gli incantesimi sul tuo Anello dell'Eroe, ho bisogno di 3 Gettoni dell'Eroe.";
+		next;
+		if (countitem(6684) < 3) {
+			mes "[Byrnes]";
+			mes "Non hai abbastanza gettoni eroe. Non riesco a resettare il tuo Anello dell'Eroe.";
+			close;
+		}
+		mes "[Byrnes]";
+		mes "Posso ripristinare solo gli anelli equipaggiati. Quale degli anelli equipaggiati vuoi resettare?";
+		next;
+		setarray .@eqi_slot[0], EQI_ACC_L, EQI_ACC_R;
+		.@s = select( "Sinistra", "Giusto" ) - 1;
+		switch( getequipid(.@eqi_slot[.@s]) ) {
+		case -1:
+			mes "[Byrnes]";
+			mes "Devi prima equipaggiare l'oggetto per ripristinare il suo stato di incantesimo.";
+			close;
+		case 2981:
+			break;
+		default:
+			mes "[Byrnes]";
+			mes "Per favore equipaggia il tuo Anello dell'Eroe. Non posso resettare nient'altro.";
+			close;
+		}
+		// custom at this point
+		if (countitem(6684) < 3) {
+			mes "[Byrnes]";
+			mes "Non hai abbastanza gettoni eroe. Non riesco a resettare il tuo Anello dell'Eroe.";
+			close;
+		}
+		setarray .@card[0],
+			getequipcardid(.@eqi_slot[.@s],0),
+			getequipcardid(.@eqi_slot[.@s],1),
+			getequipcardid(.@eqi_slot[.@s],2),
+			getequipcardid(.@eqi_slot[.@s],3);
+
+		if (.@card[3] == 0) {
+			mes "[Byrnes]";
+			mes "Il tuo Anello dell'Eroe è attualmente in uno stato senza incantesimo.";
+			close;
+		}
+
+		// anti-hack
+		if (callfunc("F_IsEquipIDHack", .@eqi_slot[.@s], 2981) || callfunc("F_IsEquipCardHack", .@eqi_slot[.@s], .@card[0], .@card[1], .@card[2], .@card[3]))
+			close;
+
+		specialeffect2 EF_ANGEL2;
+		mes "[Byrnes]";
+		mes "Inizializzazione completata.";
+		delitem 6684,3;
+		delequip .@eqi_slot[.@s];
+		getitem 2981,1;
+		close;
+	case 3:
+		close;
+	}
+}
