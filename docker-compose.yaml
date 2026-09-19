@@ -68,6 +68,12 @@ services:
   app:
     build: app
     container_name: ro-browser-Brawser
+    environment:
+      RATHENA_HOST: ${RATHENA_HOST}
+      WEB_PORT: ${WEB_PORT}
+      WSPROXY_PORT: ${WSPROXY_PORT}
+      LOGIN_PORT: ${LOGIN_PORT}
+      PACKETVER: ${PACKETVER}
     volumes:
       - ./app:/var/www
     networks:
@@ -102,6 +108,12 @@ services:
     tty: true
     ports:
       - "${WEB_PORT}:80"
+    environment:
+      RATHENA_HOST: ${RATHENA_HOST}
+      WEB_PORT: ${WEB_PORT}
+      WSPROXY_PORT: ${WSPROXY_PORT}
+      LOGIN_PORT: ${LOGIN_PORT}
+      PACKETVER: ${PACKETVER}
     volumes:
       - ./app/roBrowser:/var/www/roBrowser
     networks:
