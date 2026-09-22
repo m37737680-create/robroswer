@@ -396,6 +396,7 @@ class DB {
 				tryLoadLuaAliases(loadItemInfo, iteminfoNames, null, onLoad(), true);
 			} else {
 				iteminfoNames = iteminfoNames.concat(getSystemAliases('System/itemInfo.lub'));
+				iteminfoNames.push('System/itemInfo_f.lub');
 				tryLoadLuaAliases(loadItemInfo, iteminfoNames, null, onLoad());
 			}
 
@@ -2291,6 +2292,17 @@ class DB {
 	 */
 	static getItemInfo(itemid) {
 		const item = ItemTable[itemid] || unknownItem;
+
+		// Some renewal clients split the item table between itemInfo.lub and
+		// itemInfo_f.lub. Keep incomplete records from leaking undefined names
+		// into inventory and equipment labels.
+		if (!item.identifiedDisplayName || !item.unidentifiedDisplayName) {
+			if (!item._invalidName) {
+				console.warn('[DB] Item has no display name:', itemid);
+				item._invalidName = true;
+			}
+			return unknownItem;
+		}
 
 		if (!item._decoded) {
 			item.identifiedDescriptionName =
@@ -5177,6 +5189,7 @@ function tryLoadLuaAliases(rFunc, files, callBack, onEnd, loadAll = false) {
  * @author alisonrag
  */
 function loadItemInfo(filename, callback, onEnd) {
+	const itemCountBefore = Object.keys(ItemTable).length;
 	const loadPromise = new Promise((resolve, reject) => {
 		Client.loadFile(filename, resolve, reject);
 	});
@@ -5291,7 +5304,9 @@ function loadItemInfo(filename, callback, onEnd) {
 							end
 						main_item()
 						`);
-				wasSuccessful = true;
+				// A wrapper file can load successfully while defining no items.
+				// Let tryLoadLuaAliases continue with itemInfo_f.lub in that case.
+				wasSuccessful = Object.keys(ItemTable).length > itemCountBefore;
 			} catch (error) {
 				console.error('[loadItemInfo] Error: ', error);
 			} finally {
