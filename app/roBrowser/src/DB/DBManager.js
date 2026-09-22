@@ -375,6 +375,19 @@ class DB {
 				}
 			],
 			[
+				'data/num2itemdesctable.txt',
+				(_index, key, val) => {
+					const item = ItemTable[key] || (ItemTable[key] = {});
+					if (
+						!Array.isArray(item.unidentifiedDescriptionName) ||
+						item.unidentifiedDescriptionName.length === 0
+					) {
+						item.unidentifiedDescriptionName = val.split('\n');
+					}
+				},
+				true
+			],
+			[
 				'data/idnum2itemdisplaynametable.txt',
 				(_index, key, val) => {
 					const item = ItemTable[key] || (ItemTable[key] = {});
@@ -387,11 +400,24 @@ class DB {
 					const item = ItemTable[key] || (ItemTable[key] = {});
 					item.identifiedResourceName = item.identifiedResourceName || val;
 				}
+			],
+			[
+				'data/idnum2itemdesctable.txt',
+				(_index, key, val) => {
+					const item = ItemTable[key] || (ItemTable[key] = {});
+					if (
+						!Array.isArray(item.identifiedDescriptionName) ||
+						item.identifiedDescriptionName.length === 0
+					) {
+						item.identifiedDescriptionName = val.split('\n');
+					}
+				},
+				true
 			]
 		];
 
-		for (const [file, callback] of tables) {
-			loadTable(file, '#', 2, callback, onLoad());
+		for (const [file, callback, useCharPage] of tables) {
+			loadTable(file, '#', 2, callback, onLoad(), useCharPage);
 		}
 	}
 
@@ -5267,8 +5293,18 @@ function loadItemInfo(filename, callback, onEnd) {
 						unidentifiedResourceName: userStringDecoder.decode(unidentifiedResourceName),
 						identifiedDisplayName: userStringDecoder.decode(identifiedDisplayName, userCharpage),
 						identifiedResourceName: userStringDecoder.decode(identifiedResourceName),
-						unidentifiedDescriptionName: [],
-						identifiedDescriptionName: [],
+						unidentifiedDescriptionName:
+							ItemTable[ItemID] &&
+							Array.isArray(ItemTable[ItemID].unidentifiedDescriptionName) &&
+							ItemTable[ItemID].unidentifiedDescriptionName.length
+								? ItemTable[ItemID].unidentifiedDescriptionName
+								: [],
+						identifiedDescriptionName:
+							ItemTable[ItemID] &&
+							Array.isArray(ItemTable[ItemID].identifiedDescriptionName) &&
+							ItemTable[ItemID].identifiedDescriptionName.length
+								? ItemTable[ItemID].identifiedDescriptionName
+								: [],
 						EffectID: null,
 						costume: null,
 						PackageID: null,
