@@ -97,7 +97,18 @@ function onItemPickAnswer(pkt) {
  * @param {object} pkt - PACKET.ZC.EQUIPMENT_ITEMLIST
  */
 function onInventorySetList(pkt) {
-	Inventory.getUI().setItems(pkt.itemInfo || pkt.ItemInfo);
+	const items = pkt.itemInfo || pkt.ItemInfo || [];
+	console.info('[Inventory] received item list', {
+		packet: pkt.constructor?.name || 'unknown',
+		count: items.length,
+		items: items.slice(0, 10).map(item => ({
+			index: item.index,
+			ITID: item.ITID,
+			identified: item.IsIdentified,
+			name: DB.getItemInfo(item.ITID).identifiedDisplayName
+		}))
+	});
+	Inventory.getUI().setItems(items);
 }
 
 /**
