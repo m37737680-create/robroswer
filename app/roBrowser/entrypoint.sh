@@ -217,10 +217,6 @@ if [ "$USE_LOCAL_CONFIG" = "true" ]; then
     echo "USE_LOCAL_CONFIG=true"
     echo "Generating Config.local.js..."
 
-    # Elimina Config.js base
-    rm -f /app/Config.js
-    rm -f /app/dist/Web/Config.js
-
     # Genera Config.local.js
     generate_local_config | tee \
         /app/Config.local.js \
