@@ -373,6 +373,18 @@ class DB {
 
 				if (DB.index === DB.count) {
 					DB.isLoaded = true;
+					const item512 = ItemTable[512];
+					console.info('[DB] Item table loaded', {
+						loadLua: Configs.get('loadLua'),
+						count: Object.keys(ItemTable).length,
+						item512: item512
+							? {
+									identifiedDisplayName: item512.identifiedDisplayName,
+									unidentifiedDisplayName: item512.unidentifiedDisplayName,
+									identifiedResourceName: item512.identifiedResourceName
+								}
+							: null
+					});
 					// Force cleanup of DB file data (lua, txt, csv, bson blobs) that are no longer needed
 					// gl is null here because we may not have a WebGL context yet during lazy loading
 					MemoryManager.forceClean(null, /\.(lub|lua|txt|csv|bson)$/i);
