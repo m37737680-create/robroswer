@@ -2296,13 +2296,15 @@ class DB {
 		// Some renewal clients split the item table between itemInfo.lub and
 		// itemInfo_f.lub. Keep incomplete records from leaking undefined names
 		// into inventory and equipment labels.
-		if (!item.identifiedDisplayName || !item.unidentifiedDisplayName) {
+		if (!item.identifiedDisplayName && !item.unidentifiedDisplayName) {
 			if (!item._invalidName) {
 				console.warn('[DB] Item has no display name:', itemid);
 				item._invalidName = true;
 			}
 			return unknownItem;
 		}
+		item.identifiedDisplayName = item.identifiedDisplayName || item.unidentifiedDisplayName;
+		item.unidentifiedDisplayName = item.unidentifiedDisplayName || item.identifiedDisplayName;
 
 		if (!item._decoded) {
 			item.identifiedDescriptionName =
