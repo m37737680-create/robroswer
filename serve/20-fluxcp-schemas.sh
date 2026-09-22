@@ -6,7 +6,7 @@ echo "Importing FluxCP schemas..."
 for schema_file in /fluxcp-schemas/logindb/*.sql /fluxcp-schemas/charmapdb/*.sql; do
     [ -f "$schema_file" ] || continue
     echo "Importing FluxCP schema: $schema_file"
-    mysql -h"$MYSQL_HOST" -uroot -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < "$schema_file" || \
+    mysql -h"$MYSQL_HOST" -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE" < "$schema_file" || \
         echo "Skipping incompatible FluxCP schema update: $schema_file"
 done
 
@@ -15,11 +15,11 @@ ensure_column() {
     column="$2"
     definition="$3"
 
-    exists="$(mysql -h"$MYSQL_HOST" -uroot -p"$MYSQL_PASSWORD" -N \
+    exists="$(mysql -h"$MYSQL_HOST" -uroot -p"$MYSQL_ROOT_PASSWORD" -N \
         -e "SELECT COUNT(*) FROM information_schema.columns WHERE table_schema='$MYSQL_DATABASE' AND table_name='$table' AND column_name='$column';")"
     if [ "$exists" = "0" ]; then
         echo "Adding missing FluxCP column: $table.$column"
-        mysql -h"$MYSQL_HOST" -uroot -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" \
+        mysql -h"$MYSQL_HOST" -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE" \
             -e "ALTER TABLE \`$table\` ADD \`$column\` $definition;"
     fi
 }

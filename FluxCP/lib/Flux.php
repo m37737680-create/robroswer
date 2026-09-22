@@ -387,10 +387,14 @@ class Flux {
 			$webDbConfig  = $topConfig->getWebDbConfig();
 			$loginServer  = $topConfig->getLoginServer();
 
+			$dbHost     = getenv('FLUX_DB_HOST') ?: '127.0.0.1';
+			$dbUser     = getenv('FLUX_DB_USER') ?: 'ragnarok';
+			$dbPassword = getenv('FLUX_DB_PASSWORD') ?: 'ragnarok';
+
 			foreach (array($dbConfig, $logsDbConfig, $webDbConfig) as $_dbConfig) {
-				$_dbConfig->setHostname('localhost', $options);
-				$_dbConfig->setUsername('ragnarok', $options);
-				$_dbConfig->setPassword('ragnarok', $options);
+				$_dbConfig->setHostname($dbHost, $options);
+				$_dbConfig->setUsername($dbUser, $options);
+				$_dbConfig->setPassword($dbPassword, $options);
 				$_dbConfig->setPersistent(true, $options);
 			}
 
