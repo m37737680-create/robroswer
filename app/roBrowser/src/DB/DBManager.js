@@ -5191,7 +5191,6 @@ function tryLoadLuaAliases(rFunc, files, callBack, onEnd, loadAll = false) {
  * @author alisonrag
  */
 function loadItemInfo(filename, callback, onEnd) {
-	const itemCountBefore = Object.keys(ItemTable).length;
 	const loadPromise = new Promise((resolve, reject) => {
 		Client.loadFile(filename, resolve, reject);
 	});
@@ -5306,9 +5305,7 @@ function loadItemInfo(filename, callback, onEnd) {
 							end
 						main_item()
 						`);
-				// A wrapper file can load successfully while defining no items.
-				// Let tryLoadLuaAliases continue with itemInfo_f.lub in that case.
-				wasSuccessful = Object.keys(ItemTable).length > itemCountBefore;
+				wasSuccessful = true;
 			} catch (error) {
 				console.error('[loadItemInfo] Error: ', error);
 			} finally {
