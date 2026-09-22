@@ -50,8 +50,10 @@ fi
 
 if [ "$renewal" = "true" ]; then
     server_display="Renewal"
+    load_lua=true
 else
     server_display="Pre-Renewal"
+    load_lua=false
 fi
 
 
@@ -89,7 +91,7 @@ generate_local_config()
         "  packetver: $packetver," \
         "  renewal: $renewal," \
         "  packetKeys: $packet_keys," \
-        "  loadLua: true," \
+        "  loadLua: $load_lua," \
         "  enableAchievements: true," \
         "  enableBank: true," \
         "  remoteClient: '/client/'," \
@@ -188,7 +190,7 @@ window.ROConfigBase = {
   grfList: '$CLIENT_GRF_LIST',
   hashFiles: [],
 
-  loadLua: true,
+  loadLua: $load_lua,
 
   onReady: null,
 
