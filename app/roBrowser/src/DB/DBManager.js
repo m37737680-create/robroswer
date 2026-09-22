@@ -353,6 +353,48 @@ class DB {
 		);
 	}
 
+	/**
+	 * Load legacy item names and resources as a cross-platform fallback.
+	 *
+	 * @param {Function} onLoad factory for the DB load callback
+	 */
+	static loadLegacyItemTables(onLoad) {
+		const tables = [
+			[
+				'data/num2itemdisplaynametable.txt',
+				(_index, key, val) => {
+					const item = ItemTable[key] || (ItemTable[key] = {});
+					item.unidentifiedDisplayName = item.unidentifiedDisplayName || val.replace(/_/g, ' ');
+				}
+			],
+			[
+				'data/num2itemresnametable.txt',
+				(_index, key, val) => {
+					const item = ItemTable[key] || (ItemTable[key] = {});
+					item.unidentifiedResourceName = item.unidentifiedResourceName || val;
+				}
+			],
+			[
+				'data/idnum2itemdisplaynametable.txt',
+				(_index, key, val) => {
+					const item = ItemTable[key] || (ItemTable[key] = {});
+					item.identifiedDisplayName = item.identifiedDisplayName || val.replace(/_/g, ' ');
+				}
+			],
+			[
+				'data/idnum2itemresnametable.txt',
+				(_index, key, val) => {
+					const item = ItemTable[key] || (ItemTable[key] = {});
+					item.identifiedResourceName = item.identifiedResourceName || val;
+				}
+			]
+		];
+
+		for (const [file, callback] of tables) {
+			loadTable(file, '#', 2, callback, onLoad());
+		}
+	}
+
 	static isLoaded = false;
 	static count = 0;
 	static index = 0;
@@ -386,6 +428,10 @@ class DB {
 		}
 		// TODO: load these load files by PACKETVER
 		if (Configs.get('loadLua')) {
+			// Keep the legacy item tables as a fallback for clients where the
+			// itemInfo Lua bytecode cannot be decoded by the browser runtime.
+			DB.loadLegacyItemTables(onLoad);
+
 			// Item
 			let iteminfoNames = [];
 			const customII = Configs.get('customItemInfo', []);
