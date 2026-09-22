@@ -28,6 +28,7 @@
  */
 
 import Client from 'Core/Client.js';
+import Configs from 'Core/Configs.js';
 import DB from 'DB/DBManager.js';
 import ShadowTable from 'DB/Monsters/ShadowTable.js';
 import MountTable from 'DB/Jobs/MountTable.js';
@@ -256,7 +257,8 @@ function UpdateBody(job) {
 	// Don't force the GM/admin sprite when the entity is displaying a monster
 	// form (disguise or transformation) - otherwise a GM disguised as a monster
 	// shows the headless admin sprite instead of the monster.
-	const showAdminSprite = this.isAdmin && !shouldSuppressHead.call(this);
+	const showAdminSprite =
+		this.isAdmin && Configs.get('useAdminSprite', true) && !shouldSuppressHead.call(this);
 	let path = showAdminSprite ? DB.getAdminPath(this._sex) : DB.getBodyPath(job, this._sex);
 	const Entity = this.constructor;
 
@@ -560,7 +562,10 @@ function UpdateBodyStyle(look) {
 				}
 			}
 
-			path = this.isAdmin ? DB.getAdminPath(this._sex) : DB.getBodyPath(job, this._sex, look, cashMountCostume);
+			path =
+				this.isAdmin && Configs.get('useAdminSprite', true)
+					? DB.getAdminPath(this._sex)
+					: DB.getBodyPath(job, this._sex, look, cashMountCostume);
 			Entity = this.constructor;
 
 			// Loading

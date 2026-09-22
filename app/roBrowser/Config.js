@@ -11,6 +11,11 @@ window.ROConfigBase = {
 	development: true,
 	// Shared remote client served by nginx.
 	remoteClient: '/client/',
+	packetver: 20211103,
+	renewal: true,
+	packetKeys: false,
+	loadLua: true,
+	useAdminSprite: false,
 	servers: [
 		{
 			display: 'Renewal',
@@ -52,7 +57,6 @@ window.ROConfigBase = {
 	FirstPersonCamera: false,
 	grfList: 'DATA.INI',
 	hashFiles: [],
-	loadLua: true,
 	onReady: null,
 	plugins: {},
 	registrationweb: '',

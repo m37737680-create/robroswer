@@ -14,6 +14,7 @@ LANGTYPE="${LANGTYPE:-1}"
 CLIENT_VERSION="${CLIENT_VERSION:-55}"
 WORLD_MAP_EPISODE="${WORLD_MAP_EPISODE:-12}"
 CLIENT_GRF_LIST="${CLIENT_GRF_LIST:-DATA.INI}"
+USE_ADMIN_SPRITE="${USE_ADMIN_SPRITE:-false}"
 
 # ============================================================
 # Determina Renewal / Pre-Renewal dal PacketVer
@@ -90,6 +91,13 @@ window.ROConfigBase = {
 
   remoteClient: '/client/',
 
+  // Keep profile-wide values for modules that read them before server selection.
+  packetver: $packetver,
+  renewal: $renewal,
+  packetKeys: $packet_keys,
+  loadLua: $load_lua,
+  useAdminSprite: $USE_ADMIN_SPRITE,
+
   servers: [
     {
       display: '$server_display',
@@ -151,8 +159,6 @@ window.ROConfigBase = {
 
   grfList: '$CLIENT_GRF_LIST',
   hashFiles: [],
-
-  loadLua: $load_lua,
 
   onReady: null,
 
