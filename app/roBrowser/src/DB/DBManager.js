@@ -413,6 +413,15 @@ class DB {
 					}
 				},
 				true
+			],
+			[
+				'data/itemslotcounttable.txt',
+				(_index, key, val) => {
+					const item = ItemTable[key] || (ItemTable[key] = {});
+					if (item.slotCount === undefined || item.slotCount === '') {
+						item.slotCount = val;
+					}
+				}
 			]
 		];
 
@@ -452,12 +461,9 @@ class DB {
 		if (PACKETVER.value >= 20230302) {
 			loadCSV('data/simplemsg/msg_emotion.csv', MsgEmotionCSV, 0, 2, onLoad());
 		}
+		DB.loadLegacyItemTables(onLoad);
 		// TODO: load these load files by PACKETVER
 		if (Configs.get('loadLua')) {
-			// Keep the legacy item tables as a fallback for clients where the
-			// itemInfo Lua bytecode cannot be decoded by the browser runtime.
-			DB.loadLegacyItemTables(onLoad);
-
 			// Item
 			let iteminfoNames = [];
 			const customII = Configs.get('customItemInfo', []);
@@ -731,75 +737,6 @@ class DB {
 				loadCashShopBanner(DB.LUA_PATH + 'datainfo/tb_cashshop_banner.lub', null, onLoad());
 			}
 		} else {
-			// Item
-			loadTable(
-				'data/num2itemdisplaynametable.txt',
-				'#',
-				2,
-				function (_index, key, val) {
-					(ItemTable[key] || (ItemTable[key] = {})).unidentifiedDisplayName = val.replace(/_/g, ' ');
-				},
-				onLoad(),
-				true
-			);
-			loadTable(
-				'data/num2itemresnametable.txt',
-				'#',
-				2,
-				function (_index, key, val) {
-					(ItemTable[key] || (ItemTable[key] = {})).unidentifiedResourceName = val;
-				},
-				onLoad()
-			);
-			loadTable(
-				'data/num2itemdesctable.txt',
-				'#',
-				2,
-				function (_index, key, val) {
-					(ItemTable[key] || (ItemTable[key] = {})).unidentifiedDescriptionName = val.split('\n');
-				},
-				onLoad(),
-				true
-			);
-			loadTable(
-				'data/idnum2itemdisplaynametable.txt',
-				'#',
-				2,
-				function (_index, key, val) {
-					(ItemTable[key] || (ItemTable[key] = {})).identifiedDisplayName = val.replace(/_/g, ' ');
-				},
-				onLoad(),
-				true
-			);
-			loadTable(
-				'data/idnum2itemresnametable.txt',
-				'#',
-				2,
-				function (_index, key, val) {
-					(ItemTable[key] || (ItemTable[key] = {})).identifiedResourceName = val;
-				},
-				onLoad()
-			);
-			loadTable(
-				'data/idnum2itemdesctable.txt',
-				'#',
-				2,
-				function (_index, key, val) {
-					(ItemTable[key] || (ItemTable[key] = {})).identifiedDescriptionName = val.split('\n');
-				},
-				onLoad(),
-				true
-			);
-			loadTable(
-				'data/itemslotcounttable.txt',
-				'#',
-				2,
-				function (_index, key, val) {
-					(ItemTable[key] || (ItemTable[key] = {})).slotCount = val;
-				},
-				onLoad()
-			);
-
 			// Skill
 			loadTable(
 				'data/skilldesctable.txt',
