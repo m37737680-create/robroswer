@@ -1,15 +1,9 @@
 /**
  * ROBrowser Configuration - Default Settings
  *
- * This file contains default configuration values.
- * To override settings without modifying this file, create Config.local.js
- * with your custom values in window.ROConfigLocal.
- *
- * Example Config.local.js:
- *   window.ROConfigLocal = {
- *       servers: [{ display: 'My Server', address: '192.168.1.1', ... }],
- *       skipIntro: true
- *   };
+ * This file contains the complete runtime configuration.
+ * The container entrypoint writes the deployment values here from the
+ * selected environment file before starting the web server.
  */
 window.ROConfigBase = {
 	type: 'INLINE',

@@ -11,7 +11,6 @@ RUN cp -r src dist/Web/src \
 	&& cp -r node_modules dist/Web/node_modules \
 	&& cp public/api.js dist/Web/api.js \
 	&& cp Config.js dist/Web/Config.js \
-	&& cp Config.local.js dist/Web/Config.local.js \
 	&& cp version.json dist/Web/version.json
 COPY entrypoint.sh /usr/local/bin/renewal-entrypoint
 RUN sed -i 's/\r$//' /usr/local/bin/renewal-entrypoint \

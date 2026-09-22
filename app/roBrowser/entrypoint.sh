@@ -15,9 +15,6 @@ CLIENT_VERSION="${CLIENT_VERSION:-55}"
 WORLD_MAP_EPISODE="${WORLD_MAP_EPISODE:-12}"
 CLIENT_GRF_LIST="${CLIENT_GRF_LIST:-DATA.INI}"
 
-USE_LOCAL_CONFIG="${USE_LOCAL_CONFIG:-true}"
-
-
 # ============================================================
 # Determina Renewal / Pre-Renewal dal PacketVer
 # ============================================================
@@ -76,42 +73,7 @@ echo "CLIENT_VERSION   : $CLIENT_VERSION"
 echo "WORLD_MAP_EPISODE: $WORLD_MAP_EPISODE"
 echo "CLIENT_GRF_LIST  : $CLIENT_GRF_LIST"
 echo "SERVER_DISPLAY   : $server_display"
-echo "USE_LOCAL_CONFIG : $USE_LOCAL_CONFIG"
 echo "=============================================="
-
-
-# ============================================================
-# Config.local.js
-# ============================================================
-
-generate_local_config()
-{
-    printf '%s\n' \
-        'window.ROConfigLocal = {' \
-        "  packetver: $packetver," \
-        "  renewal: $renewal," \
-        "  packetKeys: $packet_keys," \
-        "  loadLua: $load_lua," \
-        "  enableAchievements: true," \
-        "  enableBank: true," \
-        "  remoteClient: '/client/'," \
-        "  grfList: '$CLIENT_GRF_LIST'," \
-        "  type: 'INLINE'," \
-        "  skipIntro: true," \
-        '  servers: [{' \
-        "    display: '$server_display'," \
-        "    packetver: $packetver," \
-        "    renewal: $renewal," \
-        "    packetKeys: $packet_keys," \
-        "    address: '$game_host'," \
-        "    port: $LOGIN_PORT," \
-        "    version: $CLIENT_VERSION," \
-        "    langtype: $LANGTYPE," \
-        "    socketProxy: 'ws://$game_host:$WSPROXY_PORT'," \
-        "    forceUseAddress: true" \
-        '  }]' \
-        '};'
-}
 
 
 # ============================================================
@@ -208,41 +170,12 @@ EOF
 }
 
 
-# ============================================================
-# USE_LOCAL_CONFIG
-# ============================================================
-
-if [ "$USE_LOCAL_CONFIG" = "true" ]; then
-
-    echo "USE_LOCAL_CONFIG=true"
-    echo "Generating Config.local.js..."
-
-    # Genera Config.local.js
-    generate_local_config | tee \
-        /app/Config.local.js \
-        /app/dist/Web/Config.local.js \
-        >/dev/null
-
-    echo "Config.local.js generated."
-
-else
-
-    echo "USE_LOCAL_CONFIG=false"
-    echo "Generating Config.js..."
-
-    # Elimina Config.local.js
-    rm -f /app/Config.local.js
-    rm -f /app/dist/Web/Config.local.js
-
-    # Genera Config.js
-    generate_base_config | tee \
-        /app/Config.js \
-        /app/dist/Web/Config.js \
-        >/dev/null
-
-    echo "Config.js generated."
-
-fi
+echo "Generating Config.js..."
+generate_base_config | tee \
+    /app/Config.js \
+    /app/dist/Web/Config.js \
+    >/dev/null
+echo "Config.js generated."
 
 
 # ============================================================
