@@ -3,89 +3,97 @@
  *
  * Prompt window
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
-define(function(require)
-{
-	'use strict';
 
+import UIManager from 'UI/UIManager.js';
+import GUIComponent from 'UI/GUIComponent.js';
+import WinPopup from 'UI/Components/WinPopup.js';
 
-	/**
-	 * Dependencies
-	 */
-	var DB          = require('DB/DBManager');
-	var UIManager   = require('UI/UIManager');
-	var WinPopup    = require('UI/Components/WinPopup');
-	var jQuery      = require('Utils/jquery');
+/**
+ * Create Component
+ */
+const WinPrompt = WinPopup.clone('WinPrompt');
 
+/**
+ * Initialize popup
+ */
+WinPrompt.init = function init() {
+	this.draggable();
+};
 
-	/**
-	 * Create Component
-	 */
-	var WinPrompt = WinPopup.clone('WinPrompt');
+/**
+ * Ask for something
+ *
+ * @param {string} text - question to ask
+ * @param {string} btn_yes - first button name
+ * @param {string} btn_no - second button name
+ * @param {function} onYes - callback for first button
+ * @param {function} onNo - callback for second button
+ */
+WinPrompt.ask = function ask(text, btn_yes, btn_no, onYes, onNo) {
+	if (!this.__loaded) this.prepare();
 
+	const root = this.getRoot();
 
-	/**
-	 * Initialize popup
-	 */
-	WinPrompt.init = function init()
-	{
-		this.ui.draggable();
-	};
+	// Set text
+	const textEl = root.querySelector('.text');
+	if (textEl) {
+		textEl.textContent = text;
+	}
 
+	// Clear existing buttons
+	const btnsEl = root.querySelector('.btns');
+	if (btnsEl) {
+		btnsEl.innerHTML = '';
 
-	/**
-	 * Ask for something
-	 *
-	 * @param {string} question to ask
-	 * @param {string} first button name
-	 * @param {string} second button name
-	 * @param {function} callback to execute once the first button is pressed
-	 * @param {function} callback to execute once the second button is pressed
-	 *
-	 */
-	WinPrompt.ask = function ask( text, btn_yes, btn_no, onYes, onNo )
-	{
-		this.ui.find('.text').text(text);
-		this.ui.find('.btns').empty().append(
-
-			jQuery('<button/>').
-				addClass('btn').
-				data('background', DB.INTERFACE_PATH + 'btn_' + btn_yes + '.bmp').
-				data('hover',      DB.INTERFACE_PATH + 'btn_' + btn_yes + '_a.bmp').
-				data('down',       DB.INTERFACE_PATH + 'btn_' + btn_yes + '_b.bmp').
-				each( this.parseHTML ).
-				one('click',function(){
-					WinPrompt.remove();
-					if (onYes) {
-						onYes();
-					}
-				}),
-
-			jQuery('<button/>').
-				addClass('btn').
-				data('background', DB.INTERFACE_PATH + 'btn_' + btn_no + '.bmp').
-				data('hover',      DB.INTERFACE_PATH + 'btn_' + btn_no + '_a.bmp').
-				data('down',       DB.INTERFACE_PATH + 'btn_' + btn_no + '_b.bmp').
-				each( this.parseHTML ).
-				one('click',function(){
-					WinPrompt.remove();
-					if (onNo) {
-						onNo();
-					}
-				})
+		// Create YES button
+		const yesBtn = document.createElement('button');
+		yesBtn.className = 'btn';
+		yesBtn.dataset.background = 'btn_' + btn_yes + '.bmp';
+		yesBtn.dataset.hover = 'btn_' + btn_yes + '_a.bmp';
+		yesBtn.dataset.down = 'btn_' + btn_yes + '_b.bmp';
+		GUIComponent.processDataAttrs(yesBtn);
+		yesBtn.addEventListener(
+			'click',
+			function () {
+				WinPrompt.remove();
+				if (onYes) {
+					onYes();
+				}
+			},
+			{ once: true }
 		);
 
-		// Parse
-		this.append();
-		this.ui.each( this.parseHTML ).find('*').each( this.parseHTML );
-	};
+		// Create NO button
+		const noBtn = document.createElement('button');
+		noBtn.className = 'btn';
+		noBtn.dataset.background = 'btn_' + btn_no + '.bmp';
+		noBtn.dataset.hover = 'btn_' + btn_no + '_a.bmp';
+		noBtn.dataset.down = 'btn_' + btn_no + '_b.bmp';
+		GUIComponent.processDataAttrs(noBtn);
+		noBtn.addEventListener(
+			'click',
+			function () {
+				WinPrompt.remove();
+				if (onNo) {
+					onNo();
+				}
+			},
+			{ once: true }
+		);
 
+		btnsEl.appendChild(yesBtn);
+		btnsEl.appendChild(noBtn);
+	}
 
-	/**
-	 * Create component based on view file and export it
-	 */
-	return UIManager.addComponent(WinPrompt);
-});
+	// Append and process remaining data-* attrs
+	this.append();
+};
+
+/**
+ * Create component based on view file and export it
+ */
+export default UIManager.addComponent(WinPrompt);

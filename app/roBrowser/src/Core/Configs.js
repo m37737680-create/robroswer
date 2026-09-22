@@ -3,59 +3,22 @@
  *
  * Manage application configurations
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
 
-define(function()
-{
-	'use strict';
+/**
+ * @var {object} global configs
+ */
+const _global = {};
 
+/**
+ * @var {object} server configs
+ */
+let _server = {};
 
-	/**
-	 * @var {object} global configs
-	 */
-	var _global = {};
-
-
-	/**
-	 * @var {object} server configs
-	 */
-	var _server = {};
-
-
-	/**
-	 * Constructor
-	 * Apply configs
-	 */
-	(function init(configs)
-	{
-		if (typeof configs !== 'object') {
-			return;
-		}
-
-		var keys = Object.keys(configs);
-		var i, count;
-
-		for (i = 0, count = keys.length; i < count; ++i) {
-			set( keys[i], configs[keys[i]]);
-		}
-	})(window.ROConfig);
-
-
-	/**
-	 * Set a config
-	 *
-	 * @param {string} key name
-	 * @param {?} data
-	 */
-	function set( key, value )
-	{
-		_global[key] = value;
-	}
-
-
+class Configs {
 	/**
 	 * Get the value of a config
 	 *
@@ -63,8 +26,7 @@ define(function()
 	 * @param {?} default data value
 	 * @return {?} data
 	 */
-	function get( key, defaultValue )
-	{
+	static get = (key, defaultValue) => {
 		if (key in _server) {
 			return _server[key];
 		}
@@ -74,26 +36,51 @@ define(function()
 		}
 
 		return defaultValue;
-	}
-
-
+	};
+	/**
+	 * Set a config
+	 *
+	 * @param {string} key name
+	 * @param {?} data
+	 */
+	static set = (key, value) => {
+		_global[key] = value;
+	};
 	/**
 	 * Store the server informations
 	 *
 	 * @param {object} server config
 	 */
-	function setServer( server )
-	{
+	static setServer = server => {
 		_server = server;
+	};
+	/**
+	 * Return the server informations
+	 *
+	 */
+	static getServer = () => {
+		return _server;
+	};
+}
+
+/**
+ * Constructor
+ * Apply configs
+ */
+(function init(configs) {
+	if (typeof configs !== 'object') {
+		return;
 	}
 
+	const keys = Object.keys(configs);
+	let i, count;
 
-	/**
-	 * Export
-	 */
-	return {
-		get:       get,
-		set:       set,
-		setServer: setServer
-	};
-});
+	for (i = 0, count = keys.length; i < count; ++i) {
+		Configs.set(keys[i], configs[keys[i]]);
+	}
+})(window.ROConfig);
+
+/**
+ * Export
+ */
+export default Configs;

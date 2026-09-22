@@ -1,0 +1,259 @@
+#!/bin/sh
+set -eu
+
+# ============================================================
+# Configurazione
+# ============================================================
+
+packetver="${PACKETVER:-20211103}"
+game_host="${GAME_HOST:-127.0.0.1}"
+WSPROXY_PORT="${WSPROXY_PORT:-5999}"
+WEB_PORT="${WEB_PORT:-8080}"
+LOGIN_PORT="${LOGIN_PORT:-6900}"
+LANGTYPE="${LANGTYPE:-1}"
+CLIENT_VERSION="${CLIENT_VERSION:-55}"
+WORLD_MAP_EPISODE="${WORLD_MAP_EPISODE:-12}"
+CLIENT_GRF_LIST="${CLIENT_GRF_LIST:-DATA.INI}"
+
+USE_LOCAL_CONFIG="${USE_LOCAL_CONFIG:-true}"
+
+
+# ============================================================
+# Determina Renewal / Pre-Renewal dal PacketVer
+# ============================================================
+
+if [ "$packetver" -ge 20181121 ] 2>/dev/null; then
+    renewal=true
+else
+    renewal=false
+fi
+
+
+# ============================================================
+# Packet Keys
+# ============================================================
+
+packet_keys=false
+
+if [ "$renewal" = "false" ]; then
+    packet_keys=true
+fi
+
+
+# ============================================================
+# Client profile
+# ============================================================
+
+# ============================================================
+# Nome server
+# ============================================================
+
+if [ "$renewal" = "true" ]; then
+    server_display="Renewal"
+else
+    server_display="Pre-Renewal"
+fi
+
+
+# ============================================================
+# Informazioni
+# ============================================================
+
+echo "=============================================="
+echo " roBrowser configuration"
+echo "=============================================="
+echo "PACKETVER        : $packetver"
+echo "RENEWAL          : $renewal"
+echo "PACKET_KEYS      : $packet_keys"
+echo "GAME_HOST        : $game_host"
+echo "LOGIN_PORT       : $LOGIN_PORT"
+echo "WSPROXY_PORT     : $WSPROXY_PORT"
+echo "WEB_PORT         : $WEB_PORT"
+echo "LANGTYPE         : $LANGTYPE"
+echo "CLIENT_VERSION   : $CLIENT_VERSION"
+echo "WORLD_MAP_EPISODE: $WORLD_MAP_EPISODE"
+echo "CLIENT_GRF_LIST  : $CLIENT_GRF_LIST"
+echo "SERVER_DISPLAY   : $server_display"
+echo "USE_LOCAL_CONFIG : $USE_LOCAL_CONFIG"
+echo "=============================================="
+
+
+# ============================================================
+# Config.local.js
+# ============================================================
+
+generate_local_config()
+{
+    printf '%s\n' \
+        'window.ROConfigLocal = {' \
+        "  packetver: $packetver," \
+        "  renewal: $renewal," \
+        "  packetKeys: $packet_keys," \
+        "  loadLua: true," \
+        "  enableAchievements: true," \
+        "  enableBank: true," \
+        "  remoteClient: '/client/'," \
+        "  grfList: '$CLIENT_GRF_LIST'," \
+        "  type: 'INLINE'," \
+        "  skipIntro: true," \
+        '  servers: [{' \
+        "    display: '$server_display'," \
+        "    packetver: $packetver," \
+        "    renewal: $renewal," \
+        "    packetKeys: $packet_keys," \
+        "    address: '$game_host'," \
+        "    port: $LOGIN_PORT," \
+        "    version: $CLIENT_VERSION," \
+        "    langtype: $LANGTYPE," \
+        "    socketProxy: 'ws://$game_host:$WSPROXY_PORT'," \
+        "    forceUseAddress: true" \
+        '  }]' \
+        '};'
+}
+
+
+# ============================================================
+# Config.js
+# ============================================================
+
+generate_base_config()
+{
+    cat <<EOF
+window.ROConfigBase = {
+  type: 'INLINE',
+  application: 'ONLINE',
+  development: true,
+
+  remoteClient: '/client/',
+
+  servers: [
+    {
+      display: '$server_display',
+      desc: 'Ragnarok Server',
+
+      address: '$game_host',
+      port: $LOGIN_PORT,
+
+      version: $CLIENT_VERSION,
+      langtype: $LANGTYPE,
+
+      packetver: $packetver,
+      renewal: $renewal,
+
+      worldMapSettings: {
+        episode: $WORLD_MAP_EPISODE
+      },
+
+      packetKeys: $packet_keys,
+
+      socketProxy: 'ws://$game_host:$WSPROXY_PORT',
+
+      forceUseAddress: true,
+
+      adminList: [2000000]
+    }
+  ],
+
+  packetDump: false,
+  skipServerList: true,
+  skipIntro: false,
+
+  aura: {},
+  autoLogin: [],
+
+  BGMFileExtension: ['mp3'],
+
+  calculateHash: false,
+
+  CameraMaxZoomOut: 5,
+  charBlockSize: 0,
+
+  clientHash: null,
+
+  clientVersionMode: 'PacketVer',
+
+  disableConsole: false,
+  enableServerHotkeys: false,
+
+  enableAchievements: true,
+  enableBank: true,
+  enableCashShop: false,
+  enableCheckAttendance: false,
+  enableDmgSuffix: false,
+  enableHomunAutoFeed: false,
+  enableMapName: false,
+
+  FirstPersonCamera: false,
+
+  grfList: '$CLIENT_GRF_LIST',
+  hashFiles: [],
+
+  loadLua: true,
+
+  onReady: null,
+
+  plugins: {},
+
+  registrationweb: '',
+
+  saveFiles: true,
+
+  ThirdPersonCamera: false,
+
+  transitionDuration: 500
+};
+EOF
+}
+
+
+# ============================================================
+# USE_LOCAL_CONFIG
+# ============================================================
+
+if [ "$USE_LOCAL_CONFIG" = "true" ]; then
+
+    echo "USE_LOCAL_CONFIG=true"
+    echo "Generating Config.local.js..."
+
+    # Elimina Config.js base
+    rm -f /app/Config.js
+    rm -f /app/dist/Web/Config.js
+
+    # Genera Config.local.js
+    generate_local_config | tee \
+        /app/Config.local.js \
+        /app/dist/Web/Config.local.js \
+        >/dev/null
+
+    echo "Config.local.js generated."
+
+else
+
+    echo "USE_LOCAL_CONFIG=false"
+    echo "Generating Config.js..."
+
+    # Elimina Config.local.js
+    rm -f /app/Config.local.js
+    rm -f /app/dist/Web/Config.local.js
+
+    # Genera Config.js
+    generate_base_config | tee \
+        /app/Config.js \
+        /app/dist/Web/Config.js \
+        >/dev/null
+
+    echo "Config.js generated."
+
+fi
+
+
+# ============================================================
+# Avvio
+# ============================================================
+
+echo "=============================================="
+echo " Configuration completed."
+echo " Starting application..."
+echo "=============================================="
+
+exec "$@"

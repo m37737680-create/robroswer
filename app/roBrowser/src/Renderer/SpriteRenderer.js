@@ -3,368 +3,453 @@
  *
  * Rendering sprite in 2D or 3D context
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
-define(["Utils/WebGL", "Utils/gl-matrix", "./Camera"],
-function(      WebGL,         glMatrix,      Camera )
-{
-	"use strict";
 
+import WebGL from 'Utils/WebGL.js';
+import glMatrix from 'Utils/gl-matrix.js';
+import Camera from './Camera.js';
+import _vertexShader from './SpriteRenderer.vs?raw';
+import _fragmentShader from './SpriteRenderer.fs?raw';
+
+/**
+ * Import
+ */
+const mat4 = glMatrix.mat4;
+
+/**
+ * Render in 3D mode
+ */
+function RenderCanvas3D(isBlendModeOne) {
+	// Nothing to render ?
+	if (!this.image.texture || !this.color[3]) {
+		return;
+	}
+
+	// gl.uniform* seems to be expensive
+	// cache values to avoid flooding the GPU and reducing perf.
+
+	const uniform = _program.uniform;
+	const gl = _gl;
+	const use_pal = this.image.palette !== null;
+
+	if (isBlendModeOne) {
+		gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+	} else if (isBlendModeOne === false) {
+		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+	}
+
+	if (this.shadow !== _shadow) {
+		gl.uniform1f(uniform.uShadow, (_shadow = this.shadow));
+	}
+	gl.uniform3fv(uniform.uSpriteRendererPosition, this.position);
+
+	// Palette
+	if (use_pal) {
+		gl.activeTexture(gl.TEXTURE1);
+		gl.bindTexture(gl.TEXTURE_2D, this.image.palette);
+		gl.uniform2fv(uniform.uTextSize, this.image.size);
+		gl.activeTexture(gl.TEXTURE0);
+	}
+
+	if (_usepal !== use_pal) {
+		gl.uniform1i(uniform.uUsePal, (_usepal = use_pal));
+	}
+
+	if (this.depth !== _depth) {
+		gl.uniform1f(uniform.uSpriteRendererDepth, (_depth = this.depth));
+	}
+
+	const disableDepthCorrection = !!this.disableDepthCorrection;
+	if (_disableDepthCorrection !== disableDepthCorrection) {
+		_disableDepthCorrection = disableDepthCorrection;
+		gl.uniform1i(uniform.uDisableDepthCorrection, disableDepthCorrection);
+	}
+
+	gl.uniform1f(uniform.uSpriteRendererZindex, this.zIndex++);
+	// Rotate
+	if (this.angle !== _angle) {
+		_angle = this.angle;
+
+		mat4.identity(_matrix);
+		if (_angle) {
+			mat4.rotateZ(_matrix, _matrix, (-_angle / 180) * Math.PI);
+		}
+
+		gl.uniformMatrix4fv(uniform.uSpriteRendererAngle, false, _matrix);
+	}
+
+	_offset[0] = (this.offset[0] / 175.0) * this.xSize;
+	_offset[1] = (this.offset[1] / 175.0) * this.ySize - 0.5;
+	_size[0] = (this.size[0] / 175.0) * this.xSize;
+	_size[1] = (this.size[1] / 175.0) * this.ySize;
+
+	gl.uniform4fv(uniform.uSpriteRendererColor, this.color);
+	gl.uniform2fv(uniform.uSpriteRendererSize, _size);
+	gl.uniform2fv(uniform.uSpriteRendererOffset, _offset);
+	gl.uniform1i(uniform.uIsRGBA, this.sprite.type);
+
+	// Avoid binding the new texture 150 times if it's the same.
+	if (_groupId !== _lastGroupId || _texture !== this.image.texture) {
+		_lastGroupId = _groupId;
+		gl.bindTexture(gl.TEXTURE_2D, (_texture = this.image.texture));
+	}
+	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+}
+
+/**
+ * Render in 2D
+ */
+const RenderCanvas2D = (function RenderCanvas2DClosure() {
+	let imageData;
+
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+	canvas.width = 20;
+	canvas.height = 20;
+	imageData = ctx.createImageData(canvas.width, canvas.height);
+
+	return function () {
+		// Nothing to render
+		if (this.sprite.width <= 0 || this.sprite.height <= 0) {
+			return;
+		}
+
+		let scale_x, scale_y;
+		let x, y;
+		let r, g, b, a, inRow, outRow;
+
+		scale_x = 1.0;
+		scale_y = 1.0;
+		const _x = _pos[0] + this.offset[0];
+		const _y = _pos[1] + this.offset[1] - 0.5 * 35; // middle of cell
+		const pal = this.palette;
+		const frame = this.sprite;
+		const width = frame.width;
+		const height = frame.height;
+
+		_size.set(this.size);
+
+		// Mirror feature
+		if (_size[0] < 0) {
+			scale_x *= -1;
+			_size[0] *= -1;
+		}
+
+		if (_size[1] < 0) {
+			scale_y *= -1;
+			_size[1] *= -1;
+		}
+
+		// Resize canvas from memory
+		if (width > canvas.width || height > canvas.height) {
+			canvas.width = width;
+			canvas.height = height;
+			imageData = ctx.createImageData(width, height);
+		}
+
+		const input = frame.data;
+		const color = this.color; // [r, g, b, a] as floats 0..1
+		const outputWidth = canvas.width;
+
+		// Use 32-bit view for the output buffer (ImageData)
+		// WHY: Writing a single 32-bit value per pixel is faster than 4 separate byte writes.
+		const output32 = new Uint32Array(imageData.data.buffer);
+
+		// Pre-calculate color multipliers for 32-bit assembly
+		// Avoid repeated array lookups inside the inner loop.
+		const r_mul = color[0],
+			g_mul = color[1],
+			b_mul = color[2],
+			a_mul = color[3];
+
+		// Fast path: no color modulation (identity)
+		const isColorIdentity = r_mul === 1 && g_mul === 1 && b_mul === 1 && a_mul === 1;
+
+		// RGBA images
+		if (this.sprite.type === 1) {
+			/**
+			 * OLD LOGIC: Per-channel RGBA modulation using byte array access.
+			 *            4 loads + 4 stores + multiplications per pixel.
+			 * NEW LOGIC: Reads and writes pixels as a single 32-bit integer.
+			 *            Uses bitwise extraction and assembly with optional color modulation.
+			 *            1 load + 1 store per pixel in the fast path.
+			 * Reduces memory writes and bounds checks inside the inner loop.
+			 */
+			const input32 = new Uint32Array(input.buffer);
+
+			for (y = 0; y < height; ++y) {
+				outRow = y * outputWidth;
+				inRow = y * width;
+
+				for (x = 0; x < width; ++x) {
+					const pixel = input32[inRow + x];
+					if (pixel === 0) {
+						// Transparent skip behavior due n*0 = 0
+						output32[outRow + x] = 0;
+						continue;
+					}
+
+					if (isColorIdentity) {
+						// Fast path: no color modulation.
+						// Copy the precompiled RGBA pixel directly due n*1 = n.
+						output32[outRow + x] = pixel;
+					} else {
+						// Extract RGBA components from packed 32-bit pixel.
+						// Note: In Little Endian, 0xAABBGGRR is stored as [R, G, B, A] in memory.
+						r = (pixel & 0xff) * r_mul;
+						g = ((pixel >> 8) & 0xff) * g_mul;
+						b = ((pixel >> 16) & 0xff) * b_mul;
+						a = ((pixel >> 24) & 0xff) * a_mul;
+						output32[outRow + x] = (a << 24) | (b << 16) | (g << 8) | r;
+					}
+				}
+			}
+		}
+
+		// Palettes
+		else {
+			// Pre-calculate a color-modulated 32-bit palette for this frame.
+			// WHY: Avoid per-pixel palette lookups and color multiplications.
+			// Cost: O(256) setup, O(pixels) usage.
+			const pal32 = new Uint32Array(256);
+			for (let i = 0; i < 256; i++) {
+				if (i === 0) {
+					// Transparent skip behavior due n*0 = 0
+					pal32[i] = 0;
+					continue;
+				}
+				const pIdx = i * 4;
+				r = (pal[pIdx + 0] * r_mul) | 0;
+				g = (pal[pIdx + 1] * g_mul) | 0;
+				b = (pal[pIdx + 2] * b_mul) | 0;
+				a = (255 * a_mul) | 0;
+				// Store in LE format [R, G, B, A] -> 0xAABBGGRR
+				pal32[i] = (a << 24) | (b << 16) | (g << 8) | r;
+			}
+
+			for (y = 0; y < height; ++y) {
+				outRow = y * outputWidth;
+				inRow = y * width;
+				for (x = 0; x < width; ++x) {
+					// Fast palette lookup: single array access and single 32-bit write.
+					// OLD: Per-channel palette reads and multiplications per pixel.
+					// NEW: O(1) lookup using precomputed 32-bit palette.
+					output32[outRow + x] = pal32[input[inRow + x]];
+				}
+			}
+		}
+
+		// Insert into the canvas
+		ctx.putImageData(imageData, 0, 0, 0, 0, width, height);
+
+		// Render sprite in context
+		_ctx.save();
+		_ctx.translate(_x | 0, _y | 0);
+		_ctx.rotate((this.angle / 180) * Math.PI);
+		_ctx.scale(scale_x, scale_y);
+		_ctx.drawImage(canvas, 0, 0, width, height, -_size[0] >> 1, -_size[1] >> 1, _size[0] | 0, _size[1] | 0);
+		_ctx.restore();
+	};
+})();
+
+/**
+ * @type {WebGLProgram}
+ */
+let _program = null;
+
+/**
+ * @type {WebGLBuffer}
+ */
+let _buffer = null;
+
+/**
+ * @type {CanvasRenderingContext2D} canvas context
+ */
+let _ctx = null;
+
+/**
+ * @type {WebGLRenderingContext} 3d context
+ */
+let _gl = null;
+
+/**
+ * @type {number} group id
+ */
+let _groupId = 0;
+
+/**
+ * @type {number} last group id
+ */
+let _lastGroupId = 0;
+
+/**
+ * @type {number} last shadow used
+ */
+let _shadow = null;
+
+/**
+ * @type {number} last rotation angle used
+ */
+let _angle = null;
+
+/**
+ * @type {number} last depth operation
+ */
+let _depth = null;
+
+/**
+ * @type {boolean} cached disable depth correction state
+ */
+let _disableDepthCorrection = false;
+
+/**
+ * @type {boolean} cached depth mask state
+ */
+let _depthMask = true;
+
+/**
+ * @type {boolean} cached depth test state
+ */
+let _depthTest = true;
+
+/**
+ * @type {object} last texture used
+ */
+let _texture = null;
+
+/**
+ * @type {boolean} do we use palette ?
+ */
+let _usepal = null;
+
+/**
+ * @const {Int16Array} position in 2D canvas
+ */
+const _pos = new Int16Array(2);
+
+/**
+ * @const {Float32Array} last generated matrix (used for rotation)
+ */
+const _matrix = new Float32Array(4 * 4);
+
+/**
+ * @const {Float32Array} sprite size
+ */
+const _size = new Float32Array(2);
+
+/**
+ * @const {Float32Array} sprite offset position
+ */
+const _offset = new Float32Array(2);
+
+/**
+ * Sprite Renderer NameSpace
+ */
+class SpriteRenderer {
+	/**
+	 * @type {function} functions to use to render
+	 */
+	static render = null;
 
 	/**
-	 * Import
+	 * @type {number} sprite shadow (mult * color)
 	 */
-	var mat4 = glMatrix.mat4;
-
+	static shadow = 1.0;
 
 	/**
-	 * Generic Vertex Shader
-	 * @var {string}
+	 * @type {number} sprite angle rotation
 	 */
-	var _vertexShader = [
-		"attribute vec2 aPosition;",
-		"attribute vec2 aTextureCoord;",
-	
-		"varying vec2 vTextureCoord;",
-
-		"uniform mat4 uModelViewMat;",
-		"uniform mat4 uViewModelMat;",
-		"uniform mat4 uProjectionMat;",
-
-		"uniform float uCameraLatitude;",
-
-		"uniform vec2 uSpriteRendererSize;",
-		"uniform vec2 uSpriteRendererOffset;",
-		"uniform mat4 uSpriteRendererAngle;",
-		"uniform vec3 uSpriteRendererPosition;",
-		"uniform float uSpriteRendererDepth;",
-		"uniform float uSpriteRendererZindex;",
-
-		"mat4 Project( mat4 mat, vec3 pos) {",
-
-			// xyz = x(-z)y + middle of cell (0.5)
-			"float x =  pos.x + 0.5;",
-			"float y = -pos.z;",
-			"float z =  pos.y + 0.5;",
-
-			// Matrix translation
-			"mat[3].x += mat[0].x * x + mat[1].x * y + mat[2].x * z;",
-			"mat[3].y += mat[0].y * x + mat[1].y * y + mat[2].y * z;",
-			"mat[3].z += (mat[0].z * x + mat[1].z * y + mat[2].z * z) + (uCameraLatitude / 50.0);",
-			"mat[3].w += mat[0].w * x + mat[1].w * y + mat[2].w * z;",
-
-			// Spherical billboard
-			"mat[0].xyz = vec3( 1.0, 0.0, 0.0 );",
-			"mat[1].xyz = vec3( 0.0, 1.0 + 0.5/uCameraLatitude, uCameraLatitude/50.0 );",
-			"mat[2].xyz = vec3( 0.0, 0.0, 1.0 );",
-
-			"return mat;",
-		"}",
-
-		"void main(void) {",
-			"vTextureCoord = aTextureCoord;",
-
-			// Calculate position base on angle and sprite offset/size
-			"vec4 position = uSpriteRendererAngle * vec4( aPosition.x * uSpriteRendererSize.x, aPosition.y * uSpriteRendererSize.y, 0.0, 1.0 );",
-			"position.x   += uSpriteRendererOffset.x;",
-			"position.y   -= uSpriteRendererOffset.y + 0.5;",
-
-			// Project to camera plane
-			"gl_Position   = uProjectionMat * Project(uModelViewMat, uSpriteRendererPosition) * position;",
-			"gl_Position.z -= uSpriteRendererZindex * 0.01 + uSpriteRendererDepth;",
-		"}"
-	].join("\n");
-
+	static angle = 0;
 
 	/**
-	 * Generic Fragment Shader
-	 * @var {string}
+	 * @type {number} depth
 	 */
-	var _fragmentShader = [
-		"varying vec2 vTextureCoord;",
-
-		"uniform sampler2D uDiffuse;",
-		"uniform sampler2D uPalette;",
-
-		"uniform bool uUsePal;",
-		"uniform vec4 uSpriteRendererColor;",
-
-		"uniform bool  uFogUse;",
-		"uniform float uFogNear;",
-		"uniform float uFogFar;",
-		"uniform vec3  uFogColor;",
-
-		"uniform float uShadow;",
-		"uniform vec2 uTextSize;",
-
-		// With palette we don't have a good result because of the gl.NEAREST, so smooth it.
-		"vec4 bilinearSample(vec2 uv, sampler2D indexT, sampler2D LUT) {",
-			"vec2 TextInterval = 1.0 / uTextSize;",
-
-			"float tlLUT = texture2D(indexT, uv ).x;",
-			"float trLUT = texture2D(indexT, uv + vec2(TextInterval.x, 0.0)).x;",
-			"float blLUT = texture2D(indexT, uv + vec2(0.0, TextInterval.y)).x;",
-			"float brLUT = texture2D(indexT, uv + TextInterval).x;",
-
-			"vec4 transparent = vec4( 0.5, 0.5, 0.5, 0.0);",
-
-			"vec4 tl = tlLUT == 0.0 ? transparent : vec4( texture2D(LUT, vec2(tlLUT,1.0)).rgb, 1.0);",
-			"vec4 tr = trLUT == 0.0 ? transparent : vec4( texture2D(LUT, vec2(trLUT,1.0)).rgb, 1.0);",
-			"vec4 bl = blLUT == 0.0 ? transparent : vec4( texture2D(LUT, vec2(blLUT,1.0)).rgb, 1.0);",
-			"vec4 br = brLUT == 0.0 ? transparent : vec4( texture2D(LUT, vec2(brLUT,1.0)).rgb, 1.0);",
-
-			"vec2 f  = fract( uv.xy * uTextSize );",
-			"vec4 tA = mix( tl, tr, f.x );",
-			"vec4 tB = mix( bl, br, f.x );",
-
-			"return mix( tA, tB, f.y );",
-		"}",
-
-
-		"void main(void) {",
-
-			// Don't render if it's not shown.
-			"if (uSpriteRendererColor.a == 0.0) {",
-				"discard;",
-			"}",
-
-			// Calculate texture
-			"vec4 texture;",
-			"if (uUsePal) {",
-				"texture = bilinearSample( vTextureCoord, uDiffuse, uPalette );",
-			"}",
-			"else {",
-				"texture = texture2D( uDiffuse, vTextureCoord.st );",
-			"}",
-
-			// No alpha, skip.
-			"if ( texture.a == 0.0 )",
-				"discard;",
-
-			// Apply shadow, apply color
-			"texture.rgb   *= uShadow;",
-			"gl_FragColor   = texture * uSpriteRendererColor;",
-
-			// Fog feature
-			"if (uFogUse) {",
-				"float depth     = gl_FragCoord.z / gl_FragCoord.w;",
-				"float fogFactor = smoothstep( uFogNear, uFogFar, depth );",
-				"gl_FragColor    = mix( gl_FragColor, vec4( uFogColor, gl_FragColor.w ), fogFactor );",
-			"}",
-		"}"
-	].join("\n");
-
-
+	static depth = 0.0;
 
 	/**
-	 * Sprite Renderer NameSpace
+	 * @type {Float32Array} sprite position in 3D world
 	 */
-	var SpriteRenderer = {};
-
+	static position = new Float32Array(3);
 
 	/**
-	 * @var {function} functions to use to render
+	 * @type {Float32Array} sprite color (color * color)
 	 */
-	SpriteRenderer.render = null;
-
+	static color = new Float32Array(4);
 
 	/**
-	 * @var {number} sprite shadow (mult * color)
+	 * @type {Float32Array} sprite size
 	 */
-	SpriteRenderer.shadow = 1.0;
-
+	static size = new Float32Array(2);
 
 	/**
-	 * @var {number} sprite angle rotation
+	 * @type {Float32Array} sprite offset position
 	 */
-	SpriteRenderer.angle = 0;
-
+	static offset = new Float32Array(2);
 
 	/**
-	 * @var {number} depth
+	 * @type {object} sprite image information
 	 */
-	SpriteRenderer.depth = 0.0;
-
-
-	/**
-	 * @var {Float32Array[3]} sprite position in 3D world
-	 */
-	SpriteRenderer.position = new Float32Array(3);
-
-
-	/**
-	 * @var {Float32Array[4]} sprite color (color * color)
-	 */
-	SpriteRenderer.color = new Float32Array(4);
-
-
-	/**
-	 * @var {Float32Array[2]} sprite size
-	 */
-	SpriteRenderer.size = new Float32Array(2);
-
-
-	/**
-	 * @var {Float32Array[2]} sprite offset position
-	 */
-	SpriteRenderer.offset = new Float32Array(2);
-
-
-	/**
-	 * @var {object} sprite image information
-	 */
-	SpriteRenderer.image = {
+	static image = {
 		texture: null,
 		palette: null,
-		size:    new Float32Array(2)
+		size: new Float32Array(2)
 	};
 
+	/**
+	 * @type {object} sprite imageData (for 2D context)
+	 */
+	static sprite = null;
 
 	/**
-	 * @var {object} sprite imageData (for 2D context)
+	 * @type {object} sprite palette (for 2D context)
 	 */
-	SpriteRenderer.sprite = null;
-
+	static palette = null;
 
 	/**
-	 * @var {object} sprite palette (for 2D context)
+	 * @type {number} groupid used (avoid draw call)
 	 */
-	SpriteRenderer.palette = null;
-
+	static groupId = 0;
 
 	/**
-	 * @var {number} groupid used (avoid draw call)
+	 * @type {boolean} disable depth correction (ray-plane) for current draw
 	 */
-	SpriteRenderer.groupId = 0;
-
+	static disableDepthCorrection = false;
 
 	/**
-	 * @var {number} width unity
+	 * @type {number} width unity
 	 */
-	SpriteRenderer.xSize = 5;
-
+	static xSize = 5;
 
 	/**
-	 * @var {number} height unity
+	 * @type {number} height unity
 	 */
-	SpriteRenderer.ySize = 5;
-
-
-	/**
-	 * @var {WebGLProgram}
-	 */
-	var _program = null;
-
-
-	/**
-	 * @var {WebGLBuffer}
-	 */
-	var _buffer = null;
-
-
-	/**
-	 * @var {CanvasRenderingContext2D} canvas context
-	 */
-	var _ctx = null;
-
-
-	/**
-	 * @var {WebGLRenderingContext} 3d context
-	 */
-	var _gl = null;
-
-
-	/**
-	 * @var {number} group id
-	 * Used to know if we have to bind texture again
-	 */
-	var _groupId = 0;
-
-
-	/**
-	 * @var {number} last group id
-	 */
-	var _lastGroupId = 0;
-
-
-	/**
-	 * @var {number} last shadow used
-	 */
-	var _shadow = null;
-
-
-	/**
-	 * @var {number} last rotation angle used
-	 */
-	var _angle = null;
-
-	/**
-	 * @var {number} last depth operation
-	 */
-	var _depth = null;
-
-
-	/**
-	 * @var {object} last texture used
-	 */
-	var _texture = null;
-
-
-	/**
-	 * @var {boolean} do we use palette ?
-	 */
-	var _usepal = null;
-
-
-	/**
-	 * @var {Uint16Array} position in 2D canvas 
-	 */
-	var _pos = new Int16Array(2);
-
-
-	/**
-	 * @var {mat4} last generated matrix (used for rotation)
-	 */
-	var _matrix = new Float32Array(4*4);
-
-
-	/**
-	 * @var {Float32Array[2]} sprite size
-	 */
-	var _size = new Float32Array(2);
-
-
-	/**
-	 * @var {Float32Array[2]} sprite offset position
-	 */
-	var _offset = new Float32Array(2);
-
+	static ySize = 5;
 
 	/**
 	 * Initialize SpriteRenderer Renderer
 	 *
 	 * @param {object} gl context
 	 */
-	SpriteRenderer.init = function init( gl )
-	{
+	static init(gl) {
 		if (!_buffer) {
 			_buffer = gl.createBuffer();
-			gl.bindBuffer( gl.ARRAY_BUFFER, _buffer );
-			gl.bufferData( gl.ARRAY_BUFFER, new Float32Array([
-				-0.5, +0.5, 0.0, 0.0,
-				+0.5, +0.5, 1.0, 0.0,
-				-0.5, -0.5, 0.0, 1.0,
-				+0.5, -0.5, 1.0, 1.0
-			]), gl.STATIC_DRAW );
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer);
+			gl.bufferData(
+				gl.ARRAY_BUFFER,
+				new Float32Array([
+					-0.5, +0.5, 0.0, 0.0, +0.5, +0.5, 1.0, 0.0, -0.5, -0.5, 0.0, 1.0, +0.5, -0.5, 1.0, 1.0
+				]),
+				gl.STATIC_DRAW
+			);
 		}
 
 		if (!_program) {
-			_program = WebGL.createShaderProgram( gl, _vertexShader, _fragmentShader );
+			_program = WebGL.createShaderProgram(gl, _vertexShader, _fragmentShader);
 		}
-	};
-
+	}
 
 	/**
 	 * Initialize 3D Context
@@ -374,61 +459,60 @@ function(      WebGL,         glMatrix,      Camera )
 	 * @param {mat4} projection
 	 * @param {object} fog structure
 	 */
-	SpriteRenderer.bind3DContext = function Bind3dContext( gl, modelView, projection, fog )
-	{
-		var attribute = _program.attribute;
-		var uniform   = _program.uniform;
+	static bind3DContext(gl, modelView, projection, fog) {
+		const attribute = _program.attribute;
+		const uniform = _program.uniform;
 
-		gl.useProgram( _program );
-		gl.uniformMatrix4fv( uniform.uProjectionMat, false,  projection );
-		gl.uniformMatrix4fv( uniform.uModelViewMat,  false,  modelView );
-		gl.uniformMatrix4fv( uniform.uViewModelMat,  false,  mat4.invert(_matrix, modelView) );
+		gl.useProgram(_program);
+		gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
+		gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
+		gl.uniformMatrix4fv(uniform.uViewModelMat, false, mat4.invert(_matrix, modelView));
 
 		// Fog settings
-		gl.uniform1i(  uniform.uFogUse,   fog.use && fog.exist );
-		gl.uniform1f(  uniform.uFogNear,  fog.near );
-		gl.uniform1f(  uniform.uFogFar,   fog.far );
-		gl.uniform3fv( uniform.uFogColor, fog.color );
+		gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
+		gl.uniform1f(uniform.uFogNear, fog.near);
+		gl.uniform1f(uniform.uFogFar, fog.far);
+		gl.uniform3fv(uniform.uFogColor, fog.color);
 
 		// Textures
-		gl.uniform1i( uniform.uDiffuse, 0 );
-		gl.uniform1i( uniform.uPalette, 1 );
+		gl.uniform1i(uniform.uDiffuse, 0);
+		gl.uniform1i(uniform.uPalette, 1);
 
 		// Camera position for billboarding
-		gl.uniform1f( uniform.uCameraLatitude, Camera.getLatitude() );
+		gl.uniform1f(uniform.uCameraZoom, Camera.zoom);
+		gl.uniform1f(uniform.uCameraLatitude, Camera.getLatitude());
+		gl.uniform1i(uniform.uDisableDepthCorrection, (_disableDepthCorrection = false));
 
 		// Enable all attributes
-		gl.enableVertexAttribArray( attribute.aPosition );
-		gl.enableVertexAttribArray( attribute.aTextureCoord );
-		gl.bindBuffer( gl.ARRAY_BUFFER, _buffer );
+		gl.enableVertexAttribArray(attribute.aPosition);
+		gl.enableVertexAttribArray(attribute.aTextureCoord);
+		gl.bindBuffer(gl.ARRAY_BUFFER, _buffer);
 
 		// Link attribute
-		gl.vertexAttribPointer( attribute.aPosition,     2, gl.FLOAT, false,  4*4, 0   );
-		gl.vertexAttribPointer( attribute.aTextureCoord, 2, gl.FLOAT, false,  4*4, 2*4 );
-	
+		gl.vertexAttribPointer(attribute.aPosition, 2, gl.FLOAT, false, 4 * 4, 0);
+		gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 4 * 4, 2 * 4);
+
 		// Binding 3D context
 		this.render = RenderCanvas3D;
-		this.xSize  = 5;
-		this.ySize  = 5;
+		this.xSize = 5;
+		this.ySize = 5;
 
 		_gl = gl;
+		_depthMask = true;
 		_groupId++;
-	};
-
+	}
 
 	/**
 	 * Unbind 3D Context
 	 *
 	 * @param {object} gl context
 	 */
-	SpriteRenderer.unbind = function unBind( gl )
-	{
-		var attribute = _program.attribute;
+	static unbind(gl) {
+		const attribute = _program.attribute;
 
-		gl.disableVertexAttribArray( attribute.aPosition );
-		gl.disableVertexAttribArray( attribute.aTextureCoord );
-	};
-
+		gl.disableVertexAttribArray(attribute.aPosition);
+		gl.disableVertexAttribArray(attribute.aTextureCoord);
+	}
 
 	/**
 	 * Prepare to render on 2D context.
@@ -437,196 +521,83 @@ function(      WebGL,         glMatrix,      Camera )
 	 * @param {number} x position
 	 * @param {number} y position
 	 */
-	SpriteRenderer.bind2DContext = function Bind2DContext( ctx, x, y )
-	{
-		_ctx        = ctx;
-		_pos[0]     = x;
-		_pos[1]     = y;
+	static bind2DContext(ctx, x, y) {
+		_ctx = ctx;
+		_pos[0] = x;
+		_pos[1] = y;
 
 		this.render = RenderCanvas2D;
-		this.xSize  = 5;
-		this.ySize  = 5;
-	};
-
+		this.xSize = 5;
+		this.ySize = 5;
+	}
 
 	/**
-	 * Render in 3D mode
+	 * Executes a render block with an isolated depth state.
+	 *
+	 * Temporarily overrides depth test, depth write mask, and depth correction
+	 * flags, executes the given function, then restores the previous GL state.
+	 *
+	 * This prevents depth state leakage between render passes and ensures
+	 * deterministic layered rendering.
+	 *
+	 * @param {boolean} use depthTest enable.
+	 * @param {boolean} use depthMask enable.
+	 * @param {boolean} use disableDepthCorrection enable.
+	 * @param {function} execute function with this parameters before restore gl state.
 	 */
-	function RenderCanvas3D()
-	{
-		// Nothing to render ?
-		if (!this.image.texture || !this.color[3]) {
+	static runWithDepth(depthTest, depthMask, depthCorrection, fn) {
+		if (!_gl) {
+			fn();
 			return;
 		}
 
-		// gl.uniform* seems to be expensive
-		// cache values to avoid flooding the GPU and reducing perf.
+		const prevDepthTest = _depthTest;
+		const prevDepthMask = _depthMask;
+		const prevDepthCorrection = this.disableDepthCorrection;
 
-		var uniform = _program.uniform;
-		var gl      = _gl;
-		var use_pal = this.image.palette !== null;
+		if (_depthTest !== depthTest) {
+			_depthTest = depthTest;
 
-		if (this.shadow !== _shadow) {
-			gl.uniform1f( uniform.uShadow, _shadow = this.shadow);
-		}
-		gl.uniform3fv( uniform.uSpriteRendererPosition, this.position );
-
-		// Palette
-		if (use_pal) {
-			gl.activeTexture( gl.TEXTURE1 );
-			gl.bindTexture( gl.TEXTURE_2D,    this.image.palette );
-			gl.uniform2fv( uniform.uTextSize, this.image.size );
-			gl.activeTexture( gl.TEXTURE0 );
-		}
-
-		if (_usepal !== use_pal) {
-			gl.uniform1i(  uniform.uUsePal, _usepal = use_pal );
-		}
-
-		if (this.depth !== _depth) {
-			gl.uniform1f( uniform.uSpriteRendererDepth, _depth = this.depth);
-		}
-		
-		gl.uniform1f( uniform.uSpriteRendererZindex, this.zIndex++ );
-		// Rotate
-		if (this.angle !== _angle) {
-			_angle = this.angle;
-
-			mat4.identity(_matrix);
-			if (_angle) {
-				mat4.rotateZ( _matrix, _matrix, - _angle / 180 * Math.PI );
+			if (depthTest) {
+				_gl.enable(_gl.DEPTH_TEST);
+			} else {
+				_gl.disable(_gl.DEPTH_TEST);
 			}
-
-			gl.uniformMatrix4fv( uniform.uSpriteRendererAngle, false, _matrix );
 		}
 
-		_offset[0] = this.offset[0] / 175.0 * this.xSize;
-		_offset[1] = this.offset[1] / 175.0 * this.ySize - 0.5;
-		_size[0]   = this.size[0]   / 175.0 * this.xSize;
-		_size[1]   = this.size[1]   / 175.0 * this.ySize;
-
-		gl.uniform4fv( uniform.uSpriteRendererColor,  this.color );
-		gl.uniform2fv( uniform.uSpriteRendererSize,   _size );
-		gl.uniform2fv( uniform.uSpriteRendererOffset, _offset );
-
-		// Avoid binding the new texture 150 times if it's the same.
-		if (_groupId !== _lastGroupId || _texture !== this.image.texture) {
-			_lastGroupId = _groupId;
-			gl.bindTexture( gl.TEXTURE_2D, _texture = this.image.texture );
+		if (_depthMask !== depthMask) {
+			_depthMask = depthMask;
+			_gl.depthMask(depthMask);
 		}
-		gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4 );
+
+		if (this.disableDepthCorrection !== depthCorrection) {
+			this.disableDepthCorrection = depthCorrection;
+		}
+
+		fn();
+
+		if (_depthTest !== prevDepthTest) {
+			_depthTest = prevDepthTest;
+
+			if (prevDepthTest) {
+				_gl.enable(_gl.DEPTH_TEST);
+			} else {
+				_gl.disable(_gl.DEPTH_TEST);
+			}
+		}
+
+		if (_depthMask !== prevDepthMask) {
+			_depthMask = prevDepthMask;
+			_gl.depthMask(prevDepthMask);
+		}
+
+		if (this.disableDepthCorrection !== prevDepthCorrection) {
+			this.disableDepthCorrection = prevDepthCorrection;
+		}
 	}
+}
 
-
-	/**
-	 * Render in 2D
-	 */
-	var RenderCanvas2D = function RenderCanvas2DClosure()
-	{
-		var canvas, ctx, imageData;
-
-		canvas         = document.createElement("canvas");
-		ctx            = canvas.getContext("2d");
-		canvas.width   = 20;
-		canvas.height  = 20;
-		imageData      = ctx.createImageData(canvas.width, canvas.height);
-
-		return function RenderCanvas2D()
-		{
-			// Nothing to render
-			if (this.sprite.width <= 0 || this.sprite.height <= 0) {
-				return;
-			}
-
-			var scale_x, scale_y, idx1, idx2;
-			var x, y, _x, _y, width, height, outputWidth;
-			var pal, frame, color;
-			var input, output;
-
-			scale_x  = 1.0;
-			scale_y  = 1.0;
-			_x       = _pos[0] + this.offset[0];
-			_y       = _pos[1] + this.offset[1] - 0.5 * 35; // middle of cell
-			pal      = this.palette;
-			frame    = this.sprite;
-			width    = frame.width;
-			height   = frame.height;
-
-			_size.set(this.size);
-
-			// Mirror feature
-			if (_size[0] < 0) {
-				scale_x  *= -1;
-				_size[0] *= -1;
-			}
-
-			if (_size[1] < 0) {
-				scale_y  *= -1;
-				_size[1] *= -1;
-			}
-
-			// Resize canvas from memory
-			if (width > canvas.width || height > canvas.height) {
-				canvas.width  = width;
-				canvas.height = height;
-				imageData     = ctx.createImageData(width, height);
-			}
-
-			output      = imageData.data;
-			input       = frame.data;
-			color       = this.color;
-			outputWidth = canvas.width;
-
-			// RGBA images
-			if (this.sprite.type === 1) {
-				for (y = 0; y < height; ++y) {
-					for (x = 0; x < width; ++x) {
-						idx1 = (x + y * outputWidth) * 4;
-						idx2 = (x + y * width) * 4;
-						output[idx1 + 0] = input[idx2 + 0] * color[0];
-						output[idx1 + 1] = input[idx2 + 1] * color[1];
-						output[idx1 + 2] = input[idx2 + 2] * color[2];
-						output[idx1 + 3] = input[idx2 + 3] * color[3];
-					}
-				}
-			}
-
-			// Palettes
-			else {
-				for (y = 0; y < height; ++y) {
-					for (x = 0; x < width; ++x) {
-						idx1 = (y * outputWidth + x) * 4;
-						idx2 = input[y * width + x] * 4;
-						output[idx1 + 0] = pal[idx2 + 0] * color[0];
-						output[idx1 + 1] = pal[idx2 + 1] * color[1];
-						output[idx1 + 2] = pal[idx2 + 2] * color[2];
-						output[idx1 + 3] = input[y * width + x] ? 255 * color[3] : 0;
-					}
-				}
-			}
-
-			// Insert into the canvas
-			ctx.putImageData( imageData, 0, 0, 0, 0, width, height);
-
-			// Render sprite in context
-			_ctx.save();
-			_ctx.translate( _x | 0, _y | 0 );
-			_ctx.rotate( this.angle / 180 * Math.PI );
-			_ctx.scale( scale_x, scale_y );
-			_ctx.drawImage(
-				 canvas,
-				 0,              0,
-				 width,          height,
-				-_size[0] >> 1, -_size[1] >> 1,
-				 _size[0] |  0,  _size[1] |  0
-			);
-			_ctx.restore();
-		};
-	}();
-
-
-	/**
-	 * Export
-	 */
-	return SpriteRenderer;
-});
+/**
+ * Export
+ */
+export default SpriteRenderer;

@@ -3,160 +3,152 @@
  *
  * WinList windows
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
-define(function(require)
-{
-	'use strict';
 
+import Renderer from 'Renderer/Renderer.js';
+import KEYS from 'Controls/KeyEventHandler.js';
+import UIManager from 'UI/UIManager.js';
+import GUIComponent from 'UI/GUIComponent.js';
+import 'UI/Elements/Elements.js';
+import htmlText from './WinList.html?raw';
+import cssText from './WinList.css?raw';
 
-	/**
-	 * Dependencies
-	 */
-	var jQuery      = require('Utils/jquery');
-	var Renderer    = require('Renderer/Renderer');
-	var KEYS        = require('Controls/KeyEventHandler');
-	var UIManager   = require('UI/UIManager');
-	var UIComponent = require('UI/UIComponent');
-	var htmlText    = require('text!./WinList.html');
-	var cssText     = require('text!./WinList.css');
+/**
+ * Create WinList namespace
+ */
+const WinList = new GUIComponent('WinList', cssText);
 
+WinList.render = () => htmlText;
 
-	/**
-	 * Create WinList namespace
-	 */
-	var WinList = new UIComponent( 'WinList', htmlText, cssText );
+/**
+ * Initialize UI
+ */
+WinList.init = function init() {
+	this._host.style.top = `${(Renderer.height - 280) / 1.5}px`;
+	this._host.style.left = `${(Renderer.width - 280) / 2}px`;
+	this.draggable();
 
+	const root = this.getRoot();
+	this._listEl = root.querySelector('.list');
+	this.list = null;
+	this.index = 0;
 
-	/**
-	 * Initialize UI
-	 */
-	WinList.init = function init()
-	{
-		// Show at center.
-		this.ui.css({
-			top: (Renderer.height - 280)/1.5,
-			left: (Renderer.width - 280)/2
-		});
-		this.draggable();
+	const okBtn = root.querySelector('.ok');
+	const cancelBtn = root.querySelector('.cancel');
+	if (okBtn) {
+		okBtn.addEventListener('click', () => WinList.selectIndex());
+	}
+	if (cancelBtn) {
+		cancelBtn.addEventListener('click', () => WinList.exit());
+	}
+};
 
-		this.ui_list = this.ui.find('.list:first');
-		this.list    = null;
-		this.index   = 0;
+/**
+ * Add elements to the list
+ *
+ * @param {Array} list object to display
+ */
+WinList.setList = function setList(list) {
+	this.list = list;
+	this._listEl.innerHTML = '';
 
-		// Click Events
-		this.ui.find('.ok').click( this.selectIndex.bind(this) );
-		this.ui.find('.cancel').click( this.exit.bind(this) );
-	};
-
-
-	/**
-	 * Add elements to the list
-	 *
-	 * @param {Array} list object to display
-	 */
-	WinList.setList = function setList( list )
-	{
-		var i, count;
-
-		this.list = list;
-		this.ui_list.empty();
-
-		function onSelectListIndex(event) {
-			WinList.setIndex( jQuery(this).data('id') );
+	for (let i = 0, count = list.length; i < count; ++i) {
+		const node = document.createElement('div');
+		node.classList.add('menu_node');
+		node.textContent = list[i];
+		node.dataset.id = i;
+		node.addEventListener('mousedown', event => {
+			WinList.setIndex(parseInt(node.dataset.id, 10));
 			event.stopImmediatePropagation();
-			return false;
+		});
+		node.addEventListener('dblclick', () => WinList.selectIndex());
+		this._listEl.appendChild(node);
+	}
+
+	this.setIndex(0);
+};
+
+/**
+ *  Cancel window
+ */
+WinList.exit = function exit() {
+	WinList.onExitRequest();
+};
+
+/**
+ * Callback to use
+ */
+WinList.onExitRequest = function onExitRequest() {};
+WinList.onIndexSelected = function onIndexSelected() {};
+
+/**
+ * Change selection
+ *
+ * @param {number} id in list
+ */
+WinList.setIndex = function setIndex(id) {
+	if (id > -1 && id < this.list.length) {
+		const nodes = this._listEl.querySelectorAll('.menu_node');
+		if (nodes[this.index]) {
+			nodes[this.index].style.backgroundColor = 'transparent';
 		}
-
-		for (i = 0, count = list.length; i < count; ++i) {
-			this.ui_list.append(
-				jQuery('<div/>').
-					addClass('menu_node').
-					text(list[i]).
-					data('id', i).
-					mousedown(onSelectListIndex).
-					dblclick(this.selectIndex.bind(this))
-			);
+		if (nodes[id]) {
+			nodes[id].style.backgroundColor = '#cde0ff';
 		}
+		this.index = id;
+	}
+};
 
-		this.setIndex( 0 );
-	};
+/**
+ * Select a server, callback
+ */
+WinList.selectIndex = function selectIndex() {
+	this.onIndexSelected(this.index);
+};
 
+/**
+ * Key Management
+ *
+ * @param {object} event
+ */
+WinList.onKeyDown = function onKeyDown(event) {
+	if (this._host.style.display === 'none') {
+		return true;
+	}
+	switch (event.which) {
+		default:
+			return;
+		case KEYS.ENTER:
+			this.selectIndex();
+			break;
+		case KEYS.ESCAPE:
+			this.exit();
+			break;
+		case KEYS.UP:
+			this.setIndex(this.index - 1);
+			break;
+		case KEYS.DOWN:
+			this.setIndex(this.index + 1);
+			break;
+	}
+	event.stopImmediatePropagation();
+};
 
-	/**
-	 *  Cancel window
-	 */
-	WinList.exit = function exit()
-	{
-		WinList.onExitRequest();
-	};
+/**
+ * Free variables once removed from HTML
+ */
+WinList.onRemove = function onRemove() {
+	this._listEl.innerHTML = '';
+	this.list = null;
+	this.index = 0;
+};
 
+WinList.mouseMode = GUIComponent.MouseMode.STOP;
 
-	/**
-	 * Callback to use
-	 */
-	WinList.onExitRequest   = function onExitRequest(){};
-	WinList.onIndexSelected = function onIndexSelected(){};
-
-
-	/**
-	 * Change selection
-	 *
-	 * @param {number} id in list
-	 */
-	WinList.setIndex = function setIndex( id )
-	{
-		if (id > -1 && id < this.list.length) {
-			this.ui_list.find('div:eq('+ this.index +')').css('backgroundColor', 'transparent');
-			this.ui_list.find('div:eq('+ id +')').css('backgroundColor', '#cde0ff');
-			this.index = id;
-		}
-	};
-
-
-	/**
-	 * Select a server, callback
-	 */
-	WinList.selectIndex = function selectIndex()
-	{
-		this.onIndexSelected( this.index );
-	};
-
-
-	/**
-	 * Key Management
-	 *
-	 * @param {object} event
-	 */
-	WinList.onKeyDown = function onKeyDown( event )
-	{
-		switch (event.which) {
-			default:                                           return;
-			case KEYS.ENTER:  this.selectIndex();              break;
-			case KEYS.ESCAPE: this.exit();                     break;
-			case KEYS.UP:     this.setIndex( this.index - 1 ); break;
-			case KEYS.DOWN:   this.setIndex( this.index + 1 ); break;
-		}
-		event.stopImmediatePropagation();
-	};
-
-
-	/**
-	 * Free variables once removed from HTML
-	 */
-	WinList.onRemove = function onRemove()
-	{
-		this.ui_list.empty();
-		this.list  = null;
-		this.index = 0;
-	};
-
-
-	/**
-	 * Create component based on view file and export it
-	 */
-	return UIManager.addComponent(WinList);
-
-});
+/**
+ * Create component based on view file and export it
+ */
+export default UIManager.addComponent(WinList);

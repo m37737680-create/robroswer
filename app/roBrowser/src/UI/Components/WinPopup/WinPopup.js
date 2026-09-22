@@ -3,46 +3,40 @@
  *
  * Popup windows
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
-define(function(require)
-{
-	'use strict';
 
+import Renderer from 'Renderer/Renderer.js';
+import UIManager from 'UI/UIManager.js';
+import GUIComponent from 'UI/GUIComponent.js';
+import 'UI/Elements/Elements.js';
+import htmlText from './WinPopup.html?raw';
+import cssText from './WinPopup.css?raw';
 
-	/**
-	 * Dependencies
-	 */
-	var Renderer    = require('Renderer/Renderer');
-	var UIManager   = require('UI/UIManager');
-	var UIComponent = require('UI/UIComponent');
-	var htmlText    = require('text!./WinPopup.html');
-	var cssText     = require('text!./WinPopup.css');
+/**
+ * Create Component
+ */
+const WinPopup = new GUIComponent('WinPopup', cssText);
 
+WinPopup.render = () => htmlText;
 
-	/**
-	 * Create Component
-	 */
-	var WinPopup = new UIComponent( 'WinPopup', htmlText, cssText );
+/**
+ * Initialize popup
+ */
+WinPopup.init = function init() {
+	Object.assign(this._host.style, {
+		top: `${(Renderer.height - 120) / 1.5 - 120}px`,
+		left: `${(Renderer.width - 280) / 2.0}px`,
+		zIndex: '100'
+	});
+};
 
+WinPopup.needFocus = true;
+WinPopup.mouseMode = GUIComponent.MouseMode.FREEZE;
 
-	/**
-	 * Initialize popup
-	 */
-	WinPopup.init = function init()
-	{
-		this.ui.css({
-			top:  (Renderer.height-120) / 1.5 - 120,
-			left: (Renderer.width -280) / 2.0,
-			zIndex: 100
-		});
-	};
-
-
-	/**
-	 * Create component based on view file and export it
-	 */
-	return UIManager.addComponent(WinPopup);
-});
+/**
+ * Create component based on view file and export it
+ */
+export default UIManager.addComponent(WinPopup);

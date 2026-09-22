@@ -1,46 +1,24 @@
-/**
- * App/Online.js
- *
- * Start roBrowser
- *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
- *
- * @author Vincent Thibault
- */
+import GameEngine from 'Engine/GameEngine.js';
+import Plugins from 'Plugins/PluginManager.js';
+import { roInitSpinner } from 'App/PreLoader.js';
 
-// Errors Handler (hack)
-require.onError = function (err) {
-	'use strict';
+export { roInitSpinner };
 
-	if (require.defined('UI/Components/Error/Error')) {
-		require('UI/Components/Error/Error').addTrace(err);
-		return;
-	}
+export function init() {
+	// Grab (or create) the preloader
+	roInitSpinner.add();
 
-	require(['UI/Components/Error/Error'], function( Errors ){
-		Errors.addTrace(err);
-	});
+	Plugins.init();
+	GameEngine.init();
+
+	window.onbeforeunload = function () {
+		return 'Are you sure to exit roBrowser ?';
+	};
+}
+
+export default {
+	init: init,
+	roInitSpinner: roInitSpinner
 };
 
-require( {
-	urlArgs: ROConfig.version,
-	baseUrl: './src/',
-	paths: {
-		text:   'Vendors/text.require',
-		jquery: 'Vendors/jquery-1.9.1'
-	}
-},
-	['Engine/GameEngine', 'Core/Context', 'Plugins/PluginManager'],
-	function(GameEngine,        Context,           Plugins) {
-		'use strict';
-
-		Plugins.init();
-		GameEngine.init();
-
-		if (!Context.Is.APP) {
-			window.onbeforeunload = function() {
-				return 'Are you sure to exit roBrowser ?';
-			};
-		}
-	}
-);
+init();

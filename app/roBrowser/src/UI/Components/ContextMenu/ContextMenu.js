@@ -3,108 +3,104 @@
  *
  * Manage ContextMenu (right click on a target)
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  */
-define(function(require)
-{
-	'use strict';
 
+import Renderer from 'Renderer/Renderer.js';
+import Mouse from 'Controls/MouseEventHandler.js';
+import UIManager from 'UI/UIManager.js';
+import GUIComponent from 'UI/GUIComponent.js';
+import cssText from './ContextMenu.css?raw';
 
-	/**
-	 * Dependencies
-	 */
-	var jQuery       = require('Utils/jquery');
-	var Renderer     = require('Renderer/Renderer');
-	var Mouse        = require('Controls/MouseEventHandler');
-	var UIManager    = require('UI/UIManager');
-	var UIComponent  = require('UI/UIComponent');
-	var cssText      = require('text!./ContextMenu.css');
+/**
+ * Create Component
+ */
+const ContextMenu = new GUIComponent('ContextMenu', cssText);
 
+/**
+ * Render HTML
+ */
+ContextMenu.render = () => '<div id="ContextMenu"><div class="menu"></div></div>';
 
-	/**
-	 * Create Component
-	 */
-	var ContextMenu = new UIComponent( 'ContextMenu', '<div id="ContextMenu"><div class="menu"/></div>', cssText);
+/**
+ * @var {boolean} focus this UI
+ */
+ContextMenu.needFocus = true;
 
+/**
+ * Initialize event handler
+ */
+ContextMenu.init = function init() {
+	const root = this.getRoot();
 
-	/**
-	 * Initialize event handler
-	 */
-	ContextMenu.init = function init()
-	{
-		this.ui.mousedown(function(){
-			ContextMenu.remove();
-		});
+	// Click anywhere on the overlay → close
+	root.querySelector('#ContextMenu').addEventListener('mousedown', () => {
+		ContextMenu.remove();
+	});
 
-		this.ui.find('.menu').on('mousedown', 'div', function(event){
-			event.stopImmediatePropagation();
-			return false;
-		});
-	};
+	// Prevent menu item clicks from closing via overlay
+	root.querySelector('.menu').addEventListener('mousedown', event => {
+		event.stopImmediatePropagation();
+	});
+};
 
+/**
+ * Position menu at mouse cursor
+ */
+ContextMenu.onAppend = function onAppend() {
+	const root = this.getRoot();
+	const menu = root.querySelector('.menu');
+	const width = menu.offsetWidth;
+	const height = menu.offsetHeight;
+	let x = Mouse.screen.x;
+	let y = Mouse.screen.y;
 
-	/**
-	 * Initialize UI
-	 */
-	ContextMenu.onAppend = function onAppend()
-	{
-		var menu   = this.ui.find('.menu');
-		var width  = menu.width();
-		var height = menu.height();
-		var x      = Mouse.screen.x;
-		var y      = Mouse.screen.y;
+	if (x + width > Renderer.width) {
+		x = x - width;
+	}
 
-		if (Mouse.screen.x + width > Renderer.width) {
-			x = Mouse.screen.x - width;
-		}
+	if (y + height > Renderer.height) {
+		y = y - height;
+	}
 
-		if (Mouse.screen.y + height > Renderer.height) {
-			y = Mouse.screen.y - height;
-		}
+	menu.style.top = y + 'px';
+	menu.style.left = x + 'px';
+};
 
-		menu.css({ top:y, left:x });
-	};
+/**
+ * Clean up menu contents
+ */
+ContextMenu.onRemove = function onRemove() {
+	const root = this.getRoot();
+	root.querySelector('.menu').innerHTML = '';
+};
 
+/**
+ * Add a clickable node to the context menu
+ *
+ * @param {string} text
+ * @param {function} callback once clicked
+ */
+ContextMenu.addElement = function addElement(text, callback) {
+	const root = this.getRoot();
+	const item = document.createElement('div');
+	item.textContent = text;
+	item.addEventListener('click', () => {
+		ContextMenu.remove();
+		callback();
+	});
+	root.querySelector('.menu').appendChild(item);
+};
 
-	/**
-	 * Clean UP UI
-	 */
-	ContextMenu.onRemove = function onRemove()
-	{
-		this.ui.find('.menu').empty();
-	};
+/**
+ * Add a delimiter to the links
+ */
+ContextMenu.nextGroup = function nextGroup() {
+	const root = this.getRoot();
+	root.querySelector('.menu').appendChild(document.createElement('hr'));
+};
 
-
-	/**
-	 * Add a clickable node to the context menu
-	 *
-	 * @param {string} text
-	 * @param {function} callback once clicked
-	 */
-	ContextMenu.addElement = function addElement(text, callback)
-	{
-		this.ui.find('.menu').append(jQuery('<div/>').text(text).click(function(){
-			ContextMenu.remove();
-			callback();
-		}));
-	};
-
-
-	/**
-	 * Add a delimiter to the links
-	 */
-	ContextMenu.nextGroup = function nextGroup()
-	{
-		this.ui.find('.menu').append('<hr/>');
-	};
-
-
-	// Prepare the context menu to avoid problem
-	ContextMenu.prepare();
-
-
-	/**
-	 * Create component and export it
-	 */
-	return UIManager.addComponent(ContextMenu);
-});
+/**
+ * Create component and export it
+ */
+export default UIManager.addComponent(ContextMenu);

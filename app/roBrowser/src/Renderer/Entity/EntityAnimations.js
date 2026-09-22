@@ -3,46 +3,43 @@
  *
  * Manage entity special animations
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
-define(['Renderer/Renderer'], function( Renderer )
-{
-	'use strict';
 
+import Renderer from 'Renderer/Renderer.js';
 
-	/**
-	 * @Constructor
-	 * @param {object} Entity
-	 */
-	function Animations(entity)
-	{
+/**
+ * Manage entity special animations
+ *
+ * @class Animations
+ * @property {Entity} entity Target entity
+ * @property {Array<{tick: number, callback: function(number): boolean}>} list List of active animation callbacks
+ */
+class Animations {
+	constructor(entity) {
 		this.entity = entity;
-		this.list   = [];
+		this.list = [];
 	}
-
 
 	/**
 	 * Add an animation to the list
 	 *
 	 * @param {function} callback
 	 */
-	Animations.prototype.add = function add(callback)
-	{
+	add(callback) {
 		this.list.push({
-			tick:     Renderer.tick,
+			tick: Renderer.tick,
 			callback: callback
 		});
-	};
-
+	}
 
 	/**
 	 * Process events
 	 */
-	Animations.prototype.process = function process()
-	{
-		var i, count;
+	process() {
+		let i, count;
 
 		for (i = 0, count = this.list.length; i < count; ++i) {
 			if (this.list[i].callback(Renderer.tick - this.list[i].tick)) {
@@ -51,19 +48,15 @@ define(['Renderer/Renderer'], function( Renderer )
 				count--;
 			}
 		}
-	};
-
+	}
 
 	/**
 	 * Clean up events
 	 */
-	Animations.prototype.free = function free()
-	{
+	free() {
 		this.list.length = 0;
-	};
-
-
-	return function init() {
-		this.animations = new Animations(this);
-	};
-});
+	}
+}
+export default function init() {
+	this.animations = new Animations(this);
+}

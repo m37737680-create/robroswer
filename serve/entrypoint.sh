@@ -9,7 +9,7 @@ db_name="${GAME_DB_NAME:-ragnarok}"
 db_user="${MYSQL_USER:-ragnarok}"
 db_password="${MYSQL_PASSWORD:-ragnarok}"
 db_root_password="${MYSQL_ROOT_PASSWORD:-ragnarok}"
-server_host="${RATHENA_HOST:-serve}"
+server_host="${GAME_HOST:-serve}"
 bind_ip="${RATHENA_BIND_IP:-serve}"
 
 case "$mode" in

@@ -2,188 +2,181 @@
  * UI/Components/Intro/Preferences.js
  *
  * Manage User Preferences
- * *
+ *
  * @author Vincent Thibault
+ * @refactor AoShinHo
  */
 
-define(['Utils/jquery', 'Core/Configs', 'Core/Context', 'Core/Preferences', 'Preferences/Audio', 'Preferences/Graphics'],
-function(      jQuery,        Configs,        Context,        Preferences,               Audio,               Graphics )
-{
-	'use strict';
+import Configs from 'Core/Configs.js';
+import Context from 'Core/Context.js';
+import Preferences from 'Core/Preferences.js';
+import Audio from 'Preferences/Audio.js';
+import Graphics from 'Preferences/Graphics.js';
 
-
-	/**
-	 * Preferences structure
-	 */
-	var _preferences = Preferences.get('Window', {
-		serverfile:  'clientinfo.xml',
-		serverlist:  [],
-		serverdef:   'serverfile',
-		save:        true
-	}, 1.1 );
-
-
-	/**
-	 * Load preferences
-	 *
-	 * @param {jQuery} ui
-	 */
-	function load( ui )
+const _preferences = Preferences.get(
+	'Window',
 	{
-		if (Graphics.screensize === 'full' && !Context.isFullScreen()) {
-			Graphics.screensize = '800x600';
-		}
+		serverfile: 'clientinfo.xml',
+		serverlist: [],
+		serverdef: 'serverfile',
+		save: true
+	},
+	1.1
+);
 
-		ui.find('.screensize').val( Graphics.screensize );
-		ui.find('.quality').val( Graphics.quality ).trigger('change');
-
-		ui.find('.serverdef').attr('checked', false );
-		ui.find('.cursor').attr('checked', Graphics.cursor);
-		ui.find('.serverdef[value="'+ _preferences.serverdef +'"]').attr('checked', 'true').trigger('click');
-		ui.find('.clientinfo').val( _preferences.serverfile );
-		
-		ui.find('.bgmvol').val( Audio.BGM.volume * 100 ).trigger('change');
-		ui.find('.soundvol').val( Audio.Sound.volume * 100 ).trigger('change');
-
-		if (!window.requestFileSystem && !window.webkitRequestFileSystem) {
-			Configs.set('saveFiles', false);
-			ui.find('.save').attr('disabled', 'disabled');
-		}
-		else if (!Configs.get('saveFiles')) {
-			ui.find('.save').attr('disabled', 'disabled');
-		}
-		else {
-			ui.find('.save').attr('checked', _preferences.saveFiles ? 'checked' : false );
-		}
-
-		var i, count;
-		var serverlist = _preferences.serverlist;
-		var $servers = ui.find('.servers').empty();
-		var element = jQuery(
-			'<tr>' +
-			'	<td><input type="text" class="display"/></td>'   +
-			'	<td><input type="text" class="address"/></td>'   +
-			'	<td><input type="text" class="version"/></td>'   +
-			'	<td><input type="text" class="langtype"/></td>'  +
-			'	<td><input type="text" class="packetver"/></td>' +
-			'	<td><button class="btn_delete"></button></td>'   +
-			'</tr>'
-		);
-
-		for (i = 0, count = serverlist.length; i < count; ++i) {
-			var server = element.clone();
-
-			server.find('.display').val(serverlist[i].display);
-			server.find('.address').val(serverlist[i].address +':'+ serverlist[i].port);
-			server.find('.version').val(serverlist[i].version);
-			server.find('.langtype').val(serverlist[i].langtype);
-			server.find('.packetver').val(serverlist[i].packetver);
-
-			$servers.append(server);
-		}
-
-
-		apply();
+/**
+ * Load preferences into the settings overlay
+ * @param {Element|ShadowRoot} root
+ */
+function load(root) {
+	if (Graphics.screensize === 'full' && !Context.isFullScreen()) {
+		Graphics.screensize = '800x600';
 	}
 
+	const q = sel => root.querySelector(sel);
+	const qa = sel => root.querySelectorAll(sel);
 
-	/**
-	 * Save preferences
-	 *
-	 * @param {jQuery} ui
-	 */
-	function save( ui )
-	{
-		Graphics.screensize    = ui.find('.screensize').val();
-		Graphics.quality       = ui.find('.quality').val();
-		Graphics.cursor        = ui.find('.cursor:checked').length ? true : false;
-		_preferences.saveFiles = ui.find('.save:checked').length   ? true : false;
+	// Screen
+	q('.screensize').value = Graphics.screensize;
 
-		var $servers = ui.find('.servers');
-		var i, count = $servers.find('tr').length;
-		var $server;
+	const qualityEl = q('.quality');
+	qualityEl.value = Graphics.quality;
+	qualityEl.dispatchEvent(new Event('input'));
 
-		if (Configs.get('_serverEditMode')) {
-			_preferences.serverdef  = ui.find('.serverdef:checked').val();
-			_preferences.serverfile = ui.find('.clientinfo').val();
-			_preferences.serverlist = [];
+	// Cursor (fix: original used .cursor-options which didn't exist)
+	const cursorEl = q('.cursor');
+	if (cursorEl) cursorEl.checked = !!Graphics.cursor;
 
-			for (i = 0; i < count; ++i) {
-				$server = $servers.find('tr:eq('+ i +')');
-				_preferences.serverlist.push({
-					display:   $server.find('.display').val(),
-					address:   $server.find('.address').val().split(':')[0],
-					port:      parseInt( $server.find('.address').val().split(':')[1], 10),
-					version:   $server.find('.version').val(),
-					langtype:  $server.find('.langtype').val(),
-					packetver: $server.find('.packetver').val()
-				});
-			}
-		}
-		
-		Audio.BGM.volume    = ui.find('.bgmvol').val() / 100;
-		Audio.BGM.play      = Audio.BGM.volume > 0 ? true : false;
-		Audio.Sound.volume  = ui.find('.soundvol').val() / 100;
-		Audio.Sound.play    = Audio.Sound.volume > 0 ? true : false;
+	// Server def
+	qa('.serverdef').forEach(r => (r.checked = false));
+	const activeRadio = q('.serverdef[value="' + _preferences.serverdef + '"]');
+	if (activeRadio) {
+		activeRadio.checked = true;
+		activeRadio.dispatchEvent(new Event('click'));
+	}
+	q('.clientinfo').value = _preferences.serverfile;
 
-        Audio.save();
-        Graphics.save();
-		_preferences.save();
+	// Audio
+	const bgmEl = q('.bgmvol');
+	bgmEl.value = Audio.BGM.volume * 100;
+	bgmEl.dispatchEvent(new Event('input'));
 
-		apply();
+	const soundEl = q('.soundvol');
+	soundEl.value = Audio.Sound.volume * 100;
+	soundEl.dispatchEvent(new Event('input'));
+
+	// Save files
+	const saveEl = q('.save');
+	if (!window.requestFileSystem && !window.webkitRequestFileSystem) {
+		Configs.set('saveFiles', false);
+		saveEl.disabled = true;
+	} else if (!Configs.get('saveFiles')) {
+		saveEl.disabled = true;
+	} else {
+		saveEl.checked = !!_preferences.saveFiles;
 	}
 
+	// Server list
+	const tbody = q('.servers');
+	tbody.innerHTML = '';
+	const serverlist = _preferences.serverlist;
 
-	/**
-	 * Apply preferences
-	 */
-	function apply()
-	{
-		var isFullScreen = Context.isFullScreen();
+	for (let i = 0; i < serverlist.length; i++) {
+		const tr = document.createElement('tr');
+		tr.innerHTML =
+			'<td><input type="text" class="display"/></td>' +
+			'<td><input type="text" class="address"/></td>' +
+			'<td><input type="text" class="version"/></td>' +
+			'<td><input type="text" class="langtype"/></td>' +
+			'<td><input type="text" class="packetver"/></td>' +
+			'<td><button class="btn_delete">\u00D7</button></td>';
 
-		// Full Screen support
-		if (Graphics.screensize === 'full') {
-			if (!isFullScreen) {
-				Context.requestFullScreen();
-			}
-		}
-		else {
+		tr.querySelector('.display').value = serverlist[i].display;
+		tr.querySelector('.address').value = serverlist[i].address + ':' + serverlist[i].port;
+		tr.querySelector('.version').value = serverlist[i].version;
+		tr.querySelector('.langtype').value = serverlist[i].langtype;
+		tr.querySelector('.packetver').value = serverlist[i].packetver;
 
-			if (isFullScreen) {
-				Context.cancelFullScreen();
-			}
-
-			// Resizing
-			if (Context.Is.POPUP) {
-				var size = Graphics.screensize.split('x');
-
-				// Only resize/move if needed
-				if (size[0] != window.innerWidth && size[1] != window.innerHeight) {
-					window.resizeTo( size[0], size[1] );
-					window.moveTo( (screen.availWidth - size[0]) / 2, (screen.availHeight - size[1]) / 2 );
-				}
-			}
-		}
-
-		if (Configs.get('_serverEditMode')) {
-			if (_preferences.serverdef === 'serverlist') {
-				Configs.set('servers', _preferences.serverlist );
-			}
-			else {
-				Configs.set('servers', 'data/' + _preferences.serverfile );
-			}
-		}
-
-		Configs.set('saveFiles', _preferences.saveFiles);
-		Configs.set('quality',   Graphics.quality);
+		tbody.appendChild(tr);
 	}
 
+	apply();
+}
 
-	/**
-	 * Export
-	 */
-	return {
-		save: save,
-		load: load
-	};
-});
+/**
+ * Save preferences from the settings overlay
+ * @param {Element|ShadowRoot} root
+ */
+function save(root) {
+	const q = sel => root.querySelector(sel);
+	const qa = sel => root.querySelectorAll(sel);
+
+	Graphics.screensize = q('.screensize').value;
+	Graphics.quality = q('.quality').value;
+	Graphics.cursor = q('.cursor') ? q('.cursor').checked : false;
+	_preferences.saveFiles = q('.save') ? q('.save').checked : false;
+
+	if (Configs.get('_serverEditMode')) {
+		const checkedRadio = q('.serverdef:checked');
+		_preferences.serverdef = checkedRadio ? checkedRadio.value : 'serverfile';
+		_preferences.serverfile = q('.clientinfo').value;
+		_preferences.serverlist = [];
+
+		const rows = qa('.servers tr');
+		rows.forEach(row => {
+			const addr = row.querySelector('.address').value;
+			_preferences.serverlist.push({
+				display: row.querySelector('.display').value,
+				address: addr.split(':')[0],
+				port: parseInt(addr.split(':')[1], 10),
+				version: row.querySelector('.version').value,
+				langtype: row.querySelector('.langtype').value,
+				packetver: row.querySelector('.packetver').value
+			});
+		});
+	}
+
+	Audio.BGM.volume = q('.bgmvol').value / 100;
+	Audio.BGM.play = Audio.BGM.volume > 0;
+	Audio.Sound.volume = q('.soundvol').value / 100;
+	Audio.Sound.play = Audio.Sound.volume > 0;
+
+	Audio.save();
+	Graphics.save();
+	_preferences.save();
+
+	apply();
+}
+
+/**
+ * Apply preferences
+ */
+function apply() {
+	const isFullScreen = Context.isFullScreen();
+
+	if (Graphics.screensize === 'full') {
+		if (!isFullScreen) Context.requestFullScreen();
+	} else {
+		if (isFullScreen) Context.cancelFullScreen();
+		if (Context.Is.POPUP) {
+			const size = Graphics.screensize.split('x');
+			if (size[0] != window.innerWidth && size[1] != window.innerHeight) {
+				window.resizeTo(size[0], size[1]);
+				window.moveTo((screen.availWidth - size[0]) / 2, (screen.availHeight - size[1]) / 2);
+			}
+		}
+	}
+
+	if (Configs.get('_serverEditMode')) {
+		if (_preferences.serverdef === 'serverlist') {
+			Configs.set('servers', _preferences.serverlist);
+		} else {
+			Configs.set('servers', 'data/' + _preferences.serverfile);
+		}
+	}
+
+	Configs.set('saveFiles', _preferences.saveFiles);
+	Configs.set('quality', Graphics.quality);
+}
+
+export default { save, load };

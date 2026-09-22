@@ -4,24 +4,44 @@
  * Cache Item into memory
  * Used to manage each object in cache, manage callbacks etc.
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
 
-define(function()
-{
-	'use strict';
-
+/**
+ * Object stored in cache
+ * @var MemoryItem
+ */
+class MemoryItem {
+	/**
+	 * Data of the cached Item
+	 * @var mixed
+	 */
+	_data = null;
 
 	/**
-	 * Object stored in cache
-	 * @var MemoryItem
+	 * Error informatio,
+	 * @var {string}
 	 */
-	function MemoryItem( onload, onerror )
-	{
+	_error = '';
+
+	/**
+	 * Is the item loaded ?
+	 * @var boolean complete
+	 */
+	complete = false;
+
+	/**
+	 * Save the last time the item was called from cache
+	 * Is used to remove old item from cache
+	 * @var integer lastTimeUsed
+	 */
+	lastTimeUsed = 0;
+
+	constructor(onload, onerror) {
 		// Private variables
-		this._onload  = [];
+		this._onload = [];
 		this._onerror = [];
 
 		// Store callback
@@ -35,56 +55,22 @@ define(function()
 		}
 	}
 
-
-	/**
-	 * Data of the cached Item
-	 * @var mixed
-	 */
-	MemoryItem.prototype._data  = null;
-
-
-	/**
-	 * Error informatio,
-	 * @var {string}
-	 */
-	MemoryItem.prototype._error = '';
-
-
-	/**
-	 * Is the item loaded ?
-	 * @var boolean complete
-	 */
-	MemoryItem.prototype.complete = false;
-
-
-	/**
-	 * Save the last time the item was called from cache
-	 * Is used to remove old item from cache
-	 * @var integer lastTimeUsed
-	 */
-	MemoryItem.prototype.lastTimeUsed = 0;
-
-
 	/**
 	 * Get data from Item
 	 *
 	 * @return mixed
 	 */
-	Object.defineProperty( MemoryItem.prototype, 'data', {
-		get : function(){
-			this.lastTimeUsed = Date.now();
-			return this._data;
-		}
-	});
-
+	get data() {
+		this.lastTimeUsed = Date.now();
+		return this._data;
+	}
 
 	/**
 	 * Once the item in cache is load, execute all callback
 	 *
 	 * @param mixed data
 	 */
-	MemoryItem.prototype.addEventListener = function addEventListener( event, callback )
-	{
+	addEventListener(event, callback) {
 		if (!(callback instanceof Function)) {
 			throw new Error('MemoryItem::addEventListener() - callback must be a function !');
 		}
@@ -113,58 +99,52 @@ define(function()
 				break;
 
 			default:
-				throw new Error('MemoryItem::addEventListener() - Invalid event "'+ event +'" used.');
+				throw new Error('MemoryItem::addEventListener() - Invalid event "' + event + '" used.');
 		}
-	};
-
+	}
 
 	/**
 	 * Once the item in cache is load, execute all callback
 	 *
 	 * @param {mixed} data
 	 */
-	MemoryItem.prototype.onload = function onLoad( data )
-	{
-		var i, size;
+	onload(data) {
+		let i, size;
 
-		this._data        = data;
-		this.complete     = true;
+		this._data = data;
+		this.complete = true;
 		this.lastTimeUsed = Date.now();
 
 		for (i = 0, size = this._onload.length; i < size; ++i) {
-			this._onload[i]( data );
+			this._onload[i](data);
 		}
 
-		this._onload.length  = 0;
+		this._onload.length = 0;
 		this._onerror.length = 0;
-	};
-
+	}
 
 	/**
 	 * When an error occured with the item
 	 *
 	 * @param {string} error - optional
 	 */
-	MemoryItem.prototype.onerror = function OnError( error )
-	{
-		var i, size;
+	onerror(error) {
+		let i, size;
 
-		this._error       = error;
-		this.complete     = true;
+		this._error = error;
+		this.complete = true;
 		this.lastTimeUsed = Date.now();
 
 		for (i = 0, size = this._onerror.length; i < size; ++i) {
-			this._onerror[i]( error );
+			this._onerror[i](error);
 		}
 
-		this._onload.length  = 0;
+		this._onload.length = 0;
 		this._onerror.length = 0;
-	};
+	}
+}
 
-
-	/**
-	 * Export
-	 */
-	return MemoryItem;
-
-});
+/**
+ * Export
+ */
+export default MemoryItem;

@@ -3,108 +3,125 @@
  *
  * Skill Information
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
-define(function(require)
-{
-	'use strict';
 
+import DB from 'DB/DBManager.js';
+import Renderer from 'Renderer/Renderer.js';
+import KEYS from 'Controls/KeyEventHandler.js';
+import Mouse from 'Controls/MouseEventHandler.js';
+import UIManager from 'UI/UIManager.js';
+import GUIComponent from 'UI/GUIComponent.js';
+import htmlText from './SkillDescription.html?raw';
+import cssText from './SkillDescription.css?raw';
 
-	/**
-	 * Dependencies
-	 */
-	var jQuery      = require('Utils/jquery');
-	var SkillDB     = require('DB/Skills/SkillDescription');
-	var Renderer    = require('Renderer/Renderer');
-	var KEYS        = require('Controls/KeyEventHandler');
-	var Mouse       = require('Controls/MouseEventHandler');
-	var UIManager   = require('UI/UIManager');
-	var UIComponent = require('UI/UIComponent');
-	var htmlText    = require('text!./SkillDescription.html');
-	var cssText     = require('text!./SkillDescription.css');
+/**
+ * Whitelist of allowed HTML tags in skill descriptions
+ */
+const _allowedTags = new Set(['font', 'i', 'b']);
 
+/**
+ * Sanitize and format RO text with ^rrggbb color codes, ^nItemID^NNN
+ * item name substitution, and newline conversion.
+ *
+ * @param {string} value - raw skill description text
+ * @returns {string} safe HTML string
+ */
+function _formatROText(value) {
+	const tmp = document.createElement('div');
+	tmp.innerHTML = String(value);
 
-	/**
-	 * Create Component
-	 */
-	var SkillDescription = new UIComponent( 'SkillDescription', htmlText, cssText );
-
-
-	/**
-	* SkillDescription unique id
-	*/
-	SkillDescription.uid = -1;
-
-
-	/**
-	 * Once append to the DOM
-	 */
-	SkillDescription.onKeyDown = function onKeyDown( event )
-	{
-		if (event.which === KEYS.ESCAPE) {
-			this.remove();
-			event.stopImmediatePropagation();
-			return false;
+	tmp.querySelectorAll('*').forEach(el => {
+		if (!_allowedTags.has(el.tagName.toLowerCase())) {
+			el.replaceWith(...el.childNodes);
 		}
+	});
 
-		return true;
-	};
+	let txt = tmp.innerHTML;
 
+	let result;
+	const colorReg = /\^([a-fA-F0-9]{6})/;
+	while ((result = colorReg.exec(txt))) {
+		txt = txt.replace(result[0], `<span style="color:#${result[1]}">`) + '</span>';
+	}
 
-	/**
-	 * Once append
-	 */
-	SkillDescription.onAppend = function onAppend()
-	{
-		// Seems like "EscapeWindow" is execute first, push it before.
-		var events = jQuery._data( window, 'events').keydown;
-		events.unshift( events.pop() );
-	};
+	const itemReg = /\^nItemID\^(\d+)/g;
+	while ((result = itemReg.exec(txt))) {
+		txt = txt.replace(result[0], DB.getItemInfo(result[1]).identifiedDisplayName);
+	}
 
+	txt = txt.replace(/\n/g, '<br/>');
 
-	/**
-	 * Once removed
-	 */
-	SkillDescription.onRemove = function onRemove()
-	{
-		this.uid = -1; // reset uid
-	};
+	return txt;
+}
 
+/**
+ * Create Component
+ */
+const SkillDescription = new GUIComponent('SkillDescription', cssText);
 
-	/**
-	 * Initialize UI
-	 */
-	SkillDescription.init = function init()
-	{
-		this.ui.find('.close').click(function(){
-			this.remove();
-		}.bind(this));
+SkillDescription.render = () => htmlText;
 
-		this.draggable();
-	};
+/**
+ * SkillDescription unique id
+ */
+SkillDescription.uid = -1;
 
+/**
+ * Possible to exit using ESCAPE
+ */
+SkillDescription.onKeyDown = function onKeyDown(event) {
+	if ((event.which === KEYS.ESCAPE || event.key === 'Escape') && this._host.style.display !== 'none') {
+		this.remove();
+	}
+};
 
-	/**
-	 * Add content to the box
-	 *
-	 * @param {number} skill id
-	 */
-	SkillDescription.setSkill = function setSkill( id )
-	{
-		this.uid = id;
-		this.ui.find('.content').text(SkillDB[id] || '...');
+/**
+ * Once removed
+ */
+SkillDescription.onRemove = function onRemove() {
+	this.uid = -1;
+};
 
-		this.ui.css({
-			top:  Math.min( Mouse.screen.y + 10, Renderer.height - this.ui.height()),
-			left: Math.min( Mouse.screen.x + 10, Renderer.width - this.ui.width())
-		});
-	};
+/**
+ * Initialize UI
+ */
+SkillDescription.init = function init() {
+	const root = this.getRoot();
 
+	const closeBtn = root.querySelector('.close');
+	if (closeBtn) {
+		closeBtn.addEventListener('mousedown', e => e.stopImmediatePropagation());
+		closeBtn.addEventListener('click', () => SkillDescription.remove());
+	}
 
-	/**
-	 * Create component and export it
-	 */
-	return UIManager.addComponent(SkillDescription);
-});
+	this.draggable();
+};
+
+/**
+ * Add content to the box
+ *
+ * @param {number} skill id
+ */
+SkillDescription.setSkill = function setSkill(id) {
+	this.uid = id;
+
+	const root = this.getRoot();
+	const content = root.querySelector('.content');
+	if (content) {
+		content.innerHTML = _formatROText(DB.getSkillDescription(id));
+	}
+
+	const hostWidth = this._host.getBoundingClientRect().width;
+	const hostHeight = this._host.getBoundingClientRect().height;
+
+	this._host.style.top = `${Math.min(Mouse.screen.y + 10, Renderer.height - hostHeight)}px`;
+	this._host.style.left = `${Math.min(Mouse.screen.x + 10, Renderer.width - hostWidth)}px`;
+};
+
+/**
+ * Create component and export it
+ */
+export default UIManager.addComponent(SkillDescription);

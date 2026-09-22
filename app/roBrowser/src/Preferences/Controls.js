@@ -3,21 +3,31 @@
  *
  * Control user preferences
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
-define( ['Core/Preferences'], function( Preferences )
-{
-	'use strict';
 
+import Preferences from 'Core/Preferences.js';
 
-	/**
-	 * Export
-	 */
-	return Preferences.get( 'Controls', {
-		noctrl:  true,
-		noshift: false
-	}, 1.0 );
-
-});
+/**
+ * Export
+ */
+export default Preferences.get(
+	'Controls',
+	{
+		noctrl: true,
+		noshift: false,
+		snap: false,
+		itemsnap: false,
+		/* Joystick */
+		attackTargetMode: 0,
+		joyQuick: 0,
+		joyDeadline: 0.1,
+		joyDisableVirtualMouse: false,
+		joyAutoHide: false,
+		joyReverseStick: false,
+		joySense: 25.0
+	},
+	1.0
+);

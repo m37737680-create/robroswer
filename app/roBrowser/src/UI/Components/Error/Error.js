@@ -4,75 +4,66 @@
  * Error screen
  * Don't use components class, if there is an error on this module will never be used...
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
-define(function( require )
-{
-	'use strict';
 
+import _htmlText from './Error.html?raw';
+import _cssText from './Error.css?raw';
 
-	/**
-	 * Dependencies
-	 */
-	var _htmlText    = require('text!./Error.html');
-	var _cssText     = require('text!./Error.css');
-	var jQuery       = require('Vendors/jquery');
-
-
-	/**
-	 * Error Namespace
-	 */
-	var Error = {};
-
-
+/**
+ * Error Namespace
+ */
+class Error {
 	/**
 	 * Initialize Metaling
 	 */
-	Error.init = function init()
-	{
-		this.ui = jQuery(_htmlText);
+	static init() {
+		const wrapper = document.createElement('div');
+		wrapper.innerHTML = _htmlText;
+		this.ui = wrapper.firstElementChild;
 
-		// Add view to html
-		var style = jQuery('style:first');
-		if (!style.length) {
-			style = jQuery('<style type="text/css"></style>').appendTo('head');
+		let style = document.querySelector('style');
+		if (!style) {
+			style = document.createElement('style');
+			style.setAttribute('type', 'text/css');
+			document.head.appendChild(style);
 		}
-		style.append('\n' + _cssText);
-		jQuery('body').html(this.ui);
+		style.appendChild(document.createTextNode('\n' + _cssText));
+		document.body.innerHTML = '';
+		document.body.appendChild(this.ui);
 
-		this.ui.css('backgroundImage', 'url('+ require.toUrl('./angeling.png') +')');
-	};
-
+		this.ui.style.backgroundImage = `url(${new URL('./error.png', import.meta.url).href})`;
+	}
 
 	/**
 	 * Add trace info to UI
 	 *
 	 * @param {Error} error
 	 */
-	Error.addTrace = function addTrace( error )
-	{
-		var url = requirejs.toUrl(''); // global
-		error   = error.stack || error;
+	static addTrace(error) {
+		console.error(error);
+		let url = new URL('../../../', import.meta.url).href;
+		error = error.stack || error;
 
-		url   = url.replace(/\/([^\/]+)$/g,'/');
-		error = error.replace( /\n/g, '<br/>');
-		error = error.replace( new RegExp(url,'g'), '');
-		error = error.replace( /\?[^\:]+/g,'');
+		url = url.replace(/\/([^/]+)$/g, '/');
+		error = error.replace(/\n/g, '<br/>');
+		error = error.replace(new RegExp(url, 'g'), '');
+		error = error.replace(/\?[^:]+/g, '');
 
 		if (!this.ui) {
 			this.init();
 		}
 
-		this.ui.find('.trace').append(
-			error  + '<br />'
-		);
-	};
+		const trace = this.ui.querySelector('.trace');
+		if (trace) {
+			trace.insertAdjacentHTML('beforeend', `${error}<br />`);
+		}
+	}
+}
 
-
-	/**
-	 * Stored component and return it
-	 */
-	return Error;
-});
+/**
+ * Stored component and return it
+ */
+export default Error;

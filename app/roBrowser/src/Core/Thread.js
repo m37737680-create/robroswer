@@ -4,49 +4,39 @@
  * Client Thread
  * Manage the Client Thread to send data to it (let another Thread do the hard job : loading files, ...)
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
 
+/**
+ * Memory to get back data
+ * @var List
+ */
+const _memory = {};
 
-define(['require', 'Core/Configs'], function( require, Configs )
-{
-	'use strict';
+/**
+ * List of hook callback
+ * @var List
+ */
+const _hook = {};
 
+/**
+ * @var {number} uid
+ */
+let _uid = 0;
 
-	/**
-	 * Memory to get back data
-	 * @var List
-	 */
-	var _memory = {};
+/**
+ * @var {mixed} origin for security
+ */
+let _origin = [];
 
+/**
+ * @var {window|Worker} context to send data to
+ */
+let _source = null;
 
-	/**
-	 * List of hook callback
-	 * @var List
-	 */
-	var _hook   = {};
-
-
-	/**
-	 * @var {number} uid
-	 */
-	var _uid = 0;
-
-
-	/**
-	 * @var {mixed} origin for security
-	 */
-	var _origin = [];
-
-
-	/**
-	 * @var {window|Worker} context to send data to
-	 */
-	var _source = null;
-
-
+class Thread {
 	/**
 	 * Send data to thread
 	 *
@@ -54,27 +44,16 @@ define(['require', 'Core/Configs'], function( require, Configs )
 	 * @param {mixed} data
 	 * @param {function} callback
 	 */
-	var Send = function SendClosure()
-	{
-		var _input = { type: '', data: null, uid: 0 };
+	static send = (type, data, callback) => {
+		let uid = 0;
 
-		return function Send( type, data, callback )
-		{
-			var uid = 0;
-	
-			if (callback) {
-				uid          = ++_uid;
-				_memory[uid] = callback;
-			}
+		if (callback) {
+			uid = ++_uid;
+			_memory[uid] = callback;
+		}
 
-			_input.type = type;
-			_input.data = data;
-			_input.uid  = uid;
-
-			_source.postMessage( _input, _origin );
-		};
-	}();
-
+		_source.postMessage({ type, data, uid }, _origin);
+	};
 
 	/**
 	 * Receive data from Thread
@@ -82,10 +61,9 @@ define(['require', 'Core/Configs'], function( require, Configs )
 	 *
 	 * @param {object} event
 	 */
-	function Receive(event)
-	{
-		var uid  = event.data.uid;
-		var type = event.data.type;
+	static receive = event => {
+		const uid = event.data.uid;
+		const type = event.data.type;
 
 		// Direct callback
 		if (uid in _memory) {
@@ -97,8 +75,7 @@ define(['require', 'Core/Configs'], function( require, Configs )
 		if (type && _hook[type]) {
 			_hook[type].call(null, event.data.data);
 		}
-	}
-
+	};
 
 	/**
 	 * Hook receive data
@@ -106,11 +83,9 @@ define(['require', 'Core/Configs'], function( require, Configs )
 	 * @param {string} type
 	 * @param {function} callback
 	 */
-	function Hook( type, callback )
-	{
+	static hook = (type, callback) => {
 		_hook[type] = callback;
-	}
-
+	};
 
 	/**
 	 * Modify where to send informations
@@ -118,43 +93,32 @@ define(['require', 'Core/Configs'], function( require, Configs )
 	 * @param {Window} source
 	 * @param {string} origin
 	 */
-	function Delegate( source, origin )
-	{
+	static delegate = (source, origin) => {
 		_source = source;
 		_origin = origin;
-	}
-
+	};
 
 	/**
 	 * Initialize Thread
 	 */
-	function Init()
-	{
+	static init = () => {
 		if (!_source) {
-			var url = Configs.get('development') ? './ThreadEventHandler.js' : './../../ThreadEventHandler.js';
-			_source = new Worker( require.toUrl(url) + '?' + Configs.get('version', '') );
+			_source = new Worker(new URL('./ThreadEventHandler.js', import.meta.url), { type: 'module' });
 		}
 
 		// Worker context
 		if (_source instanceof Worker) {
-			_source.addEventListener('message', Receive, false);
+			_source.addEventListener('message', Thread.receive, false);
 		}
 
 		// Other frame worker
 		else {
-			window.addEventListener('message', Receive, false );
-			_source.postMessage({type:'SYNC'}, _origin );
+			window.addEventListener('message', Thread.receive, false);
+			_source.postMessage({ type: 'SYNC' }, _origin);
 		}
-	}
-
-
-	/**
-	 * Exports
-	 */
-	return {
-		send:     Send,
-		hook:     Hook,
-		init:     Init,
-		delegate: Delegate
 	};
-});
+}
+/**
+ * Export
+ */
+export default Thread;

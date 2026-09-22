@@ -3,241 +3,225 @@
  *
  * Display npc menu
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
-define(function(require)
-{
-	'use strict';
 
+import KEYS from 'Controls/KeyEventHandler.js';
+import DB from 'DB/DBManager.js';
+import Renderer from 'Renderer/Renderer.js';
+import UIManager from 'UI/UIManager.js';
+import GUIComponent from 'UI/GUIComponent.js';
+import 'UI/Elements/Elements.js';
+import htmlText from './NpcMenu.html?raw';
+import cssText from './NpcMenu.css?raw';
+import InputBox from 'UI/Components/InputBox/InputBox.js';
 
-	/**
-	 * Dependencies
-	 */
-	var jQuery             = require('Utils/jquery');
-	var KEYS               = require('Controls/KeyEventHandler');
-	var Renderer           = require('Renderer/Renderer');
-	var UIManager          = require('UI/UIManager');
-	var UIComponent        = require('UI/UIComponent');
-	var htmlText           = require('text!./NpcMenu.html');
-	var cssText            = require('text!./NpcMenu.css');
+/**
+ * Create NPC Menu component
+ */
+const NpcMenu = new GUIComponent('NpcMenu', cssText);
 
+NpcMenu.render = () => htmlText;
 
-	/**
-	 * Create NPC Menu component
-	 */
-	var NpcMenu = new UIComponent( 'NpcMenu', htmlText, cssText );
+/**
+ * Freeze mouse — NPC menu blocks interaction
+ */
+NpcMenu.mouseMode = GUIComponent.MouseMode.FREEZE;
 
+/**
+ * @var {number} index selected in menu
+ */
+let _index = 0;
 
-	/**
-	 * @var {number} index selected in menu
-	 */
-	var _index = 0;
+/**
+ * @var {number} NPC ID
+ */
+let _ownerID = 0;
 
+/**
+ * Helper: escape HTML
+ */
+function _escapeHTML(text) {
+	const div = document.createElement('div');
+	div.textContent = text;
+	return div.innerHTML;
+}
 
-	/**
-	 * @var {number} NPC ID
-	 */
-	var _ownerID = 0;
+/**
+ * Initialize component
+ */
+NpcMenu.init = function init() {
+	const root = NpcMenu.getRoot();
 
+	const okBtn = root.querySelector('.ok');
+	if (okBtn) {
+		okBtn.addEventListener('click', () => validate());
+	}
 
-	/**
-	 * Initialize component
-	 */
-	NpcMenu.init = function init()
-	{
-		this.ui.find('.ok').click(validate.bind(this));
-		this.ui.find('.cancel').click(cancel.bind(this));
+	const cancelBtn = root.querySelector('.cancel');
+	if (cancelBtn) {
+		cancelBtn.addEventListener('click', () => cancel());
+	}
 
-		this.ui.css({
-			top: Math.max(376, Renderer.height/2 + 76 ),
-			left: Math.max( Renderer.width/3, 20)
+	this._host.style.top = `${Math.max(376, Renderer.height / 2 + 76)}px`;
+	this._host.style.left = `${Math.max(Renderer.width / 3, 20)}px`;
+
+	this.draggable();
+
+	const content = root.querySelector('.content');
+	if (content) {
+		content.addEventListener('mousedown', e => {
+			const div = e.target.closest('div');
+			if (div && content.contains(div)) {
+				selectIndex(div);
+			}
+			e.stopImmediatePropagation();
 		});
 
-		this.draggable();
-
-		var self = this;
-		this.ui.find('.content')
-
-			// Scroll feature should block at each line
-			.on('mousewheel DOMMouseScroll', onScroll)
-
-			// Manage indexes
-			.on('mousedown', 'div', function(event) {
-				selectIndex.call(self, jQuery(this));
-			})
-
-			// Select index
-			.on('dblclick',  'div', validate.bind(this))
-
-			// Stop drag drop
-			.mousedown(function(event) {
-				event.stopImmediatePropagation();
-				return false;
-			});
-	};
-
-
-	/**
-	 * Clean up events
-	 */
-	NpcMenu.onRemove = function onRemove()
-	{
-		this.ui.find('.content').empty();
-	};
-
-
-	/**
-	 * Bind KeyDown event
-	 */
-	NpcMenu.onKeyDown = function onKeyDown(event)
-	{
-		var count, top;
-		var content;
-
-		switch (event.which) {
-
-			case KEYS.ENTER:
-				validate.call(this);
-				break;
-
-			case KEYS.ESCAPE:
-				cancel.call(this);
-				break;
-
-			case KEYS.UP:
-				count  = this.ui.find('.content div').length;
-				_index = Math.max( _index - 1, 0 );
-
-				this.ui.find('.content div').removeClass('selected');
-				this.ui.find('.content div:eq('+ _index +')').addClass('selected');
-
-				content = this.ui.find('.content')[0];
-				top     = _index * 20;
-
-				if (top < content.scrollTop) {
-					content.scrollTop = top;
-				}
-				break;
-
-			case KEYS.DOWN:
-				count  = this.ui.find('.content div').length;
-				_index = Math.min( _index + 1, count -1 );
-
-				this.ui.find('.content div').removeClass('selected');
-				this.ui.find('.content div:eq('+ _index +')').addClass('selected');
-
-				content = this.ui.find('.content')[0];
-				top     = _index * 20;
-
-				if (top >= content.scrollTop + 80) {
-					content.scrollTop = top - 60;
-				}
-				break;
-
-			default:
-				return true;
-		}
-
-		event.stopImmediatePropagation();
-		return false;
-	};
-
-
-	/**
-	 * Initialize menu
-	 *
-	 * @param {string} menu
-	 * @param {number} gid - npc id
-	 */
-	NpcMenu.setMenu = function SetMenu( menu, gid )
-	{
-		var content, list;
-		var i, j, count;
-
-		content  = this.ui.find('.content');
-		list     = menu.split(':');
-		_ownerID = gid;
-		_index   = 0;
-
-		content.empty();
-
-		for (i = 0, j = 0, count = list.length; i < count; ++i) {
-			// Don't display empty menu
-			if (list[i].length) {
-				jQuery('<div/>')
-					.text(list[i])
-					.data('index', j++)
-					.appendTo(content);
+		content.addEventListener('dblclick', e => {
+			const div = e.target.closest('div');
+			if (div && content.contains(div)) {
+				validate();
 			}
-		}
+		});
+	}
+};
 
-		content.find('div:first')
-			.addClass('selected');
-	};
+/**
+ * Clean up events
+ */
+NpcMenu.onRemove = function onRemove() {
+	const root = NpcMenu.getRoot();
+	const content = root.querySelector('.content');
+	if (content) {
+		content.innerHTML = '';
+	}
+};
 
-
-	/**
-	 * Submit an index
-	 */
-	function validate()
-	{
-		this.onSelectMenu( _ownerID, _index + 1 );
+/**
+ * Bind KeyDown event
+ */
+NpcMenu.onKeyDown = function onKeyDown(event) {
+	if (InputBox._host && InputBox._host.style.display !== 'none' && InputBox.__active) {
+		return true;
 	}
 
-
-	/**
-	 * Pressed cancel, client send "255" as value
-	 */
-	function cancel()
-	{
-		this.onSelectMenu( _ownerID, 255 );
+	if (this._host.style.display === 'none') {
+		return true;
 	}
 
+	const root = NpcMenu.getRoot();
+	const content = root.querySelector('.content');
 
-	/**
-	 * Select an index, change background color
-	 */
-	function selectIndex($this)
-	{
-		this.ui.find('.content div').removeClass('selected');
-		$this.addClass('selected');
+	switch (event.which) {
+		case KEYS.SPACE:
+		case KEYS.ENTER:
+			validate();
+			break;
 
-		_index = parseInt($this.data('index'), 10);
-	}
+		case KEYS.ESCAPE:
+			cancel();
+			break;
 
+		case KEYS.UP: {
+			const divs = content.querySelectorAll('div[data-index]');
+			_index = Math.max(_index - 1, 0);
 
-	/**
-	 * Update scroll by block (20px)
-	 */
-	function onScroll( event )
-	{
-		var delta;
-
-		if (event.originalEvent.wheelDelta) {
-			delta = event.originalEvent.wheelDelta / 120 ;
-			if (window.opera) {
-				delta = -delta;
+			divs.forEach(d => d.classList.remove('selected'));
+			if (divs[_index]) {
+				divs[_index].classList.add('selected');
+				divs[_index].scrollIntoView({ block: 'nearest' });
 			}
-		}
-		else if (event.originalEvent.detail) {
-			delta = -event.originalEvent.detail;
+			break;
 		}
 
-		this.scrollTop = Math.floor(this.scrollTop/20) * 20 - (delta * 20);
-		return false;
+		case KEYS.DOWN: {
+			const divs = content.querySelectorAll('div[data-index]');
+			_index = Math.min(_index + 1, divs.length - 1);
+
+			divs.forEach(d => d.classList.remove('selected'));
+			if (divs[_index]) {
+				divs[_index].classList.add('selected');
+				divs[_index].scrollIntoView({ block: 'nearest' });
+			}
+			break;
+		}
+
+		default:
+			return true;
 	}
 
+	event.stopImmediatePropagation();
+	return false;
+};
 
-	/**
-	 * Abstract callback to define
-	 */
-	NpcMenu.onSelectMenu = function OnSelectMenu(/*gid, index*/){};
+/**
+ * Initialize menu
+ *
+ * @param {string} menu
+ * @param {number} gid - npc id
+ */
+NpcMenu.setMenu = function setMenu(menu, gid) {
+	const root = NpcMenu.getRoot();
+	const content = root.querySelector('.content');
+	const list = menu.split(':');
 
+	_ownerID = gid;
+	_index = 0;
 
-	/**
-	 * Create componentand export it
-	 */
-	return UIManager.addComponent(NpcMenu);
-});
+	content.innerHTML = '';
+
+	let j = 0;
+	for (let i = 0, count = list.length; i < count; ++i) {
+		if (list[i].length) {
+			const div = document.createElement('div');
+			div.innerHTML = DB.formatMsgToHtml(_escapeHTML(list[i]));
+			div.dataset.index = j++;
+			content.appendChild(div);
+		}
+	}
+
+	const first = content.querySelector('div[data-index]');
+	if (first) {
+		first.classList.add('selected');
+	}
+};
+
+/**
+ * Submit an index
+ */
+function validate() {
+	NpcMenu.onSelectMenu(_ownerID, _index + 1);
+}
+
+/**
+ * Pressed cancel, client send "255" as value
+ */
+function cancel() {
+	NpcMenu.onSelectMenu(_ownerID, 255);
+}
+
+/**
+ * Select an index, change background color
+ */
+function selectIndex(div) {
+	const root = NpcMenu.getRoot();
+	const content = root.querySelector('.content');
+	const divs = content.querySelectorAll('div[data-index]');
+	divs.forEach(d => d.classList.remove('selected'));
+	div.classList.add('selected');
+
+	_index = parseInt(div.dataset.index, 10);
+}
+
+/**
+ * Abstract callback to define
+ */
+NpcMenu.onSelectMenu = function onSelectMenu(/* gid, index */) {};
+
+/**
+ * Create component and export it
+ */
+export default UIManager.addComponent(NpcMenu);

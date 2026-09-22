@@ -3,20 +3,19 @@
  *
  * Map user preferences
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
-define( ['Core/Preferences'], function( Preferences )
-{
-	'use strict';
 
+import Preferences from 'Core/Preferences.js';
 
-	/**
-	 * Export
-	 */
-	return Preferences.get( 'Map', {
-
+/**
+ * Export
+ */
+export default Preferences.get(
+	'Map',
+	{
 		/**
 		 * Display the fog ?
 		 *
@@ -31,6 +30,12 @@ define( ['Core/Preferences'], function( Preferences )
 		 */
 		lightmap: true,
 
+		/**
+		 * Posterize lightmap ?
+		 *
+		 * Toggle using "/smoothlight" in the chatbox
+		 */
+		smoothlight: 0,
 
 		/**
 		 * Display effects ?
@@ -39,7 +44,6 @@ define( ['Core/Preferences'], function( Preferences )
 		 */
 		effect: true,
 
-
 		/**
 		 * Display minify effects ?
 		 *
@@ -47,14 +51,26 @@ define( ['Core/Preferences'], function( Preferences )
 		 */
 		mineffect: false,
 
-
 		/**
 		 * Should we display "miss" when monster/player miss an attack ?
 		 *
 		 * Toggle using "/miss" in the chatbox
 		 */
-		miss: true
+		miss: true,
 
+		/**
+		 * Display aura (2) or simplified aura (1) or disable entirely (0)
+		 *
+		 * Toggle using "/aura" or "/aura2" in the chatbox
+		 */
+		aura: 1,
 
-	}, 1.1 );
-});
+		/**
+		 * Display different font style ?
+		 *
+		 * Toggle using "/showname" changes font styles.
+		 */
+		showname: true
+	},
+	1.1
+);

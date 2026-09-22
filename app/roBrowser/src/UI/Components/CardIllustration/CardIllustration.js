@@ -3,60 +3,57 @@
  *
  * Card image
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
- * @author Vincent Thibault
+ * @author Vincent Thibault, AoShinHo
  */
-define(function(require)
-{
-	'use strict';
 
+import DB from 'DB/DBManager.js';
+import Client from 'Core/Client.js';
+import UIManager from 'UI/UIManager.js';
+import GUIComponent from 'UI/GUIComponent.js';
+import htmlText from './CardIllustration.html?raw';
+import cssText from './CardIllustration.css?raw';
 
-	/**
-	 * Dependencies
-	 */
-	var DB                 = require('DB/DBManager');
-	var Client             = require('Core/Client');
-	var UIManager          = require('UI/UIManager');
-	var UIComponent        = require('UI/UIComponent');
-	var htmlText           = require('text!./CardIllustration.html');
-	var cssText            = require('text!./CardIllustration.css');
+/**
+ * Create Component
+ */
+const CardIllustration = new GUIComponent('CardIllustration', cssText);
 
+/**
+ * Render HTML
+ */
+CardIllustration.render = () => htmlText;
 
-	/**
-	 * Create Component
-	 */
-	var CardIllustration = new UIComponent( 'CardIllustration', htmlText, cssText );
+/**
+ * Initialize events
+ */
+CardIllustration.init = function init() {
+	const root = this.getRoot();
+	root.querySelector('.close').addEventListener('click', this.remove.bind(this));
+	this.draggable();
+};
 
+/**
+ * Show image
+ *
+ * @param {object} item
+ */
+CardIllustration.setCard = function setCard(item) {
+	const root = this.getRoot();
+	root.querySelector('.titlebar .text').textContent = item.identifiedDisplayName;
+	root.querySelector('.content').style.backgroundImage = 'none';
 
-	/**
-	 * Initialize events
-	 */
-	CardIllustration.init = function init()
-	{
-		this.ui.find('.close').click(this.remove.bind(this));
-		this.draggable();
-	};
+	Client.loadFile(`${DB.INTERFACE_PATH}cardbmp/${item.illustResourcesName}.bmp`, data => {
+		const r = CardIllustration.getRoot();
+		r.querySelector('.content').style.backgroundImage = `url(${data})`;
+	});
+};
 
+CardIllustration.mouseMode = GUIComponent.MouseMode.STOP;
+CardIllustration.needFocus = true;
 
-	/**
-	 * Show image
-	 *
-	 * @param {object} item
-	 */
-	CardIllustration.setCard = function setCard( item )
-	{
-		this.ui.find('.titlebar .text').text( item.identifiedDisplayName );
-		this.ui.find('.content').css('backgroundImage', 'none' );
-
-		Client.loadFile( DB.INTERFACE_PATH + 'cardbmp/' + item.illustResourcesName + '.bmp', function(data){
-			this.ui.find('.content').css('backgroundImage', 'url('+data+')' );
-		}.bind(this));
-	};
-
-	
-	/**
-	 * Create component and export it
-	 */
-	return UIManager.addComponent(CardIllustration);
-});
+/**
+ * Create component and export it
+ */
+export default UIManager.addComponent(CardIllustration);

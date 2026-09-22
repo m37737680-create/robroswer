@@ -3,131 +3,134 @@
  *
  * Item Obtain window (when you get an item, a window popup near the announce box)
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
-define(function(require)
-{
-	'use strict';
 
+import DB from 'DB/DBManager.js';
+import Client from 'Core/Client.js';
+import Events from 'Core/Events.js';
+import Renderer from 'Renderer/Renderer.js';
+import UIManager from 'UI/UIManager.js';
+import GUIComponent from 'UI/GUIComponent.js';
+import htmlText from './ItemObtain.html?raw';
+import cssText from './ItemObtain.css?raw';
 
-	/**
-	 * Dependencies
-	 */
-	var DB                 = require('DB/DBManager');
-	var jQuery             = require('Utils/jquery');
-	var Client             = require('Core/Client');
-	var Events             = require('Core/Events');
-	var Renderer           = require('Renderer/Renderer');
-	var UIManager          = require('UI/UIManager');
-	var UIComponent        = require('UI/UIComponent');
-	var htmlText           = require('text!./ItemObtain.html');
-	var cssText            = require('text!./ItemObtain.css');
+/**
+ * Create component
+ */
+const ItemObtain = new GUIComponent('ItemObtain', cssText);
 
+ItemObtain.render = () => htmlText;
 
-	/**
-	 * Create component
-	 */
-	var ItemObtain = new UIComponent( 'ItemObtain', htmlText, cssText );
+/**
+ * Mouse can cross this UI
+ */
+ItemObtain.mouseMode = GUIComponent.MouseMode.CROSS;
 
+/**
+ * @var {boolean} do not focus this UI
+ */
+ItemObtain.needFocus = false;
 
-	/**
-	 * Mouse can cross this UI
-	 */
-	ItemObtain.mouseMode = UIComponent.MouseMode.CROSS;
-
-
-	/**
-	 * @var {boolean} do not focus this UI
-	 */
-	ItemObtain.needFocus = false;
-
-
-	/**
-	 * @var {TimeOut} timer
-	 */
-	var _timer = 0;
-
-
-	/**
-	 * @var {number} time to display
-	 */
-	var _life = 5 * 1000;
-
-
-	/**
-	 * Initialize component
-	 */
-	ItemObtain.init = function init()
-	{
-		this.ui.css('zIndex', 45); // Between Interface and Game Announce
-	};
-
-
-	/**
-	 * Once append to body
-	 */
-	ItemObtain.onAppend = function onAppend()
-	{
-		this.ui.css('left', ( Renderer.width - (this.ui.width()) ) >> 1 );
-	};
-
-
-	/**
-	 * Once removed from HTML, clean timer
-	 */
-	ItemObtain.onRemove = function onRemove()
-	{
-		if (_timer) {
-			Events.clearTimeout(_timer);
-			_timer = 0;
+/**
+ * Sanitize HTML, allowing only whitelisted tags (font, i, b)
+ */
+function _sanitizeHtml(str) {
+	const whitelist = ['font', 'i', 'b'];
+	const div = document.createElement('div');
+	div.innerHTML = str;
+	div.querySelectorAll('*').forEach(el => {
+		if (!whitelist.includes(el.tagName.toLowerCase())) {
+			el.replaceWith(...el.childNodes);
 		}
-	};
+	});
+	return div.innerHTML;
+}
 
+/**
+ * @var {TimeOut} timer
+ */
+let _timer = 0;
 
-	/**
-	 * Timer end, cleaning box
-	 */
-	ItemObtain.timeEnd = function timeEnd()
-	{
-		this.remove();
-	};
+/**
+ * @var {number} time to display
+ */
+const _life = 5 * 1000;
 
+/**
+ * Initialize component
+ */
+ItemObtain.init = function init() {
+	// this._host.style.zIndex = '45'; // Between Interface and Game Announce
+};
 
-	/**
-	 * Add item informations
-	 *
-	 * @param {object} item
-	 */
-	ItemObtain.set = function set( item )
-	{
-		var it       = DB.getItemInfo(item.ITID);
-		var display  = DB.getItemName(item);
-		var resource = item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName;
+/**
+ * Once append to body
+ */
+ItemObtain.onAppend = function onAppend() {
+	const root = this.getRoot();
+	const el = root.querySelector('#ItemObtain');
+	this._host.style.left = `${(Renderer.width - (el ? el.offsetWidth : 0)) >> 1}px`;
+};
 
-		this.ui.find('.content').html(
-			'<img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="'+ item.ITID +'" width="24" height="24" /> ' +
-			jQuery.escape(display + ' ' + DB.getMessage(696).replace('%d', item.count || 1))
-		);
+/**
+ * Once removed from HTML, clean timer
+ */
+ItemObtain.onRemove = function onRemove() {
+	if (_timer) {
+		Events.clearTimeout(_timer);
+		_timer = 0;
+	}
+};
 
-		this.ui.css('left', ( Renderer.width - (this.ui.width()) ) >> 1 );
+/**
+ * Timer end, cleaning box
+ */
+ItemObtain.timeEnd = function timeEnd() {
+	this.remove();
+};
 
-		Client.loadFile( DB.INTERFACE_PATH + 'item/' + resource + '.bmp', (function(url){
-			this.ui.find('img.' + item.ITID).attr('src', url);
-		}).bind(this));
+/**
+ * Add item informations
+ *
+ * @param {object} item
+ */
+ItemObtain.set = function set(item) {
+	const root = this.getRoot();
+	const it = DB.getItemInfo(item.ITID);
+	const display = DB.getItemName(item, { showItemSlots: false, showItemOptions: false });
+	const resource = item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName;
 
-		// Start tomer
-		if (_timer) {
-			Events.clearTimeout(_timer);
+	this.placeOnTop();
+
+	const content = root.querySelector('.content');
+	if (content) {
+		content.innerHTML =
+			`<img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="item-${item.ITID}" width="24" height="24" /> ` +
+			_sanitizeHtml(`${display} ${DB.getMessage(696).replace('%d', item.count || 1)}`);
+	}
+
+	const el = root.querySelector('#ItemObtain');
+	this._host.style.left = `${(Renderer.width - (el ? el.offsetWidth : 0)) >> 1}px`;
+
+	Client.loadFile(DB.INTERFACE_PATH + 'item/' + resource + '.bmp', url => {
+		const img = root.querySelector(`img.item-${item.ITID}`);
+		if (img) {
+			img.src = url;
 		}
+	});
 
-		_timer = Events.setTimeout( this.timeEnd.bind(this), _life );
-	};
+	// Start timer
+	if (_timer) {
+		Events.clearTimeout(_timer);
+	}
 
+	_timer = Events.setTimeout(this.timeEnd.bind(this), _life);
+};
 
-	/**
-	 * Create component and return it
-	 */
-	return UIManager.addComponent(ItemObtain);
-});
+/**
+ * Create component and return it
+ */
+export default UIManager.addComponent(ItemObtain);

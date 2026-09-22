@@ -1,83 +1,43 @@
 /**
  * UI/Components/Quest/Quest.js
  *
- * Lightweight pre-renewal quest log.
+ * Quest Window
+ *
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
+ *
  */
-define(function(require)
-{
-	'use strict';
 
-	var DB          = require('DB/DBManager');
-	var Preferences = require('Core/Preferences');
-	var Renderer    = require('Renderer/Renderer');
-	var UIComponent = require('UI/UIComponent');
-	var htmlText    = require('text!./Quest.html');
-	var cssText     = require('text!./Quest.css');
+import Quest from './Quest/Quest.js';
+import QuestV1 from './QuestV1/QuestV1.js';
+import UIVersionManager from 'UI/UIVersionManager.js';
+import KEYS from 'Controls/KeyEventHandler.js';
 
-	var Quest = new UIComponent('Quest', htmlText, cssText);
-	var _preferences = Preferences.get('Quest', {
-		x: 180,
-		y: 100
-	}, 1.0);
+const publicName = 'Quest';
+const versionInfo = {
+	default: QuestV1,
+	common: {
+		20180307: Quest
+	},
+	re: {},
+	prere: {}
+};
 
-	Quest.init = function init()
-	{
-		this.ui.find('.close').click(this.toggle.bind(this));
-		this.draggable();
-	};
+const Controller = UIVersionManager.getUIController(publicName, versionInfo);
+const _selectUIVersion = Controller.selectUIVersion;
 
-	Quest.onAppend = function onAppend()
-	{
-		this.ui.css({
-			top: Math.min(Math.max(0, _preferences.y), Renderer.height - this.ui.height()),
-			left: Math.min(Math.max(0, _preferences.x), Renderer.width - this.ui.width())
-		});
-		this.refresh();
-	};
+// Extend default UI selector
+Controller.selectUIVersion = function () {
+	_selectUIVersion();
 
-	Quest.onRemove = function onRemove()
-	{
-		_preferences.x = parseInt(this.ui.css('left'), 10);
-		_preferences.y = parseInt(this.ui.css('top'), 10);
-		_preferences.save();
-	};
+	const component = Controller.getUI();
 
-	Quest.onShortCut = function onShortCut(key)
-	{
-		if (key.cmd === 'TOGGLE') {
-			this.toggle();
+	// Escape to close the UI
+	component.onKeyDown = function onKeyDown(e) {
+		if ((e.which === KEYS.ESCAPE || e.key === 'Escape') && component.ui.is(':visible')) {
+			if (typeof component.toggle === 'function') {
+				component.toggle();
+			}
 		}
 	};
-
-	Quest.toggle = function toggle()
-	{
-		if (this.ui.is(':visible')) {
-			this.hide();
-		}
-		else {
-			this.show();
-		}
-	};
-
-	Quest.refresh = function refresh()
-	{
-		var $list = this.ui.find('.list').empty();
-		var quests = DB.getQuestList();
-		var i;
-
-		if (!quests.length) {
-			$list.append('<div class="empty">Nessuna quest attiva.</div>');
-			return;
-		}
-
-		for (i = 0; i < quests.length; i++) {
-			$list.append(
-				$('<div class="quest"></div>')
-					.attr('data-quest-id', quests[i].id)
-					.text(quests[i].title)
-			);
-		}
-	};
-
-	return Quest;
-});
+};
+export default Controller;

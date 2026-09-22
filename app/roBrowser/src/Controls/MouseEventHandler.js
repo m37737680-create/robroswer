@@ -3,61 +3,64 @@
  *
  * Mouse Event Handler
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
 
-define(['Utils/jquery'], function( jQuery )
-{
-	"use strict";
-
-
-	/**
-	 * Mouse object
-	 */
-	var Mouse = {};
-
-
+/**
+ * Mouse object
+ */
+class Mouse {
 	/**
 	 * Mouse screen position (2D)
 	 */
-	Mouse.screen = {
+	static screen = {
 		x: -1,
 		y: -1,
-		width:  0,
+		width: 0,
 		height: 0
 	};
-
 
 	/**
 	 * Mouse world position (3d)
 	 */
-	Mouse.world = {
+	static world = {
 		x: -1,
 		y: -1,
 		z: -1
 	};
 
-
 	/**
 	 * @var {boolean} Do we intersect object ?
 	 */
-	Mouse.intersect = false;
+	static intersect = false;
 
+	static MOUSE_STATE = {
+		NORMAL: 0,
+		DRAGGING: 1,
+		USESKILL: 2
+	};
 
 	/**
-	 * Track mouse move event
+	 * @var {integer} Mouse state
 	 */
-	jQuery(window).mousemove(function(event)
-	{
+	static state = 0;
+}
+
+/**
+ * Track mouse move event (native, passive)
+ */
+window.addEventListener(
+	'mousemove',
+	event => {
 		Mouse.screen.x = event.pageX;
 		Mouse.screen.y = event.pageY;
-	});
+	},
+	{ passive: true }
+);
 
-
-	/**
-	 * Export
-	 */
-	return Mouse;
-});
+/**
+ * Export
+ */
+export default Mouse;

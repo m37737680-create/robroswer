@@ -4,70 +4,55 @@
  * Client Manager
  * Manage client files, load GRFs, DATA.INI, extract files from GRFs, ...
  *
- * This file is part of ROBrowser, Ragnarok Online in the Web Browser (http://www.robrowser.com/).
+ * This file is part of ROBrowser, (http://www.robrowser.com/).
  *
  * @author Vincent Thibault
  */
 
-define(function()
-{
-	'use strict';
+/**
+ * @var {Array} events list
+ */
+const _events = [];
 
+/**
+ * @var {number} game tick (get from rendering loop)
+ */
+let _tick = 0;
 
-	/**
-	 * @Constructor
-	 */
-	function Events()
-	{
-	}
+/**
+ * @var {number} unique id
+ */
+let _uid = 0;
 
-
-	/**
-	 * @var {Array} events list
-	 */
-	var _events = [];
-
-
-	/**
-	 * @var {number} game tick (get from rendering loop)
-	 */
-	var _tick = 0;
-
-
-	/**
-	 * @var {number} unique id
-	 */
-	var _uid = 0;
-
-
+/**
+ * @Constructor
+ */
+class Events {
 	/**
 	 * Alias for setTimeout using the rendering loop getting
 	 * bad performances.
 	 *
 	 * @param {function} callback
 	 * @param {number} delay
-	 * @return {?} event unique id 
+	 * @return {?} event unique id
 	 */
-	Events.setTimeout = function setTimeout( callback, delay )
-	{
-		var i, count, tick;
-		var event;
+	static setTimeout(callback, delay) {
+		let i, count;
 
-		tick  = _tick + delay;
-		event = { callback: callback, tick: tick, uid:_uid++ };
+		const tick = _tick + delay;
+		const event = { callback: callback, tick: tick, uid: _uid++ };
 
 		// Add it to the list, sorted by delay
 		for (i = 0, count = _events.length; i < count; ++i) {
 			if (tick < _events[i].tick) {
-				_events.splice( i, 0, event);
+				_events.splice(i, 0, event);
 				return event.uid;
 			}
 		}
 
 		_events.push(event);
 		return event.uid;
-	};
-
+	}
 
 	/**
 	 * Alias for clearTimeout
@@ -75,9 +60,9 @@ define(function()
 	 *
 	 * @param {?} event unique id
 	 */
-	Events.clearTimeout = function clearTimeout( uid )
-	{
-		var i, count = _events.length;
+	static clearTimeout(uid) {
+		let i;
+		const count = _events.length;
 
 		// Find the event and remove it
 		for (i = 0; i < count; ++i) {
@@ -86,17 +71,15 @@ define(function()
 				return;
 			}
 		}
-	};
-
+	}
 
 	/**
 	 * Process at each rendering loop
 	 *
 	 * @param {number} game tick
 	 */
-	Events.process = function process( tick )
-	{
-		var count = _events.length;
+	static process(tick) {
+		let count = _events.length;
 
 		// Execute time out events.
 		while (count > 0) {
@@ -109,20 +92,16 @@ define(function()
 		}
 
 		_tick = tick;
-	};
-
+	}
 
 	/**
 	 * Delete events from memory
 	 */
-	Events.free = function free()
-	{
+	static free() {
 		_events.length = 0;
-	};
-
-
-	/**
-	 * Export
-	 */
-	return Events;
-});
+	}
+}
+/**
+ * Export
+ */
+export default Events;

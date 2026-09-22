@@ -14,13 +14,8 @@
 	}
 
 
-	$profile = isset($_GET['profile']) && is_string($_GET['profile'])
-		? $_GET['profile']
-		: 'renewal';
-	$profile = $profile === 'pre-renewal' ? 'pre-renewal' : 'renewal';
-
 	Client::$path        =  '';
-	Client::$data_ini    =  $CONFIGS['CLIENT_RESPATH'] . $profile . '/' . $CONFIGS['CLIENT_DATAINI'];
+	Client::$data_ini    =  $CONFIGS['CLIENT_RESPATH'] . $CONFIGS['CLIENT_DATAINI'];
 	Client::$AutoExtract =  $CONFIGS['CLIENT_AUTOEXTRACT'];
 
 
