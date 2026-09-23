@@ -34,6 +34,38 @@ let lastAction = 0;
 let lastAttackAction = 0;
 let targetGID = 0;
 let lastWander = 0;
+let pendingPickupGID = 0;
+const pickupFailures = new Map();
+const MAX_PICKUP_FAILURES = 3;
+
+function onItemPickupAnswer(pkt) {
+	if (!pendingPickupGID) return;
+
+	const gid = pendingPickupGID;
+	pendingPickupGID = 0;
+	if (pkt.result === 0) {
+		pickupFailures.delete(gid);
+		return;
+	}
+
+	const failures = (pickupFailures.get(gid) || 0) + 1;
+	if (failures > MAX_PICKUP_FAILURES) {
+		pickupFailures.delete(gid);
+		EntityManager.remove(gid);
+	} else {
+		pickupFailures.set(gid, failures);
+	}
+}
+
+[
+	PACKET.ZC.ITEM_PICKUP_ACK,
+	PACKET.ZC.ITEM_PICKUP_ACK2,
+	PACKET.ZC.ITEM_PICKUP_ACK3,
+	PACKET.ZC.ITEM_PICKUP_ACK5,
+	PACKET.ZC.ITEM_PICKUP_ACK6,
+	PACKET.ZC.ITEM_PICKUP_ACK7,
+	PACKET.ZC.ITEM_PICKUP_ACK8
+].forEach(packet => Network.hookPacket(packet, onItemPickupAnswer));
 
 component.render = () => `
 	<div class="autocombat">
@@ -309,8 +341,10 @@ function tick() {
 		const item = getGroundItem();
 		if (item) {
 			if (!canAct()) return;
+			if (moveToTarget(item)) return;
 			const packet = PACKETVER.value >= 20180307 ? new PACKET.CZ.ITEM_PICKUP2() : new PACKET.CZ.ITEM_PICKUP();
 			packet.ITAID = Number(item.GID);
+			pendingPickupGID = item.GID;
 			Network.sendPacket(packet);
 			lastAction = Date.now();
 			return;

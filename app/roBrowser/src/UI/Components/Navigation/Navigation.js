@@ -540,6 +540,14 @@ Navigation.onSearch = function onSearch() {
  */
 Navigation.displaySearchResults = function displaySearchResults(results) {
 	const root = Navigation.getRoot();
+	_markers.length = 0;
+
+	for (let i = 0; i < results.length; i++) {
+		const result = results[i];
+		if (result.type === 'NPC' && result.x !== null && result.y !== null) {
+			this.addMarker(result.x, result.y, 'rgb(255, 190, 0)', result.name, normalizeMapName(result.mapName));
+		}
+	}
 
 	// Get or create results container
 	let resultsContainer = root.querySelector('.search-results');
@@ -599,6 +607,7 @@ Navigation.navigateToSearchResult = function navigateToSearchResult(result) {
 		return;
 	}
 
+	this.clear();
 	this.targetResult = result;
 	_isMapClickTarget = false;
 
@@ -687,6 +696,9 @@ Navigation.onMapClick = function onMapClick(event) {
 	const y = Math.floor(event.clientY - rect.top);
 
 	const mapCoords = this.screenToMapCoordinates(x, y);
+
+	// A new map target must always replace the current automatic navigation.
+	this.clear();
 
 	const currentMap = getCurrentMap();
 	const currentPos = getPlayerPosition();
@@ -795,12 +807,17 @@ Navigation.clearPath = function clearPath() {
 /**
  * Add a marker to the map
  */
-Navigation.addMarker = function addMarker(x, y, color, label) {
+Navigation.addMarker = function addMarker(x, y, color, label, map) {
+	if (!Number.isFinite(Number(x)) || !Number.isFinite(Number(y))) {
+		return;
+	}
+
 	_markers.push({
-		x: x,
-		y: y,
+		x: Number(x),
+		y: Number(y),
 		color: color || 'rgb(255,0,0)',
-		label: label || ''
+		label: label || '',
+		map: map ? normalizeMapName(map) : null
 	});
 };
 
@@ -976,6 +993,9 @@ Navigation.renderCanvas = function renderCanvas(tick) {
 	// Draw custom markers
 	for (let i = 0; i < _markers.length; i++) {
 		const marker = _markers[i];
+		if (marker.map && marker.map !== currentMap) {
+			continue;
+		}
 		const pos = mapToScreenBound(marker.x, marker.y);
 
 		ctx.fillStyle = marker.color;
