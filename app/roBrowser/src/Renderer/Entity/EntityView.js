@@ -674,12 +674,24 @@ function UpdateGeneric(type, func, fallback) {
 		let path;
 		const _this = this;
 		let _val = val;
+		this._viewLoadVersion = this._viewLoadVersion || {};
+		const loadVersion = (this._viewLoadVersion[type] || 0) + 1;
+		this._viewLoadVersion[type] = loadVersion;
+		const isCurrentLoad = () => this._viewLoadVersion[type] === loadVersion;
 
 		// Nothing to load
 		if (val <= 0) {
 			this['_' + type] = 0;
+			this.files[type].spr = null;
+			this.files[type].act = null;
+			this.files[type].pal = null;
 			return;
 		}
+
+		// Do not keep rendering the previous view while the replacement loads.
+		this.files[type].spr = null;
+		this.files[type].act = null;
+		this.files[type].pal = null;
 
 		// Find file path
 		switch (type) {
@@ -713,6 +725,9 @@ function UpdateGeneric(type, func, fallback) {
 			Client.loadFile(
 				filepath + '.spr',
 				function () {
+					if (!isCurrentLoad()) {
+						return;
+					}
 					_this['_' + type] = _val;
 
 					// Head accessories should not be applied if they should be suppressed
@@ -741,6 +756,9 @@ function UpdateGeneric(type, func, fallback) {
 
 				// if weapon isn't loaded, try to load the default sprite for the weapon type
 				function () {
+					if (!isCurrentLoad()) {
+						return;
+					}
 					if (fallback && !final) {
 						_val = DB[fallback](val);
 						filepath = DB[func](_val, _this.job, _this._sex);
@@ -751,6 +769,9 @@ function UpdateGeneric(type, func, fallback) {
 						const fallbackPath = DB.getRobePathNoSex(val, _this.job, _this._sex);
 						if (fallbackPath) {
 							Client.loadFile(fallbackPath + '.spr', function () {
+								if (!isCurrentLoad()) {
+									return;
+								}
 								_this['_' + type] = _val;
 								if (!shouldSuppressHead.call(_this)) {
 									_this.files[type].spr = fallbackPath + '.spr';

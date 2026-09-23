@@ -1401,11 +1401,21 @@ class DB {
 	 * @param {boolean} sex
 	 */
 	static getHatPath(id, sex) {
-		if (id === 0 || !(id in HatTable)) {
+		if (id === 0) {
 			return null;
 		}
 
-		return 'data/sprite/\xbe\xc7\xbc\xbc\xbb\xe7\xb8\xae/' + SexTable[sex] + '/' + SexTable[sex] + HatTable[id];
+		// Headgear packets may contain either the item ID or its view ID.
+		let viewId = id;
+		if (!(viewId in HatTable) && viewId in ItemTable && ItemTable[viewId].ClassNum) {
+			viewId = ItemTable[viewId].ClassNum;
+		}
+
+		if (!(viewId in HatTable)) {
+			return null;
+		}
+
+		return 'data/sprite/\xbe\xc7\xbc\xbc\xbb\xe7\xb8\xae/' + SexTable[sex] + '/' + SexTable[sex] + HatTable[viewId];
 	}
 
 	/**
