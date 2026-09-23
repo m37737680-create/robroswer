@@ -372,11 +372,7 @@ Navigation.screenToMapCoordinates = function screenToMapCoordinates(screenX, scr
  */
 Navigation.init = function init() {
 	const root = Navigation.getRoot();
-	MapControl.onManualWalk = () => {
-		if (_finalTargetData) {
-			this.clear();
-		}
-	};
+	MapControl.onManualWalk = () => this.clear();
 
 	_mapData = {
 		walkableType: Altitude.TYPE.WALKABLE
@@ -505,7 +501,6 @@ Navigation.onAppend = function onAppend() {
 Navigation.onRemove = function onRemove() {
 	this.clearPath();
 	terminatePathFindingWorker();
-	MapControl.onManualWalk = () => {};
 
 	// Clean up document-level event listener
 	if (_documentClickHandler) {

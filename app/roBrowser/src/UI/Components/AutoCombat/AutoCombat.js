@@ -35,26 +35,39 @@ let lastAttackAction = 0;
 let targetGID = 0;
 let lastWander = 0;
 let pendingPickupGID = 0;
+let pendingPickupAt = 0;
 const pickupFailures = new Map();
-const MAX_PICKUP_FAILURES = 3;
+const ignoredPickupGIDs = new Set();
+const MAX_PICKUP_FAILURES = 5;
+const PICKUP_ACK_TIMEOUT = 1800;
+
+function clearPickupRequest() {
+	pendingPickupGID = 0;
+	pendingPickupAt = 0;
+}
+
+function registerPickupFailure(gid) {
+	const failures = (pickupFailures.get(gid) || 0) + 1;
+	if (failures >= MAX_PICKUP_FAILURES) {
+		pickupFailures.delete(gid);
+		ignoredPickupGIDs.add(gid);
+		EntityManager.remove(gid);
+		return;
+	}
+	pickupFailures.set(gid, failures);
+}
 
 function onItemPickupAnswer(pkt) {
 	if (!pendingPickupGID) return;
 
 	const gid = pendingPickupGID;
-	pendingPickupGID = 0;
+	clearPickupRequest();
 	if (pkt.result === 0) {
 		pickupFailures.delete(gid);
 		return;
 	}
 
-	const failures = (pickupFailures.get(gid) || 0) + 1;
-	if (failures > MAX_PICKUP_FAILURES) {
-		pickupFailures.delete(gid);
-		EntityManager.remove(gid);
-	} else {
-		pickupFailures.set(gid, failures);
-	}
+	registerPickupFailure(gid);
 }
 
 [
@@ -321,6 +334,8 @@ function getGroundItem() {
 	let closestDistance = Infinity;
 	EntityManager.forEach(entity => {
 		if (entity.objecttype !== Entity.TYPE_ITEM && entity.objecttype !== Entity.TYPE_ITEM2) return;
+		const gid = Number(entity.GID);
+		if (ignoredPickupGIDs.has(gid)) return;
 		const dx = entity.position[0] - Session.Entity.position[0];
 		const dy = entity.position[1] - Session.Entity.position[1];
 		const distance = dx * dx + dy * dy;
@@ -338,13 +353,28 @@ function tick() {
 	if (preferences.enabled && life.hp_max > 0 && life.hp / life.hp_max * 100 <= preferences.hpPercent) useItem(preferences.hpItem);
 	if (preferences.enabled && life.sp_max > 0 && life.sp / life.sp_max * 100 <= preferences.spPercent) useItem(preferences.spItem);
 	if (preferences.loot) {
+		if (pendingPickupGID) {
+			if (Date.now() - pendingPickupAt < PICKUP_ACK_TIMEOUT) {
+				return;
+			}
+			const timedOutGID = pendingPickupGID;
+			clearPickupRequest();
+			registerPickupFailure(timedOutGID);
+			if (ignoredPickupGIDs.has(timedOutGID)) {
+				lastAction = Date.now();
+			}
+			return;
+		}
+
 		const item = getGroundItem();
 		if (item) {
 			if (!canAct()) return;
 			if (moveToTarget(item)) return;
 			const packet = PACKETVER.value >= 20180307 ? new PACKET.CZ.ITEM_PICKUP2() : new PACKET.CZ.ITEM_PICKUP();
-			packet.ITAID = Number(item.GID);
-			pendingPickupGID = item.GID;
+			const gid = Number(item.GID);
+			packet.ITAID = gid;
+			pendingPickupGID = gid;
+			pendingPickupAt = Date.now();
 			Network.sendPacket(packet);
 			lastAction = Date.now();
 			return;
