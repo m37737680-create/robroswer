@@ -5,11 +5,7 @@ import json
 import time
 import signal
 import argparse
-import random
-from email.utils import parsedate_to_datetime
 import requests
-from bs4 import BeautifulSoup
-from html import unescape
 
 # Configura l'output da console su UTF-8 (previene crash su Windows cp1252 con caratteri speciali ed emoji)
 if hasattr(sys.stdout, 'reconfigure'):
@@ -18,16 +14,22 @@ if hasattr(sys.stdout, 'reconfigure'):
 # --- CONFIGURAZIONE PREDEFINITA ---
 DEFAULT_NPC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "npc")
 DEFAULT_CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "translation_cache.json")
-DEFAULT_REQUEST_DELAY = 1.5    # Intervallo minimo tra richieste web reali (in secondi)
-MAX_RETRIES = 6
-MAX_BACKOFF = 300              # Non riprovare più spesso di ogni 5 minuti
-OVERWRITE_EXISTING = False     # Se False, salta i file -ita.txt già completati per consentire la ripresa
+DEFAULT_PENDING_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "translation_pending.json")
+DEFAULT_REQUEST_DELAY = 0.15   # Ritardo tra richieste locali (in secondi)
+DEFAULT_API_URL = 'http://127.0.0.1:1234/v1'
+DEFAULT_MODEL = os.environ.get('OLLAMA_MODEL', 'google/gemma-4-e4b')
+OVERWRITE_EXISTING = True      # Entrambe le modalità ricreano i file -ita.txt dalla sorgente
 
 
 class RobustROTranslator:
-    def __init__(self, cache_file=DEFAULT_CACHE_FILE, delay=DEFAULT_REQUEST_DELAY, source_lang='en', target_lang='it'):
+    def __init__(self, cache_file=DEFAULT_CACHE_FILE, delay=DEFAULT_REQUEST_DELAY,
+                 api_url=DEFAULT_API_URL, model=DEFAULT_MODEL,
+                 source_lang='en', target_lang='it', cache_only=False):
         self.cache_file = cache_file
-        self.delay = max(0, delay)
+        self.delay = delay
+        self.api_url = api_url.rstrip('/')
+        self.model = model
+        self.cache_only = cache_only
         self.source_lang = source_lang
         self.target_lang = target_lang
         self.cache = {}
@@ -41,14 +43,15 @@ class RobustROTranslator:
             'api_calls': 0,
             'files_processed': 0,
             'files_skipped': 0,
+            'cache_misses': 0,
             'failed_phrases': 0,
         }
 
-        # Sessione HTTP persistente con User-Agent reale per evitare blocchi Google Translate
+        # Client HTTP verso il server locale OpenAI-compatible.
         self.session = requests.Session()
         self.session.headers.update({
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-            'Accept-Language': f'{self.target_lang},{self.source_lang};q=0.9',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer sk-no-key-required',
         })
 
         self.load_cache()
@@ -78,95 +81,80 @@ class RobustROTranslator:
                 print(f"⚠️ Errore salvataggio cache: {e}")
 
     def raw_translate(self, text):
-        """Traduce una singola frase con cache su disco e retry esponenziale."""
+        """Traduce una frase tramite il server locale OpenAI-compatible."""
         if not text or not text.strip():
             return text
 
-        # Controllo rapido in cache
-        if text in self.cache:
-            self.stats['cache_hits'] += 1
-            return self.cache[text]
+        cached = self.get_cached_translation(text)
+        if cached is not None:
+            return cached
 
-        for attempt in range(MAX_RETRIES):
-            try:
-                # Applica il limite anche ai retry: il delay precedente era rispettato
-                # solo in modo fisso e permetteva raffiche di richieste dopo un 429.
-                wait_for_slot = self.delay - (time.monotonic() - self.last_request_at)
-                if wait_for_slot > 0:
-                    time.sleep(wait_for_slot)
+        if self.cache_only:
+            # In questa modalità il modello non deve essere contattato:
+            # la frase resta invariata e il file viene comunque ricreato offline.
+            self.stats['cache_misses'] += 1
+            return text
 
-                params = {'tl': self.target_lang, 'sl': self.source_lang, 'q': text}
-                self.last_request_at = time.monotonic()
-                self.stats['api_calls'] += 1
-                response = self.session.get('https://translate.google.com/m', params=params, timeout=12)
-
-                if response.status_code == 200:
-                    soup = BeautifulSoup(response.text, 'html.parser')
-                    el = soup.find('div', class_='result-container')
-                    if el:
-                        translated = unescape(el.get_text(strip=True))
-                        self.cache[text] = translated
-                        self.dirty_cache_count += 1
-                        self.stats['translated_phrases'] += 1
-
-                        # Salva la cache su disco ogni 25 nuove traduzioni
-                        if self.dirty_cache_count >= 25:
-                            self.save_cache()
-                        return translated
-
-                    # Una risposta 200 senza il risultato è tipica di una pagina
-                    # anti-bot/interstiziale: trattala come errore transitorio.
-                    print("⚠️ Google ha restituito una risposta senza traduzione; ritento.")
-                    if attempt < MAX_RETRIES - 1:
-                        time.sleep(self._backoff(attempt))
-                elif response.status_code in (403, 408, 429) or response.status_code >= 500:
-                    retry_after = self._retry_after_seconds(response)
-                    wait_sec = retry_after if retry_after is not None else self._backoff(attempt)
-                    if attempt < MAX_RETRIES - 1:
-                        print(
-                            f"⏳ Google HTTP {response.status_code}: pausa di "
-                            f"{wait_sec:.0f}s prima del tentativo {attempt + 2}/{MAX_RETRIES}..."
-                        )
-                        time.sleep(wait_sec)
-                    continue
-                else:
-                    print(f"❌ Google ha restituito HTTP {response.status_code} per '{text[:40]}'.")
-                    break
-
-            except Exception as e:
-                wait_sec = self._backoff(attempt, base=5)
-                print(f"⚠️ Tentativo {attempt + 1}/{MAX_RETRIES} fallito per '{text[:25]}...': {e}")
-                time.sleep(wait_sec)
-
-        self.stats['failed_phrases'] += 1
-        print(f"❌ Traduzione non riuscita dopo {MAX_RETRIES} tentativi; testo lasciato invariato.")
-        return text
-
-    @staticmethod
-    def _backoff(attempt, base=30):
-        """Backoff esponenziale con jitter per evitare retry sincronizzati."""
-        upper_bound = min(MAX_BACKOFF, base * (2 ** attempt))
-        return random.uniform(upper_bound * 0.8, upper_bound)
-
-    @staticmethod
-    def _retry_after_seconds(response):
-        """Legge Retry-After sia come secondi sia come data HTTP."""
-        value = response.headers.get('Retry-After')
-        if not value:
-            return None
+        self.stats['cache_misses'] += 1
         try:
-            return max(0, min(MAX_BACKOFF, float(value)))
-        except ValueError:
-            try:
-                retry_at = parsedate_to_datetime(value).timestamp()
-                return max(0, min(MAX_BACKOFF, retry_at - time.time()))
-            except (TypeError, ValueError, OverflowError):
-                return None
+            if self.delay > 0:
+                time.sleep(self.delay)
+            payload = {
+                'model': self.model,
+                'messages': [
+                    {
+                        'role': 'system',
+                        'content': (
+                            'Translate the English text to Italian. Return only the translation, '
+                            'with no explanation, markdown, quotes, or code fences. Preserve every '
+                            'placeholder such as __0__, escape sequence, tag, code, and formatting '
+                            'token exactly and in the same order.'
+                        ),
+                    },
+                    {'role': 'user', 'content': text},
+                ],
+                'temperature': 0,
+            }
+            response = self.session.post(
+                f'{self.api_url}/chat/completions',
+                json=payload,
+                timeout=120,
+            )
+            self.stats['api_calls'] += 1
+            response.raise_for_status()
+            data = response.json()
+            translated = data['choices'][0]['message']['content'].strip()
+            if not translated:
+                raise ValueError('Il server locale ha restituito una traduzione vuota.')
+            source_placeholders = re.findall(r'__\s*\d+\s*__', text)
+            translated_placeholders = re.findall(r'__\s*\d+\s*__', translated)
+            if source_placeholders != translated_placeholders:
+                raise ValueError('Il modello ha alterato i placeholder protetti.')
+
+            self.cache[text] = translated
+            self.dirty_cache_count += 1
+            self.stats['translated_phrases'] += 1
+            if self.dirty_cache_count >= 25:
+                self.save_cache()
+            return translated
+        except (requests.RequestException, ValueError, KeyError, IndexError) as e:
+            print(f"⚠️ Traduzione locale fallita per '{text[:25]}...': {e}")
+            self.stats['failed_phrases'] += 1
+            return text
+
+    def get_cached_translation(self, text):
+        """Restituisce la cache senza mai contattare il modello locale."""
+        candidates = (text, text.strip())
+        for key in candidates:
+            if key in self.cache:
+                self.stats['cache_hits'] += 1
+                return self.cache[key]
+        return None
 
     def translate_string_content(self, text):
         """
         Protegge caratteri speciali, colori ^RRGGBB, coordinate e link di Ragnarok
-        prima di inviare a Google Translate, poi ripristina tutto fedelmente.
+        prima di inviare il testo al modello locale, poi ripristina tutto fedelmente.
         """
         if not text or not text.strip():
             return text
@@ -402,7 +390,8 @@ class RobustROTranslator:
         return mod_count
 
 
-def translate_all_txt(root_directory, translator, overwrite=OVERWRITE_EXISTING):
+def translate_all_txt(root_directory, translator, overwrite=OVERWRITE_EXISTING,
+                      pending_file=DEFAULT_PENDING_FILE):
     """Scansiona e traduce ricorsivamente tutti i file .txt della cartella npc."""
     if not os.path.exists(root_directory):
         print(f"❌ Cartella non trovata: {root_directory}")
@@ -410,6 +399,13 @@ def translate_all_txt(root_directory, translator, overwrite=OVERWRITE_EXISTING):
 
     # Raccogli tutti i file .txt originali (escludendo i già tradotti -ita.txt)
     target_files = []
+    pending_paths = set()
+    if not overwrite and os.path.exists(pending_file):
+        try:
+            with open(pending_file, 'r', encoding='utf-8') as f:
+                pending_paths = set(json.load(f))
+        except (OSError, ValueError) as e:
+            print(f"⚠️ Impossibile leggere la lista dei file da completare: {e}")
     for dirpath, _, filenames in os.walk(root_directory):
         for filename in filenames:
             if filename.endswith(".txt") and not filename.endswith("-ita.txt"):
@@ -423,20 +419,34 @@ def translate_all_txt(root_directory, translator, overwrite=OVERWRITE_EXISTING):
     start_time = time.time()
 
     for idx, (file_path, output_path, filename) in enumerate(target_files, 1):
-        # Ripresa automatica: salta i file già tradotti se non è richiesto l'overwrite
-        if not overwrite and os.path.exists(output_path) and os.path.getsize(output_path) > 0:
-            translator.stats['files_skipped'] += 1
-            continue
-
         rel_path = os.path.relpath(file_path, root_directory)
         print(f"[{idx}/{total_files}] 🔄 Elaborazione: {rel_path}...")
 
+        misses_before = translator.stats['cache_misses']
+        failures_before = translator.stats['failed_phrases']
         mod_lines = translator.translate_file(file_path, output_path)
         if mod_lines is not False:
             print(f"       ✅ Salvato ({mod_lines} righe tradotte) -> {os.path.basename(output_path)}")
+            if translator.cache_only and translator.stats['cache_misses'] > misses_before:
+                pending_paths.add(rel_path)
+            elif translator.stats['failed_phrases'] > failures_before:
+                pending_paths.add(rel_path)
+            else:
+                pending_paths.discard(rel_path)
 
     elapsed = time.time() - start_time
     translator.save_cache(force=True)
+    if pending_paths:
+        try:
+            with open(pending_file, 'w', encoding='utf-8') as f:
+                json.dump(sorted(pending_paths), f, ensure_ascii=False, indent=1)
+        except OSError as e:
+            print(f"⚠️ Impossibile salvare la lista dei file da completare: {e}")
+    elif os.path.exists(pending_file):
+        try:
+            os.remove(pending_file)
+        except OSError as e:
+            print(f"⚠️ Impossibile rimuovere la lista dei file completati: {e}")
 
     print("\n" + "=" * 60)
     print("🎉 TRADUZIONE COMPLETATA!")
@@ -445,20 +455,34 @@ def translate_all_txt(root_directory, translator, overwrite=OVERWRITE_EXISTING):
     print(f"⏩ File saltati (già completati): {translator.stats['files_skipped']}")
     print(f"💬 Frasi tradotte ex-novo: {translator.stats['translated_phrases']}")
     print(f"⚡ Frasi riutilizzate dalla cache: {translator.stats['cache_hits']}")
-    print(f"🌐 Chiamate di rete a Google: {translator.stats['api_calls']}")
-    print(f"❌ Frasi non tradotte dopo i retry: {translator.stats['failed_phrases']}")
+    print(f"🌐 Chiamate al server locale: {translator.stats['api_calls']}")
+    print(f"📝 Frasi mancanti dalla cache: {translator.stats['cache_misses']}")
+    print(f"❌ Frasi non tradotte: {translator.stats['failed_phrases']}")
     print("=" * 60 + "\n")
 
 
 def main():
     parser = argparse.ArgumentParser(description="Traduttore ricorsivo rAthena NPC per RoBrowser (Inglese -> Italiano)")
     parser.add_argument('path', nargs='?', default=DEFAULT_NPC_DIR, help="Cartella NPC o singolo file .txt da tradurre")
-    parser.add_argument('--force', action='store_true', help="Ritraduce e sovrascrive anche i file -ita.txt già esistenti")
-    parser.add_argument('--delay', type=float, default=DEFAULT_REQUEST_DELAY, help="Intervallo minimo tra chiamate di rete in secondi (default: 1.5)")
-    parser.add_argument('--cache', default=DEFAULT_CACHE_FILE, help="Percorso del file di cache JSON")
+    parser.add_argument(
+        '--rebuild-from-cache',
+        action='store_true',
+        help="Ricrea tutti i file -ita.txt usando solo la cache, senza contattare Ollama",
+    )
+    parser.add_argument('--delay', type=float, default=DEFAULT_REQUEST_DELAY, help="Ritardo tra richieste locali in secondi")
+    parser.add_argument('--cache', default=DEFAULT_CACHE_FILE, help="Percorso della cache JSON")
+    parser.add_argument('--pending', default=DEFAULT_PENDING_FILE, help="Lista dei file con frasi mancanti")
+    parser.add_argument('--api-url', default=DEFAULT_API_URL, help="URL base dell'API locale OpenAI-compatible")
+    parser.add_argument('--model', default=DEFAULT_MODEL, help="Nome del modello Ollama")
     args = parser.parse_args()
 
-    translator = RobustROTranslator(cache_file=args.cache, delay=args.delay)
+    translator = RobustROTranslator(
+        cache_file=args.cache,
+        delay=args.delay,
+        api_url=args.api_url,
+        model=args.model,
+        cache_only=args.rebuild_from_cache,
+    )
 
     # Gestione chiusura pulita (Ctrl+C o SIGINT): salva sempre la cache su disco
     def handle_interrupt(sig, frame):
@@ -479,7 +503,12 @@ def main():
         translator.save_cache(force=True)
     elif os.path.isdir(target_path):
         # Scansione ricorsiva della directory
-        translate_all_txt(target_path, translator, overwrite=args.force)
+        translate_all_txt(
+            target_path,
+            translator,
+            overwrite=True,
+            pending_file=args.pending,
+        )
     else:
         print(f"❌ Percorso non valido: {target_path}")
 

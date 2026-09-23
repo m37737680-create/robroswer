@@ -1,7 +1,7 @@
 #Set-ExecutionPolicy RemoteSigned -Scope Process 
 python3.13 -m venv venv 
 .\venv\Scripts\Activate.ps1
-pip install deep-translator
+pip install requests
 
 
 powershell -ExecutionPolicy Bypass -Command ".venv\Scripts\Activate.ps1"                                                                                                              
@@ -89,26 +89,66 @@ exit	Chiude la sessione (se dentro screen)
 Come eseguire lo script:
 Dalla cartella c:\Users\utente\Desktop\ragnarokserver\robroswer\traduzione:
 
-Per avviare la traduzione di tutta la cartella NPC:
+Il traduttore usa solo Ollama tramite API locale OpenAI-compatible:
+
+http://127.0.0.1:8080/v1
+
+Modello predefinito:
+
+google/gemma-4-e4b
+
+La cache viene salvata in translation_cache.json. Non vengono usati Google
+Translate, deep-translator, cookie o servizi esterni.
+
+## Modalità 1: rebuild offline dalla cache
+
+powershell
+.\venv\Scripts\python tradricorsivocodifica.py --rebuild-from-cache
+
+Questa modalità:
+
+- non contatta Ollama e funziona senza Internet;
+- ricrea e sovrascrive tutti i file -ita.txt;
+- copia direttamente le frasi già presenti nella cache;
+- lascia in inglese le frasi non ancora presenti nella cache;
+- salva i file incompleti in translation_pending.json.
+
+## Modalità 2: ricostruzione e completamento con Ollama
 
 powershell
 .\venv\Scripts\python tradricorsivocodifica.py
-(Su Linux / screen: python3 ./tradricorsivocodifica.py)
-Lo script usa un intervallo predefinito di 1.5 secondi tra le richieste,
-salva la cache e riprova automaticamente con backoff quando Google risponde
-con rate limit (HTTP 429). Per essere ancora più prudenti:
 
-powershell
-.\venv\Scripts\python tradricorsivocodifica.py --delay 3
+Questa è la modalità da usare per completare il lavoro:
+
+- ricrea e sovrascrive tutti i file -ita.txt;
+- usa direttamente la cache per le frasi già tradotte;
+- invia a Ollama solo le frasi assenti dalla cache;
+- aggiunge le nuove traduzioni alla cache;
+- se la cache non esiste, la crea da zero;
+- se una richiesta fallisce, salva il file in translation_pending.json;
+- può essere interrotta con CTRL+C e ripresa senza perdere la cache.
+
+Quindi il flusso consigliato è:
+
+1. usa --rebuild-from-cache per ricostruire gli output senza Ollama;
+2. avvia il comando normale quando Ollama è attivo;
+3. il comando normale ricrea gli output e completa solo le frasi mancanti.
+
+Configurazione del server locale:
+
+- avvia Ollama o il proxy OpenAI-compatible sulla porta 8080;
+- assicurati che il modello esposto si chiami google/gemma-4-e4b;
+- se il nome è diverso, imposta OLLAMA_MODEL prima dell'avvio.
+
+Esempio PowerShell:
+
+$env:OLLAMA_MODEL = "google/gemma-4-e4b"
+.\venv\Scripts\python tradricorsivocodifica.py
 
 Per testare un singolo file:
 
 powershell
 .\venv\Scripts\python tradricorsivocodifica.py npc/cities/alberta.txt
-Per forzare la ritraduzione e sovrascrivere i file esistenti:
-
-powershell
-.\venv\Scripts\python tradricorsivocodifica.py --force
 Una volta terminato, per applicare i file tradotti (rimuovere originali e rinominare):
 
 powershell
