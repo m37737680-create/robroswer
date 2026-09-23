@@ -7,7 +7,6 @@
  *
  */
 
-import Quest from './Quest/Quest.js';
 import QuestV1 from './QuestV1/QuestV1.js';
 import UIVersionManager from 'UI/UIVersionManager.js';
 import KEYS from 'Controls/KeyEventHandler.js';
@@ -16,7 +15,7 @@ const publicName = 'Quest';
 const versionInfo = {
 	default: QuestV1,
 	common: {
-		20180307: Quest
+		20180307: QuestV1
 	},
 	re: {},
 	prere: {}

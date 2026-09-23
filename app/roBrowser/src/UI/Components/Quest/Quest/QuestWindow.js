@@ -30,6 +30,7 @@ const _preferences = Preferences.get(
  */
 const QuestWindow = new GUIComponent('QuestWindow', cssText);
 let _onQuestClick = null;
+let _onQuestListChanged = null;
 let _quests = {};
 let _questNotShowList = [];
 
@@ -47,6 +48,14 @@ QuestWindow.init = function init() {};
 
 QuestWindow.setQuestClickHandler = function setQuestClickHandler(handler) {
 	_onQuestClick = typeof handler === 'function' ? handler : null;
+};
+
+QuestWindow.setQuestListChangedHandler = function setQuestListChangedHandler(handler) {
+	_onQuestListChanged = typeof handler === 'function' ? handler : null;
+};
+
+QuestWindow.getQuestList = function getQuestList() {
+	return _quests;
 };
 
 /**
@@ -75,6 +84,9 @@ QuestWindow.clean = function clean() {
 QuestWindow.setQuestList = function setQuestList(quests, questNotShowList) {
 	_quests = quests || {};
 	_questNotShowList = Array.isArray(questNotShowList) ? questNotShowList : [];
+	if (_onQuestListChanged) {
+		_onQuestListChanged(_quests);
+	}
 	let already_show = 0;
 	for (const questID in _quests) {
 		if (!_questNotShowList.includes(_quests[questID].questID)) {

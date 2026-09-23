@@ -70,6 +70,7 @@ function onAllQuestList(pkt) {
 				quest.pending === 1 ||
 				quest.pending === '1' ||
 				quest_info.Pending === true,
+			category: quest.category || quest_info.Category || null,
 			start_time: quest.quest_svrTime || 0,
 			end_time: quest.quest_endTime || 0,
 			count: quest.count,

@@ -101,6 +101,14 @@ export function createQuest(config) {
 				questHelper.append();
 				questHelper.ui.show();
 			});
+			if (typeof questWindow.setQuestListChangedHandler === 'function') {
+				questWindow.setQuestListChangedHandler(quests => {
+					_questList = quests || {};
+					if (Quest._host) {
+						renderQuestLists(false);
+					}
+				});
+			}
 		}
 
 		if (renewLayout) {
@@ -203,14 +211,46 @@ export function createQuest(config) {
 		}
 	};
 
-	function renderQuestLists() {
+	function renderQuestLists(updateQuestWindow = true) {
+		if (renewLayout && questWindow && typeof questWindow.getQuestList === 'function') {
+			const questWindowList = questWindow.getQuestList();
+			if (
+				questWindowList &&
+				Object.keys(questWindowList).length >= Object.keys(_questList).length
+			) {
+				_questList = questWindowList;
+			}
+		}
 		Quest.ClearQuestList();
 		for (const questID in _questList) {
 			if (_questList[questID]) {
 				Quest.addQuestToUI(_questList[questID]);
 			}
 		}
-		if (questWindow) {
+		if (renewLayout) {
+			const root = Quest.getRoot();
+			const lists = [
+				['active', '#active-quest-list'],
+				['feature', '#feature-quest-list'],
+				['inactive', '#inactive-quest-list'],
+				['cooldown', '#cooldown-quest-list']
+			];
+			const selected = lists.find(([, selector]) => {
+				const list = root.querySelector(selector);
+				return list && list.children.length > 0;
+			});
+			const activeList = root.querySelector('#active-quest-list');
+			if (selected && (!activeList || activeList.children.length === 0)) {
+				_active_menu = selected[0];
+				for (const [, selector] of lists) {
+					const list = root.querySelector(selector);
+					if (list) {
+						list.style.display = selector === selected[1] ? '' : 'none';
+					}
+				}
+			}
+		}
+		if (questWindow && updateQuestWindow) {
 			questWindow.ClearQuestList();
 			questWindow.setQuestList(_questList, _questNotShowList);
 		}
@@ -285,6 +325,7 @@ export function createQuest(config) {
 				if (hostDisplay !== 'none') {
 					this.ui.hide();
 				} else {
+					renderQuestLists();
 					this.ui.show();
 					this.focus();
 				}
@@ -301,6 +342,7 @@ export function createQuest(config) {
 		if (hostDisplay !== 'none') {
 			this.ui.hide();
 		} else {
+			renderQuestLists();
 			this.ui.show();
 		}
 	};
@@ -464,7 +506,11 @@ export function createQuest(config) {
 					'</span></div>				<div class="quest-item-toggle"><button id="' +
 					toggle_id +
 					'" class="quest-item-toggle-image"><span class="quest-item-toggle-image-text">Toggle</span></button></div></li>';
-			} else if (quest.recommended || quest.category === 'recommended' || quest.category === 'feature') {
+			} else if (
+				quest.recommended ||
+				quest.category === 'recommended' ||
+				quest.category === 'feature'
+			) {
 				ul_id = '#feature-quest-list';
 				li_text =
 					'<li> <div class="quest-item-icon"> <div class="quest-item-icon-image">' +
@@ -493,7 +539,7 @@ export function createQuest(config) {
 
 			const li = document.createElement('li');
 			li.className = 'quest-item';
-			li.innerHTML = li_text;
+			li.innerHTML = li_text.replace(/^<li>\s*/, '').replace(/\s*<\/li>$/, '');
 
 			// Load background images for the quest item
 			Client.loadFile(`${DB.INTERFACE_PATH}renew_questui/bg_questlist.bmp`, data => {
