@@ -10,7 +10,7 @@ window.ROConfigBase = {
 	application: 'ONLINE',
 	development: true,
 	// Shared remote client served by nginx.
-	remoteClient: '/client/',
+	remoteClient: (window.location.pathname.indexOf('/renewal/') === 0 ? '/renewal/client/' : '/client/'),
 	packetver: 20211103,
 	renewal: true,
 	packetKeys: false,

@@ -102,7 +102,7 @@ window.ROConfigBase = {
   application: 'ONLINE',
   development: true,
 
-  remoteClient: '/client/',
+  remoteClient: (window.location.pathname.indexOf('/renewal/') === 0 ? '/renewal/client/' : '/client/'),
 
   // Keep profile-wide values for modules that read them before server selection.
   packetver: $packetver,

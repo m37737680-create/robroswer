@@ -15,7 +15,8 @@ window.ROConfigBase = {
 	type: 'INLINE',
 	application: 'ONLINE',
 	development: true,
-	remoteClient: window.location.origin + '/client/',
+	remoteClient: window.location.origin +
+		(window.location.pathname.indexOf('/renewal/') === 0 ? '/renewal/client/' : '/client/'),
 	servers: [
 		{
 			display: 'Renewal',

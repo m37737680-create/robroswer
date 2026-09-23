@@ -69,9 +69,12 @@ Le richieste vengono cercate prima in `client/data` e poi nei GRF. In
 non copiare automaticamente i file dei GRF nella cartella `data`.
 
 Il servizio nginx inoltra le richieste mancanti sotto `/client/` a
-`client/index.php`, che esegue la ricerca dentro `DATA.INI` e nei GRF. I file
-già presenti in `client/data` possono rimanere come override personalizzati;
-non è necessario esportare nuovamente il contenuto completo di `data.grf`.
+`client/index.php`, che esegue la ricerca dentro `DATA.INI` e nei GRF. Quando
+il reverse proxy pubblico inoltra soltanto il prefisso `/renewal/`, il client
+usa automaticamente anche `/renewal/client/`; entrambe le route sono
+supportate. I file già presenti in `client/data` possono rimanere come
+override personalizzati; non è necessario esportare nuovamente il contenuto
+completo di `data.grf`.
 
 Per il client RagnarokZero, i file `AI` e `System` necessari come risorse
 accessibili sono stati copiati in `client/data`; i file audio sono in

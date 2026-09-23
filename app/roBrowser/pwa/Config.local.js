@@ -39,5 +39,6 @@ window.ROConfigLocal = {
 	// Example: Skip intro screen
 	skipIntro: true,
 
-	remoteClient: window.location.origin + '/client/',
+	remoteClient: window.location.origin +
+		(window.location.pathname.indexOf('/renewal/') === 0 ? '/renewal/client/' : '/client/'),
 };
