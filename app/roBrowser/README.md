@@ -18,6 +18,16 @@ falls back to `GAME_HOST`. The public client configuration is generated from `.e
 `.env.pre-renewal`) by `entrypoint.sh`; `LANGTYPE`, `CLIENT_VERSION`,
 `WORLD_MAP_EPISODE` and `CLIENT_GRF_LIST` are also read from that environment.
 
+When using `vite preview` directly, export the same value before starting Vite:
+
+```powershell
+$env:CLIENT_PUBLIC_HOST = "https://roita.servegame.com"
+npm run preview -- --host 0.0.0.0
+```
+
+Vite extracts the hostname and adds it to `preview.allowedHosts`; do not use
+`allowedHosts: true`, because that would accept arbitrary Host headers.
+
 The remote client has one shared `resources` directory containing `DATA.INI`
 and all GRF files. It is served at `/client/`; resources are not split into
 renewal and pre-renewal folders.

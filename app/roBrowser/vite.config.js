@@ -8,6 +8,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const isDocker = process.env.RO_PROXY_TARGET === 'docker';
 const webTarget = isDocker ? 'http://serve:80' : 'http://127.0.0.1:8888';
 const remoteClientTarget = isDocker ? 'http://nginx:80' : 'http://127.0.0.1:8080';
+const configuredPublicHost = process.env.CLIENT_PUBLIC_HOST || '';
+const publicHostForVite = configuredPublicHost
+	.replace(/^[a-z]+:\/\//i, '')
+	.split('/')[0]
+	.split(':')[0];
 
 const sourceAliases = ['App', 'Audio', 'Controls', 'Core', 'DB', 'Engine', 'Loaders', 'Network', 'Plugins', 'Preferences', 'Renderer', 'UI', 'Utils', 'Vendors'];
 const sourceAliasPlugin = {
@@ -148,5 +153,9 @@ export default defineConfig({
 			}  
 		}),
 		proxy: _proxy
-	}	
+	},
+	preview: {
+		host: isDocker ? '0.0.0.0' : 'localhost',
+		allowedHosts: publicHostForVite ? [publicHostForVite] : []
+	}
 });
