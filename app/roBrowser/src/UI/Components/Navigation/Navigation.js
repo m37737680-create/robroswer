@@ -151,7 +151,9 @@ let _documentClickHandler = null;
  * Normalize a map name (remove .gat extension)
  */
 function normalizeMapName(mapName) {
-	mapName = mapName.replace(/\.gat$/, '').toLowerCase();
+	mapName = String(mapName || '')
+		.replace(/\.(gat|rsw)$/i, '')
+		.toLowerCase();
 	mapName = mapName.replace(/^(.+)_[a-d]$/, '$1');
 	return mapName;
 }
@@ -767,9 +769,23 @@ Navigation.loadMap = function loadMap(mapName, displayName) {
 	});
 
 	this.setMapNameText(mapName);
-	// Populate the navigation list with NPCs on the currently displayed map.
-	// This also creates their map markers and keeps the route target clickable.
-	this.displaySearchResults(DB.searchNavigation(normalizeMapName(mapBaseName), 'NPC'));
+	// Navigation Lua tables load asynchronously. Retry after the map opens so
+	// NPC/MOB records are available even when the first lookup happens early.
+	this.loadMapNavigationResults(normalizeMapName(mapBaseName));
+};
+
+Navigation.loadMapNavigationResults = function loadMapNavigationResults(mapName, attempt) {
+	attempt = attempt || 0;
+	const results = DB.searchNavigation(mapName, 'ALL').filter(
+		result => normalizeMapName(result.mapName) === normalizeMapName(mapName)
+	);
+	if (results.length > 0 || attempt >= 12) {
+		this.displaySearchResults(results);
+		return;
+	}
+	setTimeout(() => {
+		this.loadMapNavigationResults(mapName, attempt + 1);
+	}, 250);
 };
 
 /**

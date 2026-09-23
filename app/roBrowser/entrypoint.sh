@@ -7,6 +7,7 @@ set -eu
 
 packetver="${PACKETVER:-20211103}"
 game_host="${GAME_HOST:-127.0.0.1}"
+client_public_host="${CLIENT_PUBLIC_HOST:-$game_host}"
 WSPROXY_PORT="${WSPROXY_PORT:-5999}"
 WEB_PORT="${WEB_PORT:-8080}"
 LOGIN_PORT="${LOGIN_PORT:-6900}"
@@ -15,6 +16,17 @@ CLIENT_VERSION="${CLIENT_VERSION:-55}"
 WORLD_MAP_EPISODE="${WORLD_MAP_EPISODE:-12}"
 CLIENT_GRF_LIST="${CLIENT_GRF_LIST:-DATA.INI}"
 USE_ADMIN_SPRITE="${USE_ADMIN_SPRITE:-false}"
+
+# CLIENT_PUBLIC_HOST può essere un IP/hostname oppure un URL completo.
+# Il WebSocket usa sempre GAME_HOST, che resta l'indirizzo interno configurato.
+client_public_scheme="ws"
+case "$client_public_host" in
+    https://*) client_public_scheme="wss"; client_public_host="${client_public_host#https://}" ;;
+    http://*) client_public_host="${client_public_host#http://}" ;;
+    ws://*) client_public_host="${client_public_host#ws://}" ;;
+    wss://*) client_public_scheme="wss"; client_public_host="${client_public_host#wss://}" ;;
+esac
+client_public_host="${client_public_host%%/*}"
 
 # ============================================================
 # Determina Renewal / Pre-Renewal dal PacketVer
@@ -66,6 +78,7 @@ echo "PACKETVER        : $packetver"
 echo "RENEWAL          : $renewal"
 echo "PACKET_KEYS      : $packet_keys"
 echo "GAME_HOST        : $game_host"
+echo "CLIENT_PUBLIC_HOST: $client_public_host"
 echo "LOGIN_PORT       : $LOGIN_PORT"
 echo "WSPROXY_PORT     : $WSPROXY_PORT"
 echo "WEB_PORT         : $WEB_PORT"
@@ -103,7 +116,7 @@ window.ROConfigBase = {
       display: '$server_display',
       desc: 'Ragnarok Server',
 
-      address: '$game_host',
+      address: '$client_public_host',
       port: $LOGIN_PORT,
 
       version: $CLIENT_VERSION,
@@ -118,7 +131,7 @@ window.ROConfigBase = {
 
       packetKeys: $packet_keys,
 
-      socketProxy: 'ws://$game_host:$WSPROXY_PORT',
+      socketProxy: '$client_public_scheme://$game_host:$WSPROXY_PORT',
 
       forceUseAddress: true,
 

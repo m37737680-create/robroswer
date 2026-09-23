@@ -17,7 +17,7 @@ window.ROConfigLocal = {
 		{
 			display: 'My Private Server',
 			desc: 'custom server',
-			address: 'localhost',
+			address: window.location.hostname || 'localhost',
 			port: 6900,
 			version: 55,
 			langtype: 1,
@@ -25,7 +25,8 @@ window.ROConfigLocal = {
 			renewal: true,
 			worldMapSettings: { episode: 12 },
 			packetKeys: false,
-			socketProxy: 'ws://localhost:5999',
+			socketProxy: (window.location.protocol === 'https:' ? 'wss://' : 'ws://') +
+				(window.location.hostname || 'localhost') + ':5999',
 			adminList: [2000000],
 
 			forceUseAddress: true,  // Uncomment for any containerised or NAT deployment.
@@ -38,5 +39,5 @@ window.ROConfigLocal = {
 	// Example: Skip intro screen
 	skipIntro: true,
 
-	remoteClient: 'http://localhost:8080/client/',
+	remoteClient: window.location.origin + '/client/',
 };

@@ -20,7 +20,7 @@ window.ROConfigBase = {
 		{
 			display: 'Renewal',
 			desc: 'Renewal server',
-			address: '127.0.0.1',
+			address: window.location.hostname || '127.0.0.1',
 			port: 6900,
 			version: 55,
 			langtype: 1,
@@ -28,7 +28,8 @@ window.ROConfigBase = {
 			renewal: true,
 			worldMapSettings: { episode: 12 },
 			packetKeys: false,
-			socketProxy: 'ws://127.0.0.1:5999',
+			socketProxy: (window.location.protocol === 'https:' ? 'wss://' : 'ws://') +
+				(window.location.hostname || '127.0.0.1') + ':5999',
 			forceUseAddress: true,
 			adminList: [2000000]
 		}

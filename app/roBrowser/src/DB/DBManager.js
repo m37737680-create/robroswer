@@ -3557,9 +3557,9 @@ class DB {
 			const mobEntries = flattenEntries(NaviMobTable);
 			for (let i = 0; i < mobEntries.length; i++) {
 				const mob = mobEntries[i];
-				const mapName = String(mob[0] || '').replace(/\.gat$/i, '');
-				const mobId = mob[3]; // Using mob_class as the ID
-				const mobName = String(mob[4] || mob.name || mob.MobName || '');
+				const mapName = String(mob[0] || mob.mapName || mob.MapName || '').replace(/\.gat$/i, '');
+				const mobId = mob[3] ?? mob.id ?? mob.mobId ?? mob.MobID; // Using mob_class as the ID
+				const mobName = String(mob[4] || mob.name || mob.MobName || mob.mob_name || '');
 
 				// Skip if no name
 				if (!mobName) {

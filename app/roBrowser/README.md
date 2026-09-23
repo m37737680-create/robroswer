@@ -11,8 +11,10 @@ The packet mode is selected automatically from `PACKETVER`:
 - versions before `20181121` use pre-renewal packet keys;
 - versions from `20181121` onward use renewal packets.
 
-The browser, WebSocket proxy and emulator all use `GAME_HOST`. The public
-client configuration is generated from `.env.renewal` (or
+The emulator and WebSocket proxy use `GAME_HOST`. The browser-facing game
+address uses `CLIENT_PUBLIC_HOST`, which may be an IP, hostname, or full URL
+(for example `192.168.1.20` or `https://game.example.com`). If omitted, it
+falls back to `GAME_HOST`. The public client configuration is generated from `.env.renewal` (or
 `.env.pre-renewal`) by `entrypoint.sh`; `LANGTYPE`, `CLIENT_VERSION`,
 `WORLD_MAP_EPISODE` and `CLIENT_GRF_LIST` are also read from that environment.
 
