@@ -14,8 +14,11 @@
 	}
 
 
-	Client::$path        =  '';
+	// Use absolute paths: PHP-FPM may start with a working directory outside
+	// the client directory.
+	Client::$path        =  __DIR__ . DIRECTORY_SEPARATOR;
 	Client::$data_ini    =  $CONFIGS['CLIENT_RESPATH'] . $CONFIGS['CLIENT_DATAINI'];
+	Client::$data_ini    =  Client::$path . str_replace('/', DIRECTORY_SEPARATOR, Client::$data_ini);
 	Client::$AutoExtract =  $CONFIGS['CLIENT_AUTOEXTRACT'];
 
 
@@ -60,11 +63,17 @@
 		: $_SERVER['REQUEST_URI'];
 	$path      = str_replace('\\', '/', utf8_decode(urldecode($requestUri)));
 	$path      = preg_replace('/\?.*/', '', $path); // remove query
-	$directory = basename(dirname(__FILE__));
+	$path      = preg_replace('#^.*?/client/#i', '', $path);
+	$path      = ltrim($path, '/');
 
+	// Never allow a request to escape the client directory.
+	if ($path === '' || preg_match('#(^|/)\.\.?(/|$)#', $path)) {
+		Debug::write('Invalid client file path.', 'error');
+		Debug::output();
+		exit();
+	}
 
 	// Get file
-	$path = preg_replace('#^.*?((?:data|System|AI|BGM)/.*)$#i', '$1', $path);
 	$path = str_replace('/', '\\', $path);
 	$ext  = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 	$file = Client::getFile($path);
