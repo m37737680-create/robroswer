@@ -18,7 +18,8 @@ CLIENT_GRF_LIST="${CLIENT_GRF_LIST:-DATA.INI}"
 USE_ADMIN_SPRITE="${USE_ADMIN_SPRITE:-false}"
 
 # CLIENT_PUBLIC_HOST può essere un IP/hostname oppure un URL completo.
-# Il WebSocket usa sempre GAME_HOST, che resta l'indirizzo interno configurato.
+# Il browser deve usare questo host anche per il WebSocket: GAME_HOST può
+# essere un indirizzo Docker/LAN non raggiungibile dalla rete pubblica.
 client_public_scheme="ws"
 case "$client_public_host" in
     https://*) client_public_scheme="wss"; client_public_host="${client_public_host#https://}" ;;
@@ -131,7 +132,8 @@ window.ROConfigBase = {
 
       packetKeys: $packet_keys,
 
-      socketProxy: '$client_public_scheme://$game_host:$WSPROXY_PORT',
+      socketProxy: '$client_public_scheme://$client_public_host' +
+        (window.location.pathname.indexOf('/renewal/') === 0 ? '/renewal/wsproxy/' : '/wsproxy/'),
 
       forceUseAddress: true,
 

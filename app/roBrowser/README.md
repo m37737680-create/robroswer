@@ -11,12 +11,19 @@ The packet mode is selected automatically from `PACKETVER`:
 - versions before `20181121` use pre-renewal packet keys;
 - versions from `20181121` onward use renewal packets.
 
-The emulator and WebSocket proxy use `GAME_HOST`. The browser-facing game
-address uses `CLIENT_PUBLIC_HOST`, which may be an IP, hostname, or full URL
-(for example `192.168.1.20` or `https://game.example.com`). If omitted, it
-falls back to `GAME_HOST`. The public client configuration is generated from `.env.renewal` (or
+The emulator and the WebSocket proxy connect to rAthena through the internal
+Docker network. The browser-facing game address and WebSocket endpoint use
+`CLIENT_PUBLIC_HOST`, which may be an IP, hostname, or full URL (for example
+`192.168.1.20` or `https://game.example.com`). If omitted, it falls back to
+`GAME_HOST`. The public client configuration is generated from `.env.renewal` (or
 `.env.pre-renewal`) by `entrypoint.sh`; `LANGTYPE`, `CLIENT_VERSION`,
 `WORLD_MAP_EPISODE` and `CLIENT_GRF_LIST` are also read from that environment.
+
+The browser does not need direct access to `WSPROXY_PORT`: nginx exposes it
+through `/wsproxy/` on the same HTTP/HTTPS port as the frontend and forwards
+it internally to the `wsproxy` container. The router therefore only needs
+ports 80/443. If the frontend is served over HTTPS, the reverse proxy must
+forward WebSocket upgrades for `/wsproxy/`.
 
 When using `vite preview` directly, export the same value before starting Vite:
 
