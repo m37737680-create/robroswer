@@ -34,6 +34,12 @@ let lastAction = 0;
 let lastAttackAction = 0;
 let targetGID = 0;
 let lastWander = 0;
+let trackedTargetGID = 0;
+let trackedPlayerPosition = null;
+let targetStuckSince = 0;
+const unreachableTargets = new Map();
+const TARGET_STUCK_TIMEOUT = 3500;
+const UNREACHABLE_TARGET_COOLDOWN = 10000;
 let pendingPickupGID = 0;
 let pendingPickupAt = 0;
 const pickupFailures = new Map();
@@ -271,11 +277,57 @@ function attack(entity) {
 	lastAttackAction = Date.now();
 }
 
+function isUnreachableTarget(gid) {
+	const ignoredUntil = unreachableTargets.get(Number(gid)) || 0;
+	if (ignoredUntil && ignoredUntil > Date.now()) {
+		return true;
+	}
+	if (ignoredUntil) {
+		unreachableTargets.delete(Number(gid));
+	}
+	return false;
+}
+
+function resetTargetProgress() {
+	trackedTargetGID = 0;
+	trackedPlayerPosition = null;
+	targetStuckSince = 0;
+}
+
+function markTargetUnreachable(gid) {
+	unreachableTargets.set(Number(gid), Date.now() + UNREACHABLE_TARGET_COOLDOWN);
+	if (targetGID === gid) {
+		targetGID = 0;
+	}
+	resetTargetProgress();
+}
+
 function moveToTarget(entity) {
 	if (!Session.Entity || !entity || !entity.position) return false;
 	const dx = entity.position[0] - Session.Entity.position[0];
 	const dy = entity.position[1] - Session.Entity.position[1];
 	if (Math.hypot(dx, dy) <= 3) return false;
+
+	const gid = Number(entity.GID);
+	const playerX = Session.Entity.position[0];
+	const playerY = Session.Entity.position[1];
+	if (trackedTargetGID !== gid) {
+		trackedTargetGID = gid;
+		trackedPlayerPosition = { x: playerX, y: playerY };
+		targetStuckSince = Date.now();
+	} else if (
+		trackedPlayerPosition &&
+		Math.hypot(playerX - trackedPlayerPosition.x, playerY - trackedPlayerPosition.y) >= 1
+	) {
+		trackedPlayerPosition = { x: playerX, y: playerY };
+		targetStuckSince = Date.now();
+	}
+
+	if (Date.now() - targetStuckSince >= TARGET_STUCK_TIMEOUT) {
+		markTargetUnreachable(gid);
+		return true;
+	}
+
 	if (!canAttack()) return true;
 	const packet = PACKETVER.value >= 20180307 ? new PACKET.CZ.REQUEST_MOVE2() : new PACKET.CZ.REQUEST_MOVE();
 	packet.dest[0] = Math.round(entity.position[0]);
@@ -292,15 +344,18 @@ function getTarget() {
 		current.objecttype === Entity.TYPE_MOB &&
 		current.action !== current.ACTION.DIE &&
 		current.life.hp !== 0 &&
-		isAllowedMonster(current)
+		isAllowedMonster(current) &&
+		!isUnreachableTarget(current.GID)
 	) {
 		return current;
 	}
+	resetTargetProgress();
 	targetGID = 0;
 	let target = null;
 	EntityManager.forEach(entity => {
 		if (target || entity.objecttype !== Entity.TYPE_MOB || entity.action === entity.ACTION.DIE || entity.life.hp === 0) return;
 		if (!isAllowedMonster(entity)) return;
+		if (isUnreachableTarget(entity.GID)) return;
 		target = entity;
 	});
 	if (target) targetGID = target.GID;

@@ -767,6 +767,9 @@ Navigation.loadMap = function loadMap(mapName, displayName) {
 	});
 
 	this.setMapNameText(mapName);
+	// Populate the navigation list with NPCs on the currently displayed map.
+	// This also creates their map markers and keeps the route target clickable.
+	this.displaySearchResults(DB.searchNavigation(normalizeMapName(mapBaseName), 'NPC'));
 };
 
 /**
