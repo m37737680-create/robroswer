@@ -5,6 +5,8 @@ import json
 import time
 import signal
 import argparse
+import random
+from email.utils import parsedate_to_datetime
 import requests
 from bs4 import BeautifulSoup
 from html import unescape
@@ -16,18 +18,21 @@ if hasattr(sys.stdout, 'reconfigure'):
 # --- CONFIGURAZIONE PREDEFINITA ---
 DEFAULT_NPC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "npc")
 DEFAULT_CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "translation_cache.json")
-DEFAULT_REQUEST_DELAY = 0.15   # Ritardo tra richieste web reali (in secondi)
+DEFAULT_REQUEST_DELAY = 1.5    # Intervallo minimo tra richieste web reali (in secondi)
+MAX_RETRIES = 6
+MAX_BACKOFF = 300              # Non riprovare più spesso di ogni 5 minuti
 OVERWRITE_EXISTING = False     # Se False, salta i file -ita.txt già completati per consentire la ripresa
 
 
 class RobustROTranslator:
     def __init__(self, cache_file=DEFAULT_CACHE_FILE, delay=DEFAULT_REQUEST_DELAY, source_lang='en', target_lang='it'):
         self.cache_file = cache_file
-        self.delay = delay
+        self.delay = max(0, delay)
         self.source_lang = source_lang
         self.target_lang = target_lang
         self.cache = {}
         self.dirty_cache_count = 0
+        self.last_request_at = 0.0
         
         # Statistiche di sessione
         self.stats = {
@@ -36,6 +41,7 @@ class RobustROTranslator:
             'api_calls': 0,
             'files_processed': 0,
             'files_skipped': 0,
+            'failed_phrases': 0,
         }
 
         # Sessione HTTP persistente con User-Agent reale per evitare blocchi Google Translate
@@ -81,13 +87,17 @@ class RobustROTranslator:
             self.stats['cache_hits'] += 1
             return self.cache[text]
 
-        self.stats['api_calls'] += 1
-        for attempt in range(3):
+        for attempt in range(MAX_RETRIES):
             try:
-                if self.delay > 0:
-                    time.sleep(self.delay)
+                # Applica il limite anche ai retry: il delay precedente era rispettato
+                # solo in modo fisso e permetteva raffiche di richieste dopo un 429.
+                wait_for_slot = self.delay - (time.monotonic() - self.last_request_at)
+                if wait_for_slot > 0:
+                    time.sleep(wait_for_slot)
 
                 params = {'tl': self.target_lang, 'sl': self.source_lang, 'q': text}
+                self.last_request_at = time.monotonic()
+                self.stats['api_calls'] += 1
                 response = self.session.get('https://translate.google.com/m', params=params, timeout=12)
 
                 if response.status_code == 200:
@@ -104,19 +114,54 @@ class RobustROTranslator:
                             self.save_cache()
                         return translated
 
-                elif response.status_code == 429:
-                    wait_sec = (attempt + 1) * 4
-                    print(f"⏳ Rate limit Google (429), pausa di {wait_sec}s...")
-                    time.sleep(wait_sec)
+                    # Una risposta 200 senza il risultato è tipica di una pagina
+                    # anti-bot/interstiziale: trattala come errore transitorio.
+                    print("⚠️ Google ha restituito una risposta senza traduzione; ritento.")
+                    if attempt < MAX_RETRIES - 1:
+                        time.sleep(self._backoff(attempt))
+                elif response.status_code in (403, 408, 429) or response.status_code >= 500:
+                    retry_after = self._retry_after_seconds(response)
+                    wait_sec = retry_after if retry_after is not None else self._backoff(attempt)
+                    if attempt < MAX_RETRIES - 1:
+                        print(
+                            f"⏳ Google HTTP {response.status_code}: pausa di "
+                            f"{wait_sec:.0f}s prima del tentativo {attempt + 2}/{MAX_RETRIES}..."
+                        )
+                        time.sleep(wait_sec)
                     continue
+                else:
+                    print(f"❌ Google ha restituito HTTP {response.status_code} per '{text[:40]}'.")
+                    break
 
             except Exception as e:
-                wait_sec = (attempt + 1) * 2
-                print(f"⚠️ Tentativo {attempt + 1}/3 fallito per '{text[:25]}...': {e}")
+                wait_sec = self._backoff(attempt, base=5)
+                print(f"⚠️ Tentativo {attempt + 1}/{MAX_RETRIES} fallito per '{text[:25]}...': {e}")
                 time.sleep(wait_sec)
 
-        # In caso di insuccesso dopo i tentativi, ritorna il testo originale intatto
+        self.stats['failed_phrases'] += 1
+        print(f"❌ Traduzione non riuscita dopo {MAX_RETRIES} tentativi; testo lasciato invariato.")
         return text
+
+    @staticmethod
+    def _backoff(attempt, base=30):
+        """Backoff esponenziale con jitter per evitare retry sincronizzati."""
+        upper_bound = min(MAX_BACKOFF, base * (2 ** attempt))
+        return random.uniform(upper_bound * 0.8, upper_bound)
+
+    @staticmethod
+    def _retry_after_seconds(response):
+        """Legge Retry-After sia come secondi sia come data HTTP."""
+        value = response.headers.get('Retry-After')
+        if not value:
+            return None
+        try:
+            return max(0, min(MAX_BACKOFF, float(value)))
+        except ValueError:
+            try:
+                retry_at = parsedate_to_datetime(value).timestamp()
+                return max(0, min(MAX_BACKOFF, retry_at - time.time()))
+            except (TypeError, ValueError, OverflowError):
+                return None
 
     def translate_string_content(self, text):
         """
@@ -401,6 +446,7 @@ def translate_all_txt(root_directory, translator, overwrite=OVERWRITE_EXISTING):
     print(f"💬 Frasi tradotte ex-novo: {translator.stats['translated_phrases']}")
     print(f"⚡ Frasi riutilizzate dalla cache: {translator.stats['cache_hits']}")
     print(f"🌐 Chiamate di rete a Google: {translator.stats['api_calls']}")
+    print(f"❌ Frasi non tradotte dopo i retry: {translator.stats['failed_phrases']}")
     print("=" * 60 + "\n")
 
 
@@ -408,7 +454,7 @@ def main():
     parser = argparse.ArgumentParser(description="Traduttore ricorsivo rAthena NPC per RoBrowser (Inglese -> Italiano)")
     parser.add_argument('path', nargs='?', default=DEFAULT_NPC_DIR, help="Cartella NPC o singolo file .txt da tradurre")
     parser.add_argument('--force', action='store_true', help="Ritraduce e sovrascrive anche i file -ita.txt già esistenti")
-    parser.add_argument('--delay', type=float, default=DEFAULT_REQUEST_DELAY, help="Ritardo tra chiamate di rete in secondi (default: 0.15)")
+    parser.add_argument('--delay', type=float, default=DEFAULT_REQUEST_DELAY, help="Intervallo minimo tra chiamate di rete in secondi (default: 1.5)")
     parser.add_argument('--cache', default=DEFAULT_CACHE_FILE, help="Percorso del file di cache JSON")
     args = parser.parse_args()
 
