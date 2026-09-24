@@ -165,6 +165,8 @@ services:
     container_name: ro-browser-wsproxy
     restart: always
     tty: true
+    ports:
+      - "${WSPROXY_PORT:-5999}:5999"
     command: >
       bash -c "wsproxy -a ${GAME_HOST}:${LOGIN_PORT},${GAME_HOST}:${CHAR_PORT},${GAME_HOST}:${MAP_PORT}"
     networks:

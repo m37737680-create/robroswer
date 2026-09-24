@@ -20,12 +20,15 @@ USE_ADMIN_SPRITE="${USE_ADMIN_SPRITE:-false}"
 # CLIENT_PUBLIC_HOST può essere un IP/hostname oppure un URL completo.
 # Il browser deve usare questo host anche per il WebSocket: GAME_HOST può
 # essere un indirizzo Docker/LAN non raggiungibile dalla rete pubblica.
+# Se è un IP o HTTP usa "ws" (non crittografato)
+# Se è HTTPS usa "wss" (crittografato)
 client_public_scheme="ws"
 case "$client_public_host" in
     https://*) client_public_scheme="wss"; client_public_host="${client_public_host#https://}" ;;
-    http://*) client_public_host="${client_public_host#http://}" ;;
-    ws://*) client_public_host="${client_public_host#ws://}" ;;
-    wss://*) client_public_scheme="wss"; client_public_host="${client_public_host#wss://}" ;;
+    http://*)  client_public_scheme="ws";  client_public_host="${client_public_host#http://}" ;;
+    ws://*)    client_public_scheme="ws";  client_public_host="${client_public_host#ws://}" ;;
+    wss://*)   client_public_scheme="wss"; client_public_host="${client_public_host#wss://}" ;;
+    *)         client_public_scheme="ws" ;; # Indirizzo IP puro
 esac
 client_public_host="${client_public_host%%/*}"
 
@@ -132,8 +135,7 @@ window.ROConfigBase = {
 
       packetKeys: $packet_keys,
 
-      socketProxy: '$client_public_scheme://$client_public_host' +
-        (window.location.pathname.indexOf('/renewal/') === 0 ? '/renewal/wsproxy/' : '/wsproxy/'),
+      socketProxy: '$client_public_scheme://$client_public_host:$WSPROXY_PORT',
 
       forceUseAddress: true,
 
