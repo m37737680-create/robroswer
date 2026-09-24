@@ -49,7 +49,6 @@ const renewalImportPathPlugin = {
 		const aliasPattern = aliases.join('|');
 		const rewritten = code
 			.replace(new RegExp(`(["'])(${aliasPattern})/`, 'g'), '$1/renewal/src/$2/')
-			.replace(/(["'])granny-ro-js\/wasm(["'])/g, '$1/renewal/node_modules/granny-ro-js/wasm$2')
 			.replace(/(["'])bson(["'])/g, '$1/renewal/node_modules/bson/lib/bson.mjs$2')
 			.replace(/(["'])lodash-es\/([^"']+)(["'])/g, '$1/renewal/node_modules/lodash-es/$2$3');
 		return rewritten === code ? null : { code: rewritten, map: null };
@@ -84,29 +83,29 @@ const rawPreviewPlugin = {
 	}
 };
 
-const _proxy = {  
-	'/get': {  
-		target: webTarget,  
-		changeOrigin: true,  
-		secure: false,  
-		ws: false  
-	},  
-	'/emblem': {  
-		target: webTarget,  
-		changeOrigin: true,  
-		secure: false,  
-		ws: false  
-	},  
-	'/userconfig': {  
-		target: webTarget,  
-		changeOrigin: true,  
-		secure: false,  
-		ws: false  
+const _proxy = {
+	'/get': {
+		target: webTarget,
+		changeOrigin: true,
+		secure: false,
+		ws: false
+	},
+	'/emblem': {
+		target: webTarget,
+		changeOrigin: true,
+		secure: false,
+		ws: false
+	},
+	'/userconfig': {
+		target: webTarget,
+		changeOrigin: true,
+		secure: false,
+		ws: false
 	},
 	'/api/': {
-		target: remoteClientTarget,  
-		changeOrigin: true,  
-		secure: false,  
+		target: remoteClientTarget,
+		changeOrigin: true,
+		secure: false,
 		ws: false
 	}
 };
@@ -131,34 +130,34 @@ export default defineConfig({
 	root: path.resolve(__dirname, '.'),
 	base: './',
 	resolve: {
-	alias: [
-		{ find: 'App', replacement: path.resolve(__dirname, './src/App') },
-		{ find: 'Audio', replacement: path.resolve(__dirname, './src/Audio') },
-		{ find: 'Controls', replacement: path.resolve(__dirname, './src/Controls') },
-		{ find: 'Core', replacement: path.resolve(__dirname, './src/Core') },
-		{ find: 'DB', replacement: path.resolve(__dirname, './src/DB') },
-		{ find: 'Engine', replacement: path.resolve(__dirname, './src/Engine') },
-		{ find: 'Loaders', replacement: path.resolve(__dirname, './src/Loaders') },
-		{ find: 'Network', replacement: path.resolve(__dirname, './src/Network') },
-		{ find: 'Plugins', replacement: path.resolve(__dirname, './src/Plugins') },
-		{ find: 'Preferences', replacement: path.resolve(__dirname, './src/Preferences') },
-		{ find: 'Renderer', replacement: path.resolve(__dirname, './src/Renderer') },
-		{ find: 'UI', replacement: path.resolve(__dirname, './src/UI') },
-		{ find: 'Utils', replacement: path.resolve(__dirname, './src/Utils') },
-		{ find: 'Vendors', replacement: path.resolve(__dirname, './src/Vendors') }
-	]
+		alias: [
+			{ find: 'App', replacement: path.resolve(__dirname, './src/App') },
+			{ find: 'Audio', replacement: path.resolve(__dirname, './src/Audio') },
+			{ find: 'Controls', replacement: path.resolve(__dirname, './src/Controls') },
+			{ find: 'Core', replacement: path.resolve(__dirname, './src/Core') },
+			{ find: 'DB', replacement: path.resolve(__dirname, './src/DB') },
+			{ find: 'Engine', replacement: path.resolve(__dirname, './src/Engine') },
+			{ find: 'Loaders', replacement: path.resolve(__dirname, './src/Loaders') },
+			{ find: 'Network', replacement: path.resolve(__dirname, './src/Network') },
+			{ find: 'Plugins', replacement: path.resolve(__dirname, './src/Plugins') },
+			{ find: 'Preferences', replacement: path.resolve(__dirname, './src/Preferences') },
+			{ find: 'Renderer', replacement: path.resolve(__dirname, './src/Renderer') },
+			{ find: 'UI', replacement: path.resolve(__dirname, './src/UI') },
+			{ find: 'Utils', replacement: path.resolve(__dirname, './src/Utils') },
+			{ find: 'Vendors', replacement: path.resolve(__dirname, './src/Vendors') }
+		]
 	},
-	optimizeDeps: {  
-		include: ['bson', 'lodash', 'rijndael-js', 'granny-ro-js']  
+	optimizeDeps: {
+		include: ['bson', 'lodash', 'rijndael-js']
 	},
 	test: {
 		environment: 'jsdom',
 		include: ['tests/**/*.test.js'],
-		coverage: {  
-			provider: 'v8',  
-			reporter: ['text', 'html'],  
-			include: ['src/**/*.js'],  
-			exclude: ['src/Vendors/**']  
+		coverage: {
+			provider: 'v8',
+			reporter: ['text', 'html'],
+			include: ['src/**/*.js'],
+			exclude: ['src/Vendors/**']
 		}
 	},
 	build: {
@@ -172,17 +171,17 @@ export default defineConfig({
 		}
 	},
 	server: {
-		host: isDocker ? '0.0.0.0' : 'localhost', 
+		host: isDocker ? '0.0.0.0' : 'localhost',
 		port: 3000,
 		open: !isDocker,
-		cors: true,  
+		cors: true,
 		allowedHosts: true,
 		...(isDocker && { hmr: false }),
-		...(isDocker && {  
-			watch: {  
-				usePolling: true, 
-				interval: 1000  
-			}  
+		...(isDocker && {
+			watch: {
+				usePolling: true,
+				interval: 1000
+			}
 		}),
 		proxy: _proxy
 	},
