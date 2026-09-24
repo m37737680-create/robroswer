@@ -33,9 +33,6 @@ const renewalImportPathPlugin = {
 	name: 'prefix-renewal-import-paths',
 	enforce: 'pre',
 	resolveId(source) {
-		if (source === 'granny-ro-js/wasm') {
-			return path.resolve(__dirname, 'node_modules/granny-ro-js/wasm');
-		}
 		if (source.indexOf('/renewal/src/') === 0) {
 			return path.resolve(__dirname, source.substring('/renewal/'.length));
 		}
