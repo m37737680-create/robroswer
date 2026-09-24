@@ -120,7 +120,7 @@ window.ROConfigBase = {
       display: '$server_display',
       desc: 'Ragnarok Server',
 
-      address: '$client_public_host',
+      address: '$game_host',
       port: $LOGIN_PORT,
 
       version: $CLIENT_VERSION,
@@ -135,7 +135,8 @@ window.ROConfigBase = {
 
       packetKeys: $packet_keys,
 
-      socketProxy: '$client_public_scheme://$client_public_host:$WSPROXY_PORT',
+      socketProxy: (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host +
+        (window.location.pathname.indexOf('/renewal/') === 0 ? '/renewal/wsproxy/' : '/wsproxy/'),
 
       forceUseAddress: true,
 
