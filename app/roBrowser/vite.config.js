@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import uiCssHmrPlugin from './vite/csshotreload.plugin.js';
 
@@ -54,6 +55,34 @@ const renewalImportPathPlugin = {
 	}
 };
 
+// Plugin that handles ?raw imports during `vite preview` (static server)
+// The dev server does this natively; preview does NOT, causing MIME type errors
+// for .fs, .vs, .html, .css files loaded as module scripts.
+const rawPreviewPlugin = {
+	name: 'raw-preview-handler',
+	configurePreviewServer(server) {
+		server.middlewares.use((req, res, next) => {
+			const url = new URL(req.url, 'http://localhost');
+			if (!url.searchParams.has('raw')) return next();
+			// Strip leading /renewal/ prefix if present (files live in dist/Web)
+			let filePath = url.pathname.replace(/^\/renewal\//, '/');
+			const distRoot = path.resolve(__dirname, 'dist/Web');
+			const absolute = path.join(distRoot, filePath);
+			if (!absolute.startsWith(distRoot)) return next();
+			if (!fs.existsSync(absolute)) return next();
+			try {
+				const content = fs.readFileSync(absolute, 'utf-8');
+				const escaped = JSON.stringify(content);
+				res.setHeader('Content-Type', 'application/javascript');
+				res.setHeader('Cache-Control', 'no-cache');
+				res.end(`export default ${escaped};\n`);
+			} catch (e) {
+				next();
+			}
+		});
+	}
+};
+
 const _proxy = {  
 	'/get': {  
 		target: webTarget,  
@@ -93,6 +122,7 @@ if (isDocker) {
 export default defineConfig({
 	base: '/renewal/',
 	plugins: [
+		rawPreviewPlugin,
 		sourceAliasPlugin,
 		renewalImportPathPlugin,
 		uiCssHmrPlugin()
@@ -145,6 +175,7 @@ export default defineConfig({
 		port: 3000,
 		open: !isDocker,
 		cors: true,  
+		allowedHosts: true,
 		...(isDocker && { hmr: false }),
 		...(isDocker && {  
 			watch: {  
@@ -155,7 +186,8 @@ export default defineConfig({
 		proxy: _proxy
 	},
 	preview: {
-		host: isDocker ? '0.0.0.0' : 'localhost',
-		allowedHosts: publicHostForVite ? [publicHostForVite] : []
+		host: '0.0.0.0',
+		port: 3000,
+		allowedHosts: true
 	}
 });
