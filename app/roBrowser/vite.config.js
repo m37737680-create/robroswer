@@ -33,6 +33,9 @@ const renewalImportPathPlugin = {
 	name: 'prefix-renewal-import-paths',
 	enforce: 'pre',
 	resolveId(source) {
+		if (source === 'granny-ro-js/wasm') {
+			return path.resolve(__dirname, 'node_modules/granny-ro-js/wasm');
+		}
 		if (source.indexOf('/renewal/src/') === 0) {
 			return path.resolve(__dirname, source.substring('/renewal/'.length));
 		}
@@ -49,6 +52,7 @@ const renewalImportPathPlugin = {
 		const aliasPattern = aliases.join('|');
 		const rewritten = code
 			.replace(new RegExp(`(["'])(${aliasPattern})/`, 'g'), '$1/renewal/src/$2/')
+			.replace(/(["'])granny-ro-js\/wasm(["'])/g, '$1/renewal/node_modules/granny-ro-js/wasm$2')
 			.replace(/(["'])bson(["'])/g, '$1/renewal/node_modules/bson/lib/bson.mjs$2')
 			.replace(/(["'])lodash-es\/([^"']+)(["'])/g, '$1/renewal/node_modules/lodash-es/$2$3');
 		return rewritten === code ? null : { code: rewritten, map: null };
@@ -148,7 +152,7 @@ export default defineConfig({
 	]
 	},
 	optimizeDeps: {  
-		include: ['bson', 'lodash', 'rijndael-js']  
+		include: ['bson', 'lodash', 'rijndael-js', 'granny-ro-js']  
 	},
 	test: {
 		environment: 'jsdom',
