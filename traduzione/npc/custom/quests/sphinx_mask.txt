@@ -14,38 +14,38 @@
 //============================================================ 
 
 morocc,208,90,6	script	Turban Thief	58,{
-	mes "[Turban Thief]";
+	mes "Ladro di turbanti";
 	if(event_umbala < 2) {
-		mes "What do you wan te withz me? Be gone!";
+		mes "Cosa vuoi con me? Via'!";
 		close; }
 	if(sphmask_q) {
-		mes "You have no more business with me, go away!";
+		mes "Non hai più affari con me, via'!";
 		close; }
-	mes "E'llo mah frien, would I interesst tu with this rare mask? Its value I assure you is real mah frien. Tis manific!";
+	mes "Ciao mio amico, saresti interessato a questa maschera rara? Il suo valore te lo assicuro mio amico. È meravigliosa!";
 	next;
 	callsub L_Menu,1,"1,000,000",1000000;
 	callsub L_Menu,2,"750,000",750000;
 	callsub L_Menu,3,"500,000",500000;
 	next;
-	mes "[Turban Thief]";
-	mes "Ack! Forgez it! I can do bettaz en elsez where!";
+	mes "Ladro di turbanti";
+	mes "Accà! Forgiatelo! Posso fare meglio altrove!";
 	set sphmask_q,1;
 	close;
 
 L_Menu:
-	mes "[Turban Thief]";
+	mes "Ladro di turbanti";
 	switch(getarg(0)) {
-		case 1: mes "Wah? O ho ho ho, so you know thaz I steal dis from those savages no? Well I won'tz give it back. But I will for a pricez... wat you say?"; break;
-		case 2: mes "Ahh a business man are you no?  Fine, how about..."; break;
-		case 3: mes "Hmmm... you drive a hard bargain, ok... my final offer..."; break; }
+		case 1: mes "Wah? Oh ho ho ho, sai che ti rubo questo da quei selvaggi, vero? Beh non te lo ridarò. Ma lo farò per un prezzo... cosa dici?"; break;
+		case 2: mes "Ah un uomo d'affari sei tu, vero? Bene, che ne dici di..."; break;
+		case 3: mes "Mmm... sei un negoziatore difficile, ok... la mia ultima offerta..."; break; }
 	next;
-	if(select("Pay "+getarg(1)+"z:No deal")==2) return;
-	mes "[Turban Thief]";
+	if(select("Paga "+getarg(1)+"z:Nessun accordo")==2) return;
+	mes "Ladro di turbanti";
 	if (Zeny < getarg(2)) {
-		mes "Are youz playin wit me? You don't have ze money!";
+		mes "Stai giocando con me? Non hai i soldi!";
 		close; }
 	set Zeny, Zeny-getarg(2);
-	mes "O ho ho, it's a deal, then!";
+	mes "Oh oh oh, è un affare, allora!";
 	getitem 7114,1;
 	set sphmask_q,1;
 	close;

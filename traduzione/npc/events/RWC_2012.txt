@@ -16,37 +16,37 @@
 prontera,147,61,3	script	Driller#pron	87,{
 	disable_items;
 	if (checkweight(1201,1) == 0) {
-		mes "You're carrying too many items in your inventory. Visit Kafra storage and try again.";
+		mes "Stai portando troppi oggetti nel tuo inventario. Visita il deposito di Kafra e riprova.";
 		close;
 	}
 	if (MaxWeight - Weight < 10000) {
-		mes "You cannot proceed because you're overweight.";
+		mes "Non puoi procedere perché sei in sovrappeso.";
 		close;
 	}
 	set .@part, EQI_ACC_L;
 	if (!getequipisequiped(.@part)) {
-		mes "[Driller]";
-		mes "My job is to drill a card slot into RWC Memorial accessories.";
+		mes "Perforatore";
+		mes "Il mio lavoro è forare uno slot per schede negli accessori RWC Memorial.";
 		next;
-		mes "[Driller]";
-		mes "I'm sorry but you don't have any item equipped on your right accessory position.";
+		mes "Perforatore";
+		mes "Mi dispiace ma non hai nessun oggetto equipaggiato nella tua posizione accessorio destra.";
 		close;
 	}
-	mes "[Driller]";
-	mes "My job is to drill a card slot into RWC Memorial accessories. Moreover, I only treat ^ff0000pure items^000000, or those which have not been enchanted.";
+	mes "Perforatore";
+	mes "Il mio lavoro è forare uno slot per schede negli accessori RWC Memorial. Inoltre, tratto solo gli articoli ^ff0000puri^000000, o quelli che non sono stati incantati.";
 	next;
 	set .@equip_id, getequipid(.@part);
 	if (.@equip_id != 2966 && .@equip_id != 2968) {
-		mes "[Driller]";
-		mes "However, I can see that the accessory you are wearing on the right side cannot be treated. Please equip a RWC Memorial accessory.";
+		mes "Perforatore";
+		mes "Tuttavia, posso vedere che l'accessorio che indossi sul lato destro non può essere trattato. Per favore, equipaggia un accessorio RWC Memorial.";
 		close;
 	}
-	mes "[Driller]";
-	mes "You should also know that making a card slot it extremely dangerous. ^ff0000Chances to succeed are about 50%.^000000 Do you wish to proceed?";
+	mes "Perforatore";
+	mes "Dovresti anche sapere che creare uno slot per schede è estremamente pericoloso. ^ff0000Le possibilità di successo sono circa il 50%.^000000 Desideri procedere?";
 	next;
-	if(select("Cancel:Let's go!") == 1) {
-		mes "[Driller]";
-		mes "See ya then.";
+	if(select("Annulla:Andiamo!") == 1) {
+		mes "Perforatore";
+		mes "A presto.";
 		close;
 	}
 	if (.@equip_id == 2966) {
@@ -58,13 +58,13 @@ prontera,147,61,3	script	Driller#pron	87,{
 		set .@name$,"RWC 2012 Memorial Pendant";
 		set .@str$,"pendant";
 	} else {
-		mes "[Driller]";
-		mes "I can't identify the accessory item you're wearing on your right hand. I can't work on it.";
+		mes "Perforatore";
+		mes "Non riesco a identificare l'accessorio che indossi sulla mano destra. Non posso lavorarci sopra.";
 		close;
 	}
 	if (getequipcardid(.@part,3) > 0) {
-		mes "[Driller]";
-		mes "This item has already been enchanted. I can't work on this as it is against the rules.";
+		mes "Perforatore";
+		mes "Questo oggetto è già stato incantato. Non posso lavorarci perché va contro le regole.";
 		close;
 	}
 
@@ -76,13 +76,13 @@ prontera,147,61,3	script	Driller#pron	87,{
 	if (rand(1,10) > 5) {
 		getitem .@slotted,1;
 		specialeffect2 EF_REPAIRWEAPON;
-		mes "[Driller]";
-		mes "Yay! Success! Your "+.@name$+" now has a card slot. Check it out!";
+		mes "Perforatore";
+		mes "Yay! Successo! Tuo "+.@name$+" ora ha uno slot per la scheda. Guardatelo!";
 		close;
 	} else {
 		specialeffect2 EF_LORD;
-		mes "[Driller]";
-		mes "Awww... Damn weak "+.@str$+"... It broke during the procedure. I'm sorry.";
+		mes "Perforatore";
+		mes "Aww... Dann debole "+.@str$+"È rotto durante la procedura. Mi dispiace.";
 		close;
 	}
 }
@@ -90,32 +90,32 @@ prontera,147,61,3	script	Driller#pron	87,{
 prontera,147,59,3	script	Goldberg#pron	878,{
 	disable_items;
 	if (checkweight(1201,1) == 0) {
-		mes "You are carrying too many items. Come back after you have organized your inventory.";
+		mes "Stai portando troppi oggetti. Torna indietro dopo aver organizzato il tuo inventario.";
 		close;
 	}
 	if (MaxWeight - Weight < 10000) {
-		mes "You cannot proceed because you're overweight.";
+		mes "Non puoi procedere perché sei in sovrappeso.";
 		close;
 	}
 	mes "[Goldberg]";
-	mes "Hello! I am in charge of enchanting RWC Memorial accessories with some mystic powers.";
+	mes "Ciao! Sono responsabile di incantare gli accessori commemorativi RWC con qualche potere mistico.";
 	next;
 	set .@part, EQI_ACC_L;
 	if (!getequipisequiped(.@part)) {
 		mes "[Goldberg]";
-		mes "I'm sorry but you don't have any item equipped on your right accessory position.";
+		mes "Mi dispiace ma non hai nessun oggetto equipaggiato nella tua posizione accessorio destra.";
 		close;
 	}
 	set .@equip_id, getequipid(.@part);
 	if (.@equip_id < 2966 || .@equip_id > 2969) {
 		mes "[Goldberg]";
-		mes "However, I can see that the accessory you are wearing is not something I can work on. Please equip a RWC Memorial accessory.";
+		mes "Tuttavia, posso vedere che l'accessorio che indossi non è qualcosa su cui posso lavorare. Per favore, equipaggia un accessorio RWC Memorial.";
 		close;
 	}
-	set .@select, select("Sorry, not interested.:Please, empower my accessory.:Remove the Enchant.")-1;
+	set .@select, select("Scusa, non sono interessato/a.:Per favore, potenzia il mio accessorio.:Rimuovi l'Incantesimo.")-1;
 	if (.@select == 0) {
 		mes "[Goldberg]";
-		mes "Alright, then, see you next time...";
+		mes "Allora, ci vediamo la prossima volta...";
 		close;
 	}
 	setarray .@equip_card[0], getequipcardid(.@part,0),getequipcardid(.@part,1),getequipcardid(.@part,2),getequipcardid(.@part,3);
@@ -135,8 +135,8 @@ prontera,147,59,3	script	Goldberg#pron	878,{
 			break;
 		default:
 			mes "[Goldberg]";
-			mes "I'm sorry, but I cannot work on the accessory you are currently wearing.";
-			mes "If you have equipped your RWC Memorial accessory on the left side, try to swap it to the right side.";
+			mes "Mi dispiace, ma non posso lavorare sull'accessorio che indossi attualmente.";
+			mes "Se hai equipaggiato l'accessorio RWC Memorial sul lato sinistro, prova a spostarlo sul lato destro.";
 			close;
 		}
 		for(set .@i,3; .@i>=0; set .@i,.@i-1) {
@@ -149,51 +149,51 @@ prontera,147,59,3	script	Goldberg#pron	878,{
 		switch(.@op_type) {
 		case 4:
 			mes "[Goldberg]";
-			mes "Which enchantment would you like to infuse?";
+			mes "Quale incantesimo vorresti infondere?";
 			next;
 			setarray .@enchant_select[0],1,2,3,4;
-			set .@i, select("Cancel:Fighting Spirit:ATK (%):Max HP:HP")-2;
+			set .@i, select("Annulla:Spirito combattivo:ATK (%):Max PV:HP")-2;
 			break;
 		case 3:
 			setarray .@enchant_select[0],5,6,7;
-			set .@i, select("Cancel:Spell:MATK (%):SP")-2;
+			set .@i, select("Annulla:Spellere:MATK (%):SP")-2;
 			break;
 		case 2:
 			mes "[Goldberg]";
-			mes "^ff0000Be careful! There is about a 25% chance that the enchantment will fail. If this happens, the item will be destroyed.^000000 Which enchantment would you like to infuse?";
+			mes "^ff0000Attenzione! C'è circa una possibilità del 25% che l'incantesimo fallisca. Se succede questo, l'oggetto verrà distrutto.^000000 Quale incantesimo vorresti infondere?";
 			next;
 			setarray .@enchant_select[0],8,9,10,11,12,13,14;
-			set .@i, select("Cancel:STR:AGI:VIT:INT:DEX:LUK:SP")-2;
+			set .@i, select("Annulla:STR:Intelligenza Artificiale Generale:VIT:Interno:DEX:LUK:SP")-2;
 			break;
 		case 1:
 			mes "[Goldberg]";
-			mes "^ff0000There is about a 25% chance that the enchantment will fail. If this happens, the item will be destroyed.^000000 Which enchantment would you like to infuse?";
+			mes "^ff0000C'è circa una possibilità del 25% che l'incantesimo fallisca. Se ciò accade, l'oggetto verrà distrutto.^000000Quale incantesimo vorresti infondere?";
 			next;
 			setarray .@enchant_select[0],8,9,10,11,12,13,15,16;
-			set .@i, select("Cancel:STR:AGI:VIT:INT:DEX:LUK:MHP:HP")-2;
+			set .@i, select("Annulla:STR:Intelligenza Artificiale Generale:VIT:Interno:DEX:LUK:MHP:HP")-2;
 			break;
 		case 0:
 			mes "[Goldberg]";
-			mes "Your accessory has received so many enchantments that I can hardly work on it anymore.";
+			mes "Il tuo accessorio ha ricevuto così tanti incantesimi che faccio fatica a lavorarci ancora.";
 			close;
 		}
 		if (.@i == -1) {
 			mes "[Goldberg]";
-			mes "Alright, then, see you next time.";
+			mes "Allora, ci vediamo la prossima volta.";
 			close;
 		}
 		mes "[Goldberg]";
-		mes "The power of the enchantment will be randomly chosen. ^ff0000Once infused, the enchantment cannot be removed.^000000 Shall we continue?";
+		mes "Il potere dell'incantesimo sarà scelto casualmente. ^ff0000Una volta infuso, l'incantesimo non può essere rimosso.^000000 Continuiamo?";
 		next;
-		if(select("No, please stop.:Yes, please proceed.") == 1) {
+		if(select("No, per favore smetti.:Sì, per favore procedi.") == 1) {
 			mes "[Goldberg]";
-			mes "Alright, then, see you next time...";
+			mes "Allora, ci vediamo la prossima volta...";
 			close;
 		}
 		set .@enchant_type, .@enchant_select[.@i];
 		if (!getequipisequiped(.@part)) {
 			mes "[Goldberg]";
-			mes "Do not take off your equipment while I'm working, okay?";
+			mes "Non togliere l'attrezzatura mentre sto lavorando, ok?";
 			close;
 		}
 		switch(.@enchant_type) {
@@ -247,7 +247,7 @@ prontera,147,59,3	script	Goldberg#pron	878,{
 			break;
 		default:
 			mes "[Goldberg]";
-			mes "We have got a problem, let me check it up.";
+			mes "Abbiamo un problema, lascio controllare.";
 			close;
 		}
 
@@ -282,18 +282,18 @@ prontera,147,59,3	script	Goldberg#pron	878,{
 		delequip .@part;
 		if (.@enchant == 9) {
 			mes "[Goldberg]";
-			mes "Oh gosh!";
- 			mes "The item was not strong enough to bear the enchantment and thus got destroyed. I am sorry.";
+			mes "Oh cavolo!";
+ 			mes "L'oggetto non era abbastanza resistente da sopportare l'incantesimo e quindi è stato distrutto. Mi dispiace.";
 			specialeffect2 EF_LORD;
 			close;
 		}
 		if (.@enchant == 0) { // Should never happen.
 			mes "[Goldberg]";
-			mes "Oh... It looks like there was an instability of some sort between all the powers infused. This caused all the enchantments to vanish. It is a shame, but please try again!";
+			mes "Oh... Sembra che ci sia stata un'instabilità di qualche tipo tra tutti i poteri infusi. Questo ha fatto svanire tutti gli incantesimi. È un peccato, ma per favore riprova!";
 		} else {
 			mes "[Goldberg]";
-			mes "Great!";
-			mes "The enchantment is a success! It will be applied in socket No.^990000"+(.@slot+1)+"^000000.";
+			mes "Ottimo!";
+			mes "L'incantesimo è riuscito! Verrà applicato nel socket N.º^990000"+(.@slot+1)+"^000000.";
 			specialeffect2 EF_REPAIRWEAPON;
 		}
 
@@ -303,26 +303,26 @@ prontera,147,59,3	script	Goldberg#pron	878,{
 		close;
 	} else if (.@select == 2) {
 		mes "[Goldberg]";
-		mes "I will just initialize the enchant option without doing anything to the slotted card. You wanna continue?";
+		mes "Inizializzerò solo l'opzione incantesimo senza fare nulla alla carta inserita. Vuoi continuare?";
 		next;
-		if(select("I will stop.:Yep, sure, go on.") == 1) {
+		if(select("Mi fermerò.:Sì, certo, continua pure.") == 1) {
 			mes "[Goldberg]";
-			mes "Come back if you change your mind.";
+			mes "Torna indietro se cambi idea.";
 			close;
 		}
 		if (countitem(6665) == 0) {
 			mes "[Goldberg]";
-			mes "I'm sorry. But you don't have the RWC Initialization coupon. Can you check your inventory?";
+			mes "Mi dispiace. Ma non hai il coupon di inizializzazione RWC. Puoi controllare il tuo inventario?";
 			close;
 		}
 		if (getiteminfo(.@equip_card[3], ITEMINFO_SUBTYPE) != CARD_ENCHANT) {
 			mes "[Goldberg]";
-			mes "Hm... this equipment is clean. I cannot initialize it if there's nothing! Check it again.";
+			mes "Hmm... questa attrezzatura è pulita. Non posso inizializzarla se non c'è nulla! Ricontrollala.";
 			close;
 		}
 		specialeffect2 EF_REPAIRWEAPON;
 		mes "[Goldberg]";
-		mes "The enchant option in your item will be initialized.";
+		mes "L'opzione incantesimo del tuo oggetto verrà inizializzata.";
 		delitem 6665,1; //RWC_Inicializer
 		delequip .@part;
 	

@@ -8,39 +8,39 @@
 //============================================================
 
 -	script	GuildWarehouse	-1,{
-	mes "[Warehouse Manager]";
-	mes "How are you? We are specialized in guild warehouses. This is our ^0000cdstory^000000:";
-	mes "Why can't guild members share a storage? We started off with that simple question.";
+	mes "Responsabile del Magazzino";
+	mes "Come state? Siamo specializzati in magazzini di gilda. Questa è la nostra ^0000cdstoria^000000:";
+	mes "Perché i membri della gilda non possono condividere un deposito? Abbiamo iniziato con quella semplice domanda.";
 	next;
-	mes "[Warehouse Manager]";
-	mes "You can open the warehouse for 1000 Zeny or look up the usage history of the guild.";
-	mes "How can I help you?";
+	mes "Responsabile del Magazzino";
+	mes "Puoi aprire il magazzino per 1000 Zeny o consultare la cronologia di utilizzo del gilda.";
+	mes "Come posso aiutarti?";
 	next;
-	if( select( "Open guild warehouse:View warehouse usage history" ) == 1 ){
+	if( select( "Apri magazzino gilda:Visualizza la cronologia di utilizzo del magazzino" ) == 1 ){
 		.@guildid = getcharid( 2 );
 
 		if( .@guildid == 0 ){
-			mes "[Warehouse Manager]";
-			mes "The guild storage is only available for guild members.";
+			mes "Responsabile del Magazzino";
+			mes "Lo stoccaggio della gilda è disponibile solo per i membri della gilda.";
 			close;
 		}
 
 		if( getgdskilllv( .@guildid, "GD_GUILD_STORAGE" ) == 0 || !guild_has_permission( GUILD_PERM_STORAGE ) ){
-			mes "[Warehouse Manager]";
-			mes "It seems that it is not yet possible for your guild to use the guild warehouse or you do not have access permissions for the warehouse.";
-			mes "Please come back after checking the guild skill and the permission to access the warehouse.";
+			mes "Responsabile del Magazzino";
+			mes "Sembra che non sia ancora possibile per la tua gilda utilizzare il magazzino della gilda o che tu non abbia i permessi di accesso per il magazzino.";
+			mes "Ritorna dopo aver controllato la abilità della gilda e il permesso di accesso al magazzino.";
 			close;
 		}
 
 		if( Zeny < 1000 ){
-			mes "[Warehouse Manager]";
-			mes "I am afraid you do not have enough money to settle the fee.";
-			mes "The fee is 1000 Zeny.";
+			mes "Responsabile del Magazzino";
+			mes "Temo che non abbia abbastanza soldi per saldare la tariffa.";
+			mes "La tariffa è di 1000 Zeny.";
 			close;
 		}
 
-		mes "[Warehouse Manager]";
-		mes "I will open the guild storage for you then. Have a memorable time!";
+		mes "Responsabile del Magazzino";
+		mes "Ti aprirò il deposito della gilda allora. Divertiti!";
 		close2;
 
 		if( Zeny < 1000 ){
@@ -52,30 +52,30 @@
 			Zeny -= 1000;
 			end;
 		}else{
-			mes "[Warehouse Manager]";
-			mes "I am afraid someone else is using the warehouse right now.";
-			mes "Please try again after a while.";
+			mes "Responsabile del Magazzino";
+			mes "Temo che qualcun altro stia usando il magazzino in questo momento.";
+			mes "Riprova tra un po'.";
 			close;
 		}
 	}else{
 		.@guildid = getcharid( 2 );
 
 		if( .@guildid == 0 ){
-			mes "[Warehouse Manager]";
-			mes "The guild storage is only available for guild members.";
+			mes "Responsabile del Magazzino";
+			mes "Lo stoccaggio della gilda è disponibile solo per i membri della gilda.";
 			close;
 		}
 
 		if( getgdskilllv( .@guildid, "GD_GUILD_STORAGE" ) == 0 || !guild_has_permission( GUILD_PERM_STORAGE ) ){
-			mes "[Warehouse Manager]";
-			mes "It seems that it is not yet possible for your guild to use the guild warehouse or you do not have access permissions for the warehouse.";
-			mes "Please come back after checking the guild skill and the permission to access the warehouse.";
+			mes "Responsabile del Magazzino";
+			mes "Sembra che non sia ancora possibile per la tua gilda utilizzare il magazzino della gilda o che tu non abbia i permessi di accesso per il magazzino.";
+			mes "Ritorna dopo aver controllato la abilità della gilda e il permesso di accesso al magazzino.";
 			close;
 		}
 
-		mes "[Warehouse Manager]";
-		mes "I will show you the usage history of the warehouse. Usage history will be retained for up to 3 months.";
-		mes "Have a memorable time!";
+		mes "Responsabile del Magazzino";
+		mes "Ti mostrerò la cronologia di utilizzo del magazzino. La cronologia di utilizzo sarà conservata per un massimo di 3 mesi.";
+		mes "Buon divertimento!";
 		close2;
 		guildopenstorage_log();
 		end;

@@ -27,112 +27,112 @@
 payon_in02,64,71,4	script	Archer Guildsman#archer	85,{
 	if (Upper == 1) {
 		if (Class == Job_Novice_High && (ADVJOB == Job_Sniper || ADVJOB == Job_Clown || ADVJOB == Job_Gypsy)) {
-			mes "[Archer Guildsman]";
-			mes "Hey, I know you.";
-			mes "You took this test";
-			mes "before, didn't you?";
+			mes "[Arciere Gilda]";
+			mes "Ehi, ti conosco.";
+			mes "Hai fatto questo test";
+			mes "prima, non lo facevi?";
 			next;
-			mes "[Archer Guildsman]";
-			mes "Ah, you must have been";
-			mes "to Valhalla and been reborn.";
-			mes "Wow, that's so impressive!";
+			mes "[Arciere Gilda]";
+			mes "Devi essere stato";
+			mes "a Valhalla e rinato.";
+			mes "Wow, è così impressionante!";
 			next;
 			if (!callfunc("F_CanChangeJob")) {
-				mes "[Archer Guildsman]";
-				mes "Err...";
-				mes "You'd better learn all the Basic Skills first before you can become an Archer.";
+				mes "[Arciere Gilda]";
+				mes "Ehm...";
+				mes "Meglio che tu impari tutte le abilità di base prima di poter diventare un Arciere.";
 				next;
-				mes "[Archer Guildsman]";
-				mes "Alright, see you later.";
+				mes "[Arciere Gilda]";
+				mes "A dopo.";
 				close;
 			}
-			mes "[Archer Guildsman]";
-			mes "Well then. I don't";
-			mes "need to say anything else.";
-			mes "I know you'll make a great Archer...";
+			mes "[Arciere Gilda]";
+			mes "Beh allora. Io non";
+			mes "qualcos'altro che dire.";
+			mes "So che sarai un grande Arciere...";
 			next;
 			skill "NV_TRICKDEAD",0,SKILL_PERM;
 			jobchange Job_Archer_high;
 			skill "AC_MAKINGARROW",1,SKILL_PERM;
 			skill "AC_CHARGEARROW",1,SKILL_PERM;
-			mes "[Archer Guildsman]";
-			mes "Although there's no special";
-			mes "reward for you this time, I hope you understand. Take care of yourself.";
+			mes "[Arciere Gilda]";
+			mes "Sebbene non ci sia un particolare";
+			mes "un premio per te questa volta, spero che tu capisca. Prenditi cura di te.";
 			close;
 		}
 		else {
-			mes "[Archer Guildsman]";
+			mes "[Arciere Gilda]";
 			mes "Oh...?";
-			mes "Hey, what are";
-			mes "you doing here...?";
+			mes "Ehi, quali sono";
+			mes "cosa fai qui...?";
 			next;
-			mes "[Archer Guildsman]";
-			mes "I can tell that you're not cut out to be an Archer. It sort of feels like you're meant to do";
-			mes "something else...";
+			mes "[Arciere Gilda]";
+			mes "Posso dire che non sei fatto per essere un Arciere. Sembra quasi che tu sia destinato a fare";
+			mes "qualcos'altro...";
 			close;
 		}
 	}
-	mes "[Archer Guildsman]";
-	mes "Good day. How may I help you?";
+	mes "[Arciere Gilda]";
+	mes "Buongiorno. Come posso aiutarla?";
 	next;
-	switch(select("I want to be an Archer.:I need the requirements, please.:Nothing, thanks.")) {
+	switch(select("Voglio essere un arcere.:Ho bisogno dei requisiti, per favore.:Niente, grazie.")) {
 	case 1:
 		if (BaseJob == Job_Archer) {
-			mes "[Archer Guildsman]";
-			mes "You've already become an Archer...";
+			mes "[Arciere Gilda]";
+			mes "Sei già diventato un Arciere...";
 			close;
 		}
 		else if (BaseJob != Job_Archer && BaseJob != Job_Novice) {
-			mes "[Archer Guildsman]";
-			mes "Hmm...";
-			mes "You don't look much like a Novice at all...";
+			mes "[Arciere Gilda]";
+			mes "Mmm...";
+			mes "Non sembri affatto un Novizio...";
 			next;
-			mes "[Archer Guildsman]";
-			mes "Anyway, whatever you are, you can't choose a job as an Archer because you have a job already.";
+			mes "[Arciere Gilda]";
+			mes "Comunque, qualunque cosa tu sia, non puoi scegliere un lavoro da Arciere perché hai già un lavoro.";
 			close;
 		}
 		if (job_archer_q == 0) {
-			mes "[Archer Guildsman]";
-			mes "Do you want to be an Archer?";
-			mes "If so, you need to fill out this application form.";
+			mes "[Arciere Gilda]";
+			mes "Vuoi essere un Arciere?";
+			mes "Se è così, devi compilare questo modulo di domanda.";
 			next;
-			if (select("Apply.:Cancel") == 1) {
+			if (select("Applicare.:Annulla") == 1) {
 				set job_archer_q,1;
 				setquest 1004;
-				mes "[Archer Guildsman]";
-				mes "Okay, sign here. Alright, um, I'll promote you once you meet the requirements.";
+				mes "[Arciere Gilda]";
+				mes "Va bene, firma qui. Va bene, ehm, ti promuoverò quando rispetterai i requisiti.";
 				next;
-				mes "[Archer Guildsman]";
-				mes "If you think you've met them already, we can check that now.";
-				mes "Are you ready?";
+				mes "[Arciere Gilda]";
+				mes "Se pensi di averli già incontrati, possiamo verificarlo ora.";
+				mes "Sei pronto?";
 				next;
-				if (select("Yes, I am.:No, not yet.") == 1) {
-					mes "[Archer Guildsman]";
-					mes "Alright, let me check.";
+				if (select("Sì, lo sono.:No, non ancora.") == 1) {
+					mes "[Arciere Gilda]";
+					mes "Va bene, lascio controllare.";
 					next;
 				}
 				else {
-					mes "[Archer Guildsman]";
-					mes "I understand. Be my guest if you want to look at the requirements.";
+					mes "[Arciere Gilda]";
+					mes "Capisco. Sentiti libero di dare un'occhiata ai requisiti.";
 					close;
 				}
 			}
 			else {
-				mes "[Archer Guildsman]";
-				mes "Well, alright.";
-				mes "See you next time.";
+				mes "[Arciere Gilda]";
+				mes "Beh, va bene.";
+				mes "A presto.";
 				close;
 			}
 		}
-		mes "[Archer Guildsman]";
-		mes "Are you..." + strcharinfo(0) + "?";
+		mes "[Arciere Gilda]";
+		mes "Sei..." + strcharinfo(0) + "?";
 		next;
 		if (!callfunc("F_CanChangeJob")) {
-			mes "[Archer Guildsman]";
-			mes "Well, you're not at the right job level. Please check the requirements again.";
+			mes "[Arciere Gilda]";
+			mes "Beh, non sei al livello di lavoro giusto. Per favore ricontrolla i requisiti.";
 			next;
-			mes "[Archer Guildsman]";
-			mes "Your job level must be at least 10, and don't forget you should learn all of the Basic Skills. Once you've done that, come back.";
+			mes "[Arciere Gilda]";
+			mes "Il tuo livello di lavoro deve essere almeno 10 e non dimenticare che dovresti imparare tutte le Abilità Base. Una volta fatto questo, torna indietro.";
 			close;
 		}
 		if (job_archer_q == 1) {
@@ -142,51 +142,51 @@ payon_in02,64,71,4	script	Archer Guildsman#archer	85,{
 			set .@archer_item4,countitem(1019);
 			set .@total_archer,.@archer_item1 + .@archer_item2 + .@archer_item3 + .@archer_item4;
 			set .@total_archer2,(((.@archer_item2 + .@archer_item3) * 2) + .@archer_item4);
-			mes "[Archer Guildsman]";
-			mes "Excellent!";
-			mes "Now then,";
-			mes "let's see...";
+			mes "[Arciere Gilda]";
+			mes "Eccellente!";
+			mes "Ora allora,";
+			mes "vediamo...";
 			next;
-			mes "[Archer Guildsman]";
-			mes "I will appraise the value of the various types of Trunks, needed to produce a Bow, that you've brought.";
+			mes "[Arciere Gilda]";
+			mes "Valuterò il valore dei vari tipi di Bauli, necessari per produrre un Arco, che hai portato.";
 			next;
 			if (countitem(1066) == 0 && countitem(1067) == 0 && countitem(1068) == 0 && countitem(1019) == 0) {
-				mes "[Archer Guildsman]";
+				mes "[Arciere Gilda]";
 				mes "Um...";
-				mes "Unfortunately you didn't bring any of the required items. There's nothing for me to appraise.";
+				mes "Purtroppo non hai portato nessuno degli articoli richiesti. Non c'è nulla che io possa periziare.";
 				close;
 			}
-			mes "[Archer Guildsman]";
-			if (countitem(1066) != 0) mes " Grade S : " + countitem(1066) + " ea, Grade: " + .@archer_item1 + " . ";
-			if (countitem(1067) != 0) mes " Grade A : " + countitem(1067) + " ea, Grade : " + .@archer_item2 + " . ";
-			if (countitem(1068) != 0) mes " Grade B : " + countitem(1068) + " ea, Grade : " + .@archer_item3 + " . ";
-			if (countitem(1019) != 0) mes " Grade C : " + countitem(1019) + " ea, Grade : " + .@archer_item4 + " . ";
+			mes "[Arciere Gilda]";
+			if (countitem(1066) != 0) mes " Livello S : " + countitem(1066) + " ea, Grado: " + .@archer_item1 + " . ";
+			if (countitem(1067) != 0) mes " Grado A : " + countitem(1067) + " ea, Grado : " + .@archer_item2 + " . ";
+			if (countitem(1068) != 0) mes " Grado B : " + countitem(1068) + " ea, Grado : " + .@archer_item3 + " . ";
+			if (countitem(1019) != 0) mes " Grado C : " + countitem(1019) + " ea, Grado : " + .@archer_item4 + " . ";
 			if (.@total_archer < 25) {
-				mes "Total Grades: ^FF0000" + .@total_archer + "^000000 / 40";
+				mes "Votazioni Totali: ^FF0000" + .@total_archer + "^000000 / 40";
 				next;
-				mes "[Archer Guildsman]";
-				mes "Less than 25!? You have to get a grade of at least 25! Come on, try harder!";
+				mes "[Arciere Gilda]";
+				mes "Meno di 25!? Devi prendere un voto di almeno 25! Forza, prova più duramente!";
 				close;
 			}
 			else {
-				mes "Total Grades: ^0000FF" + .@total_archer + "^000000 / 40";
+				mes "Votazioni Totali: ^0000FF" + .@total_archer + "^000000 / 40";
 				next;
-				mes "[Archer Guildsman]";
+				mes "[Arciere Gilda]";
 				if (.@total_archer > 40) {
-					mes "Wow! More than 40!";
-					mes "Excellent! Congratulations!";
+					mes "Wow! Più di 40!";
+					mes "Eccellente! Congratulazioni!";
 				}
 				else if (.@total_archer > 30) {
-					mes "More than 30! Nice job!";
-					mes "Congratulations!";
+					mes "Più di 30! Ottimo lavoro!";
+					mes "Congratulazioni!";
 				}
 				else {
-					mes "*Sigh* Well, you just barely passed... Anyway, well done.";
+					mes "*Suspiro* Beh, sei passato/a per un pelo... Comunque, complimenti.";
 				}
 			}
 			next;
-			mes "[Archer Guildsman]";
-			mes "I'll transfer these Trunks to our Bow Production Department. Now that you've met the requirements, let me promote you right away!";
+			mes "[Arciere Gilda]";
+			mes "Trasferirò questi Trunks al nostro Reparto Produzione Arco. Ora che hai soddisfatto i requisiti, lasciami promuoverti subito!";
 			if (countitem(1066) != 0) delitem 1066,countitem(1066); //Tree_Of_Archer_1
 			if (countitem(1067) != 0) delitem 1067,countitem(1067); //Tree_Of_Archer_2
 			if (countitem(1068) != 0) delitem 1068,countitem(1068); //Tree_Of_Archer_3
@@ -196,50 +196,50 @@ payon_in02,64,71,4	script	Archer Guildsman#archer	85,{
 		callfunc "Job_Change",Job_Archer;
 		callfunc "F_ClearJobVar";
 		completequest 1004;
-		mes "[Archer Guildsman]";
-		mes "Congratulations!";
-		mes "You are now an Archer!";
+		mes "[Arciere Gilda]";
+		mes "Congratulazioni!";
+		mes "Sei ora un Arciere!";
 		next;
-		mes "[Archer Guildsman]";
-		mes "Of course, we expect that you will help contribute towards the future of the Archer Guild with your efforts.";
+		mes "[Arciere Gilda]";
+		mes "Certo, ci aspettiamo che contribuirai al futuro della Gilda degli Arcieri con i tuoi sforzi.";
 		next;
-		mes "[Archer Guildsman]";
-		mes "Ah, your bow has arrived from the Bow Production Department. Here, take it! It's yours~";
+		mes "[Arciere Gilda]";
+		mes "Ah, il tuo arco è arrivato dal Reparto di Produzione Archi. Eccolo qui, prendilo! È tuo~";
 		getitem 1702,1; //Bow_
 		getitem 1750,.@total_archer2; //Arrow
 		next;
-		mes "[Archer Guildsman]";
-		mes "Now, off you go. Hunt with pride, knowing you were trained by one of the best!";
+		mes "[Arciere Gilda]";
+		mes "Ora, via'. Caccia con orgoglio, sapendo di essere stato addestrato da uno dei migliori!";
 		close;
 	case 2:
-		mes "[Archer Guildsman]";
-		mes "I will explain the requirements for being an Archer.";
+		mes "[Arciere Gilda]";
+		mes "Spiegherò i requisiti per essere un Arciere.";
 		if (BaseJob != Job_Novice) {
 			if (BaseJob == Job_Archer) {
 				next;
-				mes "[Archer Guildsman]";
-				mes "But...";
-				mes "You're already an Archer. You should know these already...";
+				mes "[Arciere Gilda]";
+				mes "Ma...";
+				mes "Sei già un Arciere. Dovresti saperlo già...";
 			}
 			else {
 				next;
-				mes "[Archer Guildsman]";
-				mes "Wait a second. You've chosen a different job already. You don't need to know this~";
+				mes "[Arciere Gilda]";
+				mes "Aspetta un secondo. Hai già scelto un altro lavoro. Non hai bisogno di saperlo~";
 			}
-			mes "So...Yeah...no real reason to tell you the requirements...";
+			mes "Quindi...Sì...nessun vero motivo per dirti i requisiti...";
 		}
 		next;
-		mes "[Archer Guildsman]";
-		mes "First of all, you have to the Job Level 9 as a Novice, and know all of the Basic Skills.";
+		mes "[Arciere Gilda]";
+		mes "Innanzitutto, devi avere il Livello di Lavoro 9 come Principiante e conoscere tutte le Abilità Base.";
 		next;
-		mes "[Archer Guildsman]";
-		mes "An Archer needs extremely high concentration and reflexes, so we do not accept those who have little patience.";
+		mes "[Arciere Gilda]";
+		mes "Un arcere ha bisogno di una concentrazione e dei riflessi estremamente elevati, quindi non accettiamo coloro che hanno poca pazienza.";
 		next;
-		mes "[Archer Guildsman]";
-		mes "You also have to gather ^FF0000Trunks^000000. There are 4 different types of Trunks, each of differing quality. You'll be given different grades for your Trunks, depending on their quality.";
+		mes "[Arciere Gilda]";
+		mes "Devi anche raccogliere ^FF0000Trunks^000000. Ci sono 4 tipi diversi di Trunks, ognuno con una qualità diversa. Ti verranno assegnati gradi diversi per i tuoi Trunks, a seconda della loro qualità.";
 		next;
-		mes "[Archer Guildsman]";
-		mes "In order to become an Archer, you must receive a grade of at least ^0000FF25^000000 points out of 40. You can get Trunks from 'Willow,' the tree. Be careful, though. They can be tough monsters.";
+		mes "[Arciere Gilda]";
+		mes "Per diventare un Arciere, devi ottenere un voto di almeno ^0000FF25^000000 punti su 40. Puoi prendere Trunks da 'Willow', l'albero. Attento, però. Possono essere mostri difficili.";
 		close;
 	case 3:
 		close;

@@ -19,57 +19,57 @@
 //============================================================ 
 que_job01,68,84,1	script	Black Marketeer#Buying	881,{
 	if (checkweight(1201,1) == 0 || MaxWeight - Weight < 2400) {
-		mes "[Mr. Jass]";
-		mes "You're too greedy, even compared to someone like me!";
-		mes "Why don't you go lighten your bag first?";
+		mes "[Signor Jass]";
+		mes "Sei troppo avido, anche rispetto a qualcuno come me!";
+		mes "Perché non vai a alleggerire la tua borsa prima?";
 		close;
 	}
 	if (getskilllv("ALL_BUYING_STORE") == 1) {
-		mes "[Mr. Jass]";
-		mes "Hey, you already made a contract with Hugh.";
-		mes "I don't have any business with you.";
+		mes "[Signor Jass]";
+		mes "Ehi, hai già fatto un contratto con Hugh.";
+		mes "Non ho nessun affare con te.";
 		close;
 	}
-	mes "[Mr. Jass]";
-	mes "You must need something badly to come to find me.";
-	mes "What do you want?";
+	mes "[Signor Jass]";
+	mes "Devi aver bisogno di qualcosa disperatamente per venire a trovarmi.";
+	mes "Cosa vuoi?";
 	next;
-	switch(select("Bulk Buyer Shop License:Who are you?:Nothing, nothing!")) {
+	switch(select("Licenza di negozio per acquirenti all'ingrosso:Chi sei?:Niente, niente!")) {
 	case 1:
-		mes "[Mr. Jass]";
-		mes "I knew it!";
-		mes "Sure, I can make it for you.";
-		mes "Mine looks just like the authentic one that Merchants get from that bastard Mr. Hugh!";
+		mes "[Signor Jass]";
+		mes "Lo sapevo!";
+		mes "Certo, posso farlo per te.";
+		mes "Il mio assomiglia esattamente a quello autentico che i mercanti prendono da quel bastardo Mr. Hugh!";
 		next;
-		mes "[Mr. Jass]";
-		mes "And my license is better 'cuz you don't need ta' learn any skills.";
-		mes "How many do you want?";
+		mes "[Signor Jass]";
+		mes "E la mia licenza è migliore perché non hai bisogno di imparare alcuna abilità.";
+		mes "Quanti ne vuoi?";
 		next;
-		mes "[Mr. Jass]";
-		mes "Just so you know, I can only make them in small quantities, up to 10 at a time.";
-		mes "It'll cost 500 zeny for each one.";
+		mes "[Signor Jass]";
+		mes "Solo per farvi sapere che posso farne solo piccole quantità, fino a 10 alla volta.";
+		mes "Costerà 500 zeny ciascuno.";
 		next;
 		while(1) {
 			input .@input;
-			mes "[Mr. Jass]";
+			mes "[Signor Jass]";
 			if (.@input == 0) {
-				mes "Don't you need those licenses?";
+				mes "Non ti servono quelle licenze?";
 				close;
 			} else if (.@input > 10) {
-				mes "I can only make up to 10 at a time, you know.";
+				mes "Ne posso fare al massimo 10 alla volta, sai.";
 				next;
 			} else {
-				mes "It'll cost "+(.@input*500)+" zeny.";
+				mes "Costerà "+(.@input*500)+" zeny.";
 				if (Zeny < (.@input*500)) {
-					mes "but you don't have enough money.";
+					mes "ma non hai abbastanza soldi.";
 					next;
-					mes "[Mr. Jass]";
-					mes "Don't you know the basics of business? Everything has a price.";
-					mes "If you want something, you gotta pay for it.";
+					mes "[Signor Jass]";
+					mes "Non conosci le basi del commercio? Tutto ha un prezzo.";
+					mes "Se vuoi qualcosa, devi pagarlo.";
 				} else {
-					mes "Ha... Ha ha ha!";
-					mes "Mr. Hugh, I'll take over your license business. You'll see!";
-					mes "*Giggle Giggle*";
+					mes "Ah... Ah ah ah!";
+					mes "Signor Hugh, mi occuperò del suo affare di licenze. Vedrà!";
+					mes "*Risatina Risatina*";
 					getitem 12548,.@input; //Buy_Market_Permit2
 					set Zeny,Zeny-(.@input*500);
 				}
@@ -77,24 +77,24 @@ que_job01,68,84,1	script	Black Marketeer#Buying	881,{
 			}
 		}
 	case 2:
-		mes "[Mr. Jass]";
-		mes "I left my hometown a long time ago.";
-		mes "It's meaningless to ask who I am because all I've got left now is my hatred.";
+		mes "[Signor Jass]";
+		mes "Ho lasciato la mia città natale da molto tempo.";
+		mes "È inutile chiedere chi sono perché tutto quello che mi è rimasto ora è il mio odio.";
 		next;
-		mes "[Mr. Jass]";
+		mes "[Signor Jass]";
 		mes "...";
-		mes "Hugh is a corrupt merchant with no sense of business ethics.";
-		mes "My sole purpose in life is to destroy Hugh.";
+		mes "Hugh è un mercante corrotto senza alcun senso di etica commerciale.";
+		mes "Il mio unico scopo nella vita è distruggere Hugh.";
 		next;
-		mes "[Mr. Jass]";
-		mes "Aw, I drank too much... (*Hic*)";
-		mes "That's just the alohol talking.";
-		mes "Please forget anything I said.";
+		mes "[Signor Jass]";
+		mes "Ah, ho bevuto troppo... (*Hic*)";
+		mes "È solo l'alcol che parla.";
+		mes "Per favore, dimentica qualsiasi cosa abbia detto.";
 		close;
 	case 3:
-		mes "[Mr. Jass]";
-		mes "Alright, alright! You don't have to yell.";
-		mes "Just leave me alone if you've got no business with me.";
+		mes "[Signor Jass]";
+		mes "Va bene, va bene! Non devi urlare.";
+		mes "Lasciami stare se non hai affari con me.";
 		close;
 	}
 }
@@ -103,41 +103,41 @@ que_job01,68,84,1	script	Black Marketeer#Buying	881,{
 //============================================================ 
 alberta_in,58,52,4	script	Purchasing Team#Buying	59,{
 	if (checkweight(1201,1) == 0 || MaxWeight - Weight < 2400) {
-		mes "- You cannot converse or perform the quest because you are carrying too many items. -";
+		mes "Non puoi conversare o eseguire la missione perché stai portando troppi oggetti.";
 		close;
 	}
-	mes "[Mr. Hugh]";
+	mes "[Signor Hugh]";
 	if (BaseClass == Job_Merchant && getskilllv("MC_VENDING") >= 1) {
 		if (getskilllv("ALL_BUYING_STORE") == 1) {
-			mes "I'm Hugh from the Purchasing Team.";
-			mes "How may I help you today?";
+			mes "Sono Hugh del Team Acquisti.";
+			mes "Come posso aiutarla oggi?";
 			next;
-			if(select("Purchase Bulk Buyer Shop License:Quit") == 2) {
-				mes "[Mr. Hugh]";
-				mes "Please feel free to ask me if you need any Bulk Buyer Shop Licenses.";
-				mes "Come again~";
+			if(select("Acquista Licenza Negozio per Grandi Acquisti:Smetti") == 2) {
+				mes "[Signor Hugh]";
+				mes "Sentiti libero di chiedermelo se hai bisogno di licenze per negozi di grossisti.";
+				mes "Ancora?";
 				close;
 			}
-			mes "[Mr. Hugh]";
-			mes "It's 200 zeny for each Bulk Buyer Shop License, and you may purchase up to 50 at a time.";
-			mes "How many licenses do you need?";
+			mes "[Signor Hugh]";
+			mes "Sono 200 zeny per ciascuna Licenza di Negozio per Grandi Acquirenti, e puoi acquistarne fino a 50 alla volta.";
+			mes "Quante licenze ti servono?";
 			next;
 			while(1) {
 				input .@input;
-				mes "[Mr. Hugh]";
+				mes "[Signor Hugh]";
 				if (.@input == 0) {
-					mes "You have cancelled the trade.";
-					mes "Have a good day.";
+					mes "Hai annullato l'operazione.";
+					mes "Buona giornata.";
 					close;
 				} else if (.@input > 50) {
-					mes "Please enter a value of 50 or less.";
+					mes "Inserisci un valore di 50 o inferiore.";
 					next;
 				} else {
-					mes "It'll cost "+(.@input*200)+" zeny for "+.@input+" licenses.";
+					mes "Costerà "+(.@input*200)+" zeny per "+.@input+" licenze.";
 					if (Zeny < (.@input*200)) {
-						mes "but you don't seem to have enough money.";
+						mes "ma non sembri avere abbastanza soldi.";
 					} else {
-						mes "Thank you for your patronage.";
+						mes "Grazie per la vostra fiducia.";
 						getitem 6377,.@input; //Buy_Market_Permit
 						set Zeny,Zeny-(.@input*200);
 					}
@@ -145,108 +145,108 @@ alberta_in,58,52,4	script	Purchasing Team#Buying	59,{
 				}
 			}
 		} else {
-			mes "I'm Hugh from the Purchasing Team at the Alberta Merchant Guild.";
-			mes "You're...";
+			mes "Sono Hugh del Team Acquisti della Alberta Merchant Guild.";
+			mes "Sei...";
 			next;
-			mes "[Mr. Hugh]";
-			mes "Did you know? Our guild has issued a license to allow individuals to buy goods from others.";
+			mes "[Signor Hugh]";
+			mes "Sapevi che? La nostra gilda ha emesso una licenza per consentire agli individui di acquistare beni da altri.";
 			next;
-			select("I've never had problems buying items...");
-			mes "[Mr. Hugh]";
-			mes "You're right, but think about it:";
-			mes "haven't you had a hard time buying in bulk?";
-			mes "You'd have to find and talk to everyone that has an item you want.";
-			mes "Pretty inconvenient, isn't it?";
+			select("Non ho mai avuto problemi ad acquistare articoli...");
+			mes "[Signor Hugh]";
+			mes "Hai ragione, ma pensaci:";
+			mes "non hai avuto difficoltà ad acquistare all'ingrosso?";
+			mes "Dovresti trovare e parlare con tutti coloro che hanno un oggetto che desideri.";
+			mes "Molto scomodo, non è vero?";
 			next;
-			mes "[Mr. Hugh]";
-			mes "Since buying in bulk is an important issue to us Merchants,";
-			mes "I've proposed an innovative plan to our guild, based on my 10 years of experience in making purchases.";
+			mes "[Signor Hugh]";
+			mes "Poiché l'acquisto all'ingrosso è un problema importante per noi Mercanti,";
+			mes "Ho proposto un piano innovativo alla nostra gilda, basato sui miei 10 anni di esperienza nell'effettuare acquisti.";
 			next;
-			mes "[Mr. Hugh]";
-			mes "'Let Individuals Open";
-			mes "a Bulk Buyer Shop!'";
-			mes "That's the title of my proposal.";
-			mes "You'll see, when you read it...";
+			mes "[Signor Hugh]";
+			mes "Lasciare che gli individui si aprano";
+			mes "Un negozio per acquirenti all'ingrosso!";
+			mes "Questo è il titolo della mia proposta.";
+			mes "Vedrai, quando lo leggerai...";
 			next;
-			mes "[Mr. Hugh]";
+			mes "[Signor Hugh]";
 			mes "...";
-			mes "...(Mr. Hugh yammers on and on with all the details.)";
+			mes "(Il signor Hugh continua a chiacchierare sui dettagli.)";
 			next;
-			select("Alright, what's your point?");
-			mes "[Mr. Hugh]";
-			mes "Oh, yes. In summary,";
-			mes "you can buy certain items in bulk through Vending.";
+			select("Qual è il tuo punto?");
+			mes "[Signor Hugh]";
+			mes "Oh, sì. Riassumendo,";
+			mes "puoi acquistare determinati articoli all'ingrosso tramite Vending.";
 			next;
-			mes "[Mr. Hugh]";
-			mes "In order to open a Bulk Buyer Shop, you need a license issued from the Merchant Guild.";
+			mes "[Signor Hugh]";
+			mes "Per aprire un Negozio di Acquisto all'Ingrosso, è necessaria una licenza emessa dalla Gilda dei Mercanti.";
 			next;
-			mes "[Mr. Hugh]";
-			mes "You need it every time you open the shop. We're expecting a significant increase in profits through this new kind of licensing.";
+			mes "[Signor Hugh]";
+			mes "Te ne serve ogni volta che apri il negozio. Ci aspettiamo un aumento significativo dei profitti grazie a questo nuovo tipo di licenza.";
 			next;
-			mes "[Mr. Hugh]";
-			mes "That's the point of my proposal!";
-			mes "Our president was so happy to hear that we're going to make big bucks!";
+			mes "[Signor Hugh]";
+			mes "Questo è il punto della mia proposta!";
+			mes "Il nostro presidente era così felice di sapere che faremo un sacco di soldi!";
 			next;
 			mes "["+strcharinfo(0)+"]";
-			mes "Please get to the point already!";
+			mes "Per favore vai dritto al punto!";
 			next;
-			mes "[Mr. Hugh]";
-			mes "Don't be so impatient, alright?";
-			mes "My point is, we can let you open the Bulk Buyer Shop if you've learned Vending.";
+			mes "[Signor Hugh]";
+			mes "Non essere così impaziente, va bene?";
+			mes "Il mio punto è che possiamo farti aprire il Negozio per Grandi Acquirenti se hai imparato l'Automazione.";
 			next;
-			mes "[Mr. Hugh]";
-			mes "Of course, we charge 10,000 zeny as a one-time registration fee.";
-			mes "You will need the ^4A4AFFBulk Buyer Shop License^000000 every time you open the shop.";
+			mes "[Signor Hugh]";
+			mes "Certo, addebitiamo 10.000 zeny come tassa di registrazione una tantum.";
+			mes "Avrai bisogno della licenza ^4A4AFFBulk Buyer Shop License^000000 ogni volta che apri il negozio.";
 			next;
-			mes "[Mr. Hugh]";
-			mes "Say, would you like to register now?";
-			mes "If you do, I'll teach you how to open the Bulk Buyer Shop.";
+			mes "[Signor Hugh]";
+			mes "Vorresti registrarti ora?";
+			mes "Se lo fai, ti insegnerò come aprire il negozio per acquirenti all'ingrosso.";
 			next;
-			if(select("Learn how to open Bulk Buyer Shop:Cancel") == 2) {
-				mes "[Mr. Hugh]";
-				mes "Man, that's disappointing!";
-				mes "Using this bulk buyer option can benefit your business in many ways, but it's your call.";
-				mes "I'm always open for consultation!";
+			if(select("Impara come aprire un negozio per acquirenti all'ingrosso:Annulla") == 2) {
+				mes "[Signor Hugh]";
+				mes "Mann, è deludente!";
+				mes "Usare questa opzione per acquirenti all'ingrosso può giovare alla tua attività in molti modi, ma è una scelta tua.";
+				mes "Sono sempre disponibile per consulenze!";
 				close;
 			}
-			mes "[Mr. Hugh]";
+			mes "[Signor Hugh]";
 			if (Zeny < 10000) {
-				mes "The registration fee is 10,000 zeny.";
-				mes "Please have the fee ready first.";
+				mes "La tassa di registrazione è di 10.000 zeny.";
+				mes "Per favore prepara prima la tariffa.";
 				close;
 			} else {
-				mes "You've made a good decision.";
-				mes "Please give me the registration fee, and sign right here....";
+				mes "Hai preso una buona decisione.";
+				mes "Per favore, dammi la quota di registrazione e firma proprio qui....";
 				next;
 				input .@name$;
-				mes "[Mr. Hugh]";
+				mes "[Signor Hugh]";
 				mes .@name$+"....";
-				mes "I like your handwriting.";
-				mes "Okay, you're now approved to open the Bulk Buyer Shop.";
+				mes "Mi piace la tua calligrafia.";
+				mes "Va bene, ora sei autorizzato ad aprire il Negozio per Grandi Acquisti.";
 				set Zeny,Zeny-10000;
 				getitem 6377,5; //Buy_Stall_Permit
 				skill "ALL_BUYING_STORE",1,SKILL_PERM_GRANT;
 				next;
-				mes "[Mr. Hugh]";
-				mes "Currently, only normal items ^8C2121EXCEPT^000000 equipment, certain potions, and hand-crafted items can be purchased in bulk, but this can still be very beneficial to you, depending on how you use it.";
+				mes "[Signor Hugh]";
+				mes "Attualmente, solo gli oggetti normali ^8C2121TRANNOS^000000 l'equipaggiamento, alcune pozioni e gli oggetti artigianali possono essere acquistati all'ingrosso, ma questo può comunque esserti molto utile, a seconda di come lo usi.";
 				next;
-				mes "[Mr. Hugh]";
-				mes "Oh, and you need at least one of the item that you want to buy in your inventory because you have to show it to other through your shop.";
+				mes "[Signor Hugh]";
+				mes "E devi avere almeno uno degli articoli che vuoi comprare nel tuo inventario perché devi mostrarlo agli altri attraverso il tuo negozio.";
 				next;
-				mes "[Mr. Hugh]";
-				mes "Your skill should now be registered in your skill window. If you can't see it you probably have to minimize your Skill List and check the 3rd Job Tab.";
+				mes "[Signor Hugh]";
+				mes "La tua abilità dovrebbe ora essere registrata nella tua finestra delle abilità. Se non riesci a vederla, probabilmente devi minimizzare la tua Lista Abilità e controllare la terza scheda Lavoro.";
 				next;
-				mes "[Mr. Hugh]";
-				mes "I've given you 5 Bulk Buyer Shop Licenses for your trial.";
-				mes "Enjoy shopping!";
+				mes "[Signor Hugh]";
+				mes "Ti ho dato 5 licenze di negozio per grossisti per la tua prova.";
+				mes "Buono shopping!";
 				close;
 			}
 		}
 	}
-	mes "I'm Hugh from the Purchasing Team at the Alberta Merchant Guild.";
-	mes "I'd love to chat, but I'm too busy at the moment.";
+	mes "Sono Hugh del Team Acquisti della Alberta Merchant Guild.";
+	mes "Mi piacerebbe chiacchierare, ma al momento sono troppo impegnato/a.";
 	next;
-	mes "[Mr. Hugh]";
-	mes "My time is solely dedicated to our customers in the Merchant industry.";
+	mes "[Signor Hugh]";
+	mes "Il mio tempo è dedicato esclusivamente ai nostri clienti nel settore dei commercianti.";
 	close;
 }

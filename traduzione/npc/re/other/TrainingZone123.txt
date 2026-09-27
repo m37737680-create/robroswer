@@ -8,11 +8,11 @@
 
 // Storage
 tra_fild01,204,110,2	script	Training Ground Warehouse Soldier#fild01_1	8W_SOLDIER,{
-	mes "[Training Ground Warehouse Soldier]";
-	mes "Would you like to use the Storage? 1000 Zeny is required to use the training ground Storage. Please select the Storage you wish to use.";
+	mes "[Magazzino Soldato Campo di Addestramento]";
+	mes "Vuoi usare l'Archivio? Sono necessari 1000 Zeny per usare l'Archivio del campo di addestramento. Seleziona l'Archivio che desideri usare.";
 	next;
-	// switch( select( "¢º Storage 1", "¢º Storage 2", "¢º Storage 3", "¢º Guild Storage", "¢º Cancel" ) ) {
-	switch( select( "¢º Storage 1", "", "", "¢º Guild Storage", "¢º Cancel" ) ) {
+	// switch( select( "Â¢Âº Storage 1", "Â¢Âº Storage 2", "Â¢Âº Storage 3", "Â¢Âº Guild Storage", "Â¢Âº Cancel" ) ) {
+	switch( select( "Â¢Âº Archiviazione 1", "", "", "Â¢Âº Stoccaggio della Gilda", "Â¢Âº Annulla" ) ) {
 	case 1:
 		.@storage_num = 1;
 		break;
@@ -27,27 +27,27 @@ tra_fild01,204,110,2	script	Training Ground Warehouse Soldier#fild01_1	8W_SOLDIE
 		.@guildid = getcharid( 2 );
 
 		if( .@guildid == 0 ){
-			mes "[Training Ground Warehouse Soldier]";
-			mes "The guild storage is only available for guild members.";
+			mes "[Magazzino Soldato Campo di Addestramento]";
+			mes "Lo stoccaggio della gilda Ã¨ disponibile solo per i membri della gilda.";
 			close;
 		}
 
 		if( getgdskilllv( .@guildid, "GD_GUILD_STORAGE" ) == 0 || !guild_has_permission( GUILD_PERM_STORAGE ) ){
-			mes "[Training Ground Warehouse Soldier]";
-			mes "It seems that it is not yet possible for your guild to use the guild warehouse or you do not have access permissions for the warehouse.";
-			mes "Please come back after checking the guild skill and the permission to access the warehouse.";
+			mes "[Magazzino Soldato Campo di Addestramento]";
+			mes "Sembra che non sia ancora possibile per la tua gilda utilizzare il magazzino della gilda o che tu non abbia i permessi di accesso per il magazzino.";
+			mes "Ritorna dopo aver controllato la abilitÃ  della gilda e il permesso di accesso al magazzino.";
 			close;
 		}
 
 		if( Zeny < 1000 ){
-			mes "[Training Ground Warehouse Soldier]";
-			mes "I am afraid you do not have enough money to settle the fee.";
-			mes "The fee is 1000 Zeny.";
+			mes "[Magazzino Soldato Campo di Addestramento]";
+			mes "Temo che non abbia abbastanza soldi per saldare la tariffa.";
+			mes "La tariffa Ã¨ di 1000 Zeny.";
 			close;
 		}
 
-		mes "[Training Ground Warehouse Soldier]";
-		mes "I will open the guild storage for you then. Have a memorable time!";
+		mes "[Magazzino Soldato Campo di Addestramento]";
+		mes "Ti aprirÃ² il deposito della gilda allora. Divertiti!";
 		close2;
 
 		if( Zeny < 1000 ){
@@ -59,9 +59,9 @@ tra_fild01,204,110,2	script	Training Ground Warehouse Soldier#fild01_1	8W_SOLDIE
 			Zeny -= 1000;
 			end;
 		}else{
-			mes "[Training Ground Warehouse Soldier]";
-			mes "I am afraid someone else is using the warehouse right now.";
-			mes "Please try again after a while.";
+			mes "[Magazzino Soldato Campo di Addestramento]";
+			mes "Temo che qualcun altro stia usando il magazzino in questo momento.";
+			mes "Riprova tra un po'.";
 			close;
 		}
 	case 5:
@@ -69,18 +69,18 @@ tra_fild01,204,110,2	script	Training Ground Warehouse Soldier#fild01_1	8W_SOLDIE
 	}
 	// TODO (custom text)
 	if (!callfunc("F_CanOpenStorage")) {
-		mes "[Training Ground Warehouse Soldier]";
-		mes "I'm sorry, but you";
-		mes "need the Novice's";
-		mes "Basic Skill Level 6 to";
-		mes "use the Storage Service.";
+		mes "[Magazzino Soldato Campo di Addestramento]";
+		mes "Mi dispiace, ma tu";
+		mes "ho bisogno del novizio";
+		mes "Livello di abilitÃ  base 6 a";
+		mes "usa il servizio di archiviazione.";
 		close2;
 		cutin "",255;
 		end;
 	}
 
 	if (Zeny < 1000) {
-		mes "[Training Ground Warehouse Soldier]";
+		mes "[Magazzino Soldato Campo di Addestramento]";
 		mes "^4d4dff1000 Zeny is required to use the training grounds Storage.^000000";
 		close;
 	}
@@ -170,100 +170,100 @@ tra_fild03,110,57,4	duplicate(Cleaning Robot#fild01)	Cleaning Robot#fild03	EP17_
 
 // Chitchat
 tra_fild01,122,75,6	script	Neighborhood Grandmother#npc02	4_F_JPNOBA,{
-	mes "[Neighborhood Grandmother]";
-	mes "Hohoho- Seeing the young people sweating and working hard makes me feel a bit energized.";
+	mes "Nonna del quartiere";
+	mes "Hohoho- Vedere i giovani sudare e lavorare sodo mi fa sentire un po' energizzato.";
 	next;
-	mes "[Neighborhood Grandmother]";
-	mes "Oh, by the way. Did you know that?";
+	mes "Nonna del quartiere";
+	mes "Ah, tra l'altro. Lo sapevi?";
 	next;
-	mes "[Neighborhood Grandmother]";
-	mes "Dummies in the training grounds that are strong against physical attacks have a sword icon above their heads, and dummies that are strong against magic attacks have a staff icon above their heads.";
+	mes "Nonna del quartiere";
+	mes "I manichini nei campi di addestramento che sono resistenti agli attacchi fisici hanno un'icona di spada sopra la testa, e i manichini che sono resistenti agli attacchi magici hanno un'icona di bastone sopra la testa.";
 	next;
-	mes "[Neighborhood Grandmother]";
-	mes "If you know this, you'll be able to hit them harder, right?";
+	mes "Nonna del quartiere";
+	mes "Se lo sai, sarai in grado di colpirli piÃ¹ duramente, giusto?";
 	close;
 }
 
 tra_fild01,34,102,3	script	Cat#npc03	4_CAT_REST,{
-	npctalk "Meow-", "", bc_self;
+	npctalk "Miao-", "", bc_self;
 	end;
 }
 
 tra_fild01,34,120,3	script	Fress#npc05	4_M_SITDOWN,{
 	mes "[Fress]";
-	mes "If you want to go to Prontera, you can exit through the guards located throughout the area or through the warp portals at 3 and 9 o'clock. Seriously.";
+	mes "Se vuoi andare a Prontera, puoi uscire attraverso le guardie situate in tutta l'area o attraverso i portali di teletrasporto alle 3 e alle 9. Seriamente.";
 	close;
 }
 
 tra_fild01,128,142,7	script	Nine Oranges#npc04	4_F_ROGUE,{
-	mes "[Nine Oranges]";
-	mes "Remember! Once you've chosen a name, it's hard to change, so choose wisely.";
+	mes "Nove Arance";
+	mes "Ricorda! Una volta che hai scelto un nome, Ã¨ difficile cambiarlo, quindi scegli con saggezza.";
 	next;
-	mes "[Nine Oranges]";
-	mes "By the way, where's the Undead Dummy?";
+	mes "Nove Arance";
+	mes "A proposito, dov'Ã¨ il Manichino Non Morto?";
 	next;
-	mes "[Nine Oranges]";
-	mes "My friend said it has a bone icon above its head...? You have to see it first.";
+	mes "Nove Arance";
+	mes "Il mio amico ha detto che ha un'icona di osso sopra la testa...? Devi vederlo prima.";
 	close;
 }
 
 tra_fild01,97,64,3	script	Village#npc01	4_M_CHN8GUEK,{
-	mes "[Village ]";
-	mes "Hi! The weather is really nice, isn't it? I came to check out the new training grounds.";
+	mes "Villaggio";
+	mes "Ciao! Il tempo Ã¨ davvero bello, non Ã¨ vero? Sono venuto a dare un'occhiata ai nuovi campi di addestramento.";
 	next;
-	mes "[Village ]";
-	mes "The old training grounds weren't bad, but they were actually renting space that beginners had been using for a long time, so there were some inconveniences.";
+	mes "Villaggio";
+	mes "Gli vecchi campi di addestramento non erano male, ma stavano effettivamente affittando spazi che i principianti usavano da molto tempo, quindi c'erano alcuni inconvenienti.";
 	next;
-	mes "[Village ]";
-	mes "But they're building such a spacious and nice new training ground. It seems like they're quite financially sound these days!";
+	mes "Villaggio";
+	mes "Ma stanno costruendo un campo di addestramento cosÃ¬ spazioso e bello. Sembra che in questi giorni siano piuttosto solidi dal punto di vista finanziario!";
 	close;
 }
 
 tra_fild02,101,90,5	script	Jar Cat#npc09	4_CAT_SAILOR5,{
-	mes "[Jar Cat]";
-	mes "Is this your first time at the training grounds? I'll explain myself, as a veteran.";
+	mes "Gatto barattolo";
+	mes "Ãˆ la tua prima volta nei campi di addestramento? Mi spiego io, da veterano.";
 	next;
-	mes "[Jar Cat]";
-	mes "There are three training grounds: the basic training ground, the 1/10 training ground, and the 1/100 training ground. I'll leave the differences between each training ground for you to discover for yourself.";
+	mes "Gatto barattolo";
+	mes "Ci sono tre campi di addestramento: il campo base, il campo 1/10 e il campo 1/100. LascerÃ² a te scoprire le differenze tra ciascun campo di addestramento.";
 	next;
-	mes "[Jar Cat]";
-	mes "Oh, right! To move to another training ground, you can use the warp portals at 3 o'clock and 9 o'clock. Remember!";
+	mes "Gatto barattolo";
+	mes "Oh, giusto! Per spostarsi su un altro campo di addestramento, puoi usare i portali warp alle 3 e alle 9 in punto. Ricorda!";
 	close;
 }
 
 tra_fild02,166,46,3	script	Little One#npc06	4_M_KID2,{
-	mes "[Little One]";
-	mes "Dad told me! The Dummys with staff icons above their heads are strong against magic!";
+	mes "Piccolo/a";
+	mes "PapÃ  me l'ha detto! I Dummys con icone di personale sopra le loro teste sono forti contro la magia!";
 	next;
-	mes "[Little One]";
-	mes "So... if you can defeat those Dummys with magic, you're truly strong, right?!";
+	mes "Piccolo/a";
+	mes "Quindi... se puoi sconfiggere quei Dummies con la magia, sei veramente forte, giusto?!";
 	close;
 }
 
 tra_fild02,129,93,6	script	Kekekekereurur#npc10	4_GEFFEN_02,{
 	mes "[Kekekekereurur]";
-	mes "They say training with the Dummys with cat icons above them will help you fight Doram in PvP.";
+	mes "Dicono che allenarsi con i Dummys con icone di gatti sopra li aiuterÃ  a combattere Doram in PvP.";
 	next;
 	mes "[Kekekekereurur]";
-	mes "I'm definitely not practicing here after getting beat up by a passing Doram. Remember!";
+	mes "Non sto assolutamente facendo pratica qui dopo essere stato picchiettato da un Doram che passava. Ricorda!";
 	close;
 }
 
 tra_fild03,98,46,7	script	Lumberjack#npc13	4_M_NOV_HUNT,{
-	mes "[Lumberjack]";
+	mes "Legnaiolo";
 	mes "Whoosh- Cha-Whoosh- Cha-";
 	close;
 }
 
 tra_fild03,53,140,5	script	Dong#npc15	4_M_CACTUSMAN1,{
 	mes "[Dong]";
-	mes "Aaaah- Stop! Stop! I'm not a monster. Don't attack me.";
+	mes "Aaaah- Fermati! Fermati! Non sono un mostro. Non attaccarmi.";
 	next;
 	mes "[Dong]";
-	mes "Whew- Thank you. Some people often mistake me for the monster Mukka, but I'm a cactus from a place called RockRidge.";
+	mes "Whew- Grazie. Alcune persone spesso mi scambiano per il mostro Mukka, ma sono un cactus proveniente da un luogo chiamato RockRidge.";
 	next;
 	mes "[Dong]";
-	mes "If you visit RockRidge, you can meet our living, breathing Cacti, the Cactus. Come visit. Hahaha.";
+	mes "Se visiti RockRidge, puoi incontrare i nostri cactus vivi e pulsanti, il Cactus. Vieni a trovarci. Hahaha.";
 	close;
 }
 

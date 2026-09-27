@@ -8,33 +8,33 @@
 
 dali02,51,130,4	script	Dimension Traveler	4_F_SHABBY,{
 	if (checkweight(28100,1) == 0) {// Thanos Axe
-		mes "- You cannot proceed because you have too many items with you. -";
+		mes "Non puoi procedere perché hai troppi oggetti con te.";
 		close;
 	}
 	.@item_name_req$ = getitemname(6672);// Gray_Shard
-	mes "[Dimension Traveler]";
-	mes "Adventurer friend, " + mesitemlink( 6672 ) + " is what I need. How about exchanging it with something I have?";
+	mes "Viaggiatore Dimensionale";
+	mes "Amico avventuriero, " + mesitemlink( 6672 ) + " è quello di cui ho bisogno. Che ne dici di scambiarlo con qualcosa che ho?";
 	next;
-	.@type = select( "Show me your weapon.", "Show me your armor.", "Anything special?", "I do not need." ) - 1;
-	mes "[Dimension Traveler]";
+	.@type = select( "Mostrami la tua arma.", "Mostrami la tua armatura.", "Qualcosa di speciale?", "Non ho bisogno." ) - 1;
+	mes "Viaggiatore Dimensionale";
 	switch(.@type) {
 	case 0:
-		mes "Oh! Are you interested in weapons? We have all the weapons we can get from the Ghost Palace. Why don't you choose one?";
+		mes "Oh! Sei interessato alle armi? Abbiamo tutte le armi che possiamo prendere dal Palazzo Fantasma. Perché non ne scegli una?";
 		break;
 	case 1:
-		mes "Armor? We have all the armors we can get from the Ghost Palace. Why don't you choose one?";
+		mes "Armature? Abbiamo tutte le armature che possiamo prendere dal Palazzo Fantasma. Perché non ne scegli una?";
 		break;
 	case 2:
-		mes "Huhh! It seems like many of them already heard that I have the best stuff. Feel free to check out my collections.";
+		mes "Eh! Sembra che molti di loro abbiano già sentito che ho le cose migliori. Sentiti libero di dare un'occhiata alle mie collezioni.";
 		break;
 	case 3:
-		mes "Goodbye friend~ Come again!";
+		mes "Addio amico~ Torna presto!";
 		close;
 	}
 	next;
-	mes "[Dimension Traveler]";
-	mes "Ah! The number that is written beside " + mesitemlink( 6672 ) + " will be needed.";
-	mes "Please keep that in mind.";
+	mes "Viaggiatore Dimensionale";
+	mes "Ah! Il numero che è scritto accanto a " + mesitemlink( 6672 ) + " sarà necessario.";
+	mes "Tieni questo a mente.";
 
 	switch(.@type) {
 	case 0:
@@ -78,41 +78,41 @@ dali02,51,130,4	script	Dimension Traveler	4_F_SHABBY,{
 	while(true) {
 		next;
 		.@s = (select(.@menu$) - 1) * 2;
-		mes "[Dimension Traveler]";
+		mes "Viaggiatore Dimensionale";
 		if (.@type != 1)	// armor type doesn't display item info
-			mes "Do you mean " + mesitemlink( .@items[.@s] ) + "?";
-		mes "" + .@items[.@s+1] + " ^006400" + .@item_name_req$ + "^000000 are required in exchange.";
+			mes "Intendi " + mesitemlink( .@items[.@s] ) + "?";
+		mes "" + .@items[.@s+1] + " ^006400" + .@item_name_req$ + "Sono richiesti ^000000 in cambio.";
 		next;
-		switch( select( "Let's exchange.", "Let me see other stuff.", "I will come back later." ) ) {
+		switch( select( "Scambiamo.", "Fammi vedere altre cose.", "Tornerò più tardi." ) ) {
 		case 1:
 			break;
 		case 2:
-			mes "[Dimension Traveler]";
+			mes "Viaggiatore Dimensionale";
 			switch(.@type) {
 			case 0:
-				mes "I have more than enough weapons.";
+				mes "Ho più che abbastanza armi.";
 				break;
 			case 1:
-				mes "We have many armors for you. Why don't you pick one?";
+				mes "Abbiamo molti armature per te. Perché non ne scegli una?";
 				break;
 			case 2:
-				mes "If you bring me " + .@item_name_req$ + ", I will trade it with anything you want.";
+				mes "Se mi porti " + .@item_name_req$ + "lo scambierò con qualsiasi cosa tu voglia.";
 				break;
 			}
 			continue;
 		case 3:
-			mes "[Dimension Traveler]";
-			mes "Take care friend~ See you next time!";
+			mes "Viaggiatore Dimensionale";
+			mes "Stai attento amico~ Ci vediamo la prossima volta!";
 			close;
 		}
 		if (countitem(6672) < .@items[.@s+1]) {
-			mes "[Dimension Traveler]";
-			mes "You put me in a difficult situation, friend.";
-			mes "I am in need of " + .@item_name_req$ + ". I will exchange it for ^006400" + .@items[.@s+1] + " " + .@item_name_req$ + "^000000.";
+			mes "Viaggiatore Dimensionale";
+			mes "Mi hai messo in una difficile situazione, amico.";
+			mes "Ho bisogno di " + .@item_name_req$ + "Lo scambierò con ^006400" + .@items[.@s+1] + " " + .@item_name_req$ + "^000000.";
 			close;
 		}
-		mes "[Dimension Traveler]";
-		mes "Thank you. Come back if you need anything else.";
+		mes "Viaggiatore Dimensionale";
+		mes "Grazie. Torna pure se hai bisogno di qualcos'altro.";
 		delitem 6672, .@items[.@s+1];
 		getitem .@items[.@s], 1;
 		close;

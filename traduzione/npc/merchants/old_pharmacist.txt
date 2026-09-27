@@ -26,37 +26,37 @@
 
 alberta_in,16,28,4	script	Pharmacist	61,{
 	if (checkweight(1201,1) == 0) {
-		mes "- Wait a moment! -";
-		mes "- Currently you're carrying -";
-		mes "- too many items with you. -";
-		mes "- Please come back later -";
-		mes "- after you put some items into kafra storage. -";
+		mes "Aspetta un momento!";
+		mes "Attualmente stai portando";
+		mes "troppi oggetti con te.";
+		mes "Per favore torna più tardi";
+		mes "dopo che hai messo alcuni oggetti nello stoccaggio di kafra.";
 		close;
 	}
-	mes "[Old Pharmacist]";
-	mes "Ummmm...";
-	mes "What brings you here...?";
+	mes "Vecchio farmacista";
+	mes "Ummm...";
+	mes "Cosa ti porta qui...?";
 	next;
-	switch(select("Make Potion:Talk.:Mixing Information:Cancel")) {
+	switch(select("Prepara Pozione:Parla.:Mescolare informazioni:Annulla")) {
 	case 1:
 		if (MaxWeight - Weight < 5000) {
-			mes "[Old Pharmacist]";
-			mes "Why are you carrying these so many!";
-			mes "Don't be greedy, carry only as much you need!";
+			mes "Vecchio farmacista";
+			mes "Perché porti così tanti!";
+			mes "Non essere avaro, porta solo ciò di cui hai bisogno!";
 			next;
-			mes "[Old Pharmacist]";
-			mes "You are too heavy to receive potions from me...";
-			mes "Go store some items in your storage first!";
+			mes "Vecchio farmacista";
+			mes "Sei troppo pesante per ricevere pozioni da me...";
+			mes "Vai a riporre degli oggetti nel tuo magazzino prima!";
 			close;
 		} else {
-			mes "[Old Pharmacist]";
-			mes "You have all the stuff ready, right? Which one would you like?";
+			mes "Vecchio farmacista";
+			mes "Hai tutto pronto, vero? Quale vorresti?";
 			next;
-			switch(select("Red Potion.:Orange Potion.:Yellow Potion.:White Potion.:Blue Potion.:Green Potion.:Actually, I don't want anything.")) {
+			switch(select("Pozione Rossa.:Pozione Arancione.:Pozione Gialla.:Pozione Bianca.:Pozione Blu.:Pozione Verde.:In realtà, non voglio niente.")) {
 			case 1:
 				callsub L_Making,507,3,501;
 			case 2:
-				mes "[Old Pharmacist]";
+				mes "Vecchio farmacista";
 				if (countitem(507) < countitem(713)) {
 					set .@max,countitem(507);
 				}
@@ -67,22 +67,22 @@ alberta_in,16,28,4	script	Pharmacist	61,{
 					set .@max,countitem(713);
 				}
 				if ((countitem(507) < 1) || (countitem(508) < 1) || (countitem(713) == 0)) {
-					mes "You rascal! What did you expect?! Coming here with nothing. Tsk!";
-					mes "Get lost!";
+					mes "Sciocco! Cosa ti aspettavi?! Venire qui con niente. Tsk!";
+					mes "Vattene!";
 					close;
 				}
 				if (Zeny < 3) {
-					mes "You rascal! What did you expect?! Coming here with nothing. Tsk!";
-					mes "Get lost!";
+					mes "Sciocco! Cosa ti aspettavi?! Venire qui con niente. Tsk!";
+					mes "Vattene!";
 					close;
 				}
-				mes "How many?";
+				mes "Quanti?";
 				next;
-				switch(select("Make as many as I can.:I want to choose an amount.:Actually, I don't want anything.")) {
+				switch(select("Quanti ne posso fare:Voglio scegliere un importo.:In realtà, non voglio niente.")) {
 				case 1:
 					if ((countitem(507) < .@max) || (countitem(508) < .@max) || (countitem(713) < .@max) || (Zeny < .@max*3)) {
-						mes "[Old Pharmacist]";
-						mes "You rascal! You don't even have all the materials and you want me to make you potions?!";
+						mes "Vecchio farmacista";
+						mes "Sciocco! Non hai nemmeno tutti i materiali e vuoi che ti faccia delle pozioni?!";
 						close;
 					}
 					set Zeny,Zeny-(.@max*5);
@@ -92,23 +92,23 @@ alberta_in,16,28,4	script	Pharmacist	61,{
 					getitem 502,.@max; //Orange_Potion
 					break;
 				case 2:
-					mes "[Old Pharmacist]";
-					mes "Then pick a number below 100. If you don't want any, just enter '0'. With the materials you have, you can make about "+.@max+" potions.";
+					mes "Vecchio farmacista";
+					mes "Poi scegli un numero inferiore a 100. Se non ne vuoi nessuno, inserisci semplicemente '0'. Con i materiali che hai, puoi fare circa "+.@max+" pozioni.";
 					next;
 					input .@amount,0,101;
 					if (.@amount == 0) {
-						mes "[Old Pharmacist]";
-						mes "Make up your mind, will you?!";
+						mes "Vecchio farmacista";
+						mes "Decidi già!";
 						close;
 					}
 					if (.@amount > 100) {
-						mes "[Old Pharmacist]";
-						mes "Are you deaf? I said less than 100!";
+						mes "Vecchio farmacista";
+						mes "Sei sordo? Ho detto meno di 100!";
 						close;
 					}
 					if ((countitem(507) < .@amount) || (countitem(508) < .@amount) || (countitem(713) < .@amount) || (Zeny < .@amount*3)) {
-						mes "[Old Pharmacist]";
-						mes "You rascal! You don't even have all the materials and you want me to make you potions?!";
+						mes "Vecchio farmacista";
+						mes "Sciocco! Non hai nemmeno tutti i materiali e vuoi che ti faccia delle pozioni?!";
 						close;
 					}
 					next;
@@ -119,15 +119,15 @@ alberta_in,16,28,4	script	Pharmacist	61,{
 					getitem 502,.@amount; //Orange_Potion
 					break;
 				case 3:
-					mes "[Old Pharmacist]";
-					mes "What?!";
+					mes "Vecchio farmacista";
+					mes "Cosa?!";
 					mes "Grrr...";
-					mes "Bleh!";
-					mes "Get lost!";
+					mes "Boh!";
+					mes "Vattene!";
 					close;
 				}
-				mes "[Old Pharmacist]";
-				mes "Here you go. It's all done so you can take it. But remember! Abusing medicine is not good.";
+				mes "Vecchio farmacista";
+				mes "Eccolo qui. È tutto fatto così puoi prenderlo. Ma ricorda! Abusare di medicina non è buono.";
 				close;
 			case 3:
 				callsub L_Making,508,10,503;
@@ -138,45 +138,45 @@ alberta_in,16,28,4	script	Pharmacist	61,{
 			case 6:
 				callsub L_Making,511,3,506;
 			case 7:
-				mes "[Old Pharmacist]";
-				mes "What?!";
+				mes "Vecchio farmacista";
+				mes "Cosa?!";
 				mes "Grrr...";
-				mes "Bleh!";
-				mes "Get lost!";
+				mes "Boh!";
+				mes "Vattene!";
 				close;
 			}
 		}
 	case 2:
-		mes "[Old Pharmacist]";
-		mes "With medicine, you can increase a person's ability to regenerate. But, they're only good up to a point. *Sigh* I'm starting to think of the days when I was young. I must be getting old.";
+		mes "Vecchio farmacista";
+		mes "Con i medicinali, si può aumentare la capacità di rigenerazione di una persona. Ma sono efficaci solo fino a un certo punto. *Sospiro* Sto iniziando a pensare ai giorni in cui ero giovane. Devo stare invecchiando.";
 		next;
-		mes "[Old Pharmacist]";
-		mes "Anyways, a potion is merely a potion. Nothing more and nothing less.";
+		mes "Vecchio farmacista";
+		mes "Comunque, una pozione è semplicemente una pozione. Niente di più e niente di meno.";
 		close;
 	case 3:
-		mes "[Old Pharmacist]";
+		mes "Vecchio farmacista";
 		mes "Hrrrmm...";
-		mes "You young ones can be quite annoying. But, since you asked, I'll explain.";
+		mes "Voi giovani potete essere piuttosto fastidiosi. Ma, dato che l'avete chiesto, vi spiego.";
 		next;
-		mes "[Old Pharmacist]";
-		mes "Herbs work well by themselves, but if you use my special techniques and skills to make potions out of them, the effect is much much greater.";
+		mes "Vecchio farmacista";
+		mes "Le erbe funzionano bene da sole, ma se usi le mie tecniche e abilità speciali per creare pozioni con esse, l'effetto è molto molto maggiore.";
 		next;
-		mes "[Old Pharmacist]";
-		mes "If you ask eagerly and politely, I will make them for you. But, not for free... Don't worry though, I only charge a small fee, so it's not that expensive.";
+		mes "Vecchio farmacista";
+		mes "Se lo chiedi con entusiasmo e cortesia, te li farò. Ma non gratis... Non preoccuparti però, chiedo solo una piccola tariffa, quindi non è così costoso.";
 		next;
-		mes "[Old Pharmacist]";
-		mes "Red Potion - ^0098E52 Red Herbs, 1 Empty Bottle, 2 zeny fee.^000000";
-		mes "Orange Potion - ^0098E51 Red Herb, 1 Yellow Herb, 1 Empty Bottle, 5 zeny fee.^000000";
-		mes "Yellow Potion - ^0098E52 Yellow Herbs, 1 Empty Bottle, 10 zeny.^000000";
+		mes "Vecchio farmacista";
+		mes "Pozione Rossa - ^0098E52 Erbe Rosse, 1 Bottiglia Vuota, 2 zeni tassa.^000000";
+		mes "Pozione Arancione - ^0098E51 Erba Rossa, 1 Erba Gialla, 1 Bottiglia Vuota, 5 zeni tassa.^000000";
+		mes "Pozione Gialla - ^0098E52 Erbe Gialle, 1 Bottiglia Vuota, 10 zeni.^000000";
 		next;
-		mes "[Old Pharmacist]";
-		mes "White Potion - ^0098E52 White Herbs, 1 Empty Bottle, 20 zeny fee.^000000";
-		mes "Blue Potion - ^0098E52 Blue Herbs, 1 Empty Bottle, 30 zeny fee.^000000";
-		mes "Green Potion - ^0098E52 Green Herbs, 1 Empty Bottle, 3 zeny fee.^000000";
+		mes "Vecchio farmacista";
+		mes "Pozione Bianca - ^0098E52 Erbe Bianche, 1 Bottiglia Vuota, 20 zeny tassa.^000000";
+		mes "Pozione Blu - ^0098E52 Erbe Blu, 1 Bottiglia Vuota, tassa di 30 zeni.^000000";
+		mes "Pozione Verde - ^0098E52 Erbe Verdi, 1 Bottiglia Vuota, 3 zeni tassa.^000000";
 		close;
 	case 4:
-		mes "[Old Pharmacist]";
-		mes "What a boring person. If you have something to say, why don't you say it?!";
+		mes "Vecchio farmacista";
+		mes "Che persona noiosa. Se hai qualcosa da dire, perché non lo dici?!";
 		close;
 	}
 	
@@ -184,29 +184,29 @@ L_Making:
 	.@item_req = getarg(0);
 	.@req_amount = getarg(1);
 
-	mes "[Old Pharmacist]";
+	mes "Vecchio farmacista";
 	if ((countitem(.@item_req)/2) < countitem(713)) {
 		.@max = countitem(.@item_req) /2;
 	} else {
 		.@max = countitem(713);
 	}
 	if (countitem(.@item_req) < 2 || countitem(713) == 0) {
-		mes "You rascal! What did you expect?! Coming here with nothing. Tsk!";
-		mes "Get lost!";
+		mes "Sciocco! Cosa ti aspettavi?! Venire qui con niente. Tsk!";
+		mes "Vattene!";
 		close;
 	}
 	if (Zeny < 3) {
-		mes "You rascal! What did you expect?! Coming here with nothing. Tsk!";
-		mes "Get lost!";
+		mes "Sciocco! Cosa ti aspettavi?! Venire qui con niente. Tsk!";
+		mes "Vattene!";
 		close;
 	}
-	mes "How many?";
+	mes "Quanti?";
 	next;
-	switch(select("Make as many as I can.:I want to choose an amount.:Actually, I don't want anything.")) {
+	switch(select("Quanti ne posso fare:Voglio scegliere un importo.:In realtà, non voglio niente.")) {
 	case 1:
 		if ((countitem(.@item_req) < .@max*2) || countitem(713) < .@max || (Zeny < .@max*.@req_amount)) {
-			mes "[Old Pharmacist]";
-			mes "You rascal! You don't even have all the materials and you want me to make you potions?!";
+			mes "Vecchio farmacista";
+			mes "Sciocco! Non hai nemmeno tutti i materiali e vuoi che ti faccia delle pozioni?!";
 			close;
 		}
 		Zeny = Zeny - (.@max*.@req_amount);
@@ -215,23 +215,23 @@ L_Making:
 		getitem getarg(2),.@max; 
 		break;
 	case 2:
-		mes "[Old Pharmacist]";
-		mes "Then pick a number below 100. If you don't want any, just enter '0'. With the materials you have, you can make about "+.@max+" potions.";
+		mes "Vecchio farmacista";
+		mes "Poi scegli un numero inferiore a 100. Se non ne vuoi nessuno, inserisci semplicemente '0'. Con i materiali che hai, puoi fare circa "+.@max+" pozioni.";
 		next;
 		input .@amount;
 		if (.@amount == 0) {
-			mes "[Old Pharmacist]";
-			mes "Make up your mind, will you?!";
+			mes "Vecchio farmacista";
+			mes "Decidi già!";
 			close;
 		}
 		if (.@amount > 100) {
-			mes "[Old Pharmacist]";
-			mes "Are you deaf? I said less than 100!";
+			mes "Vecchio farmacista";
+			mes "Sei sordo? Ho detto meno di 100!";
 			close;
 		}
 		if ((countitem(.@item_req) < .@amount*2) || countitem(713) < .@amount || (Zeny < .@amount*.@req_amount)) {
-			mes "[Old Pharmacist]";
-			mes "You rascal! You don't even have all the materials and you want me to make you potions?!";
+			mes "Vecchio farmacista";
+			mes "Sciocco! Non hai nemmeno tutti i materiali e vuoi che ti faccia delle pozioni?!";
 			close;
 		}
 		Zeny = Zeny - (.@max*.@req_amount);
@@ -240,14 +240,14 @@ L_Making:
 		getitem getarg(2),.@amount; 
 		break;
 	case 3:
-		mes "[Old Pharmacist]";
-		mes "What?!";
+		mes "Vecchio farmacista";
+		mes "Cosa?!";
 		mes "Grrr...";
-		mes "Bleh!";
-		mes "Get lost!";
+		mes "Boh!";
+		mes "Vattene!";
 		close;
 	}
-	mes "[Old Pharmacist]";
-	mes "Here you go. It's all done so you can take it. But remember! Abusing medicine is not good.";
+	mes "Vecchio farmacista";
+	mes "Eccolo qui. È tutto fatto così puoi prenderlo. Ma ricorda! Abusare di medicina non è buono.";
 	close;
 }

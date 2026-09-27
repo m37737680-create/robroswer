@@ -21,17 +21,17 @@
 
 payon,173,238,5	script	Jade#pay	754,{
 	if (checkweight(1201,1) == 0) {
-		mes "^3355FFWait a second! Right now, you're carrying too many items with you. Please come back after putting some of your things into Kafra Storage.^000000";
+		mes "^3355FFUn attimo! In questo momento, stai portando troppi oggetti con te. Per favore torna dopo aver messo alcuni dei tuoi effetti nello Stoccaggio di Kafra.^000000";
 		close;
 	}
-	mes "[Jade]";
-	mes "Bring me two";
-	mes "Gemstones of the";
-	mes "same color, and I will";
-	mes "change them to Gemstones";
-	mes "of a different color.";
+	mes "[Giada]";
+	mes "Portami due";
+	mes "Gioielli di";
+	mes "stesso colore, e io";
+	mes "trasformali in Pietre Preziose";
+	mes "di un colore diverso.";
 	next;
-	switch(select("Blue Gemstones into Red ones!:Red Gemstones into Yellow ones!:Yellow Gemstones into Blue ones!")) {
+	switch(select("Gemme blu in quelle rosse!:Gemme rosse in quelle gialle!:Gemme gialle in gemme blu!")) {
 	case 1: callsub S_TradeGems,717,716;
 	case 2: callsub S_TradeGems,716,715;
 	case 3: callsub S_TradeGems,715,717;
@@ -42,59 +42,59 @@ S_TradeGems:
 	.@item_id = getarg(1);
 
 	if (countitem(.@item_req) < 2) {
-		mes "[Jade]";
-		mes "Hah...!";
-		mes "You're kidding me, right?";
-		mes "I can't provide you with this";
-		mes "service if you don't";
-		mes "give me at least";
+		mes "[Giada]";
+		mes "Ah...!";
+		mes "Stai scherzando, vero?";
+		mes "Non posso fornirti questo";
+		mes "servizio se non";
+		mes "almeno dammi";
 		mes "2 "+ getitemname(.@item_req) +"s!";
 		close;
 	}
 	else {
 		.@gems = countitem(.@item_req) /2;
-		mes "[Jade]";
-		mes "I believe I can create";
-		mes "a total of "+ .@gems +" "+ getitemname(.@item_id) +"s";
-		mes "using the "+ getitemname(.@item_req) +"s";
-		mes "that you currently have.";
-		mes "What do you want to do?";
+		mes "[Giada]";
+		mes "Credo di poter creare";
+		mes "un totale di "+ .@gems +" "+ getitemname(.@item_id) +"s";
+		mes "usando il "+ getitemname(.@item_req) +"s";
+		mes "che hai attualmente.";
+		mes "Cosa vuoi fare?";
 		next;
-		switch(select("Give me as many as you can.:I want to set the amount.:I quit.")) {
+		switch(select("Dammi quanti ne puoi.:Voglio impostare l'importo.:Ho lasciato.")) {
 		case 1:
 			delitem .@item_req,.@gems * 2;
 			getitem .@item_id,.@gems;
 			break;
 		case 2:
-			mes "[Jade]";
-			mes "So how many";
-			mes "do you want?";
-			mes "The maximum number";
-			mes "that you can enter is 100.";
+			mes "[Giada]";
+			mes "Quanti";
+			mes "vuoi?";
+			mes "Il numero massimo";
+			mes "che puoi inserire è 100.";
 			next;
 			while(1) {
 				input .@input,0,101;
 				if (.@input == 0) {
-					mes "[Jade]";
-					mes "None at all?";
-					mes "I guess you";
-					mes "changed your mind...";
+					mes "[Giada]";
+					mes "Niente affatto?";
+					mes "Penso che tu";
+					mes "cambiato idea...";
 					close;
 				}
 				else if (.@input > 100) {
-					mes "[Jade]";
+					mes "[Giada]";
 					mes "Errm...";
-					mes "I asked you to enter";
-					mes "an amount no greater";
-					mes "than 100, remember...?";
+					mes "Ti ho chiesto di inserire";
+					mes "un importo non superiore a";
+					mes "più di 100, ricordi...?";
 					next;
 				}
 				else if (.@gems < .@input) {
 					// Custom dialogue
-					mes "[Jade]";
+					mes "[Giada]";
 					mes "Errm...";
-					mes "You don't have that";
-					mes "many gems to trade...";
+					mes "Non ce l'hai";
+					mes "molte gemme da scambiare...";
 					next;
 				}
 				else break;
@@ -103,17 +103,17 @@ S_TradeGems:
 			getitem .@item_id,.@input;
 			break;
 		case 3:
-			mes "[Jade]";
-			mes "Sure, no problem.";
-			mes "Come back any time.";
+			mes "[Giada]";
+			mes "Certo, nessun problema.";
+			mes "Torna pure quando vuoi.";
 			close;
 		}
-		mes "[Jade]";
-		mes "There you go.";
-		mes "Feel free to come";
-		mes "back any time.";
-		mes "Hm, what's that look for?";
-		mes "Is there something on my face?";
+		mes "[Giada]";
+		mes "Eccolo/a.";
+		mes "Sentiti libero di venire";
+		mes "tornare in qualsiasi momento.";
+		mes "Hmm, cosa sta cercando?";
+		mes "C'è qualcosa sul mio viso?";
 		close;
 	}
 }

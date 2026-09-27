@@ -24,62 +24,62 @@
 //callfunc "F_CoolEventCorp","<menu>","<location>","<save map>",<x>,<y>,"<warp map>";
 function	script	F_CoolEventCorp	{
 	cutin "zonda_01",2;
-	mes "[Cool Event Corp. Staff]";
-	mes "Welcome to Cool Event Corp.";
-	mes "Our staff is always working";
-	mes "to surpass your expactations";
-	mes "for quality service. So how";
-	mes "may I assist you today?";
+	mes "[Cool Event Corp. Personale]";
+	mes "Benvenuti a Cool Event Corp.";
+	mes "Il nostro personale lavora sempre";
+	mes "superare le vostre aspettative";
+	mes "per un servizio di qualità. Quindi come";
+	mes "Posso assisterla oggi?";
 	next;
 	switch(select(getarg(0))) {
 	case 1:
-		mes "[Cool Event Corp. Staff]";
-		mes "Your Respawn Point";
-		mes "has been saved here";
+		mes "[Cool Event Corp. Personale]";
+		mes "Il tuo punto di riapparizione";
+		mes "è stato salvato qui";
 		mes getarg(1)+".";
-		mes "Thank you for using the";
-		mes "Cool Event Corp. service~";
+		mes "Grazie per aver utilizzato il";
+		mes "Servizio di Cool Event Corp.~";
 		savepoint getarg(2),getarg(3),getarg(4),1,1;
 		close2;
 		break;
 	case 2:
-		mes "[Cool Event Corp. Staff]";
+		mes "[Cool Event Corp. Personale]";
 		if(!callfunc("F_CanOpenStorage")){
-			mes "I'm sorry, but you";
-			mes "need the Novice's";
-			mes "Basic Skill Level 6 to";
-			mes "use the Storage Service.";
+			mes "Mi dispiace, ma tu";
+			mes "ho bisogno del novizio";
+			mes "Livello di abilità base 6 a";
+			mes "usa il servizio di archiviazione.";
 			close2;
 			break;
 		}
 		if(Zeny < 40){
-			mes "I'm sorry, but you don't";
-			mes "have enough Zeny to use";
-			mes "the Storage Service. Our";
-			mes "Storage access fee is 40 Zeny.";
+			mes "Mi dispiace, ma tu non";
+			mes "avere abbastanza Zeny per usare";
+			mes "il servizio di archiviazione. Il nostro";
+			mes "La tariffa di accesso allo storage è di 40 Zeny.";
 			close2;
 			break;
 		}
 		set Zeny, Zeny - 40;
-		mes "Let me open your personal";
-		mes "storage for you right away.";
-		mes "Thanks for supporting Cool";
-		mes "Event Corp. by using our";
-		mes "services. Have a good day~";
+		mes "Lasciami aprire il tuo personale";
+		mes "archiviazione per te subito.";
+		mes "Grazie per aver supportato Cool";
+		mes "Event Corp. utilizzando il nostro";
+		mes "servizi. Buona giornata~";
 		callfunc("F_CheckKafCode");	//check your storage password, if set
 		close2;
 		openstorage;
 		break;
 	case 3:
-		mes "Please choose";
-		mes "your destination.";
+		mes "Scegliere";
+		mes "la tua destinazione.";
 		next;
 		if (VIP_SCRIPT && !vip_status(VIP_STATUS_ACTIVE))
 			set .@cost,4400;
 		else
 			set .@cost,2200;
 		.@destination$ = getarg(5);
-		if (select(.@destination$ +" -> "+ .@cost +" z:Cancel") == 1) {
+		if (select(.@destination$ +" -> "+ .@cost +" z:Annulla") == 1) {
 			if ((countitem(7060) != 0) || (Zeny >= .@cost)) {
 				if (countitem(7060) != 0) {
 					delitem 7060,1; //Warp_Free_Ticket
@@ -93,42 +93,42 @@ function	script	F_CoolEventCorp	{
 				end;
 			}
 			else {
-				mes "[Cool Event Corp. Staff]";
-				mes "I'm sorry, but you don't have";
-				mes "enough zeny for the Teleport";
-				mes "Service. The fee to teleport";
-				mes "to "+ .@destination$ +" is "+.@cost+" zeny.";
+				mes "[Cool Event Corp. Personale]";
+				mes "Mi dispiace, ma non hai";
+				mes "abbastanza zeny per il Teletrasporto";
+				mes "Servizio. La tariffa per teletrasportare";
+				mes "a "+ .@destination$ +" è "+.@cost+" zeny.";
 			}
 		}
 		close2;
 		break;
 	case 4:
-		mes "[Cool Event Corp. Staff]";
+		mes "[Cool Event Corp. Personale]";
 		if(BaseClass != Job_Merchant){
-			mes "I'm sorry, but the";
-			mes "Pushcart rental service";
+			mes "Mi dispiace, ma il";
+			mes "Servizio di noleggio carretti";
 			if (checkre(0))
-				mes "is only available to Merchant classes.";
+				mes "disponibile solo per le classi Merchant.";
 			else {
-				mes "is only available to Merchants,";
-				mes "Blacksmiths, White Smiths,";
-				mes "Alchemists and Creators.";
+				mes "disponibile solo ai Mercanti,";
+				mes "Fucinieri, Smith Bianchi,";
+				mes "Alchimisti e Creatori.";
 			}
 			close2;
 			break;
 		}
 		if(getskilllv("MC_PUSHCART") == 0){
-			mes "You can only rent a cart after";
-			mes "learning the Pushcart Skill.";
+			mes "Puoi noleggiare un carrello solo dopo";
+			mes "imparare l'abilità del carretto.";
 			close2;
 			break;
 		}
 		if(checkcart() == 1){
-			mes "You already have";
-			mes "a Pushcart equipped.";
-			mes "Unfortunately, we can't";
-			mes "rent more than one to";
-			mes "each customer at a time.";
+			mes "Hai già";
+			mes "Equipato con un carretto.";
+			mes "Purtroppo non possiamo";
+			mes "noleggiare più di uno a";
+			mes "un cliente alla volta.";
 			close2;
 			break;
 		}
@@ -138,17 +138,17 @@ function	script	F_CoolEventCorp	{
 			close2;
 			break;
 		}
-		mes "The Pushcart rental";
-		mes "fee is 800 Zeny. Would";
-		mes "you like to rent a Pushcart?";
+		mes "Il noleggio del carretto";
+		mes "la tariffa è di 800 Zeny. Vorrebbe";
+		mes "Ti piace affittare un carretto?";
 		next;
-		if(select("Rent a Pushcart:Cancel") == 1){
+		if(select("Noleggiare un carretto:Annulla") == 1){
 			if(Zeny < 800){
-				mes "[Cool Event Corp. Staff]";
-				mes "I'm sorry, but you";
-				mes "don't have enough";
-				mes "Zeny to pay the Pushcart";
-				mes "rental fee of 800 Zeny.";
+				mes "[Cool Event Corp. Personale]";
+				mes "Mi dispiace, ma tu";
+				mes "non ho abbastanza";
+				mes "Zeny per pagare il carretto";
+				mes "canone di locazione di 800 Zeny.";
 			} else {
 				set Zeny, Zeny - 800;
 				setcart;
@@ -161,13 +161,13 @@ function	script	F_CoolEventCorp	{
 		//the function closes msg and removes cutins
 	case 6:
 	default:
-		mes "[Cool Event Corp. Staff]";
-		mes "Cool Event Corp. is always";
-		mes "striving to provide the best";
-		mes "services for our customers.";
-		mes "Help us become the best by";
-		mes "providing us with your opinions";
-		mes "and honest feedback. Thank you.";
+		mes "[Cool Event Corp. Personale]";
+		mes "Cool Event Corp. è sempre";
+		mes "cercare di fornire il meglio";
+		mes "servizi per i nostri clienti.";
+		mes "Aiutaci a diventare i migliori con";
+		mes "fornirci le vostre opinioni";
+		mes "e un feedback onesto. Grazie.";
 		close2;
 	}
 	cutin "", 255;

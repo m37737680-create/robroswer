@@ -14,66 +14,66 @@
 //============================================================
 
 prt_castle,80,170,4	script	King of Prontera	108,{
-	mes "[King of Prontera]";
-	mes "Hello, can you help me?";
+	mes "Re di Prontera";
+	mes "Ciao, puoi aiutarmi?";
 	next;
-	if(select("Sure, what can I do?:Sorry, I'm busy.")==2) {
-		mes "[King of Prontera]";
-		mes "Ok, that's fine, I'm sure someone else will help.";
+	if(select("Certo, cosa posso fare?:Scusa, sono occupato/a.")==2) {
+		mes "Re di Prontera";
+		mes "Va bene, sono sicuro che qualcun altro aiuterà.";
 		close; }
-	mes "[King of Prontera]";
-	mes "Thank you. Well, my daughter next to me is a little rowdy...";
-	mes "If you get her these items I'm sure she'll calm down.";
-	mes "I'll give you my crown or my sword as a reward.";
+	mes "Re di Prontera";
+	mes "Grazie. Beh, mia figlia accanto a me è un po' birichina...";
+	mes "Se le dai questi oggetti sono sicuro che si calmerà.";
+	mes "Ti darò la mia corona o la mia spada come ricompensa.";
 	next;
 	setarray .@Items1[0],5007,742,30,741,50,753,20,732,1,710,20,629,20;
 	setarray .@Items2[0],1137,2254,1,2282,1,714,1;
-	switch(select("What do you need?:I have the items!:Forget it.")) {
+	switch(select("Di cosa hai bisogno?:Ho gli oggetti!:Dimenticalo.")) {
 		case 1:
 			for(set .@i,1; .@i<3; set .@i,.@i+1) {
-				mes "[King of Prontera]";
-				mes "If you could get me:";
+				mes "Re di Prontera";
+				mes "Se potessi prendermi:";
 				for(set .@j,1; .@j<getarraysize(getd(".@Items"+.@i)); set .@j,.@j+2)
-					mes " ~ ^0055FF"+getd(".@Items"+.@i+"["+(.@j+1)+"]")+"^000000x "+getitemname(getd(".@Items"+.@i+"["+.@j+"]"));
-				mes "I'll give my "+((.@i == 2 )?"sword.":"crown.");
+					mes " ~ ^0055FF"+getd("@.Items"+.@i+"["+(.@j+1)+"]")+"^000000x "+getitemname(getd("@.Items"+.@i+"["+.@j+"]"));
+				mes "Darò il mio "+((.@i == 2 )?"spada":"corona.");
 				if (.@i==2) close;
 				next; }
 		case 2:
-			mes "[King of Prontera]";
-			mes "What item do you want?";
+			mes "Re di Prontera";
+			mes "Quale articolo vuoi?";
 			next;
-			set .@i, select("Crown:Sword");
+			set .@i, select("Corona:Spada");
 			for(set .@j,1; .@j<getarraysize(getd(".@Items"+.@i)); set .@j,.@j+2)
 				if (countitem(getd(".@Items"+.@i+"["+.@j+"]")) < getd(".@Items"+.@i+"["+(.@j+1)+"]")) set .@nr,1;
-			mes "[King of Prontera]";
+			mes "Re di Prontera";
 			if (.@nr) { 
-				mes "You're missing something.";
-				mes "Come back after you get ALL the items.";
+				mes "Ti manca qualcosa.";
+				mes "Torna dopo aver preso TUTTI gli oggetti.";
 				close; }
 			for(set .@j,1; .@j<getarraysize(getd(".@Items"+.@i)); set .@j,.@j+2)
 				delitem getd(".@Items"+.@i+"["+.@j+"]"), getd(".@Items"+.@i+"["+(.@j+1)+"]");
 			getitem getd(".@Items"+.@i+"[0]"),1;
-			mes "THANK YOU SOO MUCH!!";
-			mes "This will surely calm her down.";
-			mes "As promised, here is my "+((.@i==1)?"crown.":"sword.");
+			mes "GRAZIE MOLS!";
+			mes "Questo la calmerà sicuramente.";
+			mes "Come promesso, ecco il mio "+((.@i==1)?"corona.":"spada");
 			close;
 		case 3:
-			mes "[King of Prontera]";
-			mes "Ok, that's fine, I'm sure someone else will help.";
+			mes "Re di Prontera";
+			mes "Va bene, sono sicuro che qualcun altro aiuterà.";
 			close;
 	}
 }
 
 prt_castle,84,170,4	script	King's Daughter	62,{
-	mes "[King's Daughter]";
-	mes "Hmph, I hate my dad right now!!";
+	mes "Figlia del Re";
+	mes "Hmph, odio mio papà adesso!!";
 	next;
-	if(select("Why?:Whatever...")==2) {
-		mes "[King's Daughter]";
-		mes "FINE THEN! Hmph!!";
+	if(select("Perché?:Chiunque...")==2) {
+		mes "Figlia del Re";
+		mes "BASTA ALLORA! Hmpf!!";
 		close; }
-	mes "[King's Daughter]";
-	mes "Well, he won't give me what I want!!";
-	mes "He's the King of Prontera. He should be able to get me ANYTHING!!!";
+	mes "Figlia del Re";
+	mes "Beh, non mi darà quello che voglio!!";
+	mes "È il Re di Prontera. Dovrebbe essere in grado di prendermi QUALSIASI COSA!!!";
 	close;
 }

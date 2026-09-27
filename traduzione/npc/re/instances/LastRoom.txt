@@ -9,58 +9,58 @@
 //============================================================
 
 un_myst,163,38,5	script	Mark	4_M_BLUEMAN,{
-	mes "[Mark]";
+	mes "[Marc]";
 	cutin "bu_mark1.bmp",0;
 
 	if (BaseLevel < 150) {
-		mes "It's dangerous here.";
-		mes "It would be better to come back next time when we are stronger.";
+		mes "È pericoloso qui.";
+		mes "Sarà meglio tornare la prossima volta quando saremo più forti.";
 		close3;
 	}
-	mes "Unlike the other doors we saw this door has traces of it being blocked from this side.";
+	mes "A differenza delle altre porte che abbiamo visto, questa porta ha tracce di essere stata bloccata da questo lato.";
 	next;
-	mes "[Mark]";
-	mes "Is there something inside?";
+	mes "[Marc]";
+	mes "C'è qualcosa dentro?";
 	next;
 	switch( checkquest(11379,PLAYTIME) ) {
 	case -1:
 		.@party_id = getcharid(1);
 		if (.@party_id < 1) {
-			mes "...It doesn't feel right here.";
-			mes "It may be dangerous alone so it might be better to form a party.";
+			mes "Non mi sembra giusto qui.";
+			mes "Potrebbe essere pericoloso da soli, quindi sarebbe meglio formare un gruppo.";
 			close3;
 		}
 		if (is_party_leader() == true)
 			.@string$ = "Open door.";
-		switch( select( .@string$, "Go in.", "Quit." ) ) {
+		switch( select( .@string$, "Entra.", "Basta." ) ) {
 		case 1:
 			if (instance_create("Last room") < 1) {
-				mes "Party: " + getpartyname( getcharid(1) ) + "";
+				mes "Festa: " + getpartyname( getcharid(1) ) + "";
 				mes "Leader: " + getpartyleader( getcharid(1) ) + "";
-				mes "^0000ffLast room ^000000- Creation failed";
+				mes "^0000ffUltima stanza ^000000- Creazione fallita";
 				close3;
 			}
-			mes "[Mark]";
-			mes "I'm opening the door.";
-			mes "Go in when the door is completely open.";
+			mes "[Marc]";
+			mes "Sto aprendo la porta.";
+			mes "Entra quando la porta è completamente aperta.";
 			close3;
 		case 2:
 			switch( instance_enter("Last room") ) {
 			case IE_NOMEMBER:
-				mes "[Mark]";
-				mes "...feel very suspicious!";
-				mes "It's a little dangerous to be alone. It is recommended to team up!";
+				mes "[Marc]";
+				mes "mi sento molto sospettoso!";
+				mes "È un po' pericoloso essere soli. Si consiglia di unirsi!";
 				close3;
 			case IE_NOINSTANCE:
-				mes "[Mark]";
-				mes "The door does not seem to be fully open.";
+				mes "[Marc]";
+				mes "La porta non sembra essere completamente aperta.";
 				close3;
 			case IE_OTHER:
-				mes "[Mark]";
-				mes "Hey... what is going on?";
+				mes "[Marc]";
+				mes "Ehi... cosa sta succedendo?";
 				close3;
 			case IE_OK:
-				mapannounce "un_myst", "" + strcharinfo(0) + " of the party, " + getpartyname(.@party_id) + ", is entering Last room.",bc_map,"0x00FF99";
+				mapannounce "un_myst", """ + strcharinfo(0) + " of the party, " + getpartyname(.@party_id) + ", is entering Last room.",bc_map,"0x00FF99";
 				setquest 11379;// Final Room
 				if (isbegin_quest(11380) == 0)
 					setquest 11380;// Final Room
@@ -73,15 +73,15 @@ un_myst,163,38,5	script	Mark	4_M_BLUEMAN,{
 		end;
 	case 0:
 	case 1:
-		mes "[Mark]";
+		mes "[Marc]";
 		cutin "bu_mark1.bmp",0;
-		mes "...You look tired.";
-		mes "Since you went there you should take a day to rest.";
+		mes "Sembri stanco/a.";
+		mes "Dato che ci sei stato/a dovresti prenderti un giorno di riposo.";
 		close3;
 	case 2:
-		mes "[Mark]";
+		mes "[Marc]";
 		cutin "bu_mark1.bmp",0;
-		mes "I can't believe you want to enter a place like this again...";
+		mes "Non posso credere che tu voglia entrare in un posto come questo di nuovo...";
 		erasequest 11379;// Final Room
 		close3;
 	}
@@ -91,97 +91,97 @@ un_myst,163,38,5	script	Mark	4_M_BLUEMAN,{
 /*
 // npcs found on iro
 1@uns,139,41,3	script	Mark#room1	4_M_BLUEMAN,{
-	mes "[Mark]";
-	mes "Something doesn't feel right. It is better that we move carefully.";
+	mes "[Marc]";
+	mes "Qualcosa non va bene. È meglio che procediamo con cautela.";
 	cutin "bu_mark4.bmp",0;
 	close3;
 }
 
 1@uns,145,32,5	script	Alph#room1	4_M_BLACKMAN,{
 	mes "[Alph]";
-	mes "There are suspicious traces everywhere.";
-	mes "Some kind of heavy machine seems to have passed...";
+	mes "Ci sono tracce sospette ovunque.";
+	mes "Qualche specie di macchina pesante sembra sia passata...";
 	cutin "bu_alp1.bmp",2;
 	close3;
 }
 
 1@uns,143,39,5	script	Maggi#room1	4_F_PINKWOMAN,{
 	mes "[Maggi]";
-	mes "Aahh....";
+	mes "Aah....";
 	cutin "bu_maggi4.bmp",2;
 	close3;
 }
 */
 
 1@uns,145,37,3	script	Tamarin#room1	4_M_TAMARIN,{
-	mes "[Tamarin]";
-	mes "Verity, are you alright?";
-	mes "You do not look good...";
+	mes "Tamarino";
+	mes "Verità, stai bene?";
+	mes "Non sembri bene...";
 	cutin "ep143_taang.bmp",2;
 	close3;
 }
 
 1@uns,143,38,5	script	Du#room1	4_M_REDMAN,{
 	mes "[Du]";
-	mes "I have a bad feeling about this...";
+	mes "Ho un cattivo presentimento riguardo a questo...";
 	cutin "bu_du1.bmp",2;
 	close3;
 }
 
 1@uns,144,37,3	script	Verity#room1	4_F_BERRYTEA,{
 	if ('protocole < 2) {
-		mes "[Verity]";
-		mes "Umph...I suddenly have a feeling that's not good.";
+		mes "Verità";
+		mes "Umph... Mi viene improvvisamente un presentimento che non è buono.";
 		cutin "EP15_2_brt_6.bmp",2;
 		if (is_party_leader() == false) {
-			mes "I wish to talk with the leader.";
+			mes "Vorrei parlare con il leader.";
 			close3;
 		}
-		npctalk "Verity: Umph...I suddenly have a feeling that's not good.";
+		npctalk "Verità: Umph...Ho improvvisamente la sensazione che non sia buona.";
 		next;
-		mes "[Verity]";
-		mes "Something is splitting my head....Ugh....";
-		npctalk "Verity: Something is splitting my head....Ugh....";
+		mes "Verità";
+		mes "Qualcosa mi sta facendo scoppiare la testa....Ugh....";
+		npctalk "Verità: Qualcosa mi sta facendo scoppiare la testa....Ugh....";
 		next;
-		mes "[Verity]";
+		mes "Verità";
 		mes "....Ugh....";
-		npctalk "Verity: ....Ugh....";
+		npctalk "Verità: ....Ugh....";
 		next;
 		mes "[Du]";
-		mes "Sister! Are you alright?!";
+		mes "Sorella! Stai bene?!";
 		cutin "bu_du5.bmp",2;
-		npctalk "Du: Sister! Are you alright?!", instance_npcname("Du#room1");
+		npctalk "Sorella! Stai bene?!", instance_npcname("Du#room1");
 		next;
-		mes "[Verity]";
-		mes "....Have to go back....";
+		mes "Verità";
+		mes "....Devo tornare....";
 		cutin "EP15_2_brt_7.bmp",2;
-		npctalk "Verity: ....Have to go back....";
+		npctalk "Verità: ....Devo tornare....";
 		next;
-		mes "[Tamarin]";
-		mes "Verity, are you alright?";
-		mes "Can you walk?";
+		mes "Tamarino";
+		mes "Verità, stai bene?";
+		mes "Puoi camminare?";
 		cutin "ep143_tahuk.bmp",2;
 		npctalk "Tamarin: Verity, are you alright? Can you walk?", instance_npcname("Tamarin#room1");
 		next;
-		mes "[Verity]";
+		mes "Verità";
 		mes "Ugh...";
 		cutin "EP15_2_brt_6.bmp",2;
-		npctalk "Verity: Ugh...";
+		npctalk "Verità: Ugh...";
 		next;
 		mes "[Du]";
-		mes "" + strcharinfo(0) + "! I think it is better that you go back.";
+		mes "" + strcharinfo(0) + "Penso che sia meglio che tu torni indietro.";
 		cutin "bu_du5.bmp",2;
-		npctalk "Du: " + strcharinfo(0) + "! I think it is better that you go back.", instance_npcname("Du#room1");
+		npctalk "Tu: " + strcharinfo(0) + "! I think it is better that you go back.", instance_npcname("Du#room1");
 		next;
-		mes "[Verity]";
-		mes "N...no. I will catch up soon so go on ahead.";
+		mes "Verità";
+		mes "N...no. Mi metterò in pari presto, quindi vai avanti.";
 		cutin "EP15_2_brt_4.bmp",2;
-		npctalk "Verity: N...no. I will catch up soon so go on ahead.";
+		npctalk "Verità: N...no. Mi metterò in pari presto, quindi vai avanti.";
 		next;
-		mes "[Tamarin]";
-		mes "Then I will stay with Verity until she recovers so you can go on ahead.";
+		mes "Tamarino";
+		mes "Allora resterò con Verity finché non si riprenderà così tu puoi andare avanti.";
 		cutin "ep143_tahuk.bmp",2;
-		npctalk "Tamarin: Then I will stay with Verity until she recovers so you can go on ahead.";
+		npctalk "Tamarin: Allora resterò con Verity finché non si riprenderà, così potrai andare avanti.";
 		if ('protocole == 0) {
 			'protocole = 1;
 			disablenpc instance_npcname("#lrdoor1");
@@ -270,35 +270,35 @@ OnMyMobDead:
 }
 
 1@uns,67,97,3	script	Tamarin#room2	4_M_TAMARIN,{
-	mes "[Tamarin]";
-	mes "Huff huff... Verity suddenly huff huff couldn't even stand straight before huff huff...";
+	mes "Tamarino";
+	mes "Huff huff... Verity all'improvviso huff huff non riusciva nemmeno a stare in piedi prima di huff huff...";
 	cutin "ep143_tahuk.bmp",2;
 	if (is_party_leader() == false) {
 		next;
-		mes "[Tamarin]";
-		mes "I don't think this is a problem we can solve by talking amongst ourselves.";
-		mes "Let's ask the leader's opinion first.";
+		mes "Tamarino";
+		mes "Non credo che questo sia un problema che possiamo risolvere parlandoci tra noi.";
+		mes "Chiediamo prima l'opinione del leader.";
 		close3;
 	}
-	npctalk "Tamarin: Huff huff... Verity suddenly huff huff couldn't even stand straight before huff huff...";
+	npctalk "Tamarino: Puff puff... Verità all'improvviso puff puff non riusciva nemmeno a stare dritta prima puff puff...";
 	next;
-	mes "[Tamarin]";
-	mes "Ran off so fast huff...huff... to even catch up. Huff huff";
-	npctalk "Tamarin: Ran off so fast huff...huff... to even catch up. Huff huff";
+	mes "Tamarino";
+	mes "Scappato così veloce huff...huff... per riuscire a recuperare. Huff huff";
+	npctalk "Tamarino: Sono scappato così veloce puff...puff... per riuscire a recuperare. Puff puff";
 	next;
 	mapannounce 'map_name$, "System message : An unidentified object is moving fast from Zone 1 to Zone 2.",bc_map,"0xFF0000";
-	mes "[Tamarin]";
-	mes "Uh... Could Verity have gone that far?";
-	npctalk "Tamarin: Uh... Could Verity have gone that far?";
+	mes "Tamarino";
+	mes "Uh... Verity avrebbe potuto arrivare così lontano?";
+	npctalk "Tamarin: Uh... Verity avrebbe potuto andare così lontano?";
 	next;
 	mapannounce 'map_name$, "System message : Commencing emergency protocol.",bc_map,"0xFF0000";
-	mes "[Tamarin]";
-	mes "We need to find Verity quickly";
-	npctalk "Tamarin: We need to find Verity quickly";
+	mes "Tamarino";
+	mes "Dobbiamo trovare Verity velocemente";
+	npctalk "Tamarin: Dobbiamo trovare Verità velocemente";
 	next;
-	mes "[Tamarin]";
-	mes "There is only the route going up so go ahead.";
-	npctalk "Tamarin: There is only the route going up so go ahead.";
+	mes "Tamarino";
+	mes "C'è solo la strada che sale, quindi vai avanti.";
+	npctalk "Tamarin: C'è solo la strada che sale, quindi vai avanti.";
 	if ('protocole == 2) {
 		'protocole = 3;
 		enablenpc instance_npcname("#lrdoor4");
@@ -338,23 +338,23 @@ OnTouch:
 1@uns,201,60,0	duplicate(#lrboom1)	#lrboom15	4_CRACK,2,2
 
 1@uns,224,29,3	script	Verity#room2	4_F_BERRYTEA,{
-	mes "[Verity]";
-	mes "Ah...Where am I..";
-	mes "What happened?";
+	mes "Verità";
+	mes "Ah...Dove sono..";
+	mes "Cosa è successo?";
 	cutin "EP15_2_brt_6.bmp",2;
 	next;
-	mes "[Verity]";
-	mes "My head...is splitting.";
-	mes "A sound coming from this...door...";
+	mes "Verità";
+	mes "La testa...mi scoppia.";
+	mes "Un suono che proviene da questa...porta...";
 	next;
-	if (select( "Quit.", "Go inside." ) == 1) {
-		mes "[Verity]";
-		mes "Go back...we have to go back...";
+	if (select( "Basta.", "Entra." ) == 1) {
+		mes "Verità";
+		mes "Tornare indietro... dobbiamo tornare indietro...";
 		cutin "EP15_2_brt_7.bmp",2;
 		close3;
 	}
-	mes "[Verity]";
-	mes "Quickly...we have to go back...";
+	mes "Verità";
+	mes "Presto... dobbiamo tornare...";
 	cutin "EP15_2_brt_7.bmp",2;
 	close2;
 	warp 'map_name$,240,255;
@@ -363,9 +363,9 @@ OnTouch:
 
 // Last step
 1@uns,242,253,3	script	Verity#room3	4_F_BERRYTEA,{
-	mes "[Verity]";
-	mes "Finally.. We came back...";
-	mes "Finally.....";
+	mes "Verità";
+	mes "Finalmente... Siamo tornati...";
+	mes "Finalmente.....";
 	cutin "EP15_2_brt_7.bmp",2;
 	if ('protocole == 3) {
 		'protocole = 4;
@@ -446,9 +446,9 @@ OnMyMobDead2:
 }
 
 1@uns,242,253,3	script	Verity#room4	4_F_BERRYTEA,{
-	mes "[Verity]";
-	mes "Who am I?";
-	mes "Who am I...";
+	mes "Verità";
+	mes "Chi sono?";
+	mes "Chi sono...";
 	cutin "EP15_2_brt_6.bmp",2;
 	close2;
 	warp "un_bunker",299,162;
@@ -483,150 +483,150 @@ OnInstanceInit:
 /*
 1@uns,236,258,1	script	Alph#room4	4_M_BLACKMAN,{
 	mes "[Alph]";
-	mes "It's too early to relax...";
+	mes "È troppo presto per rilassarsi...";
 	cutin "bu_alp1.bmp",2;
 	close3;
 }
 
 1@uns,244,257,3	script	Tamarin#room4	4_M_TAMARIN,{
-	mes "[Tamarin]";
-	mes "Verity!!!";
-	mes "Pull yourself together!";
+	mes "Tamarino";
+	mes "Verità!!!";
+	mes "Raccogli le idee!";
 	cutin "ep143_tahuk.bmp",2;
 	close3;
 }
 
 1@uns,245,254,3	script	Maggi#room4	4_F_PINKWOMAN,{
 	mes "[Maggi]";
-	mes "Verity, are you alright?";
+	mes "Verità, stai bene?";
 	cutin "bu_maggi4.bmp",2;
 	close3;
 }
 
 1@uns,244,254,3	script	Du#room4	4_M_REDMAN,{
 	mes "[Du]";
-	mes "Sister!";
-	mes "What happened?!";
-	mes "Are you alright?";
+	mes "Sorella!";
+	mes "Cosa è successo?!";
+	mes "Stai bene?";
 	cutin "bu_du5.bmp",2;
 	close3;
 }
 
 1@uns,242,255,5	script	Mark#room4	4_M_BLUEMAN,{
-	mes "[Mark]";
-	mes "Everybody out of the way!";
-	mes "I will cast Heal!!!";
+	mes "[Marc]";
+	mes "Tutti fuori strada!";
+	mes "Lancerò Cura!!!";
 	cutin "bu_mark4.bmp",0;
 	close3;
 }
 
 1@uns,242,253,3	script	Verity#room4	4_F_BERRYTEA,{
 	mes "[Du]";
-	mes "Sister!";
-	mes "What happened?!";
-	mes "Are you alright?";
+	mes "Sorella!";
+	mes "Cosa è successo?!";
+	mes "Stai bene?";
 	cutin "bu_du5.bmp",2;
-	npctalk "Du: Sister! What happened?! Are you alright?", instance_npcname("Du#room4");
+	npctalk "Sorella! Cosa è successo?! Stai bene?", instance_npcname("Du#room4");
 	next;
-	mes "[Tamarin]";
-	mes "Verity!!!";
-	mes "Pull yourself together!";
+	mes "Tamarino";
+	mes "Verità!!!";
+	mes "Raccogli le idee!";
 	cutin "ep143_tahuk.bmp",2;
-	npctalk "Tamarin: Verity!!! Pull yourself together!", instance_npcname("Tamarin#room4");
+	npctalk "Tamarin: Verità!!! Raccogli le forze!", instance_npcname("Tamarin#room4");
 	next;
-	mes "[Mark]";
-	mes "Everybody out of the way!";
-	mes "I will cast Heal!!!";
+	mes "[Marc]";
+	mes "Tutti fuori strada!";
+	mes "Lancerò Cura!!!";
 	cutin "bu_mark4.bmp",0;
-	npctalk "Mark: Everybody out of the way! I will cast Heal!!!", instance_npcname("Mark#room4");
+	npctalk "Mark: State tutti da parte! Lancerò Cura!!!", instance_npcname("Mark#room4");
 	next;
-	mes "[Verity]";
+	mes "Verità";
 	mes "Uh..uhm...";
 	cutin "EP15_2_brt_4.bmp",2;
-	npctalk "Verity: Uh..uhm...";
+	npctalk "Verità: Uh..uhm...";
 	next;
-	mes "[Verity]";
+	mes "Verità";
 	mes "Oh...";
-	mes "What is going on.";
-	mes "With serious faces.";
+	mes "Cosa sta succedendo.";
+	mes "Con facce serie.";
 	cutin "EP15_2_brt_5.bmp",2;
-	npctalk "Verity Oh... What is going on. With serious faces.";
+	npctalk "Verità Oh... Cosa sta succedendo. Con facce serie.";
 	next;
 	mes "[Du]";
-	mes "What do you think!";
-	mes "You don't remember?";
+	mes "Cosa ne pensi!";
+	mes "Non ti ricordi?";
 	cutin "bu_du4.bmp",2;
-	npctalk "Du: What do you think! You don't remember?", instance_npcname("Du#room4");
+	npctalk "Tu: Cosa ne pensi! Non ti ricordi?", instance_npcname("Du#room4");
 	next;
-	mes "[Verity]";
-	mes "Remember?";
+	mes "Verità";
+	mes "Ti ricordi?";
 	cutin "EP15_2_brt_5.bmp",2;
-	npctalk "Verity: Remember?";
+	npctalk "Verità: Ti ricordi?";
 	next;
-	mes "[Verity]";
-	mes "... Come to think of it where am I?";
+	mes "Verità";
+	mes "A pensarci, dove sono?";
 	cutin "EP15_2_brt_3.bmp",2;
-	npctalk "Verity: ... Come to think of it where am I?";
+	npctalk "Verità: ... A dire il vero dove sono?";
 	next;
-	mes "[Tamarin]";
-	mes "Verity you really don't remember anything?";
-	mes "Before...";
+	mes "Tamarino";
+	mes "Verità non ti ricordi nulla davvero?";
+	mes "Prima...";
 	cutin "ep143_tahuk.bmp",2;
-	npctalk "Tamarin: Verity you really don't remember anything? Before...", instance_npcname("Tamarin#room4");
+	npctalk "Tamarin: Verità non ti ricordi nulla davvero? Prima...", instance_npcname("Tamarin#room4");
 	next;
-	mes "[Verity]";
+	mes "Verità";
 	mes "Uhm...";
-	mes "I think my head was splitting since I went underground...";
-	npctalk "Verity: I think my head was splitting since I went underground...";
+	mes "Penso che mi stesse scoppiando la testa da quando sono andato sottoterra...";
+	npctalk "Verity: Penso che mi stesse scoppiando la testa da quando sono andata sottoterra...";
 	cutin "EP15_2_brt_3.bmp",2;
 	next;
-	mes "[Verity]";
-	mes "I don't remember anything after that.";
-	npctalk "Verity: I don't remember anything after that.";
+	mes "Verità";
+	mes "Non ricordo nulla dopo.";
+	npctalk "Verità: Non ricordo nulla dopo.";
 	cutin "EP15_2_brt_5.bmp",2;
 	next;
 	mes "[Du]";
-	mes "Just now something tremendous...";
+	mes "Proprio adesso qualcosa di tremendo...";
 	cutin "bu_du4.bmp",2;
-	npctalk "Du: Just now something tremendous...", instance_npcname("Du#room4");
+	npctalk "Tu: Proprio adesso qualcosa di tremendo...", instance_npcname("Du#room4");
 	next;
 	mes "[Alph]";
-	mes "Hey... I don't think this is a situation where we should be chatting right now.";
+	mes "Ehi... Non credo che questa sia una situazione in cui dovremmo chiacchierare adesso.";
 	cutin "bu_alp3.bmp",2;
-	npctalk "Alph: Hey... I don't think this is a situation where we should be chatting right now.", instance_npcname("Alph#room4");
+	npctalk "Ehi... Non credo che questa sia una situazione in cui dovremmo stare a chiacchierare adesso.", instance_npcname("Alph#room4");
 	next;
 	mes "[Du]";
-	mes "You call this chatting?";
-	mes "It was tremendous before okay?";
+	mes "Chiami questo chiacchierare?";
+	mes "Era tremendo prima ok?";
 	cutin "bu_du4.bmp",2;
-	npctalk "Du: You call this chatting? It was tremendous before okay?", instance_npcname("Du#room4");
+	npctalk "Tu: Chiami questo chiacchierare? Era tremendo prima ok?", instance_npcname("Du#room4");
 	next;
 	mes "[Alph]";
-	mes "Do you hear this?";
-	mes "Something is coming...";
+	mes "Senti questo?";
+	mes "Qualcosa sta arrivando...";
 	cutin "bu_alp1.bmp",2;
-	npctalk "Alph: Do you hear this? Something is coming...", instance_npcname("Alph#room4");
+	npctalk "Alph: Senti questo? Qualcosa sta arrivando...", instance_npcname("Alph#room4");
 	next;
-	mes "[Tamarin]";
-	mes "Now...now that I look the ground is..., shaking a little, right?";
+	mes "Tamarino";
+	mes "Ora...ora che guardo il terreno è..., che trema un po', giusto?";
 	cutin "ep143_tahuk.bmp",2;
 	npctalk "Tamarin: Now...now that I look the ground is..., shaking a little, right?", instance_npcname("Tamarin#room4");
 	next;
 	mes "[Du]";
-	mes "What...what's this?";
+	mes "Cos'è...cos'è questo?";
 	cutin "bu_du4.bmp",2;
-	npctalk "Du: What...what's this?", instance_npcname("Du#room4");
+	npctalk "Tu: Cos'è...cos'è questo?", instance_npcname("Du#room4");
 	next;
 	mes "[Alph]";
-	mes "This is...dangerous.";
-	mes "This is not a level we can handle...";
+	mes "Questo è...pericoloso.";
+	mes "Questo non è un livello che possiamo gestire...";
 	cutin "bu_alp2.bmp",2;
-	npctalk "Alph: This is...dangerous. This is not a level we can handle...", instance_npcname("Alph#room4");
+	npctalk "Alph: Questo è...pericoloso. Questo non è un livello che possiamo gestire...", instance_npcname("Alph#room4");
 	next;
-	mes "[Mark]";
-	mes "Qui...quickly outside!!!!!";
+	mes "[Marc]";
+	mes "Qui...fuori velocemente!!!!!";
 	cutin "bu_mark4.bmp",0;
-	npctalk "Mark: Qui...quickly outside!!!!!", instance_npcname("Mark#room4");
+	npctalk "Mark: Qui... fuori velocemente!!!!!", instance_npcname("Mark#room4");
 	close2;
 	warp "un_bunker",299,162;
 	end;

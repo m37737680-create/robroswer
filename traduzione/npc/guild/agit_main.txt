@@ -141,7 +141,7 @@ OnAgitBreak:
 	if( agitcheck() )
 		donpcevent "Agit#"+strnpcinfo(2)+"::OnStartArena";
 	sleep 7000;
-	announce "The [" + getcastlename(strnpcinfo(2)) + "] castle has been conquered by the [" + getguildName(.@GID) + "] guild.",bc_all|bc_woe;
+	announce ""Il [" + getcastlename(strnpcinfo(2)) + "] castle has been conquered by the [" + getguildName(.@GID) + "] guild.",bc_all|bc_woe;
 	end;
 
 // War of Emperium has ended.
@@ -343,44 +343,44 @@ OnRecvCastle:
 
 	cutin "kafra_01",2;
 	if (getcharid(2) == .@GID) {
-		mes "[Kafra Employee]";
-		mes "Welcome. ^ff0000" + GetGuildName(.@GID) + "^000000 Member.";
-		mes "The Kafra Corporation will stay with you wherever you go.";
+		mes "Dipendente Kafra";
+		mes "Benvenuto. ^ff0000" + GetGuildName(.@GID) + "^000000 Membro.";
+		mes "La Corporazione Kafra sarà con voi ovunque andiate.";
 		next;
-		switch (select("Use Storage:Use Teleport Service:Rent a Pushcart:Cancel")) {
+		switch (select("Usa Storage:Utilizzare il servizio Teleport:Noleggiare un carretto:Annulla")) {
 		case 1:
 			if(!callfunc("F_CanOpenStorage")){
-				mes "[Kafra Employee]";
-				mes "I'm sorry, but you";
-				mes "need the Novice's";
-				mes "Basic Skill Level 6 to";
-				mes "use the Storage Service.";
+				mes "Dipendente Kafra";
+				mes "Mi dispiace, ma tu";
+				mes "ho bisogno del novizio";
+				mes "Livello di abilità base 6 a";
+				mes "usa il servizio di archiviazione.";
 				close2;
 				cutin "",255;
 				end;
 			}
-			mes "[Kafra Employee]";
-			mes "Here, let me open";
-			mes "your Storage for you.";
-			mes "Thank you for using";
-			mes "the Kafra Service.";
+			mes "Dipendente Kafra";
+			mes "Qui, lascia che apra";
+			mes "il tuo archiviazione per te.";
+			mes "Grazie per aver usato";
+			mes "il Servizio Kafra.";
 			close2;
 			cutin "",255;
 			openstorage;
 			end;
 		case 2:
-			mes "[Kafra Employee]";
-			mes "Please choose";
-			mes "your destination.";
+			mes "Dipendente Kafra";
+			mes "Scegliere";
+			mes "la tua destinazione.";
 			next;
-			switch (select(.@destination$+" -> 200z:Cancel")) {
+			switch (select(.@destination$+" -> 200z:Annulla")) {
 			case 1:
 				if (Zeny < 200) {
-					mes "[Kafra Employee]";
-					mes "I'm sorry, but you don't have";
-					mes "enough zeny for the Teleport";
-					mes "Service. The fee to teleport";
-					mes "to "+.@destination$+" is 200 zeny.";
+					mes "Dipendente Kafra";
+					mes "Mi dispiace, ma non hai";
+					mes "abbastanza zeny per il Teletrasporto";
+					mes "Servizio. La tariffa per teletrasportare";
+					mes "a "+.@destination$+" sono 200 zeny.";
 					close2;
 					cutin "",255;
 					end;
@@ -397,41 +397,41 @@ OnRecvCastle:
 			}
 		case 3:
 			if (BaseClass != Job_Merchant) {
-				mes "[Kafra Employee]";
-				mes "I'm sorry, but the";
-				mes "Pushcart rental service";
-				mes "is only available to Merchants,";
-				mes "Blacksmiths, Master Smiths,";
-				mes "Alchemists, Biochemists,";
-				mes "Mechanics and Geneticists.";
+				mes "Dipendente Kafra";
+				mes "Mi dispiace, ma il";
+				mes "Servizio di noleggio carretti";
+				mes "disponibile solo ai Mercanti,";
+				mes "Fucinieri, Maestri Fucinari,";
+				mes "Alchimisti, Biochimici,";
+				mes "Meccanici e Genetisti.";
 				close2;
 				cutin "",255;
 				end;
 			}
 			if (checkcart()) {
-				mes "[Kafra Employee]";
-				mes "You already have";
-				mes "a Pushcart equipped.";
-				mes "Unfortunately, we can't";
-				mes "rent more than one to";
-				mes "each customer at a time.";
+				mes "Dipendente Kafra";
+				mes "Hai già";
+				mes "Equipato con un carretto.";
+				mes "Purtroppo non possiamo";
+				mes "noleggiare più di uno a";
+				mes "un cliente alla volta.";
 				close2;
 				cutin "",255;
 				end;
 			}
-			mes "[Kafra Employee]";
-			mes "The Pushcart rental";
-			mes "fee is 800 zeny. Would";
-			mes "you like to rent a Pushcart?";
+			mes "Dipendente Kafra";
+			mes "Il noleggio del carretto";
+			mes "la tariffa è di 800 zeny. Vorrebbe";
+			mes "Ti piace affittare un carretto?";
 			next;
-			switch (select("Rent a Pushcart.:Cancel")) {
+			switch (select("Noleggiare un carretto.:Annulla")) {
 			case 1:
 				if (Zeny < 800) {
-					mes "[Kafra Employee]";
-					mes "I'm sorry, but you";
-					mes "don't have enough";
-					mes "zeny to pay the Pushcart";
-					mes "rental fee of 800 zeny.";
+					mes "Dipendente Kafra";
+					mes "Mi dispiace, ma tu";
+					mes "non ho abbastanza";
+					mes "pagare il carretto";
+					mes "canone di locazione di 800 zeny.";
 					close2;
 					cutin "",255;
 					end;
@@ -448,16 +448,16 @@ OnRecvCastle:
 				end;
 			}
 		case 4:
-			mes "[Kafra Employee]";
-			mes "We, here at Kafra Corporation,";
-			mes "are always endeavoring to provide you with the best services. We hope that we meet your adventuring needs and standards of excellence.";
+			mes "Dipendente Kafra";
+			mes "Noi, qui alla Kafra Corporation,";
+			mes "siamo sempre impegnati a fornirvi i migliori servizi. Speriamo di soddisfare le vostre esigenze avventurose e gli standard di eccellenza.";
 			close2;
 			cutin "",255;
 			end;
 		}
 	}
-	mes "[Kafra Employee]";
-	mes "I am instructed to only offer my services to the ^ff0000"+GetGuildName(.@GID)+"^000000 Guild. Please try another Kafra Employee around here. Sorry for the inconvenience.";
+	mes "Dipendente Kafra";
+	mes "Sono incaricato di offrire i miei servizi solo a ^ff0000"+GetGuildName(.@GID)+"^000000 Gilda. Potrebbe provare con un altro dipendente di Kafra qui vicino. Ci scusiamo per l'inconveniente.";
 	close2;
 	cutin "",255;
 	end;
@@ -606,34 +606,34 @@ OnRecvCastle:
 
 	if (.@GID == 0) {
 		mes "["+strnpcinfo(1)+"]";
-		mes "I have been waiting for a master to fulfill my destiny.";
-		mes "Brave soul... fate will guide you towards your future...";
+		mes "Ho aspettato un maestro per compiere il mio destino.";
+		mes "Anima coraggiosa... il destino ti guiderà verso il tuo futuro...";
 		close;
 	}
 	if (is_guild_leader(.@GID) == false) {
 		mes "["+strnpcinfo(1)+"]";
-		mes "No matter how much you pester me, I'll still follow my master ^ff0000"+GetGuildMaster(.@GID)+"^000000. Where are the Guardians?! Send these ruffians away right now!";
+		mes "Non importa quanto mi tormenti, seguirò comunque il mio maestro ^ff0000"+GetGuildMaster(.@GID)+"^000000. Dove sono i Guardiani?! Mandate via questi bandaracci subito!";
 		close;
 	}
 	mes "["+strnpcinfo(1)+"]";
-	mes "Welcome. My honorable master, ^ff0000"+strcharinfo(0)+"^000000...";
-	mes "Your humble servent, "+strnpcinfo(1)+", is here to serve you.";
+	mes "Benvenuto. Mio onorevole maestro, ^ff0000"+strcharinfo(0)+"^000000...";
+	mes "Il vostro umile servo, "+strnpcinfo(1)+"Sono qui per servirti.";
 	next;
-	switch (select("Castle briefing:Invest in commercial growth:Invest in Castle Defenses:Summon Guardian:Hire / Fire a Kafra Employee:Go into Master's room")) {
+	switch (select("Briefing del castello:Investire nella crescita commerciale:Investire nelle difese del castello:Invoca Guardiano:Assumere/Licenziare un dipendente di Kafra:Vai nella stanza di Master")) {
 	case 1:
 		mes "["+strnpcinfo(1)+"]";
-		mes "I will report the Castle briefing, Master.";
+		mes "Riporterò il briefing del Castello, Maestro.";
 		mes " ";
-		mes "^0000ffNow, the commercial growth level is "+GetCastleData(strnpcinfo(2),CD_CURRENT_ECONOMY)+".";
+		mes "^0000ffOra, il livello di crescita commerciale è "+GetCastleData(strnpcinfo(2),CD_CURRENT_ECONOMY)+".";
 		if (GetCastleData(strnpcinfo(2),CD_INVESTED_ECONOMY)) {
-			mes " You invested "+GetCastleData(strnpcinfo(2),CD_INVESTED_ECONOMY)+" times in past 1 day.";
+			mes " Hai investito "+GetCastleData(strnpcinfo(2),CD_INVESTED_ECONOMY)+" ieri.";
 		}
-		mes " Now, the Castle Defense level is "+GetCastleData(strnpcinfo(2),CD_CURRENT_DEFENSE)+".^000000";
+		mes " Ora, il livello Difesa del Castello è "+GetCastleData(strnpcinfo(2),CD_CURRENT_DEFENSE)+".^000000";
 		if (GetCastleData(strnpcinfo(2),CD_INVESTED_DEFENSE)) {
-			mes " ^0000ff- You invested "+GetCastleData(strnpcinfo(2),CD_INVESTED_DEFENSE)+" times in past 1 day.^000000";
+			mes " ^0000ff- Hai investito "+GetCastleData(strnpcinfo(2),CD_INVESTED_DEFENSE)+" ore passate nell'ultimo giorno.^000000";
 		}
 		mes " ";
-		mes "That's all I have to report, Master.";
+		mes "È tutto quello che ho da riferire, Maestro.";
 		close;
 	case 2:
 		set .@Economy,GetCastleData(strnpcinfo(2),CD_CURRENT_ECONOMY);
@@ -662,43 +662,43 @@ OnRecvCastle:
 			set .@eco_invest,.@eco_invest*4;
 		}
 		mes "["+strnpcinfo(1)+"]";
-		mes "If you invest in commercial growth, the quantity of goods made by the guild will increase. Therfore, if you consider our future, investments will be a necessity.";
+		mes "Se investi nella crescita commerciale, la quantità di beni prodotti dalla gilda aumenterà. Pertanto, se consideri il nostro futuro, gli investimenti saranno una necessità.";
 		mes " ";
-		mes "Initially, you are able to invest just once but if you pay more money, you will be able to invest twice.";
+		mes "Inizialmente, puoi investire solo una volta ma se paghi più soldi, potrai investire due volte.";
 		if (.@Economy >= 100) {
 			mes " ";
-			mes "^ff0000The commercial growth level of our Castle is at it's highest, 100%. No more investments are needed. Just as I have expected from a great economist like you, Master.^000000";
+			mes "^ff0000Il livello di crescita commerciale del nostro Castello è al suo massimo, il 100%. Non sono necessari ulteriori investimenti. Proprio come mi aspettavo da un grande economista come lei, Maestro.^000000";
 			close;
 		}
 		if (GetCastleData(strnpcinfo(2),CD_INVESTED_ECONOMY) >= 2) {
 			mes " ";
-			mes "^ff0000You have already invested twice today. You cannot invest any more.^000000 I expect riches of the guild to grow at a high rate.";
+			mes "^ff0000Hai già investito due volte oggi. Non puoi più investire.^000000 Mi aspetto che le ricchezze della gilda crescano ad un ritmo elevato.";
 			close;
 		}
 		if (GetCastleData(strnpcinfo(2),CD_INVESTED_ECONOMY) == 0) {
 			mes " ";
-			mes "The current investment amount required is ^ff0000"+.@eco_invest+"^000000 zeny. Will you invest?";
+			mes "L'importo di investimento richiesto è ^ff0000"+.@eco_invest+"^000000 zeny. Investirai?";
 		}
 		else {
 			mes " ";
-			mes "You've invested once today... if you wish to invest once more, ^ff0000"+.@eco_invest+"^000000 more zeny will be needed.";
+			mes "Hai investito una volta oggi... se desideri investire ancora, ^ff0000"+.@eco_invest+"Saranno necessari altri ^000000 zeny.";
 		}
 		next;
-		switch (select("Invest in commercial growth:Cancel")) {
+		switch (select("Investire nella crescita commerciale:Annulla")) {
 		case 1:
 			if (Zeny < .@eco_invest) {
 				mes "["+strnpcinfo(1)+"]";
-				mes "I'm sorry but there is not enough zeny to invest. You will have to try again when you have the funds, Master.";
+				mes "Mi dispiace ma non ci sono abbastanza zeny per investire. Dovrai riprovare quando avrai i fondi, Maestro.";
 				close;
 			}
 			set Zeny, Zeny - .@eco_invest;
 			SetCastleData strnpcinfo(2),CD_INVESTED_ECONOMY,GetCastleData(strnpcinfo(2),CD_INVESTED_ECONOMY)+1;
 			mes "[ "+strnpcinfo(1)+"]";
-			mes "We finished the investment safely. I expect that our growth level will be increased by tomorrow.";
+			mes "Abbiamo completato l'investimento in sicurezza. Mi aspetto che il nostro livello di crescita sarà aumentato entro domani.";
 			close;
 		case 2:
 			mes "["+strnpcinfo(1)+"]";
-			mes "I'll do as you bid, my master... There is no hurry. We will do our best.";
+			mes "Farò come ordini, mio maestro... Non c'è fretta. Faremo del nostro meglio.";
 			close;
 		}
 	case 3:
@@ -728,49 +728,49 @@ OnRecvCastle:
 			set .@def_invest,.@def_invest*4;
 		}
 		mes "["+strnpcinfo(1)+"]";
-		mes "If you raise Castle Defenses, the durability of Guardians and the Emperium will increase. Therefore, if you consider our coming battles, some investment in this area will be required.";
+		mes "Se aumenti le Difese del Castello, la durabilità dei Guardiani e dell'Emperium aumenterà. Pertanto, se consideri i nostri imminenti combattimenti, sarà necessario un investimento in quest'area.";
 		mes " ";
-		mes "Originally you can invest just once but if you pay more money, you can invest twice.";
+		mes "Originariamente puoi investire solo una volta ma se paghi più soldi, puoi investire due volte.";
 		if (.@Defence >= 100) {
 			mes " ";
-			mes "^ff0000But the Castle Defense level of our Castle is at it's highest, 100%. No more investments are needed. Just as I have expected from a great strategist like you, Master.^000000";
+			mes "^ff0000Ma il livello di Difesa del nostro Castello è al suo massimo, 100%. Non sono necessari ulteriori investimenti. Proprio come mi aspettavo da un grande stratega come te, Maestro.^000000";
 			close;
 		}
 		if (GetCastleData(strnpcinfo(2),CD_INVESTED_DEFENSE) >= 2) {
 			mes " ";
-			mes "^ff0000You have already invested twice today. You cannot invest any more.^000000 I expect the Defenses of the guild to grow at a high rate.";
+			mes "^ff0000Hai già investito due volte oggi. Non puoi più investire.^000000Mi aspetto che le Difese della gilda crescano ad un ritmo elevato.";
 			close;
 		}
 		if (GetCastleData(strnpcinfo(2),CD_INVESTED_DEFENSE) == 0) {
 			mes " ";
-			mes "The current investment amount required is ^ff0000"+.@def_invest+"^000000 zeny. Will you invest?";
+			mes "L'importo di investimento richiesto è ^ff0000"+.@def_invest+"^000000 zeny. Investirai?";
 		}
 		else {
 			mes " ";
-			mes "You've invested once today... if you wish to invest once more, ^ff0000"+.@def_invest+"^000000 more zeny will be needed.";
+			mes "Hai investito una volta oggi... se desideri investire ancora, ^ff0000"+.@def_invest+"Saranno necessari altri ^000000 zeny.";
 		}
 		next;
-		switch (select("Invest in Castle Defenses.:Cancel")) {
+		switch (select("Investire nelle difese del castello.:Annulla")) {
 		case 1:
 			if (Zeny < .@def_invest) {
 				mes "["+strnpcinfo(1)+"]";
-				mes "I'm sorry but there is not enough zeny to invest. You will have to try again when you have the funds, Master.";
+				mes "Mi dispiace ma non ci sono abbastanza zeny per investire. Dovrai riprovare quando avrai i fondi, Maestro.";
 				close;
 			}
 			set Zeny, Zeny - .@def_invest;
 			SetCastleData strnpcinfo(2),CD_INVESTED_DEFENSE,GetCastleData(strnpcinfo(2),CD_INVESTED_DEFENSE)+1;
 			mes "[ "+strnpcinfo(1)+"]";
-			mes "We finished the investment safely. I expect that our Castle Defense level will be increased by tomorrow.";
+			mes "Abbiamo completato l'investimento in sicurezza. Mi aspetto che il nostro livello di Difesa del Castello aumenterà entro domani.";
 			close;
 		case 2:
 			mes "["+strnpcinfo(1)+"]";
-			mes "I'll do as you bid, my master... There is no hurry. We will do our best.";
+			mes "Farò come ordini, mio maestro... Non c'è fretta. Faremo del nostro meglio.";
 			close;
 		}
 	case 4:
 		mes "["+strnpcinfo(1)+"]";
-		mes "Will you summon a Guardian? It'll be a protector to defend us loyally.";
-		mes "Please select a guardian to defend us.";
+		mes "Invokerai un Guardiano? Sarà un protettore per difenderci lealmente.";
+		mes "Scegli un guardiano per difenderci.";
 		next;
 		for( set .@i, 0; .@i <= 7 ; set .@i, .@i+1 ) {
 			if (.@guardiantype[.@i] == 1) { set .@type$,"Guardian Soldier"; }
@@ -786,23 +786,23 @@ OnRecvCastle:
 		set .@menu$,.@gname$[0]+":"+.@gname$[1]+":"+.@gname$[2]+":"+.@gname$[3]+":"+.@gname$[4]+":"+.@gname$[5]+":"+.@gname$[6]+":"+.@gname$[7];
 		set .@GDnum,select(.@menu$)+9;
 		mes "["+strnpcinfo(1)+"]";
-		mes "Will you summon the chosen guardian? 10,000 zeny are required to summon a Guardian.";
+		mes "Invokerai il guardiano scelto? Sono necessari 10.000 zeny per evocare un Guardiano.";
 		next;
-		switch (select("Summon:Cancel")) {
+		switch (select("Richiamare:Annulla")) {
 		case 1:
 			if (getgdskilllv(.@GID,10002) == 0) {
 				mes "["+strnpcinfo(1)+"]";
-				mes "Master, we have not the resources to Summon the Guardian. If you want to accumulate them, you have to learn the Guild skill. We failed to summon the Guardian.";
+				mes "Maestro, non abbiamo le risorse per evocare il Guardiano. Se vuoi accumularle, devi imparare l'abilità del Gilda. Siamo falliti nell'evocare il Guardiano.";
 				close;
 			}
 			if (GetCastleData(strnpcinfo(2),.@GDnum) == 1) {
 				mes "["+strnpcinfo(1)+"]";
-				mes "Master, you already have summoned that Guardian. We cannot summon another.";
+				mes "Maestro, hai già evocato quel Guardiano. Non possiamo evocarne un altro.";
 				close;
 			}
 			if (Zeny < 10000) {
 				mes "["+strnpcinfo(1)+"]";
-				mes "Well... I'm sorry but we don't have funds to summon the Guardian. We failed to summon the Guardian.";
+				mes "Beh... Mi dispiace ma non abbiamo fondi per evocare il Guardiano. Non siamo riusciti a evocare il Guardiano.";
 				close;
 			}
 			set Zeny, Zeny - 10000;
@@ -813,103 +813,103 @@ OnRecvCastle:
 			else { set .@type,1286; }
 			guardian strnpcinfo(2),.@guardianposx[.@UseGID],.@guardianposy[.@UseGID],getmonsterinfo(.@type, MOB_NAME),.@type,"Guardian#"+strnpcinfo(2)+"::OnGuardianDied",.@UseGID;
 			mes "["+strnpcinfo(1)+"]";
-			mes "We completed the summoning of the Guardian. Our defenses are now increased with it in place.";
+			mes "Abbiamo completato la convocazione del Guardiano. Le nostre difese sono ora aumentate con la sua presenza.";
 			close;
 		case 2:
 			mes "["+strnpcinfo(1)+"]";
-			mes "I did as you ordered. But please remember if you the have money to spare, it'll be better to set it up.";
+			mes "Ho fatto come hai ordinato. Ma per favore ricorda che se hai soldi da spendere, sarà meglio sistemarlo.";
 			close;
 		}
 	case 5:
 		if (GetCastleData(strnpcinfo(2),CD_ENABLED_KAFRA) == 1) {
 			mes "["+strnpcinfo(1)+"]";
-			mes "We are currently hiring a Kafra Employee... Do you want to fire the Kafra Employee?";
+			mes "Stiamo attualmente assumendo un dipendente di Kafra... Vuoi licenziare il dipendente di Kafra?";
 			next;
-			switch (select("Fire:Cancel")) {
+			switch (select("Fuoco:Annulla")) {
 			case 1:
 				cutin "kafra_01",2;
-				mes "[ Hired Kafra Employee ]";
-				mes "I worked so hard... How can you do that, Master?... Please... Please reconsider... Check it again, Master... Please...";
+				mes "Assunto dipendente di Kafra";
+				mes "Ho lavorato così duramente... Come puoi fare questo, Maestro?... Per favore... Riconsidera... Controllalo di nuovo, Maestro... Per favore...";
 				next;
-				switch (select("Fire:Cancel")) {
+				switch (select("Fuoco:Annulla")) {
 				case 1:
-					mes "[ Hired Kafra Employee ]";
-					mes "Oh, my goodness! This is nonsense!";
+					mes "Assunto dipendente di Kafra";
+					mes "Oh, mio Dio! Questo è un nonsenso!";
 					next;
 					cutin "",255;
 					break;
 				case 2:
-					mes "[ Hired Kafra Employee ]";
-					mes "I'll work hard for you... Thank you!";
+					mes "Assunto dipendente di Kafra";
+					mes "Lavorerò sodo per te... Grazie!";
 					close;
 				}
 				break;
 			case 2:
 				mes "["+strnpcinfo(1)+"]";
-				mes "She worked hard in my opinion. It was a good decision to keep her.";
+				mes "Secondo me ha lavorato sodo. È stata una buona decisione tenerla.";
 				close;
 			}
 			disablenpc "Kafra Staff#"+strnpcinfo(2);
 			SetCastleData strnpcinfo(2),CD_ENABLED_KAFRA,0;
 			mes "["+strnpcinfo(1)+"]";
 			mes "....";
-			mes "I have discharged the Kafra Employee... But... are you unsatisfied with something?";
+			mes "Ho licenziato il dipendente di Kafra... Ma... non sei soddisfatto di qualcosa?";
 			close;
 		}
 		mes "["+strnpcinfo(1)+"]";
-		mes "Will you contact the kafra Main Office and Hire a Employee for our Castle?";
+		mes "Contatterai la sede centrale di Kafra e assumerai un dipendente per il nostro Castello?";
 		mes "^ff0000 10,000 zeny is required for their services. ";
 		next;
-		switch (select("Hire.:Cancel")) {
+		switch (select("Assumere.:Annulla")) {
 		case 1:
 			if (getgdskilllv(.@GID,10001) == 0) {
 				mes "["+strnpcinfo(1)+"]";
-				mes "Master, we can't hire a Kafra Employee because we don't have a contract with the Kafra Main Office. If you want to obtain a contract with the Kafra Main Office, you will need to learn the Guild skill first.";
+				mes "Maestro, non possiamo assumere un dipendente di Kafra perché non abbiamo un contratto con la sede centrale di Kafra. Se vuoi ottenere un contratto con la sede centrale di Kafra, dovrai prima imparare l'abilità Gilda.";
 				close;
 			}
 			if (Zeny < 10000) {
 				mes "["+strnpcinfo(1)+"]";
-				mes "Well... I'm sorry but we don't have enough funds to hire a Kafra Employee.";
+				mes "Beh... Mi dispiace ma non abbiamo fondi sufficienti per assumere un dipendente di Kafra.";
 				close;
 			}
 			set Zeny, Zeny - 10000;
 			enablenpc "Kafra Staff#"+strnpcinfo(2);
 			SetCastleData strnpcinfo(2),CD_ENABLED_KAFRA,1;
 			mes "["+strnpcinfo(1)+"]";
-			mes "We obtained a contract with the kafra Main Office, and hired a Kafra Employee.";
+			mes "Abbiamo ottenuto un contratto con la sede centrale di Kafra e assunto un dipendente di Kafra.";
 			next;
 			cutin "kafra_01",2;
-			mes "[ Hired Kafra Employee ]";
-			mes "How do you do? I was dispatched from the Main Office.";
-			mes "I'll do my best to not tarnish the reputation of the Guild.";
+			mes "Assunto dipendente di Kafra";
+			mes "Come sta? Sono stato inviato dall'Ufficio Centrale.";
+			mes "Farò del mio meglio per non macchiare la reputazione della Gilda.";
 			next;
 			cutin "",255;
 			mes "["+strnpcinfo(1)+"]";
-			mes "The Contract terms of the hired Kafra Employee are for 1 month and after this term, you will need to pay an additional fee.";
-			mes "It will be useful for our members.";
+			mes "I termini del contratto per il dipendente Kafra assunto sono di 1 mese e dopo questo periodo sarà necessario pagare una tariffa aggiuntiva.";
+			mes "Sarà utile per i nostri membri.";
 			close;
 		case 2:
 			mes "["+strnpcinfo(1)+"]";
-			mes "I did as you ordered, but some of our members will be unhappy. It will be better to hire a Kafra Employee quickly.";
+			mes "Ho fatto come hai ordinato, ma alcuni dei nostri membri saranno infelici. Sarà meglio assumere un dipendente di Kafra velocemente.";
 			close;
 		}
 	case 6:
 		mes "["+strnpcinfo(1)+"]";
-		mes "Do you want to visit the room where our valuables are stored?";
-		mes "That room is restricted to you... you are the only one with access to it.";
+		mes "Vuoi visitare la stanza dove sono conservati i nostri oggetti di valore?";
+		mes "Quella stanza è riservata a te... sei l'unico ad averne accesso.";
 		next;
-		switch (select("Go into Master's room.:Cancel")) {
+		switch (select("Vai nella stanza di Master.:Annulla")) {
 		case 1:
 			mes "["+strnpcinfo(1)+"]";
-			mes "I'll show you the secret path. Follow me...please.";
-			mes "When you want to return here, please press the secret switch.";
+			mes "Ti mostrerò il sentiero segreto. Seguimi...per favore.";
+			mes "Quando vuoi tornare qui, per favore premi l'interruttore segreto.";
 			close2;
 			warp strnpcinfo(2),.@masterroom[0],.@masterroom[1];
 			end;
 		case 2:
 			mes "["+strnpcinfo(1)+"]";
-			mes "Goods are produced once a day... if you don't remove them in time, they will not be produced anymore.";
-			mes "Therefore, it will be better if you check up on them from time to time.";
+			mes "Le merci vengono prodotte una volta al giorno... se non le rimuovi in tempo, non verranno più prodotte.";
+			mes "Pertanto, sarebbe meglio se li controllassi ogni tanto.";
 			close;
 		}
 	}
@@ -922,8 +922,8 @@ OnRecvCastle:
 	set .@GID,GetCastleData(strnpcinfo(2),CD_GUILD_ID);
 
 	if (.@GID == 0) {
-		mes "[Ringing Voice]";
-		mes "'Those who overcome an ordeal shows a great deal of bravery... and will find their way to another ordeal.'";
+		mes "[Voce che suona]";
+		mes "Coloro che superano un'prova mostrano una grande coraggio... e troveranno la strada per un'altra prova.";
 		close;
 	}
 
@@ -964,20 +964,20 @@ OnRecvCastle:
 		end;
 	}
 
-	mes "[Ringing Voice]";
-	mes "'Only the truly brave can take the test.'";
+	mes "[Voce che suona]";
+	mes "Solo i veramente coraggiosi possono sostenere il test.";
 	next;
 	mes " ";
-	mes "There's a small lever. Will you pull it?";
+	mes "C'è una piccola leva. La tirerai?";
 	next;
-	if(select("Pull.:Don't pull.") == 1) {
+	if(select("Tira.:Non tirare.") == 1) {
 		if (getcharid(2) == .@GID) {
 			close2;
 			warp .@destination$,.@coordinates[0],.@coordinates[1];
 			end;
 		}
 		mes " ";
-		mes "Nothing happened.";
+		mes "Nulla è successo.";
 		close;
 	}
 	close;

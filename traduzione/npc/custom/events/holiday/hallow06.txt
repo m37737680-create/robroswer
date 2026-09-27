@@ -14,83 +14,83 @@
 //============================================================
 
 prontera,151,190,5	script	Hallows' Eve Event	807,{
-	mes "[Hallows' Eve Event]";
+	mes "[Evento della Vigilia]";
 	if(Class == Job_Novice){
-		mes "I am sorry but you have to got a job to complete the event.";
+		mes "Mi dispiace ma devi trovare un lavoro per completare l'evento.";
 		emotion ET_SWEAT, playerattached();
 		close;
 	}
 	if((EVENT_HALWN06&1) && (EVENT_HALWN06&2)){
-		mes "I am sorry but you have already completed the event.";
+		mes "Mi dispiace ma hai già completato l'evento.";
 		emotion ET_SORRY;
 		close;
 	}
-	mes "Greetings fellow lively human.";
+	mes "Saluti caro umano vivace.";
 	next;
-	mes "[Hallows' Eve Event]";
-	mes "Halloween is upon us and it is almost time to adventure out into places few dare go.";
+	mes "[Evento della Vigilia]";
+	mes "Halloween è alle porte ed è quasi ora di avventurarsi in luoghi che pochi osano raggiungere.";
 	next;
-	mes "[Hallows' Eve Event]";
-	mes "Trick or treat, which do you prefer?";
+	mes "[Evento della Vigilia]";
+	mes "Zucca o dolciumi, quale preferisci?";
 	next;
-	menu "Trick",-, "Treat",L_Treat;
+	menu "Trucco",-, "Trattare",L_Treat;
 
-	mes "[Hallows' Eve Event]";
+	mes "[Evento della Vigilia]";
 	if(EVENT_HALWN06&2){
-		mes "I'm sorry but you have already had a trick. Why don't you go pick a treat now.";
+		mes "Mi dispiace ma hai già avuto un trucco. Perché non vai a prendere uno snack adesso.";
 		emotion ET_SORRY;
 		close;
 	}
-	mes "Give me a min...";
+	mes "Dammi un min...";
 	next;
 	set BaseExp,BaseExp+BaseLevel*1000;
 	set EVENT_HALWN06,EVENT_HALWN06|2;
 
-	mes "[Hallows' Eve Event]";
-	mes "Here is your treat. Your Base EXP has been slightly increased.";
+	mes "[Evento della Vigilia]";
+	mes "Ecco il tuo regalo. Il tuo EXP Base è stato leggermente aumentato.";
 	next;
-	mes "[Hallows' Eve Event]";
-	mes "I hope you enjoy your trick and Happy Halloween!";
+	mes "[Evento della Vigilia]";
+	mes "Spero ti diverta il tuo trucco e Buon Halloween!";
 	close;
 
 L_Treat:
-	mes "[Hallows' Eve Event]";
+	mes "[Evento della Vigilia]";
 	if(EVENT_HALWN06&1){
-		mes "I'm sorry but you have already had a treat. Why don't you go pick a trick now.";
+		mes "Mi dispiace ma hai già avuto un premio. Perché non vai a prendere un trucco adesso.";
 		emotion ET_SORRY;
 		close;
 	}
 	if(!(EVENT_HALWN06&4)){
-		mes "Great! This shall be so much fun.";
+		mes "Ottimo! Sarà così divertente.";
 		next;
-		mes "[Hallows' Eve Event]";
-		mes "I will be sending you on a scavenger hunt for items.";
+		mes "[Evento della Vigilia]";
+		mes "Ti invierò per una caccia al tesoro di oggetti.";
 		next;
-		mes "[Hallows' Eve Event]";
-		mes "Bring back all the necessary items, and I will create you a treat.";
+		mes "[Evento della Vigilia]";
+		mes "Riporta tutti gli oggetti necessari e ti creerò una prelibatezza.";
 		next;
-		mes "[Hallows' Eve Event]";
-		mes "Not just any normal treat either that you can eat, but it is something you can wear on your head.";
+		mes "[Evento della Vigilia]";
+		mes "Non un semplice dolcetto normale che puoi mangiare, ma è qualcosa che puoi indossare sulla testa.";
 		next;
-		mes "[Hallows' Eve Event]";
-		mes "But with all things made, some items are required first.";
-		mes "The list:";
-		mes "1 Hat,";
-		mes "30 Pumpkin, and";
-		mes "20 Black Piece of Cloth";
+		mes "[Evento della Vigilia]";
+		mes "Ma con tutte le cose fatte, alcuni elementi sono necessari prima.";
+		mes "La lista:";
+		mes "Cappello,";
+		mes "30 Zucca, e";
+		mes "20 Pezzi di Stoffa Neri";
 		next;
-		mes "[Hallows' Eve Event]";
-		mes "Hurry along now.";
+		mes "[Evento della Vigilia]";
+		mes "Sbrigati ora.";
 		set EVENT_HALWN06,EVENT_HALWN06|4;
 		close;
 	}
-	mes "Did you get the items I requested or do you need to see the list again?";
+	mes "Hai ricevuto gli articoli che ho richiesto o hai bisogno di vedere la lista di nuovo?";
 	next;
-	menu "Got'em",-, "Don't Have",L_Dont_Have, "See List",L_List;
+	menu "Ci ho",-, "Non avere",L_Dont_Have, "Vedi Lista",L_List;
 
-	mes "[Hallows' Eve Event]";
+	mes "[Evento della Vigilia]";
 	if((countitem(2220) < 1) || (countitem(535) < 30) || (countitem(7205) < 20)){
-		mes "You don't have enough items. Come back when you do.";
+		mes "Non hai abbastanza articoli. Torna quando ne avrai.";
 		emotion ET_SORRY;
 		close;
 	}
@@ -99,26 +99,26 @@ L_Treat:
 	delitem 7205,20;
 	getitem 5134,1;
 	set EVENT_HALWN06,EVENT_HALWN06|1;
-	mes "Good job! I hope you are happy with your item.";
+	mes "Ottimo lavoro! Spero che tu sia felice del tuo articolo.";
 	emotion ET_CONGRATULATION;
 	next;
-	mes "[Hallows' Eve Event]";
-	mes "Enjoy the rest of your Halloween.";
+	mes "[Evento della Vigilia]";
+	mes "Buon resto di Halloween.";
 	emotion ET_SCISSOR, playerattached();
 	close;
 
 L_Dont_Have:
-	mes "[Hallows' Eve Event]";
-	mes "Go back out and search for them. Would you like to view the list?";
+	mes "[Evento della Vigilia]";
+	mes "Torna fuori e cercali. Vorresti visualizzare l'elenco?";
 	next;
-	menu "No",-, "Yes",L_List;
+	menu "No",-, "Sì",L_List;
 	close;
 
 L_List:
-	mes "[Hallows' Eve Event]";
-	mes "I require the following items:";
-	mes "1 Hat,";
-	mes "30 Pumpkin, and";
-	mes "20 Black Piece of Cloth.";
+	mes "[Evento della Vigilia]";
+	mes "Richiedo i seguenti articoli:";
+	mes "Cappello,";
+	mes "30 Zucca, e";
+	mes "20 Pezzi di Stoffa Neri.";
 	close;
 }

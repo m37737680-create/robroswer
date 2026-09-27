@@ -29,15 +29,15 @@ prontera,129,215,5	script	Questboard	4_BOARD3,{
 			mes "^FF0000"+getitemname(getd("."+currentquest$+"_collectionitem["+.@j+"]"))+" - "+countitem(getd("."+currentquest$+"_collectionitem["+.@j+"]"))+"/"+getd("."+currentquest$+"_collectionitem["+(.@j+1)+"]")+" ea.^000000";
 		}
 		mes "--------------------------------";
-		mes "[Reward]";
-		mes "Item: ^0000FF"+((getd("." +currentquest$+"_collectionprize"))?getitemname(getd("." +currentquest$+"_collectionprize"))+" - "+getd("." +currentquest$+"_collectionamount")+" ea.^000000":"Nothing^000000");
+		mes "[Ricompensa]";
+		mes "Articolo: ^0000FF"+((getd("." +currentquest$+"premio_collezione"))?getitemname(getd("." +currentquest$+"premio_collezione"))+" - "+getd("." +currentquest$+"importo_collezione")+" ea.^000000":"Nulla^000000");
 		mes "Zeny: ^0000FF"+getd("." +currentquest$+"_collectionzeny")+"^000000";
 		mes "Base EXP: ^0000FF"+getd("." +currentquest$+"_collectionexp["+0+"]")+"^000000";
-		mes "Job EXP: ^0000FF"+getd("." +currentquest$+"_collectionexp["+1+"]")+"^000000";
+		mes "Esperienza Lavorativa: ^0000FF"+getd("." +currentquest$+"_collectionexp["+1+"]")+"^000000";
 		next;
-		if(select("Finish:Abort") == 2){
+		if(select("Finisci:Abrore") == 2){
 			mes "[^FF7700Questboard^000000]";
-			mes "Quest aborted.";
+			mes "Annullato.";
 			set currentquest$, "";
 			set c_run, false;
 			close;
@@ -52,18 +52,18 @@ prontera,129,215,5	script	Questboard	4_BOARD3,{
 		set .@size, getarraysize(getd("."+ currentquest$ + "_huntingmob"));
 		for( set .@j, 0; .@j < .@size; set .@j,.@j+2){
 			set .@currentmob, getd("."+currentquest$+"_huntingmob["+(.@j)+"]");
-			mes "^FF0000"+getmonsterinfo(getd("."+currentquest$+"_huntingmob["+.@j+"]"), MOB_NAME)+" - "+getd(currentquest$+"_"+.@currentmob+"_"+(.@j+1)+"_killcount")+"/"+getd("."+currentquest$+"_huntingmob["+(.@j+1)+"]")+" ea.^000000";
+			mes "^FF0000"+getmonsterinfo(getd("."+currentquest$+"_huntingmob["+.@j+"]"), MOB_NAME)+" - "+getd(currentquest$+"_"+.@currentmob+"_"+(.@j+1)+"numero di uccisioni")+"/"+getd("."+currentquest$+"_huntingmob["+(.@j+1)+"]")+" ea.^000000";
 		}
 		mes "--------------------------------";
-		mes "[Reward]";
-		mes "Item: ^0000FF"+((getd("." +currentquest$+"_huntingprize"))?getitemname(getd("." +currentquest$+"_huntingprize"))+" - "+getd("." +currentquest$+"_huntingamount")+" ea.^000000":"Nothing^000000");
+		mes "[Ricompensa]";
+		mes "Articolo: ^0000FF"+((getd("." +currentquest$+"caccia al premio"))?getitemname(getd("." +currentquest$+"caccia al premio"))+" - "+getd("." +currentquest$+"quanto caccia")+" ea.^000000":"Nulla^000000");
 		mes "Zeny: ^0000FF"+getd("." +currentquest$+"_huntingzeny")+"^000000";
 		mes "Base EXP: ^0000FF"+getd("." +currentquest$+"_huntingexp["+0+"]")+"^000000";
-		mes "Job EXP: ^0000FF"+getd("." +currentquest$+"_huntingexp["+1+"]")+"^000000";
+		mes "Esperienza Lavorativa: ^0000FF"+getd("." +currentquest$+"_huntingexp["+1+"]")+"^000000";
 		next;
-		if(select("Finish:Abort") == 2){
+		if(select("Finisci:Abrore") == 2){
 			mes "[^FF7700Questboard^000000]";
-			mes "Quest aborted.";
+			mes "Annullato.";
 			for(set .@x, 1; .@x < .@size; set .@x,.@x+2){
 				set .@currentmob, getd("."+currentquest$+"_huntingmob["+(.@x-1)+"]");
 				setd(currentquest$+"_"+.@currentmob+"_"+.@x+"_killcount", 0);
@@ -76,7 +76,7 @@ prontera,129,215,5	script	Questboard	4_BOARD3,{
 	}
 
 	mes "[^FF7700Questboard^000000]";
-	mes "Select category:";
+	mes "Seleziona categoria:";
 	next;
 
 	switch(select((.collection)?"Collection Quests":"",
@@ -93,15 +93,15 @@ prontera,129,215,5	script	Questboard	4_BOARD3,{
 		if(.quest_repeat == true){
 			if(gettimetick(2) < getd(.@selection + "_collection_delay")){
 				mes "[^FF7700Questboard^000000]";
-				mes "You have to wait ^0000FF"+Time2Str(getd(.@selection + "_collection_delay"))+"^000000 to do this quest again.";
+				mes "Devi aspettare ^0000FF"+Time2Str(getd(.@selection + "ritardo_collezione"))+"^000000 per fare questa missione di nuovo.";
 				close;
 			}
 		}
 		else{
 			if(getd(.@selection + "_collection_repeat") == true){
 				mes "[^FF7700Questboard^000000]";
-				mes "You already did this quest.";
-				mes "Please choose another one.";
+				mes "Hai già fatto questa missione.";
+				mes "Ne scegli un altro.";
 				close;
 			}
 		}
@@ -113,26 +113,26 @@ prontera,129,215,5	script	Questboard	4_BOARD3,{
 			mes "^FF0000"+getitemname(getd("."+.@selection+"_collectionitem["+.@j+"]"))+" - "+getd("."+.@selection+"_collectionitem["+(.@j+1)+"]")+" ea.^000000";
 		}
 		mes "--------------------------------";
-		mes "[Reward]";
-		mes "Item: ^0000FF"+((getd("." +.@selection+"_collectionprize"))?getitemname(getd("." +.@selection+"_collectionprize"))+" - "+getd("." +.@selection+"_collectionamount")+" ea.^000000":"Nothing^000000");
+		mes "[Ricompensa]";
+		mes "Articolo: ^0000FF"+((getd("." +.@selection+"premio_collezione"))?getitemname(getd("." +.@selection+"premio_collezione"))+" - "+getd("." +.@selection+"importo_collezione")+" ea.^000000":"Nulla^000000");
 		mes "Zeny: ^0000FF"+getd("." +.@selection+"_collectionzeny")+"^000000";
 		mes "Base EXP: ^0000FF"+getd("." +.@selection+"_collectionexp["+0+"]")+"^000000";
-		mes "Job EXP: ^0000FF"+getd("." +.@selection+"_collectionexp["+1+"]")+"^000000";
+		mes "Esperienza Lavorativa: ^0000FF"+getd("." +.@selection+"_collectionexp["+1+"]")+"^000000";
 		next;
-		if(select("Accept:Decline") == 2){
+		if(select("Accetta:Rifiutare") == 2){
 			close;
 		}
 		if(BaseLevel >= getd("." +.@selection+"_collectionmin") && BaseLevel <= getd("." +.@selection+"_collectionmax")){
 			mes "[^FF7700Questboard^000000]";
-			mes "Quest accepted.";
+			mes "Accettato.";
 			set c_run, true;
 			set currentquest$, .@selection;
 			close;
 		}
 		else{
 			mes "[^FF7700Questboard^000000]";
-			mes "You don't have the required";
-			mes "level to do this quest.";
+			mes "Non hai il richiesto";
+			mes "livello per fare questa missione.";
 			close;
 		}
 
@@ -146,15 +146,15 @@ prontera,129,215,5	script	Questboard	4_BOARD3,{
 		if(.quest_repeat == true){
 			if(gettimetick(2) < getd(.@selection + "_hunting_delay")){
 				mes "[^FF7700Questboard^000000]";
-				mes "You have to wait ^0000FF"+Time2Str(getd(.@selection + "_hunting_delay"))+"^000000 to do this quest again.";
+				mes "Devi aspettare ^0000FF"+Time2Str(getd(.@selection + "ritardo_caccia"))+"^000000 per fare questa missione di nuovo.";
 				close;
 			}
 		}
 		else{
 			if(getd(.@selection + "_hunting_repeat") == true){
 				mes "[^FF7700Questboard^000000]";
-				mes "You already did this quest.";
-				mes "Please choose another one.";
+				mes "Hai già fatto questa missione.";
+				mes "Ne scegli un altro.";
 				close;
 			}
 		}
@@ -166,26 +166,26 @@ prontera,129,215,5	script	Questboard	4_BOARD3,{
 			mes "^FF0000"+getmonsterinfo(getd("."+.@selection+"_huntingmob["+.@j+"]"), MOB_NAME)+" - "+getd("."+.@selection+"_huntingmob["+(.@j+1)+"]")+" ea.^000000";
 		}
 		mes "--------------------------------";
-		mes "[Reward]";
-		mes "Item: ^0000FF"+((getd("." +.@selection+"_huntingprize"))?getitemname(getd("." +.@selection+"_huntingprize"))+" - "+getd("." +.@selection+"_huntingamount")+" ea.^000000":"Nothing^000000");
+		mes "[Ricompensa]";
+		mes "Articolo: ^0000FF"+((getd("." +.@selection+"caccia al premio"))?getitemname(getd("." +.@selection+"caccia al premio"))+" - "+getd("." +.@selection+"quanto caccia")+" ea.^000000":"Nulla^000000");
 		mes "Zeny: ^0000FF"+getd("." +.@selection+"_huntingzeny")+"^000000";
 		mes "Base EXP: ^0000FF"+getd("." +.@selection+"_huntingexp["+0+"]")+"^000000";
-		mes "Job EXP: ^0000FF"+getd("." +.@selection+"_huntingexp["+1+"]")+"^000000";
+		mes "Esperienza Lavorativa: ^0000FF"+getd("." +.@selection+"_huntingexp["+1+"]")+"^000000";
 		next;
-		if(select("Accept:Decline") == 2){
+		if(select("Accetta:Rifiutare") == 2){
 			close;
 		}
 		if(BaseLevel >= getd("." +.@selection+"_huntingmin") && BaseLevel <= getd("." +.@selection+"_huntingmax")){
 			mes "[^FF7700Questboard^000000]";
-			mes "Quest accepted.";
+			mes "Accettato.";
 			set h_run, true;
 			set currentquest$, .@selection;
 			close;
 		}
 		else{
 			mes "[^FF7700Questboard^000000]";
-			mes "You don't have the required";
-			mes "level to do this quest.";
+			mes "Non hai il richiesto";
+			mes "livello per fare questa missione.";
 			close;
 		}
 
@@ -202,14 +202,14 @@ L_checkitems:
 	}
 	if(.@checkitem<.@size){
 		mes "[^FF7700Questboard^000000]";
-		mes "You don't have everything.";
+		mes "Non hai tutto.";
 		close;
 	}
 	for( set .@delcount,0; .@delcount < .@size; set .@delcount,.@delcount+2){
 		delitem getd("."+currentquest$+"_collectionitem["+.@delcount+"]"),getd("."+currentquest$+"_collectionitem["+(.@delcount+1)+"]");
 	}
 	mes "[^FF7700Questboard^000000]";
-	mes "Congratulation! Here is your Reward.";
+	mes "Congratulazioni! Ecco il tuo Premio.";
 	if(getd("." +currentquest$+"_collectionprize")!=0) getitem(getd("." +currentquest$+"_collectionprize"),getd("." +currentquest$+"_collectionamount"));
 	set Zeny,Zeny+getd("." +currentquest$+"_collectionzeny");
 	getexp getd("." +currentquest$+"_collectionexp["+0+"]"),getd("." +currentquest$+"_collectionexp["+1+"]");
@@ -237,11 +237,11 @@ L_checkmobs:
 L_checkmobs2:
 	if(.@checkmonster<.@goal){
 		mes "[^FF7700Questboard^000000]";
-		mes "You didn't kill everything.";
+		mes "Non hai ucciso tutto.";
 		close;
 	}
 	mes "[^FF7700Questboard^000000]";
-	mes "Congratulation! Here is your Reward.";
+	mes "Congratulazioni! Ecco il tuo Premio.";
 	set .@size, getarraysize(getd("."+currentquest$+"_huntingmob"));
 	for(set .@x, 1; .@x < .@size; set .@x,.@x+2){
 		set .@currentmob, getd("."+currentquest$+"_huntingmob["+(.@x-1)+"]");

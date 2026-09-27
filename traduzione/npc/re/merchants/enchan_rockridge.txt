@@ -10,36 +10,36 @@
 // enchant npc
 har_in01,17,74,7	script	Contraband Processor#pa	4_DR_SOLDIER,{
 	if (checkweight(1201,1) == 0) {
-		mes "I'm carrying too many types of items. I should lighten my bag first.";
+		mes "Sto portando troppi tipi di oggetti. Dovrei alleggerire la borsa prima.";
 		close;
 	}
 	if ((MaxWeight - Weight) < 10000) {
-		mes "I'm overweight. I'd better lighten my bag first.";
+		mes "Sono in sovrappeso. È meglio che alleggerisca prima la mia borsa.";
 		close;
 	}
 	disable_items;
-	mes "[Contraband Processor]";
-	mes "Have you tried to buy some contraband items with Rock Ridge Coins? I can make your contraband items better.";
+	mes "Processore di contrabbando";
+	mes "Hai provato a comprare qualche articolo contrabbando con le Monete di Rock Ridge? Posso migliorare i tuoi articoli contrabbando.";
 	next;
-	.@reset = select( "Make them better? How?", "Enchant contraband items.", "Reset contraband item Enchantment level." ) - 2;
+	.@reset = select( "Renderli migliori? Come?", "Incantare oggetti proibiti.", "Resetta il livello dell'incantesimo dell'oggetto contrabbandato." ) - 2;
 	if (.@reset == -1) {
-		mes "[Contraband Processor]";
-		mes "Ah, have we met before? I meet so many people every day that I can't remember all of their faces. Let me catch you up to speed.";
+		mes "Processore di contrabbando";
+		mes "Ah, ci siamo incontrati prima? Incontro così tante persone ogni giorno che non riesco a ricordarmi tutti i loro volti. Lasciami aggiornarti.";
 		next;
-		mes "[Contraband Processor]";
-		mes "I can enchant the equipment that you can buy with Rock Ridge Coins, for up to 3 sockets for Armor and Garments and up to 2 sockets for Accessories.";
+		mes "Processore di contrabbando";
+		mes "Posso incantare l'equipaggiamento che puoi acquistare con Monete di Cresta Rocciosa, per fino a 3 socket per Armatura e Indumenti e fino a 2 socket per Accessori.";
 		next;
-		mes "[Contraband Processor]";
-		mes "I charge 2 Rock Ridge Coins per socket for both enchanting and resetting.";
+		mes "Processore di contrabbando";
+		mes "Chiedo 2 Monete di Rock Ridge per socket sia per l'incantamento che per il reset.";
 		next;
-		mes "[Contraband Processor]";
-		mes "Oh, and note that these contraband items are prone to destruction, especially when they are reset.";
+		mes "Processore di contrabbando";
+		mes "E nota che questi articoli contrabbandati sono soggetti a distruzione, specialmente quando vengono resettati.";
 		close;
 	}
-	switch( select( "Cancel", "Armor", "Garment", "Accessory (Right Slot)" ) ) {
+	switch( select( "Annulla", "Armatura", "Indumento", "Accessorio (Slot Destro)" ) ) {
 	case 1:
-		mes "[Contraband Processor]";
-		mes "You're silly.";
+		mes "Processore di contrabbando";
+		mes "Sei sciocco.";
 		close;
 	case 2:
 		.@part = EQI_ARMOR;
@@ -67,34 +67,34 @@ har_in01,17,74,7	script	Contraband Processor#pa	4_DR_SOLDIER,{
 	case 28442:	// Hippie_Feather
 		break;
 	case -1:
-		mes "[Contraband Processor]";
-		mes "Why are you wasting my time? Go wear your equipment first.";
+		mes "Processore di contrabbando";
+		mes "Perché mi stai facendo perdere tempo? Vai a indossare la tua attrezzatura prima.";
 		close;
 	default:
-		mes "[Contraband Processor]";
-		mes "I don't handle items like this.";
+		mes "Processore di contrabbando";
+		mes "Non gestisco articoli come questo.";
 		close;
 	}
 	.@refine = getequiprefinerycnt(.@part);
 	setarray .@card[0], getequipcardid(.@part,0), getequipcardid(.@part,1), getequipcardid(.@part,2), getequipcardid(.@part,3);
 	copyarray .@tmp_card[0], .@card[0], 4;
 	if ((.@card[1] && getiteminfo(.@card[1], ITEMINFO_SUBTYPE) == CARD_NORMAL) || (.@card[2] && getiteminfo(.@card[2], ITEMINFO_SUBTYPE) == CARD_NORMAL) || (.@card[3] && getiteminfo(.@card[3], ITEMINFO_SUBTYPE) == CARD_NORMAL)) {// armor enchant system custom check
-		mes "[Contraband Processor]";
-		mes "Something wrong happened.";
+		mes "Processore di contrabbando";
+		mes "Qualcosa è successo di sbagliato.";
 		close;
 	}
 	switch( .@reset ) {
 	case TRUE:
 		if (.@card[3] == 0) {
-			mes "[Contraband Processor]";
-			mes "It's not enchanted. What do you expect me to reset?";
+			mes "Processore di contrabbando";
+			mes "Non è incantato. Cosa ti aspetto che reimposti?";
 			close;
 		}
-		mes "[Contraband Processor]";
-		mes "Oh, do you really want to reset it? As I told you before, contraband Vigilante Badges are prone to destruction.";
-		if (select( "I'll come back later.", "Let's do it." ) == 1) {
-			mes "[Contraband Processor]";
-			mes "Alright, come back if you change your mind.";
+		mes "Processore di contrabbando";
+		mes "Oh, vuoi davvero resettarlo? Come ti ho detto prima, i Badge Vigilante contrabbandieri sono soggetti a distruzione.";
+		if (select( "Tornerò più tardi.", "Facciamolo." ) == 1) {
+			mes "Processore di contrabbando";
+			mes "Tornaci se cambi idea.";
 			close;
 		}
 		if (.@part == EQI_ACC_R)
@@ -108,8 +108,8 @@ har_in01,17,74,7	script	Contraband Processor#pa	4_DR_SOLDIER,{
 		case EQI_ARMOR:
 		case EQI_GARMENT:
 			if (.@card[1] > 0) {
-				mes "[Contraband Processor]";
-				mes "This has been enchanted to the maximum limit. Maybe you should reset it.";
+				mes "Processore di contrabbando";
+				mes "Questo è stato incantato al limite massimo. Forse dovresti resettarlo.";
 				close;
 			}
 			if (.@card[3] == 0)
@@ -171,8 +171,8 @@ har_in01,17,74,7	script	Contraband Processor#pa	4_DR_SOLDIER,{
 			break;
 		case EQI_ACC_R:
 			if (.@card[2] > 0) {
-				mes "[Contraband Processor]";
-				mes "This has been enchanted to the maximum limit. Maybe you should reset it.";
+				mes "Processore di contrabbando";
+				mes "Questo è stato incantato al limite massimo. Forse dovresti resettarlo.";
 				close;
 			}
 			if (.@card[3] == 0)
@@ -204,15 +204,15 @@ har_in01,17,74,7	script	Contraband Processor#pa	4_DR_SOLDIER,{
 			else .@card[.@enchant_slot] = getiteminfo("Atk_Speed1", ITEMINFO_ID);
 			break;
 		default:
-			mes "[Contraband Processor]";
-			mes "Did you just try to switch equipment?";
+			mes "Processore di contrabbando";
+			mes "Hai appena provato a cambiare attrezzatura?";
 			close;
 		}
 		break;
 	}
 	if (countitem(25250) < 2) {
-		mes "[Contraband Processor]";
-		mes "I charge 2 Rock Ridge Coins for this service. Bring them to me.";
+		mes "Processore di contrabbando";
+		mes "Chiedo 2 Monete di Rock Ridge per questo servizio. Portatele a me.";
 		close;
 	}
 	delitem 25250,2;// Rock_Ridge_Coin
@@ -224,133 +224,133 @@ har_in01,17,74,7	script	Contraband Processor#pa	4_DR_SOLDIER,{
 	delequip .@part;
 	if (rand(100) < .@chance_of_breaking_on_reset) {
 		specialeffect2 EF_LORD;
-		mes "[Contraband Processor]";
-		mes "Ah, that didn't turn out well.";
-		mes "Well, just my luck.";
+		mes "Processore di contrabbando";
+		mes "Ah, non è venuto bene.";
+		mes "Beh, solo la mia fortuna.";
 		close;
 	}
 	specialeffect2 EF_REPAIRWEAPON;
 	getitem2 .@equip_id,1,1,.@refine,0,.@card[0],.@card[1],.@card[2],.@card[3];
-	mes "[Contraband Processor]";
-	mes "Done. Check it out.";
+	mes "Processore di contrabbando";
+	mes "Fatto. Guardalo.";
 	close;
 }
 
 
 har_in01,24,69,3	script	Affable Lady#rockridge0	1_F_MERCHANT_02,{
 	if (checkweight(1301,3) == 0) {
-		mes "[Affable Lady]";
-		mes "You must be really strong to carry so much with you.";
+		mes "Dama affabile";
+		mes "Devi essere davvero forte per portare così tanto con te.";
 		next;
-		mes "[Affable Lady]";
-		mes "If you want to lighten your bag, there's a Kafra employee in the direction of the sheriff's office.";
+		mes "Dama affabile";
+		mes "Se vuoi alleggerire la borsa, c'è un dipendente di Kafra nella direzione dell'ufficio dello sceriffo.";
 		close;
 	}
-	mes "[Affable Lady]";
-	mes "You're an adventurer. I like people like you who have passion.";
-	mes "So, are you here because of ^0000CDit^000000?";
+	mes "Dama affabile";
+	mes "Sei un avventuriero. Mi piacciono persone come te che hanno passione.";
+	mes "Quindi, sei qui a causa di ^0000CDit^000000?";
 	next;
-	if (select( "Because of what?", "I am." ) == 1) {
-		mes "[Affable Lady]";
-		mes "Hmpf, don't act like you don't know. I'm talking about the special equipment you can buy in Rock Ridge.";
+	if (select( "A causa di cosa?", "Io sono." ) == 1) {
+		mes "Dama affabile";
+		mes "Hmph, non fare come se non lo sapessi. Sto parlando dell'equipaggiamento speciale che puoi comprare a Rock Ridge.";
 		next;
-		mes "[Affable Lady]";
-		mes "The armor dealer brings in new stock every Friday, and it's sold almost as soon as it's in, every time.";
+		mes "Dama affabile";
+		mes "Il mercante di armature porta nuove scorte ogni venerdì, e vengono vendute quasi non appena arrivano, ogni volta.";
 		close;
 	}
-	mes "[Affable Lady]";
+	mes "Dama affabile";
 	mes "*Chuckle* Which one do you want: one for your ^0000CDshoulders^000000, ^0000CDneck, or chest^000000?";
 	next;
-	switch( select( "Um, anything.", "For my shoulders", "For my neck or chest" ) ) {
+	switch( select( "Ehm, qualsiasi cosa.", "Per le mie spalle", "Per il collo o per il petto" ) ) {
 	case 1:
-		mes "[Affable Lady]";
-		mes "*Chuckle* Sure, young people always look good, no matter what they wear.";
-		mes "But if you want something special, go check the armor shop.";
+		mes "Dama affabile";
+		mes "*Chuckle* Certo, i giovani sembrano sempre bene, non importa cosa indossino.";
+		mes "Ma se vuoi qualcosa di speciale, vai a dare un'occhiata al negozio di armature.";
 		close;
 	case 2:
-		mes "[Affable Lady]";
-		mes "Pick one you like, and I'll tell you about it.";
-		mes "All the equipment is ^0000CD3,000,000 Zeny^000000 regardless of its type.";
+		mes "Dama affabile";
+		mes "Scegline uno che ti piace e te ne parlerò.";
+		mes "Tutte le attrezzature costano ^0000CD3,000,000 Zeny^000000 indipendentemente dal loro tipo.";
 		next;
 		.@cost = 3000000;
 		setarray .@item_id[0],20820,20821,20822;
 		setarray .@item_name$[0], "Elemental Cape", "Golden Scarf", "Mine Worker Backpack";
-		.@s = select( "Elemental Cape", "Golden Scarf", "Mine Worker Backpack", "I have no idea what you're talking about." ) - 1;
+		.@s = select( "Mantello Elementale", "Sciarpa d'oro", "Zaino Minatore", "Non ho idea di cosa tu stia parlando." ) - 1;
 		break;
 	case 3:
-		mes "[Affable Lady]";
-		mes "Pick one you like, and I'll tell you about it.";
-		mes "All the equipment is ^0000CD1,500,000 Zeny^000000 regardless of its type.";
+		mes "Dama affabile";
+		mes "Scegline uno che ti piace e te ne parlerò.";
+		mes "Tutte le attrezzature valgono ^0000CD1,500,000 Zeny^000000 indipendentemente dal loro tipo.";
 		next;
 		.@cost = 1500000;
 		setarray .@item_id[0],28441,28442;
 		setarray .@item_name$[0], "Vigilante Badge", "Hippie Feather";
-		.@s = select( "Vigilante Badge", "Hippie Feather", "I have no idea what you're talking about." ) - 1;
+		.@s = select( "Badge di Vigilante", "Piuma Hippie", "Non ho idea di cosa tu stia parlando." ) - 1;
 		break;
 	}
 	if (.@item_id[.@s] == 0) {
-		mes "[Affable Lady]";
-		mes "Oops, I guess you're too innocent to hear what I just said.";
-		mes "You should forget it, for your own good.";
+		mes "Dama affabile";
+		mes "Ops, immagino che tu sia troppo innocente per sentire quello che ho appena detto.";
+		mes "Dovresti dimenticarlo, per il tuo bene.";
 		close;
 	}
-	mes "[Affable Lady]";
-	mes "Ah, you're interested in the";
+	mes "Dama affabile";
+	mes "Ah, sei interessato al";
 	mes "[" + mesitemlink( .@item_id[.@s], false, .@item_name$[.@s] ) + "].";
-	mes "Click the name for the detailed description.";
-	mes "As I told you, it's ^0000CD"+callfunc("F_InsertComma",.@cost)+" Zeny^000000. Do you want to buy it?";
+	mes "Clicca sul nome per la descrizione dettagliata.";
+	mes "Come ti ho detto, è ^0000CD"+callfunc("F_InserisciVirgola",.@cost)+" Zeny^000000. Vuoi comprarlo?";
 	next;
-	if (select( "Yes.", "No." ) == 2) {
-		mes "[Affable Lady]";
-		mes "Huh. So I wasted my breath on someone who doesn't want to buy.";
-		mes "Each and every piece of this equipment has a story to tell, and it might hold a grudge if you don't take it with you.";
+	if (select( "Sì.", "No." ) == 2) {
+		mes "Dama affabile";
+		mes "Eh. Quindi ho sprecato il mio fiato su qualcuno che non vuole comprare.";
+		mes "Ogni singolo pezzo di questa attrezzatura ha una storia da raccontare, e potrebbe tenere un rancore se non te lo porti via.";
 		next;
-		mes "[Affable Lady]";
-		mes "I suggest you don't tell anyone else about it,";
-		mes "and promise me you'll be back. I'll keep the equipment for you.";
+		mes "Dama affabile";
+		mes "Ti suggerisco di non dirlo ad altri,";
+		mes "e promettimi che tornerai. Ti conserverò l'attrezzatura.";
 		close;
 	}
 	if (Zeny < .@cost) {
-		mes "[Affable Lady]";
-		mes "Uh-oh, you don't have enough money to buy this.";
-		mes "Why don't you come back later? I'll always be here.";
+		mes "Dama affabile";
+		mes "Oh no, non hai abbastanza soldi per comprare questo.";
+		mes "Perché non torni più tardi? Io sarò sempre qui.";
 		close;
 	}
-	mes "[Affable Lady]";
-	mes "Sure. Here's your " + .@item_name$[.@s] + ".";
+	mes "Dama affabile";
+	mes "Certo. Ecco il tuo " + .@item_name$[.@s] + ".";
 	Zeny = Zeny - .@cost;
 	getitem .@item_id[.@s],1;
 	next;
-	mes "[Affable Lady]";
-	mes "People often let their preconceived notions fool them. Most people don't think an old woman like me would sell such special items.";
-	mes "Come back if you want more equipment. I'll always be here. *Chuckle*";
+	mes "Dama affabile";
+	mes "Le persone spesso lasciano che le loro nozioni preconcette ingannino. La maggior parte delle persone non pensa che una vecchia signora come me venderebbe articoli così speciali.";
+	mes "Torna pure se vuoi più attrezzatura. Ci sarò sempre. *Risata*";
 	close;
 }
 
 har_in01,34,81,5	script	Howard#rr	4_M_TATIO,{
 	if (checkweight(1301,1) == 0) {
 		mes "[Howard]";
-		mes "Err, you're carrying a lot of things.";
-		mes "Why don't you go";
-		mes "lighten your bag first?";
+		mes "Scusa, stai portando un sacco di cose.";
+		mes "Perché non vai";
+		mes "alleggerisci la tua borsa prima?";
 		close;
 	}
 	mes "[Howard]";
-	mes "Hello. How may I help you today?";
+	mes "Ciao. Come posso aiutarti oggi?";
 	next;
 	if (countitem(25250) < 1) {
 		mes "[Howard]";
-		mes "Hm, you don't have the coins.";
-		mes "Why don't you collect them first?";
+		mes "Hm, non hai le monete.";
+		mes "Perché non li raccogli prima?";
 		close;
 	}
 	mes "[Howard]";
-	mes "Ah, you have the coins.";
-	mes "Thank you for helping Rock Ridge.";
-	mes "Take a look around and see if there's something you want.";
+	mes "Ah, hai le monete.";
+	mes "Grazie per aver aiutato Rock Ridge.";
+	mes "Dai un'occhiata e vedi se c'è qualcosa che vuoi.";
 	next;
 	mes "[Howard]";
-	mes "What would you like to have?";
+	mes "Cosa vorresti mangiare/bere?";
 	next;
 	setarray .@data$[0],
 		 24, 15176, "Vigilante Suit",	// <cost>, <item ID>, <item name>
@@ -372,22 +372,22 @@ har_in01,34,81,5	script	Howard#rr	4_M_TATIO,{
 
 	mes "[Howard]";
 	mes mesitemlink( atoi( .@data$[.@s+1] ), false, .@data$[.@s+2] ) + ", got it.";
-	mes "That'll be " + .@data$[.@s] + " Rock Ridge Coins.";
-	mes "Are you certain you want this item?";
+	mes "Saranno " + .@data$[.@s] + " Monete Rock Ridge.";
+	mes "Sei sicuro di volere questo articolo?";
 	next;
-	if (select( "Yes.", "No." ) == 2) {
+	if (select( "Sì.", "No." ) == 2) {
 		mes "[Howard]";
-		mes "If you have made up your mind, then please talk to me again.";
+		mes "Se ti sei deciso/a, allora per favore parlami di nuovo.";
 		close;
 	}
 	if (countitem(25250) < atoi(.@data$[.@s])) {
 		mes "[Howard]";
-		mes "You don't have enough coins.";
-		mes "Please bring more.";
+		mes "Non hai abbastanza monete.";
+		mes "Ne porta di più.";
 		close;
 	}
 	mes "[Howard]";
-	mes "There you go. Enjoy!";
+	mes "Eccolo/a. Goditi!";
 	delitem 25250, atoi(.@data$[.@s]);// Rock Ridge Coin
 	getitem atoi(.@data$[.@s+1]),1;
 	close;
@@ -399,47 +399,47 @@ har_in01,34,81,5	script	Howard#rr	4_M_TATIO,{
 
 har_in01,19,86,4	script	Weapon Dealer#rockridge01	1_F_02,{
 	if (checkweight(1301,3) == 0) {
-		mes "[Weapon Dealer]";
-		mes "You're carrying too much to buy weapons.";
-		mes "Please go lighten your bag first.";
+		mes "Rivenditore di armi";
+		mes "Stai portando troppo per comprare armi.";
+		mes "Per favore, alleggerisci prima la tua borsa.";
 		close;
 	}
-	mes "[Weapon Dealer]";
-	mes "I carry shotguns, revolvers, and bullets.";
-	mes "Tell me what kind of item you want, and I'll show you a list.";
+	mes "Rivenditore di armi";
+	mes "Porto fucili a pompa, revolver e munizioni.";
+	mes "Dimmi che tipo di articolo vuoi e ti mostrerò un elenco.";
 	next;
-	switch( select( "Shotguns", "Revolvers", "Bullets", "Sell items.", "Cancel." ) ) {
+	switch( select( "Escuzioni", "Rivolver", "Punti elenco", "Vendere articoli.", "Annulla." ) ) {
 	case 1:
-		mes "[Weapon Dealer]";
-		mes "You want to browse shotguns? I see.";
-		mes "Let me show you some good models.";
+		mes "Rivenditore di armi";
+		mes "Vuoi sfogliare fucili a canne lunghe? Vedo.";
+		mes "Lasciarmi mostrare alcuni buoni modelli.";
 		close2;
 		callshop "shotguns_rockridge", 1;
 		end;
 	case 2:
-		mes "[Weapon Dealer]";
-		mes "You want to browse revolvers? I see.";
-		mes "I've just brought in a few good models.";
+		mes "Rivenditore di armi";
+		mes "Vuoi sfogliare i revolver? Vedo.";
+		mes "Ho appena portato alcuni buoni modelli.";
 		close2;
 		callshop "revolvers_rockridge", 1;
 		end;
 	case 3:
-		mes "[Weapon Dealer]";
-		mes "You want bullets, I see.";
-		mes "All my bullets are of the finest quality.";
+		mes "Rivenditore di armi";
+		mes "Vuoi i punti elenco, vedo.";
+		mes "Tutte le mie munizioni sono di altissima qualità.";
 		close2;
 		callshop "bullets_rockridge", 1;
 		end;
 	case 4:
-		mes "[Weapon Dealer]";
-		mes "Sure, if you have things I can sell.";
-		mes "Show me what you've got.";
+		mes "Rivenditore di armi";
+		mes "Certo, se hai cose che posso vendere.";
+		mes "Mostrami quello che hai.";
 		close2;
 		callshop "bullets_rockridge", 2;
 		end;
 	case 5:
-		mes "[Weapon Dealer]";
-		mes "Come again.";
+		mes "Rivenditore di armi";
+		mes "Ancora.";
 		close;
 	}
 }
@@ -451,19 +451,19 @@ har_in01,19,86,4	script	Weapon Dealer#rockridge01	1_F_02,{
 
 har_in01,16,86,4	script	Armor Dealer#rockridge02	1_M_04,{
 	if (checkweight(1301,3) == 0) {
-		mes "[Armor Dealer]";
-		mes "You're carrying too much to buy anything.";
-		mes "Please go lighten your bag first.";
+		mes "Rivenditore di armature";
+		mes "Porti troppo per comprare qualsiasi cosa.";
+		mes "Per favore, alleggerisci prima la tua borsa.";
 		close;
 	}
 	.@day = gettime(DT_DAYOFWEEK);
 	if (.@day == SUNDAY) {
-		mes "[Armor Dealer]";
-		mes "I'm closed today.";
-		mes "Once a week, I close my shop and spend the day being thankful for what I have.";
+		mes "Rivenditore di armature";
+		mes "Sono chiuso oggi.";
+		mes "Una volta alla settimana, chiudo il mio negozio e passo la giornata ad essere grato per quello che ho.";
 		next;
-		mes "[Armor Dealer]";
-		mes "...And it's the same day that no deliveries come.";
+		mes "Rivenditore di armature";
+		mes "E è lo stesso giorno che non arrivano consegne.";
 		close;
 	}
 	if (.@day == MONDAY)
@@ -478,16 +478,16 @@ har_in01,16,86,4	script	Armor Dealer#rockridge02	1_M_04,{
 		.@string$ = "Sombreros, Indian Headbands, Cowboy Hats, and Indian Feather Headbands, the last of the rare costumes that are available in limited quantities every week,";
 	else
 		.@string$ = "Cigarettes, Pipes, and Grampa Beards";
-	mes "[Armor Dealer]";
-	mes "Hello. Welcome to the Rock Ridge Armor Shop.";
-	mes "Today," +.@string$ + "are in stock.";
+	mes "Rivenditore di armature";
+	mes "Ciao. Benvenuti al negozio di armature di Rock Ridge.";
+	mes "Oggi," +.@string$ + "sono disponibili.";
 	next;
-	mes "[Armor Dealer]";
-	mes "Armor is bulkier than weapons, so I can only have a set number of products delivered every week.";
-	mes "I'll show you the list of available items. ^0000CDIf it's blank, then everything's sold out^000000.";
+	mes "Rivenditore di armature";
+	mes "L'armatura è più ingombrante delle armi, quindi posso ricevere solo un numero fisso di prodotti ogni settimana.";
+	mes "Ti mostrerò l'elenco degli articoli disponibili. ^0000CDSe è vuoto, significa che tutto è esaurito^000000.";
 	next;
-	mes "[Armor Dealer]";
-	mes "And for that same reason, I can't give ^0000CDspecial discounts^000000.";
+	mes "Rivenditore di armature";
+	mes "E per la stessa ragione, non posso dare sconti speciali ^0000CDspecial discounts^000000.";
 	mes "But ^0000CDall my products are hard to find elsewhere^000000. Why don't you take a look at them?";
 	close2;
 	if (.@day == MONDAY || .@day == THURSDAY)

@@ -65,55 +65,55 @@ Expanded Super Novice: EXSUPNOV_Q -> job_super2
 //============================================================
 prt_in,38,104,4	script	Valerie	811,{
 	if (checkweight(1201,1) == 0) {
-		mes "I think you have too many items. Let's try it again after you take some out.";
+		mes "Penso che tu abbia troppi elementi. Riproveremo dopo che ne avrai tolti alcuni.";
 		close;
 	}
 	if (MaxWeight - Weight < 1000) {
-		mes "You're overweight with items so I don't think we can proceed any further. Challenge me after you've taken some items off.";
+		mes "Sei in sovrappeso con articoli così non credo che possiamo andare oltre. Sfida me dopo aver tolto alcuni articoli.";
 		close;
 	}
-	mes "[Valerie]";
-	mes "I am Valerie; I help those with abnormalities. I am friends with Valkyrie.";
+	mes "Valerie";
+	mes "Sono Valerie; aiuto coloro con anomalie. Sono amica di Valkyrie.";
 	next;
-	mes "[Valerie]";
-	mes "If both abnormalities disappear then we must start the test over from scratch. What would you like to do?";
+	mes "Valerie";
+	mes "Se entrambe le anomalie scompaiono, allora dobbiamo ricominciare il test da zero. Cosa vorresti fare?";
 	next;
-	switch(select("I don't have any abnormalities:I think my body has some abnormalities")) {
+	switch(select("Non ho alcuna anomalia:Penso che il mio corpo abbia alcune anomalie")) {
 	case 1:
-		mes "[Valerie]";
-		mes "That's a relief. Then please take care.";
+		mes "Valerie";
+		mes "Un sollievo. Allora per favore stai attento/a.";
 		close;
 	case 2:
-		mes "[Valerie]";
-		mes "Are you sure you want to intialize it and start over?";
+		mes "Valerie";
+		mes "Sei sicuro di voler inizializzarlo e ricominciare da capo?";
 		next;
-		if(select("Nope:Yes, I want to start completely over") == 1) {
-			mes "[Valerie]";
-			mes "I understand. I'll see you next time";
+		if(select("No:Sì, voglio ricominciare da capo") == 1) {
+			mes "Valerie";
+			mes "Capisco. Ci vediamo la prossima volta";
 			close;
 		}
-		mes "[Valerie]";
-		mes "All items related to the existing conditions will disappear. Are you okay with this?";
+		mes "Valerie";
+		mes "Tutti gli elementi relativi alle condizioni esistenti scompariranno. Va bene per te?";
 		next;
-		if(select("Nope:Yes, I want to start completely over.") == 1) {
-			mes "[Valerie]";
-			mes "I understand. I'll see you next time.";
+		if(select("No:Sì, voglio ricominciare da capo.") == 1) {
+			mes "Valerie";
+			mes "Capisco. Ci vediamo la prossima volta.";
 			close;
 		}
-		mes "[Valerie]";
-		mes "It seems that there are a sea of people who seemed to be cursed of not being able to get a significant other after going through with this. Are you still okay with this? ";
+		mes "Valerie";
+		mes "Sembra che ci sia un mare di persone che sembrano maledette per non riuscire ad avere un partner dopo aver attraversato questo. Va ancora bene con questo? ";
 		next;
-		if(select("Nope:I still want to intialize.") == 1) {
-			mes "[Valerie]";
-			mes "I understand. I will see you next time.";
+		if(select("No:Voglio ancora inizializzare.") == 1) {
+			mes "Valerie";
+			mes "Capisco. Ci vediamo la prossima volta.";
 			close;
 		}
-		mes "[Valerie]";
-		mes "In extreme cases, some become crippled and can get ulcers. Do you still want to intilize former processes?";
+		mes "Valerie";
+		mes "Nei casi estremi, alcuni diventano invalidi e possono sviluppare ulcere. Desidera ancora inizializzare i processi precedenti?";
 		next;
-		if(select("Nope:Please intilize the former processes") == 1) {
-			mes "[Valerie]";
-			mes "I understand. I will see you next time";
+		if(select("No:Si prega di inizializzare i processi precedenti") == 1) {
+			mes "Valerie";
+			mes "Capisco. Ci vediamo la prossima volta";
 			close;
 		}
 		specialeffect2 EF_INVENOM;
@@ -121,14 +121,14 @@ prt_in,38,104,4	script	Valerie	811,{
 
 		// Warlock - quest items
 		if (isequipped(2796) || isequipped(2797)) {
-			mes "[Valerie]";
-			mes "Please unequip the Magical Stone or Magical Stone Ring and try again.";
+			mes "Valerie";
+			mes "Per favore, rimuovi la Pietra Magica o l'Anello di Pietra Magica e riprova.";
 			close;
 		}
 		if (countitem(2796) || countitem(2797)) {
 			if (isequipped(2796) || isequipped(2797)) {
-				mes "[Valerie]";
-				mes "Please talk to me after your replace all Magical Stones.";
+				mes "Valerie";
+				mes "Parla con me dopo aver sostituito tutte le Pietre Magiche.";
 				close;
 			}
 			setarray .@items[0], 2796, 2797, 6152, 6151; //Magical_Stone,Magical_Stone_,Glittering_Crystal,Peice_Of_Great_Bradium
@@ -136,26 +136,26 @@ prt_in,38,104,4	script	Valerie	811,{
 				if (countitem(.@items[.@i]))
 					delitem .@items[.@i], countitem(.@items[.@i]);
 			}
-			mes "[Valerie]";
-			mes "You're carrying something that is unnecessary. I will sort it out for you.";
+			mes "Valerie";
+			mes "Porti qualcosa che è superfluo. Me ne occuperò io per te.";
 			close;
 		}
 
 		// Baby and third job characters meet no further conditions.
 		if (eaclass()&(EAJL_BABY|EAJL_THIRD)) {
-			mes "[Valerie]";
-			mes "I don't think you should have any further business with me.";
+			mes "Valerie";
+			mes "Non credo che tu debba avere ulteriori affari con me.";
 			close;
 		}
 
 		// Rebirth - variable
 		if ((Class >= Job_Swordman && Class <= Job_Crusader2) && ADVJOB != 0) {
 			set ADVJOB,0;
-			mes "[Valerie]";
-			mes "You're carrying big karma- You should erase it.";
+			mes "Valerie";
+			mes "Porti un grande karma. Dovresti cancellarlo.";
 			next;
-			mes "[Valerie]";
-			mes "Please talk to me again as there could be additional problems.";
+			mes "Valerie";
+			mes "Parli con me di nuovo perché potrebbero esserci problemi aggiuntivi.";
 			close;
 		}
 
@@ -211,8 +211,8 @@ prt_in,38,104,4	script	Valerie	811,{
 		else if (BaseJob == Job_Sage)
 			callsub L_Third, "job_soc", 12098, 12096, 12098;
 
-		mes "[Valerie]";
-		mes "I don't think you should have any further business with me.";
+		mes "Valerie";
+		mes "Non credo che tu debba avere ulteriori affari con me.";
 		close;
 	}
 
@@ -221,11 +221,11 @@ L_Second:
 		setd getarg(0),0;
 		if (checkquest(getarg(1)) == 2)
 			erasequest getarg(1);
-		mes "[Valerie]";
-		mes "I will help clear your problems for you that came from your former attempts.";
+		mes "Valerie";
+		mes "Ti aiuterò a risolvere i problemi che derivano dai tuoi precedenti tentativi.";
 		next;
-		mes "[Valerie]";
-		mes "Please talk to me again as there could be additional problems.";
+		mes "Valerie";
+		mes "Parli con me di nuovo perché potrebbero esserci problemi aggiuntivi.";
 		close;
 	} else
 		return;
@@ -245,11 +245,11 @@ L_Third:
 			if (checkquest(getarg(4)) > -1)
 				erasequest getarg(4);
 		}
-		mes "[Valerie]";
-		mes "I will help clear your problems for you that came from your former attempts.";
+		mes "Valerie";
+		mes "Ti aiuterò a risolvere i problemi che derivano dai tuoi precedenti tentativi.";
 		next;
-		mes "[Valerie]";
-		mes "Please talk to me again as there could be additional problems.";
+		mes "Valerie";
+		mes "Parli con me di nuovo perché potrebbero esserci problemi aggiuntivi.";
 		close;
 	} else
 		return;
@@ -286,7 +286,7 @@ xmas,166,209,4	duplicate(Valerie#sign)	Valerie#wan	837
 
 sec_in02,12,40,5	script	Job Repair	57,1,1,{
 	callfunc "F_GM_NPC";
-	mes "Please input your password.";
+	mes "Inserisci la tua password.";
 	next;
 	if (callfunc("F_GM_NPC","1854",1) == 1) {
 		set job_arch,100;

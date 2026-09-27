@@ -22,23 +22,23 @@
 
 moc_para01,42,38,3	script	Mission [56 - 70]	857,{
 	if (!callfunc("F_HasEdenGroupMark")) {
-		mes "To get these missions, I need to Join the Eden Group first. I must find Secretary Lime Evenor and become a member.";
+		mes "Per ottenere queste missioni, devo prima unirmi al Gruppo Eden. Devo trovare il Segretario Lime Evenor e diventare un membro.";
 		close;
 	}
-	mes "Here is the list of various adventures for level 56~70 adventurers.";
+	mes "Ecco l'elenco di varie avventure per avventurieri dal livello 56 al 70.";
 	next;
-	mes "Lots of missions such as a Monster Hunting, Delivery Goods, Finding People.";
+	mes "Molte missioni come la Caccia ai Mostri, Consegna Merci, Trovare Persone.";
 	next;
-	switch(select("Mission Numbers 1~5:Mission Numbers 6~10:Mission Numbers 11~15")) {
+	switch(select("Numeri delle Missioni 1~5:Numeri delle Missioni 6~10:Numeri delle Missioni 11~15")) {
 	case 1:
-		switch(select("What is this Bandage?:Dangerous Alligators.:That wasn't a mermaid...:My country is calling me!")) {
+		switch(select("Cos'è questa benda?:Alligatori pericolosi.:Non era una sirena...:Il mio paese mi sta chiamando!")) {
 			case 1: callsub L_HuntingQuest,3250,15000,5000,930,30;
 			case 2: callsub L_HuntingQuest,3251,16000,6000;
 			case 3: callsub L_HuntingQuest,3252,17000,8000;
 			case 4: callsub L_Quest,3254,18000,8000,7043,10,1056,30;
 		}
 	case 2:
-		switch(select("Hunt Wild Boar:Preparing the Summer:A Woman's Grudge:Special ingredients:Puppet Master's Agony")) {
+		switch(select("Cacciare il cinghiale selvatico:Preparare l'estate:Il rancore di una donna:Ingredienti speciali:L'agonia del Maestro di Burattini")) {
 			case 1: callsub L_HuntingQuest,3255,16000,7000;
 			case 2: callsub L_Quest,3256,15000,5000,918,30;
 			case 3: callsub L_HuntingQuest,3257,17000,8000;
@@ -46,7 +46,7 @@ moc_para01,42,38,3	script	Mission [56 - 70]	857,{
 			case 5: callsub L_HuntingQuest,3259,17000,7000,1060,30;
 		}
 	case 3:
-		switch(select("Tiresome Flies:Dangerous Munak:Make the World green:Magic Wand")) {
+		switch(select("Mosche fastidiose:Pericoloso Munak:Rendere il mondo verde:Bacchetta magica")) {
 			case 1: callsub L_HuntingQuest,3260,16000,6000;
 			case 2: callsub L_HuntingQuest,3261,16000,7000;
 			case 3: callsub L_Quest,3262,17000,7000,1032,40;
@@ -60,17 +60,17 @@ L_Quest:
 	if (checkquest(.@quest_id) == -1) {
 		callsub L_Details, .@quest_id;
 		next;
-		mes "Would you like to accept this mission?";
+		mes "Vuoi accettare questa missione?";
 		next;
-		if(select("Accept the mission.:Do not accept the mission.") == 1) {
+		if(select("Accetta la missione.:Non accettare la missione.") == 1) {
 			if (BaseLevel < 55 || BaseLevel > 70) {
-				mes "These missions are not fit for my level. I should look for other missions.";
+				mes "Queste missioni non sono adatte al mio livello. Dovrei cercare altre missioni.";
 				close;
 			}
 			setquest .@quest_id;
-			mes "I have successfully accepted the mission. I have to come back and confirm my work after I complete the mission.";
+			mes "Ho accettato con successo la missione. Devo tornare e confermare il mio lavoro dopo aver completato la missione.";
 			next;
-			mes "This mission doesn't have time limits.";
+			mes "Questa missione non ha limiti di tempo.";
 		}
 		close;
 	}
@@ -81,21 +81,21 @@ L_Quest:
 			set .@items,2; //complete
 	}
 	if (checkquest(.@quest_id) < 2 && (countitem(getarg(3)) < getarg(4) || .@items == 1)) {
-		mes "You have an on-going mission. Would you like to check the details?";
+		mes "Hai una missione in corso. Vorresti controllare i dettagli?";
 		next;
-		if(select("Check the details.:Cancel.") == 1)
+		if(select("Controlla i dettagli.:Annulla.") == 1)
 			callsub L_Details, .@quest_id;
 		close;
 	} else {
-		mes "I have done pretty well for the mission. Should I report it now?";
+		mes "Ho fatto abbastanza bene per la missione. Devo segnalarlo ora?";
 		next;
-		if(select("Report the mission.:Do not report it yet.") == 1) {
+		if(select("Rapportare la missione.:Non segnalarlo ancora.") == 1) {
 			delitem getarg(3),getarg(4);
 			if (.@items)
 				delitem getarg(5),getarg(6);
 			getexp getarg(1),getarg(2);
 			erasequest .@quest_id;
-			mes "You have completed the mission. Get rewards.";
+			mes "Hai completato la missione. Ottieni i premi.";
 		}
 		close;
 	}
@@ -106,17 +106,17 @@ L_HuntingQuest:
 	if (checkquest(.@quest_id) == -1) {
 		callsub L_Details, .@quest_id;
 		next;
-		mes "Would you like to accept this mission?";
+		mes "Vuoi accettare questa missione?";
 		next;
-		if(select("Accept the mission.:Do not accept the mission.") == 1) {
+		if(select("Accetta la missione.:Non accettare la missione.") == 1) {
 			if (BaseLevel < 55 || BaseLevel > 70) {
-				mes "These missions are not fit for my level. I should look for other missions.";
+				mes "Queste missioni non sono adatte al mio livello. Dovrei cercare altre missioni.";
 				close;
 			}
 			setquest .@quest_id;
-			mes "I have successfully accepted the mission. I have to come back and confirm my work after I complete the mission.";
+			mes "Ho accettato con successo la missione. Devo tornare e confermare il mio lavoro dopo aver completato la missione.";
 			next;
-			mes "This mission doesn't have time limits.";
+			mes "Questa missione non ha limiti di tempo.";
 		}
 		close;
 	}
@@ -127,20 +127,20 @@ L_HuntingQuest:
 			set .@items,2; //complete
 	}
 	if (checkquest(.@quest_id,HUNTING) < 2 || .@items == 1) {
-		mes "You have an on-going mission. Would you like to check the details?";
+		mes "Hai una missione in corso. Vorresti controllare i dettagli?";
 		next;
-		if(select("Check the details.:Cancel.") == 1)
+		if(select("Controlla i dettagli.:Annulla.") == 1)
 			callsub L_Details, .@quest_id;
 		close;
 	} else if (checkquest(.@quest_id,HUNTING) == 2) {
-		mes "I have done pretty well for the mission. Should I report it now?";
+		mes "Ho fatto abbastanza bene per la missione. Devo segnalarlo ora?";
 		next;
-		if(select("Report the mission.:Do not report it yet.") == 1) {
+		if(select("Rapportare la missione.:Non segnalarlo ancora.") == 1) {
 			if (.@items)
 				delitem getarg(3),getarg(4);
 			getexp getarg(1),getarg(2);
 			erasequest .@quest_id;
-			mes "You have completed the mission. Get rewards.";
+			mes "Hai completato la missione. Ottieni i premi.";
 		}
 		close;
 	}
@@ -149,217 +149,217 @@ L_HuntingQuest:
 L_Details:
 	switch(getarg(0)) {
 	case 3250:
-		mes "This mission is assigned by the Rekenber corporation from Lighthalzen. Below are the details.";
+		mes "Questa missione è assegnata dalla corporazione Rekenber di Lighthalzen. Di seguito sono riportati i dettagli.";
 		next;
-		mes "Rekenber corporation is about to launch a new project called 'Green Medical Center'. For the first product of the project, we are preparing well-being Bandages.";
+		mes "La corporazione Rekenber sta per lanciare un nuovo progetto chiamato 'Green Medical Center'. Per il primo prodotto del progetto, stiamo preparando medicazioni per il benessere.";
 		next;
-		mes "Regarding the project, we need to research monster's reactions when they are wrapped with Rotten Bandages.";
+		mes "Riguardo al progetto, dobbiamo ricercare le reazioni dei mostri quando sono avvolti con Bende Marciume.";
 		next;
-		mes "If you are interested, please hunt 30 Mummies and bring 30 Rotten Bandages. You can find them in the Pyramid West of Morocc.";
+		mes "Se sei interessato, per favore caccia 30 Mummie e porta 30 Bende Marcite. Puoi trovarle nella Piramide a Ovest di Marocco.";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		next;
-		mes "- Rekenber corporation chief director 'Julie E Delph' -";
+		mes "Direttrice capo della corporazione Rekenber 'Julie E Delph'";
 		break;
 	case 3251:
-		mes "This mission is assigned by the Comodo cooperative society. Below are the details.";
+		mes "Questa missione è assegnata dalla cooperativa Comodo. Di seguito sono riportati i dettagli.";
 		next;
-		mes "Alligators have gone wild these days, they attack women and drunken people who hang out near the beach.";
+		mes "I coccodrilli sono impazziti ultimamente, attaccano donne e persone ubriache che si rilassano vicino alla spiaggia.";
 		next;
-		mes "This is a very shameful situation for us, the most wonderful vacation spot in Rune-Midgarts.";
+		mes "Questa è una situazione molto vergognosa per noi, la località vacanze più meravigliosa di Rune-Midgarts.";
 		next;
-		mes "So, it would be very helpful if you hunt 30 Alligators to clean out this situation.";
+		mes "Quindi, sarebbe molto utile se tu cacciassi 30 Alligatori per risolvere questa situazione.";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		break;
 	case 3252:
-		mes "This mission is assigned by an unknown client from Izlude.";
+		mes "Questa missione è assegnata da un cliente sconosciuto di Izlude.";
 		next;
-		mes "I have admired the beach of Izlude, ever since I was born.";
+		mes "Ho ammirato la spiaggia di Izlude da quando sono nato.";
 		next;
-		mes "When I was young, I found a mysterious creature in the Izlude dungeon, I had never seen something like that before...";
+		mes "Quando ero giovane, ho trovato una creatura misteriosa nella dungeon di Izlude, non avevo mai visto niente del genere...";
 		next;
-		mes "I instantly thought it was a mermaid. I was so supprised, I have studied about mermaids in whole my life.";
+		mes "Pensai subito fosse una sirena. Ero così sorpresa che ho studiato le sirene per tutta la vita.";
 		next;
-		mes "But, as I studied harder, I found that the creature was not a mermaid... yes, It wasn't beautiful at all like other mermaids...";
+		mes "Ma, più studiavo, scoprivo che la creatura non era una sirena... sì, non era affatto bella come le altre sirene...";
 		next;
-		mes "I finally tracked down the fact that it was a Merman, not a Mermaid!";
+		mes "Ho finalmente scoperto che era un Tritone, non una Sirena!";
 		next;
-		mes "Merman... I have wasted my life studying this monster! So please hunt 30 Mermans to make me feel better.";
+		mes "Sirena... Ho sprecato la mia vita a studiare questo mostro! Quindi per favore caccia 30 Sirene per farmi sentire meglio.";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		next;
-		mes "-- Izlude 'The Lost dream mermaid' --";
+		mes "-- Includi 'La sirena del sogno perduto' --";
 		break;
 	case 3254:
-		mes "This mission is assigned by the government officer of the Rune-Midgarts Kingdom.";
+		mes "Questa missione è assegnata dall'ufficiale governativo del Regno di Rune-Midgarts.";
 		next;
-		mes "To prevent a flood in Prontera, we decided to build a huge dam to regulate the water supply.";
+		mes "Per prevenire un'alluvione a Prontera, abbiamo deciso di costruire una diga enorme per regolare l'approvvigionamento idrico.";
 		next;
-		mes "But, we are shorthanded on supplies and we need to collect Fine Sand and Grit.";
+		mes "Ma siamo carenti di scorte e abbiamo bisogno di raccogliere Sabbia Fine e Ghiaia.";
 		next;
-		mes "So, we would like to ask for help. People, please bring us 10 Fine Sand and 30 Grit each so we can build the dam.";
+		mes "Quindi, vorremmo chiedere aiuto. Gente, per favore portateci 10 Sabbia Fine e 30 Grana ciascuno così possiamo costruire la diga.";
 		next;
-		mes "You can get those materials from Sand Man, I wish you good luck!";
+		mes "Puoi prendere quei materiali da Sand Man, ti auguro buona fortuna!";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		next;
-		mes "-- Government officer of the Rune-Midgarts Kingdom, Dufre Kent --";
+		mes "Ufficiale del governo del Regno di Rune-Midgarts, Dufre Kent";
 		break;
 	case 3255:
-		mes "This mission is assigned by the Payon town hall.";
+		mes "Questa missione è assegnata dal municipio di Payon.";
 		next;
-		mes "Wild animals are always annoyances to farmers.";
+		mes "Gli animali selvatici sono sempre un fastidio per gli agricoltori.";
 		next;
-		mes "They attack our farm and ruin whole crops!! We can't stand it anymore!";
+		mes "Attaccano la nostra fattoria e rovinano interi raccolti!! Non ce la possiamo più!";
 		next;
-		mes "So, we would like to ask for the help from brave adventurers.";
+		mes "Quindi, vorremmo chiedere aiuto a coraggiosi avventurieri.";
 		next;
-		mes "Please, hunt 30 Savages to save our crops!";
+		mes "Per favore, caccia 30 Selvaggi per salvare i nostri raccolti!";
 		next;
-		mes "You can easily find those monsters around our town and field.";
+		mes "Puoi trovare facilmente quei mostri intorno al nostro paese e campo.";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		next;
-		mes "-- Payon town hall members --";
+		mes "Membri del municipio di Payon";
 		break;
 	case 3256:
-		mes "This mission is assigned by the Morocc blacksmith Aragham.";
+		mes "Questa missione è assegnata dal fabbro marocchino Aragham.";
 		next;
-		mes "Hello~~~~, Adventurers! This is Aragham, the hottest blacksmith in Morocc!";
+		mes "Ciao~~~~, Avventurieri! Sono Aragham, il fabbro più tosto di Morocc!";
 		next;
-		mes "Anyway, I have a son named Aragam Junior, the cute one. Haha.";
+		mes "Comunque, ho un figlio di nome Aragam Junior, il carino. Ahah.";
 		next;
-		mes "He will be attending summer camp this summer, but he doesn't know how to swim.";
+		mes "Parteciperà al campo estivo quest'estate, ma non sa nuotare.";
 		next;
-		mes "I want to teach him, but as you know I am a blacksmith, a far cry from swimming! Hehe.";
+		mes "Voglio insegnarglielo, ma come sai sono un fabbro, un mondo lontano dal nuotare! Hehe.";
 		next;
-		mes "But, I figured that if I make swim fins, it will be great for his confidence~!";
+		mes "Ma ho pensato che se faccio delle pinne per nuotare, sarà ottimo per la sua fiducia~!";
 		next;
-		mes "To make it, I need 30 Sticky Webfoots from a Roda Frog. Can you bring them to me?";
+		mes "Per farlo, ho bisogno di 30 Sticky Webfoots da una Rana Roda. Puoi portarmeli?";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		next;
-		mes "PS. Do not compare me with Hollgrehenn or Antonio!!!!";
+		mes "PS. Non confrontarmi con Hollgrehenn o Antonio!!!!";
 		next;
-		mes "-- The hottest blacksmith, Morocc blacksmith Aragham --";
+		mes "-- Il fabbro più caldo, il fabbro marocchino Aragham --";
 		break;
 	case 3257:
-		mes "This mission is assigned by an inventor Dorian from Izlude.";
+		mes "Questa missione è assegnata da un inventore Dorian di Izlude.";
 		next;
-		mes "Have you heard the story that if women have a grudge on their mind, it will bring natural disasters.";
+		mes "Hai sentito la storia che se le donne hanno un rancore nella mente, questo causerà disastri naturali.";
 		next;
-		mes "Wow, so guys must watch out for those sensitive women! Make sure they don't have any grudges on you.";
+		mes "Wow, quindi ragazzi devono stare attenti a quelle donne sensibili! Assicuratevi che non abbiano rancore nei vostri confronti.";
 		next;
-		mes "Women can bring strange phenomenons with them!";
+		mes "Le donne possono portare con sé strani fenomeni!";
 		next;
-		mes "I am so intrigued with that story that I'm trying to prove that it can be true.";
+		mes "Sono così incuriosito da quella storia che sto cercando di dimostrare che possa essere vera.";
 		next;
-		mes "So I need to make women upset! Haha, I know what a mean idea, right?";
+		mes "Quindi devo rendere arrabbiate le donne! Ahah, so sapete che idea cattiva, vero?";
 		next;
-		mes "But this is seriously just for studying... So please hunt 30 Sohee's who seems to be revived from victimized souls.";
+		mes "Ma questo è seriamente solo per studiare... Quindi per favore caccia 30 Sohee che sembra essere rivivista da anime vittimizzate.";
 		next;
-		mes "So I can keep observing the case.";
+		mes "Così posso continuare a osservare il caso.";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		next;
-		mes "-- Elegance inventor Dorian --";
+		mes "-- Eleganza inventore Dorian --";
 		break;
 	case 3258:
-		mes "This mission is assigned by Wallah from Payon.";
+		mes "Questa missione è assegnata da Wallah di Payon.";
 		next;
-		mes "Hello, adventurer. How are you? How is your health?";
+		mes "Ciao, avventuriero/a. Come stai? Com'è la tua salute?";
 		next;
-		mes "I am a pharmacist and I am having a hard time getting special ingredients lately.";
+		mes "Sono un farmacista e ultimamente ho difficoltà ad ottenere ingredienti speciali.";
 		next;
-		mes "Because I am a little sensitive girl, how can I possibly get those things by myself.";
+		mes "Poiché sono una ragazza un po' sensibile, come posso ottenere quelle cose da sola?";
 		next;
-		mes "So, please help me. Just bring 40 Huge Leafs to me, that will be enough to complete my special medicine!";
+		mes "Quindi, per favore aiutami. Portami solo 40 Grandi Foglie, che saranno sufficienti per completare il mio medicinale speciale!";
 		next;
-		mes "Please bring it as soon as possible, people need my medicine.";
+		mes "Per favore portamelo il prima possibile, la gente ha bisogno dei miei medicinali.";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		next;
 		mes "-- Wallah --";
 		break;
 	case 3259:
-		mes "This mission is assigned by puppet master Woonute from Geffen.";
+		mes "Questa missione è assegnata dal burattinaio Woonute di Geffen.";
 		next;
-		mes "You know being a puppet master is kind of a hard job to satisfy people.";
+		mes "Sai che essere un burattinaio è un lavoro piuttosto difficile per accontentare le persone.";
 		next;
-		mes "People can search and see so many different things on their own thesedays.";
+		mes "Le persone possono cercare e vedere così tante cose diverse da sole questi giorni.";
 		next;
-		mes "Their expectations are getting high, I can't satisfy them anymore.";
+		mes "Le loro aspettative stanno diventando alte, non riesco più a soddisfarle.";
 		next;
-		mes "But if I can make new toy concepts, like living toys, it will be ground breaking.";
+		mes "Ma se posso creare nuovi concetti di giocattoli, come giocattoli viventi, sarà rivoluzionario.";
 		next;
-		mes "I heard that there are live dolls called Marionettes. Can you hunt 30 Marionettes for me? And also bring 30 Golden Hair, those will be great materials for the new toys.";
+		mes "Ho sentito che ci sono bambole vive chiamate Marionette. Puoi cercarmi 30 Marionette? E anche portare 30 Capelli d'Oro, saranno ottimi materiali per i nuovi giocattoli.";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		next;
-		mes "-- Puppet Master Woonute --";
+		mes "-- Maestro dei burattini Woonute --";
 		break;
 	case 3260:
-		mes "This mission is assigned by an exterminator from Prontera.";
+		mes "Questa missione è assegnata da un esterminatore di Prontera.";
 		next;
-		mes "As the weather gets warmer, insects multiply more and more. It is already out of control.";
+		mes "Man mano che il tempo si scalda, gli insetti moltiplicano sempre di più. È già fuori controllo.";
 		next;
-		mes "People in Prontera cannot sleep because of all the bugs in their house.";
+		mes "Le persone a Prontera non possono dormire a causa di tutti i bug nella loro casa.";
 		next;
-		mes "So, please help us, hunt 30 Hunter Flies. Then the flies can be reduced slowly.";
+		mes "Quindi, per favore aiutaci, caccia 30 Mosche da Cacciatore. Poi le mosche possono essere ridotte lentamente.";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		next;
-		mes "-- The Prontera exterminator --";
+		mes "L'esterminatore di Prontera";
 		break;
 	case 3261:
-		mes "This mission is assigned by Cheese Dongja from Payon.";
+		mes "Questa missione è assegnata da Cheese Dongja di Payon.";
 		next;
-		mes "Have you heard about Munak?";
+		mes "Hai sentito parlare di Munak?";
 		next;
-		mes "The ugly monster Munak is threatening people in Payon.";
+		mes "Il brutto mostro Munak sta minacciando la gente a Payon.";
 		next;
-		mes "So we need brave adventurers like you!";
+		mes "Quindi abbiamo bisogno di avventurieri coraggiosi come te!";
 		next;
-		mes "Please hunt 30 Munaks then Payon will be in peace.";
+		mes "Caccia 30 Munak e poi Payon sarà in pace.";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		next;
-		mes "- Payon Cheese Dongja -";
+		mes "Pagon Formaggio Dongja";
 		break;
 	case 3262:
-		mes "This mission is assigned by a gem dealer, Ibraham from Morocc.";
+		mes "Questa missione è assegnata da un mercante di gemme, Ibraham del Marocco.";
 		next;
-		mes "A small beautiful flower in the barren desert... What an incredible scene it would be!";
+		mes "Un piccolo e bellissimo fiore nel deserto arido... Che scena incredibile sarebbe!";
 		next;
-		mes "Planting flowers can make the world green and it will be so pretty everywhere.";
+		mes "Piantare fiori può rendere il mondo verde ed è bellissimo ovunque.";
 		next;
-		mes "I plan to plant strong flowers in the Morocc desert so the soil gets better.";
+		mes "Ho intenzione di piantare fiori resistenti nel deserto marocchino affinché il terreno migliori.";
 		next;
-		mes "I need 40 Maneater Blossom from Flora, I know Maneater Blossom is an ugly flower, but still it is a plant.";
+		mes "Ho bisogno di 40 Fiore Mangia-Mani da Flora, so che il Fiore Mangia-Mani è un fiore brutto, ma è comunque una pianta.";
 		next;
-		mes "I hope you can hunt Flora and get me 40 Maneater Blossoms. You are making the world green! Be proud!";
+		mes "Spero che tu possa cacciare Flora e portarmi 40 Boccioli Mangia-Mani. Stai rendendo il mondo verde! Sii orgoglioso!";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		next;
 		mes "-- Morocc Ibraham --";
 		break;
 	case 3263:
-		mes "This mission is assigned by the Payon blacksmith Antonio.";
+		mes "Questa missione è assegnata dal fabbro Payon Antonio.";
 		next;
-		mes "Magic wand! Have you heard about it? It is an incredible wand!";
+		mes "Bacchetta magica! Ne hai sentito parlare? È una bacchetta incredibile!";
 		next;
-		mes "If you say the magic words and swing the wand, it will make your wishes come true.";
+		mes "Se dici le parole magiche e muovi la bacchetta, i tuoi desideri si avvereranno.";
 		next;
-		mes "So, I decided to make it by myself. Then I will be rich and powerful~! Haha!!";
+		mes "Allora, ho deciso di farlo da solo. Poi sarò ricco e potente~! Ahah!!";
 		next;
-		mes "To make the wand, I need some special materials.";
+		mes "Per fare la bacchetta, ho bisogno di materiali speciali.";
 		next;
-		mes "Please bring me 30 Dokebi Horns and 30 Trunks. If you do so, I will lend you my magic wand once. Haha, good deal?";
+		mes "Portami 30 Corna di Dokebi e 30 Pantaloni. Se lo fai, ti presterò la mia bacchetta magica una volta. Ahah, buon affare?";
 		next;
-		mes "Please confirm it to us after you complete the mission, then we will give you proper rewards.";
+		mes "Confermalo a noi dopo che avrai completato la missione, poi ti daremo i giusti premi.";
 		next;
-		mes "-- Payon blacksmith Antonio --";
+		mes "-- Payon fabbro Antonio --";
 		break;
 	}
 	return;

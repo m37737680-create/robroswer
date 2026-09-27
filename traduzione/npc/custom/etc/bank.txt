@@ -17,66 +17,66 @@
 
 prontera,132,217,5	script	Banker	109,{
 	set @cost,500;
-	mes "[Banker]";
-	mes "Welcome to the First Bank of Prontera. How can I help you today?";
+	mes "Banchiere";
+	mes "Benvenuti alla Prima Banca di Prontera. Come posso aiutarvi oggi?";
 	next;
-	switch(select("I'd like to make a deposit.:I'd like to make a withdrawal.:What's my current balance?:Cancel")) {
+	switch(select("Vorrei fare un deposito.:Vorrei fare un prelievo.:Qual è il mio saldo attuale?:Annulla")) {
 	case 1:
-		mes "[Banker]";
-		mes "Very well... How much would you like to deposit? The maximum you can deposit at once is 999,999 Zeny.";
+		mes "Banchiere";
+		mes "Molto bene... Quanto vorresti depositare? Il massimo che puoi depositare in una volta sola è 999.999 Zeny.";
 		next;
 		if (@cost > 0) {
-			mes "[Banker]";
-			mes "Oh, and do realize there is a " +@cost + " Zeny charge on all transactions!";
+			mes "Banchiere";
+			mes "Oh, e renditi conto che c'è un " +@cost + " Tassa Zeny su tutte le transazioni!";
 			next;
 		}
 		input @deposit;
 		if (@deposit < 1) {
-			mes "Make sure you ask me to deposit a real amount.";
+			mes "Assicurati di chiedermi di depositare un importo reale.";
 			close;
 		}
 		else if (@deposit > Zeny) {
-			mes "It does not appear like you have the amount of zeny you're trying to deposit!";
+			mes "Non sembra che tu abbia la quantità di zeny che stai cercando di depositare!";
 			close;
 		}
 		else if (@deposit > (Zeny - @cost)) {
-			mes "You need " + @cost + " Zeny to cover the transaction fee!";
+			mes "Hai bisogno di " + @cost + " Zeny per coprire la commissione di transazione!";
 			close;
 		}
 		else {
 			set Zeny,Zeny - @deposit;
 			set Zeny,Zeny - @cost;
 			set #bankstorage,#bankstorage + @deposit;
-			mes "[Banker]";
-			mes "Thank you very much... Your zeny is in good hands.";
+			mes "Banchiere";
+			mes "Grazie mille... Il tuo zeny è in buone mani.";
 			close;
 		}
 	case 2:
-		mes "[Banker]";
-		mes "Very well... How much would you like to withdraw? The maximum you can withdraw at one time is 999,999 Zeny";
+		mes "Banchiere";
+		mes "Molto bene... Quanto vorresti prelevare? Il massimo che puoi prelevare in una volta è 999.999 Zeny";
 		next;
 		if (@cost > 0) {
-			mes "[Banker]";
-			mes "Oh, and do realize there is a " +@cost + " Zeny charge on all transactions!";
+			mes "Banchiere";
+			mes "Oh, e renditi conto che c'è un " +@cost + " Tassa Zeny su tutte le transazioni!";
 			next;
 		}
 		input @withdrawl;
 		if (@withdrawl < 1) {
-			mes "Please don't play games. I need a real amount to withdraw.";
+			mes "Per favore non fare giochi. Ho bisogno di una vera somma da prelevare.";
 			close;
 		}
 		else if (@withdrawl > #bankstorage) {
-			mes "You only have ^00FF00" + callfunc("F_InsertComma",#bankstorage) +"^000000 zeny in your account!";
+			mes "Hai solo ^00FF00" + callfunc("F_InserisciVirgola",#bankstorage) +"^000000 zeny nel tuo conto!";
 			close;
 		}
 		else if ((@cost > Zeny) && ((Zeny + @withdrawl) > @cost)) {
-			mes "[Banker]";
-			mes "You don't have the Zeny for the transaction fee right now. Would you like me to take the fee directly from your withdrawal?";
+			mes "Banchiere";
+			mes "Non hai i Zeny per la commissione di transazione al momento. Vorresti che prenda io la commissione direttamente dal tuo prelievo?";
 			next;
-			switch(select("Yes please.:No, Thanks")){
+			switch(select("Sì per favore.:No, Grazie")){
 			case 1:
-				mes "[Banker]";
-				mes "Removing " + @cost + " from your withdrawal to cover the deposit fee...";
+				mes "Banchiere";
+				mes "Rimuovere " + @cost + " dal tuo prelievo per coprire la commissione di deposito...";
 				set @withdrawl,@withdrawl - @cost;
 				set #bankstorage,#bankstorage - @cost;
 				set @cost,0;
@@ -84,12 +84,12 @@ prontera,132,217,5	script	Banker	109,{
 				set Zeny,Zeny - @cost;
 				set Zeny,Zeny + @withdrawl;
 				set #bankstorage,#bankstorage - @withdrawl;
-				mes "[Banker]";
-				mes "There's your Zeny. Have a good day.";
+				mes "Banchiere";
+				mes "Ecco i tuoi Zeny. Buona giornata.";
 				close;
 			case 2:
-				mes "[Banker]";
-				mes "Very well... come again soon.";
+				mes "Banchiere";
+				mes "Molto bene... torna presto.";
 				close;
 			}
 		}
@@ -97,22 +97,22 @@ prontera,132,217,5	script	Banker	109,{
 			set Zeny,Zeny - @cost;
 			set Zeny,Zeny + @withdrawl;
 			set #bankstorage,#bankstorage - @withdrawl;
-			mes "[Banker]";
-			mes "There's your Zeny. Have a good day.";
+			mes "Banchiere";
+			mes "Ecco i tuoi Zeny. Buona giornata.";
 			close;
 		}
 	case 3:
-		mes "[Banker]";
-		mes "Hmmmm... let me check some paper work.";
+		mes "Banchiere";
+		mes "Hmmmm... devo controllare qualche documento.";
 		next;
-		mes "*Rustle, Rustle*";
+		mes "Sussurro, Sussurro";
 		next;
-		mes "[Banker]";
-		mes "You currently have " + callfunc("F_InsertComma",#bankstorage) + " Zeny in your account.";
+		mes "Banchiere";
+		mes "Hai attualmente " + callfunc("F_InserisciVirgola",#bankstorage) + " Zenny nel tuo conto.";
 		close;
 	case 4:
-		mes "[Banker]";
-		mes "Very well... come again soon.";
+		mes "Banchiere";
+		mes "Molto bene... torna presto.";
 		close;
 	}
 }

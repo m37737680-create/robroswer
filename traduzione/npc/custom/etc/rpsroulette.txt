@@ -15,16 +15,16 @@
 
 cmd_in02,182,126,2	script	Crazy Boris	85,{
 	set .@counter,1;
-	mes "Hey you! Up for Rock Scissors Roulette?";
+	mes "Ehi tu! Ti va di Gioguetti Forzati (Rock Scissors Roulette)?";
 	next;
-	menu "Let me play.",PLAY,"Explain the rules.",RULES,"Leave",LEAVE;
+	menu "Lasciarmi giocare.",PLAY,"Spiega le regole.",RULES,"Lasciare",LEAVE;
 SAME:
-	mes "Draw! Again!";
+	mes "Disegna! Ancora!";
 	next;
 PLAY:
-	mes "Rock... Paper...";
+	mes "Roccia... Forbici...";
 	set .@opp, rand(1,3);
-	menu "^0000FFROCK!",-,"^FF0000SCISSORS!",SCISSORS,"^00FF00PAPER!^000000",PAPER;
+	menu "^0000FFROCCIA!",-,"^FF0000SCISSORS!",SCISSORS,"^00FF00PAPER!^000000",PAPER;
 
   	if (.@lastchoice == 1) set .@opp, rand(1,3);
   	if (.@opp == 1) emotion ET_ROCK;
@@ -56,7 +56,7 @@ PAPER:
 	goto SAME;
 
 WIN:
-	mes "Damnit, You Win!";
+	mes "Dannazione, hai vinto!";
 	emotion ET_PROFUSELY_SWEAT;
 	next;
 	set .@win, 1;
@@ -64,14 +64,14 @@ WIN:
 
 LOSE:
 	emotion ET_SMILE;
-	mes "Boorah! You Lose!";
+	mes "Boorah! Hai perso!";
 	next;
 	set .@win, 0;
 
 YOUPULL:
 	mes .@counter +" of 6";
 	if ( .@counter == 6 )
-		mes "Say your prayers";
+		mes "Digna le tue preghiere";
 	set .@pull, rand( 1,( 7 -.@counter ) );
 	set .@counter, .@counter +1;
 	next;
@@ -80,31 +80,31 @@ YOUPULL:
 		specialeffect2 EF_SUI_EXPLOSION;
 		emotion ET_KIK;
 		percentheal -100,-100;
-		mes "*^0000FFClick^000000* *^FF0000BANG^000000*";
-		mes "You're dead!";
+		mes "*^0000FFClicca^000000* *^FF0000BANG^000000*";
+		mes "Sei morto!";
 		close;
 	}
 	emotion ET_HNG;
-	mes "*^0000FFClick^000000* whew...";
+	mes "*^0000FFClick^000000* ah...";
 	goto PLAY;
 
 RULES:
-	mes "Ok here are the rules:";
-	mes "I have with me a ^FF00006^000000 chamber pistol with ^FF00001^000000 round. First we play ^FF0000Scissors ^00FF00Paper ^0000FFRock^000000. The loser pulls the trigger. The winner is whoever comes out best.";
-	mes "Beat me to win a prize.";
+	mes "Ecco le regole:";
+	mes "Ho con me una pistola semiautomatica ^FF00006^000000 con ^FF00001^000000 colpi. Per prima cosa giochiamo a ^FF0000Forza ^00FF00Carta ^0000FFForbici^000000. Chi perde tira il grilletto. Vince chi è migliore.";
+	mes "Sconfiggimi per vincere un premio.";
 	next;
-	menu "Let me play.",-,"No thanks.",LEAVE;
-	mes "Ok here we go...";
+	menu "Lasciarmi giocare.",-,"No grazie.",LEAVE;
+	mes "Allora, eccoci qua...";
 	next;
 	goto PLAY;
 
 KILL:
 	specialeffect EF_SUI_EXPLOSION;
 	emotion ET_HUK;
-	mes "*^0000FFClick^000000* *^FF0000BANG^000000*";
-	mes "OWWW @#$%^!! THAT HURT LIKE HELL!!";
+	mes "*^0000FFClicca^000000* *^FF0000BANG^000000*";
+	mes "OWWW @#$%^!! CHE DOLORE ALL'INFERNO!!";
 	next;
-	mes "Congratulations! You have won...";
+	mes "Congratulazioni! Hai vinto...";
 	switch( rand( 1,10 ) ) {
 		case 1: setarray .@reward[0], 10,984; break;
 		case 3: setarray .@reward[0],100,601; break;	// 100x Fly Wings
@@ -123,6 +123,6 @@ KILL:
 	close;
 
 LEAVE:
-	mes "Pansy.";
+	mes "Viola";
 	close;
 }

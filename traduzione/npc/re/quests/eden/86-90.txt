@@ -19,49 +19,49 @@
 
 moc_para01,48,175,3	script	86-90 Mission Board	857,{
 	if (!callfunc("F_HasEdenGroupMark")) {
-		mes "Wait a minute!";
-		mes "-You need to have an-";
-		mes "-^4d4dff'Eden Group Mark'^000000-";
-		mes "-to receive these missions.-";
+		mes "Aspetta un minuto!";
+		mes "Devi avere un";
+		mes "-^4d4dff'Marchio del Gruppo Eden'^000000-";
+		mes "ricevere queste missioni.";
 		next;
-		switch(select("Just walk away.:^0000FFEden Group^000000 missions?:How can I be a member of the ^0000FFEden Group^000000?")) {
+		switch(select("Vai semplicemente via.:^0000FFEden Group^000000 missioni?:Come posso diventare un membro del Gruppo ^0000FFEden Group^000000?")) {
 		case 1:
 			close;
 		case 2:
-			mes "::The Eden Group Missions";
-			mes "::are basically missions";
-			mes "::requested by";
-			mes "::people from all around the kingdom.";
-			mes "::We just categorize them.";
+			mes "Missioni del Gruppo Eden";
+			mes "sono fondamentalmente missioni";
+			mes "richiesto da";
+			mes "persone da tutto il regno.";
+			mes "Li categorizziamo semplicemente.";
 			next;
-			mes "::In the Eden Group,";
-			mes "::we sorted out the missions";
-			mes "::according to the level of difficulty.";
-			mes "::According to this level,";
-			mes "::you can find";
-			mes "::missions that";
-			mes "::suit you.";
+			mes "Nella Eden Group,";
+			mes "abbiamo sistemato le missioni";
+			mes "secondo il livello di difficolt√†.";
+			mes "Secondo questo livello,";
+			mes "puoi trovare";
+			mes "missioni che";
+			mes "ti sta bene.";
 			next;
-			mes "::When you are done,";
-			mes "::you can come back";
-			mes "::to the mission board.";
+			mes "Quando hai finito,";
+			mes "puoi tornare";
+			mes "verso la bacheca della missione.";
 			next;
-			mes "::Then you will be";
-			mes "::rewarded!!";
-			mes "::Simple, isn't it!!";
-			mes "::No commission required!!";
+			mes "Allora sarai";
+			mes "::premiato!!";
+			mes "Semplice, non √® vero?!";
+			mes "Nessuna commissione richiesta!!";
 			close;
 		case 3:
-			mes "::You can become a member";
-			mes "::of the Eden Group";
-			mes "::to ^0000FFLaime Evenor^000000,";
-			mes "::who is waiting on the 1st floor.";
+			mes "Puoi diventare un membro";
+			mes "di Eden Group";
+			mes "::a ^0000FFLaime Evenor^000000,";
+			mes "chi sta aspettando al primo piano.";
 			next;
-			mes "::If you become a member,";
-			mes "::you will get an";
-			mes "::\"^006400Eden Group Mark^000000\".";
-			mes "::Then you will be able";
-			mes "::to see the mission board.";
+			mes "Se diventi un membro,";
+			mes "riceverai un";
+			mes "::\'^006400Eden Group Mark^000000\'.";
+			mes "Allora sarai in grado";
+			mes "per vedere la bacheca delle missioni.";
 			close;
 		}
 	}
@@ -78,25 +78,25 @@ moc_para01,48,175,3	script	86-90 Mission Board	857,{
 			72000,76000,
 			72000,78000,82000,80000,
 			72000,72000,72000,86000,80000;
-		mes "You must be within level 86-90 to accept these missions.";
+		mes "Devi essere tra il livello 86 e il livello 90 per accettare queste missioni.";
 		for(set .@quest,4167; .@quest<=4180; set .@quest,.@quest+1) {
 			set .@hunting, checkquest(.@quest,HUNTING);
 			if (.@hunting == 0 || .@hunting == 1) {
 				next;
-				mes ":: You cannot proceed in";
-				mes ":: ^0000FF"+.@names$[.@quest-4167]+" Hunting^000000.";
-				mes ":: The registration to the mission";
-				mes ":: is cancelled.";
+				mes "Non puoi procedere in";
+				mes ":: ^0000FF"+.@names$[.@quest-4167]+" Caccia^000000.";
+				mes ":: L'iscrizione alla missione";
+				mes ":: √® annullato.";
 				erasequest .@quest;
 				close;
 			} else if (.@hunting == 2) {
 				next;
-				mes ":: You added information";
-				mes ":: about the mission";
-				mes ":: ^0000FF"+.@names$[.@quest-4167]+" Hunting^000000";
-				mes ":: on the mission board.";
-				mes ":: You've got a";
-				mes ":: salutary experience.";
+				mes "Hai aggiunto informazioni";
+				mes "Sulla missione";
+				mes ":: ^0000FF"+.@names$[.@quest-4167]+" Caccia^000000";
+				mes "sulla bacheca delle missioni.";
+				mes "Hai un";
+				mes "esperienza salutare.";
 				erasequest .@quest;
 				getexp .@exp[.@quest-4167],0;
 				close;
@@ -104,48 +104,48 @@ moc_para01,48,175,3	script	86-90 Mission Board	857,{
 		}
 		close;
 	}
-	mes "[86-90 Mission Board]";
-	mes "There are several requests on this board.";
+	mes "[86-90 Bacheca della missione]";
+	mes "Ci sono diverse richieste su questo bacheca.";
 	next;
-	switch(select("^8B4513Turtle Island^000000:^8B4513Clock Tower Dungeon^000000:^8B4513Expansion Towns^000000:^8B4513Other Regions^000000")) {
+	switch(select("^8B4513Turtle Island^000000:^8B4513Clock Tower Dungeon^000000:^8B4513Citt√† di espansione^000000:^8B4513Altre Regioni^000000")) {
 	case 1:
 		mes "^8B4513Turtle Island^000000.";
-		mes "Which monster will you hunt or have you finished hunting?";
+		mes "Quale mostro caccia o hai finito di cacciare?";
 		next;
-		switch(select("^0000FFDragon Tail^000000:^0000FFSpring Rabbit^000000:^0000FFPest^000000")) {
-			case 1: callsub L_Quest,4167,"Dragon Tail",76000,"µÂ∑°∞Ô≈◊¿œƒ´µÂ","There is a monster that only can be found on ^8B4513Turtle Island^000000.","s";
-			case 2: callsub L_Quest,4168,"Spring Rabbit",82000,"Ω∫«¡∏µ∑°∫¯ƒ´µÂ","There is a monster that only can be found on ^8B4513Turtle Island^000000.","s";
-			case 3: callsub L_Quest,4169,"Pest",82000,"∆‰Ω∫∆Æƒ´µÂ","There is a monster that only can be found on ^8B4513Turtle Island^000000.","s";
+		switch(select("Coda di Drago^0000FFDragon Tail^000000:^0000FFConiglio primaverile^000000:^0000FFParassita^000000")) {
+			case 1: callsub L_Quest,4167,"Dragon Tail",76000,"¬µ√•¬∑¬°¬∞√Ø√Ö√ó√Ä√è√Ñ¬´¬µ√•","There is a monster that only can be found on ^8B4513Turtle Island^000000.","s";
+			case 2: callsub L_Quest,4168,"Spring Rabbit",82000,"¬Ω¬∫√á√Å¬∏¬µ¬∑¬°¬∫√∏√Ñ¬´¬µ√•","There is a monster that only can be found on ^8B4513Turtle Island^000000.","s";
+			case 3: callsub L_Quest,4169,"Pest",82000,"√Ü√§¬Ω¬∫√Ü¬Æ√Ñ¬´¬µ√•","There is a monster that only can be found on ^8B4513Turtle Island^000000.","s";
 		}
 	case 2:
 		mes "^8B4513Clock Tower Dungeon^000000.";
-		mes "Which monster will you hunt or have you finished hunting?";
+		mes "Quale mostro caccia o hai finito di cacciare?";
 		next;
-		switch(select("^0000FFBathory^000000:^0000FFAlarm^000000")) {
-			case 1: callsub L_Quest,4170,"Bathory",72000,"πŸº“∏Æƒ´µÂ","The Clock Tower Dungeon is full of dangerous monsters.";
-			case 2: callsub L_Quest,4171,"Alarm",76000,"æÀ∂˜ƒ´µÂ","The Clock Tower Dungeon is full of dangerous monsters.";
+		switch(select("^0000FFBathory^000000:^0000FFAllarme^000000")) {
+			case 1: callsub L_Quest,4170,"Bathory",72000,"¬π√ô¬º√í¬∏¬Æ√Ñ¬´¬µ√•","The Clock Tower Dungeon is full of dangerous monsters.";
+			case 2: callsub L_Quest,4171,"Alarm",76000,"¬æ√ã¬∂√∑√Ñ¬´¬µ√•","The Clock Tower Dungeon is full of dangerous monsters.";
 		}
 	case 3:
 		mes "^8B4513Expansion Cities^000000";
-		mes "Which monster will you hunt or have you finished hunting?";
+		mes "Quale mostro caccia o hai finito di cacciare?";
 		next;
-		switch(select("^0000FFBaba Yaga^000000:^0000FFYao Jun^000000:^0000FFFirelock Soldier^000000:^0000FFZipper Bear^000000")) {
+		switch(select("^0000FFBaba Yaga^000000:^0000FFYao Jun^000000:^0000FFFirelock Soldier^000000:^0000FFOrso Cerniera^000000")) {
 			case 1: callsub L_Quest,4172,"Baba Yaga",72000,"","The witch Baba Yaga can be found in the outskirts of Moscovia.";
-			case 2: callsub L_Quest,4173,"Yao Jun",117000,"«˝±∫ƒ´µÂ","There are human-like monsters that roam around the dungeon in Luoyang.";
-			case 3: callsub L_Quest,4174,"Firelock Soldier",82000,"±∏Ωƒ¡∂√—∫¥ƒ´µÂ","There are human-like monsters that roam around the dungeon in Amatsu.","s";
-			case 4: callsub L_Quest,4175,"Zipper Bear",120000,"¡ˆ∆€∫£æÓƒ´µÂ","There are bear monsters swarming in the Kunlun dungeon.";
+			case 2: callsub L_Quest,4173,"Yao Jun",117000,"√á√Ω¬±¬∫√Ñ¬´¬µ√•","There are human-like monsters that roam around the dungeon in Luoyang.";
+			case 3: callsub L_Quest,4174,"Firelock Soldier",82000,"¬±¬∏¬Ω√Ñ√Å¬∂√É√ë¬∫¬¥√Ñ¬´¬µ√•","There are human-like monsters that roam around the dungeon in Amatsu.","s";
+			case 4: callsub L_Quest,4175,"Zipper Bear",120000,"√Å√∂√Ü√õ¬∫¬£¬æ√Æ√Ñ¬´¬µ√•","There are bear monsters swarming in the Kunlun dungeon.";
 		}
 	case 4:
-		mes "[86-90 Mission Board]";
-		mes "Here is a list of random requests to hunt monsters in other regions of Midgard.";
-		mes "Which monster will you hunt or have you finished hunting?";
+		mes "[86-90 Bacheca della missione]";
+		mes "Ecco un elenco di richieste casuali per cacciare mostri in altre regioni di Midgard.";
+		mes "Quale mostro caccia o hai finito di cacciare?";
 		next;
-		switch(select("^0000FFGround Petite^000000:^0000FFRafflesia^000000:^0000FFVenomous^000000:^0000FFPitman^000000:^0000FFYellow Novus^000000")) {
-			case 1: callsub L_Quest,4176,"Ground Petite",72000,"¡ˆªÛª⁄∂Ïƒ´µÂ","There are dragon type monsters swarming the western region of Geffen.";
-			case 2: callsub L_Quest,4177,"Rafflesia",72000,"∂Û«√∑πΩ√æ∆ƒ´µÂ","There are plant type monsters infesting the fields of Lighthalzen.";
-			case 3: callsub L_Quest,4178,"Venomous",72000,"∫£≥Î∏”Ω∫","There are formless monsters floating around the fields of Einbroch.";
-			case 4: callsub L_Quest,4179,"Pitman",86000,"«Õ∏«","There are undead monsters pushing a cart around the fields and dungeons of Einbroch.";
-			case 5: callsub L_Quest,4180,"Yellow Novus",80000,"øª∑ŒøÏ≥ÎπˆΩ∫","There are yellow dragon type monsters terrorizing the fields of Hugel.";
+		switch(select("^0000FFBase Petite^000000:^0000FFRafflesia^000000:^0000FFVenomous^000000:^0000FFPitman^000000:^0000FFYellow Novus^000000")) {
+			case 1: callsub L_Quest,4176,"Ground Petite",72000,"√Å√∂¬ª√≥¬ª√ö¬∂√¨√Ñ¬´¬µ√•","There are dragon type monsters swarming the western region of Geffen.";
+			case 2: callsub L_Quest,4177,"Rafflesia",72000,"¬∂√≥√á√É¬∑¬π¬Ω√É¬æ√Ü√Ñ¬´¬µ√•","There are plant type monsters infesting the fields of Lighthalzen.";
+			case 3: callsub L_Quest,4178,"Venomous",72000,"¬∫¬£¬≥√´¬∏√ì¬Ω¬∫","There are formless monsters floating around the fields of Einbroch.";
+			case 4: callsub L_Quest,4179,"Pitman",86000,"√á√ç¬∏√á","There are undead monsters pushing a cart around the fields and dungeons of Einbroch.";
+			case 5: callsub L_Quest,4180,"Yellow Novus",80000,"¬ø¬ª¬∑√é¬ø√¨¬≥√´¬π√∂¬Ω¬∫","There are yellow dragon type monsters terrorizing the fields of Hugel.";
 		}
 	}
 	end;
@@ -157,19 +157,19 @@ L_Quest:
 	.@cutin$ = getarg(3);
 	set .@playtime, checkquest(.@quest2,PLAYTIME);
 	if (.@playtime == 0 || .@playtime == 1) {
-		mes "[86-90 Mission Board]";
-		mes "You need to wait 3 hours before you can take this mission again.";
+		mes "[86-90 Bacheca della missione]";
+		mes "Devi aspettare 3 ore prima di poter accettare questa missione di nuovo.";
 		close;
 	}
 	set .@hunting, checkquest(.@quest1,HUNTING);
 	if (.@hunting == 0 || .@hunting == 1) {
-		mes "[86-90 Mission Board]";
-		mes "Have you finished hunting all 30 "+getarg(1)+getarg(5,"")+" yet?";
+		mes "[86-90 Bacheca della missione]";
+		mes "Hai finito di cacciare tutti i 30? "+getarg(1)+getarg(5,"")+" ancora?";
 		close;
 	} else if (.@hunting == 2) {
-		mes "[86-90 Mission Board]";
-		mes "You have completed the hunting.";
-		mes "Please accept this reward as a compensation.";
+		mes "[86-90 Bacheca della missione]";
+		mes "Hai completato la caccia.";
+		mes "Accetta questo premio come un risarcimento.";
 		erasequest .@quest1;
 		if (.@playtime > -1) erasequest .@quest2;
 		setquest .@quest2;
@@ -178,21 +178,21 @@ L_Quest:
 	}/* else if (.@hunting == 3) {
 //		recall_completequest .@quest1
 		erasequest .@quest1;
-		mes "[86-90 Mission Board]";
-		mes "You have re-accepted the "+getarg(1)+" Hunting mission.";
+		mes "[86-90 Bacheca della missione]";
+		mes "Hai riaccettato il "+getarg(1)+" Missione di caccia.";
 		close;
 	}*/ else {
-		mes "[86-90 Mission Board]";
+		mes "[86-90 Bacheca della missione]";
 		mes getarg(4);
 		next;
 		if (.@cutin$ != "") cutin .@cutin$,3;
-		mes "[86-90 Mission Board]";
-		mes "Hunt 30 "+getarg(1)+" monsters there and post your success on this board.";
+		mes "[86-90 Bacheca della missione]";
+		mes "Caccia 30 "+getarg(1)+" mostri l√¨ e pubblica il tuo successo su questo bacheca.";
 		next;
 		if (.@cutin$ != "") cutin .@cutin$,255;
-		if(select("I'll hunt them.:No thanks.") == 1) {
-			mes "[86-90 Mission Board]";
-			mes "When you have completed the mission, post it on this board and collect your reward.";
+		if(select("Li caccier√≤.:No grazie.") == 1) {
+			mes "[86-90 Bacheca della missione]";
+			mes "Quando avrai completato la missione, pubblicala su questo bacheca e ritira il tuo premio.";
 			if (.@playtime > -1) erasequest .@quest2;
 			setquest .@quest1;
 		}

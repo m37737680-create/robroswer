@@ -74,68 +74,68 @@ prontera,146,75,1	script	Zonda Rep#pron	4_F_ZONDAGIRL,{
 	}
 
 	mes "[Belka]";
-	mes "Welcome to Zonda, where innovation begins. What can I do for you?";
+	mes "Benvenuti a Zonda, dove inizia l'innovazione. Come posso aiutarvi?";
 	next;
-	switch( select( "Why are you here?", .@menu_entry$, "Enter ^6B9900<Wave Mode - Forest>^000000.", "Enter ^6B9900<Wave Mode - Sky>^000000.", "Cancel." ) ) {
+	switch( select( "Perché sei qui?", .@menu_entry$, "Inserisci ^6B9900<Modalità Onda - Bosco>^000000.", "Inserisci ^6B9900<Modalità Onda - Cielo>^000000.", "Annulla." ) ) {
 	case 1:
 		mes "[Belka]";
-		mes "We now offer a new service. Have you heard about the dimensional rifts?";
+		mes "Offriamo ora un nuovo servizio. Hai sentito parlare delle fessure dimensionali?";
 		next;
 		mes "[Belka]";
-		mes "In case you haven't, many organizations and scientists study the rifts formed between dimensions.";
+		mes "Nel caso non lo sappiate, molte organizzazioni e scienziati studiano le fessure formate tra dimensioni.";
 		next;
 		mes "[Belka]";
-		mes "One of them is my company, Zonda, and after long, painstaking research...";
+		mes "Una di loro è la mia azienda, Zonda, e dopo lunghe e faticose ricerche...";
 		next;
 		mes "[Belka]";
-		mes "We've developed two different dimensional rifts that we call Wave Modes - Forest and Sky!";
+		mes "Abbiamo sviluppato due diversi strappi dimensionali che chiamiamo Modi d'Onda - Bosco e Cielo!";
 		next;
 		mes "[Belka]";
-		mes "Do you have any questions about Zonda's ambitious new project, Wave Mode?";
+		mes "Hai domande sul nuovo ambizioso progetto di Zonda, Wave Mode?";
 		while(true) {
 			next;
-			switch( select( "About ^6B9900<Wave Mode - Forest>^000000", "About ^6B9900<Wave Mode - Sky>^000000", "No." ) ) {
+			switch( select( "Informazioni su ^6B9900<Wave Mode - Forest>^000000", "Informazioni su ^6B9900<Wave Mode - Sky>^000000", "No." ) ) {
 			case 1:
 				mes "[Belka]";
-				mes "The ^6B9900<Wave Mode - Forest>^000000";
-				mes "Introducing the first Wave Mode service, Zonda's objective is to work with your party members to keep monster waves from reaching the other side of the bridge.";
+				mes "Il ^6B9900<Modalità Onda - Foresta>^000000";
+				mes "Introdurre il primo servizio Modalità Onda, l'obiettivo di Zonda è lavorare con i membri del tuo gruppo per impedire che le onde mostro raggiungano dall'altra parte del ponte.";
 				next;
 				mes "[Belka]";
-				mes "Monsters will advance without fighting, but the party will fail if 20 monsters are let go..";
+				mes "I mostri avanzeranno senza combattere, ma il gruppo fallirà se vengono lasciati andare 20 mostri..";
 				break;
 			case 2:
 				mes "[Belka]";
-				mes "The ^6B9900<Wave Mode - Sky>^000000";
-				mes "Available once a day. Like the other Wave Mode, keep the monsters away from reaching the other side of the map.";
+				mes "Il ^6B9900<Wave Mode - Sky>^000000";
+				mes "Disponibile una volta al giorno. Come l'altro Modalità Onda, impedisci ai mostri di raggiungere l'altra parte della mappa.";
 				next;
 				mes "[Belka]";
-				mes "Feel free to come back with your party.";
+				mes "Sentiti libero di tornare con la tua festa.";
 				break;
 			case 3:
 				mes "[Belka]";
-				mes "Thank you for visiting Zonda, where innovation begins.";
+				mes "Grazie per aver visitato Zonda, dove inizia l'innovazione.";
 				close;
 			}
 			next;
 			mes "[Belka]";
-			mes "Any other questions?";
+			mes "Qualche altra domanda?";
 		}
 	case 2:
 		mes "[Belka]";
-		mes "Which Wave Mode would you like to enter: Forest or Sky?";
+		mes "Quale Modalità d'Onda desideri inserire: Foresta o Cielo?";
 		next;
-		.@s = select( "Enter ^6B9900<Wave Mode - Forest>^000000.", "Enter ^6B9900<Wave Mode - Sky>^000000." ) - 1;
+		.@s = select( "Inserisci ^6B9900<Modalità Onda - Bosco>^000000.", "Inserisci ^6B9900<Modalità Onda - Cielo>^000000." ) - 1;
 		setarray .@instance_name$[0], "Wave Mode - Forest", "Wave Mode - Sky";
 		mes "[Belka]";
-		mes "" + .@count_online + " party " + (.@count_online == 1 ? "member" : "members") + " found " + .@player_name$ + ", right? To enter the ^6B9900<" + .@instance_name$[.@s] + ">^000000, please sign here.";
+		mes "" + .@count_online + " festa " + (.@count_online == 1 ? "membro" : "membri") + " trovato " + .@player_name$ + ", vero? Per entrare in/nel ^6B9900<" + .@instance_name$[.@s] + ">^000000, si prega di firmare qui.";
 		next;
-		select("Sign.");
+		select("Segno.");
 		mes "[Belka]";
-		mes "" + .@player_name$ + " has requested to enter the ^6B9900<" + .@instance_name$[.@s] + ">^000000. Please come back when it's your turn to enter.";
+		mes "" + .@player_name$ + " ha richiesto di inserire il ^6B9900<" + .@instance_name$[.@s] + ">^000000. Per favore, torna quando è il tuo turno di entrare.";
 		if (instance_create(.@instance_name$[.@s]) < 0) {
-			mes "Party Name: " + getpartyname( getcharid(1) );
-			mes "Party Leader: " + strcharinfo(0);
-			mes "^0000ff" + .@instance_name$[.@s] + " ^000000 - Reservation Failed.";
+			mes "Nome della festa: " + getpartyname( getcharid(1) );
+			mes "Leader del Partito: " + strcharinfo(0);
+			mes "^0000ff" + .@instance_name$[.@s] + " ^000000 - Prenotazione fallita.";
 			close;
 		}
 		close;
@@ -143,12 +143,12 @@ prontera,146,75,1	script	Zonda Rep#pron	4_F_ZONDAGIRL,{
 		switch( instance_enter("Wave Mode - Forest") ) {
 		case IE_OTHER:
 			mes "[Belka]";
-			mes "An unknown error has occurred.";
+			mes "Si è verificato un errore sconosciuto.";
 			close;
 		case IE_NOINSTANCE:
 		case IE_NOMEMBER:
 			mes "[Belka]";
-			mes "Please wait for ^6B9900<Wave Mode - Forest>^000000 stabilization.";
+			mes "Attendere la stabilizzazione di ^6B9900<Wave Mode - Forest>^000000.";
 			close;
 		case IE_OK:
 			mapannounce .@map_name$, "" + .@player_name$ + " of the party " + getpartyname(getcharid(1)) + " is entering <Wave Mode - Forest>.", bc_map,0xFF99;
@@ -160,12 +160,12 @@ prontera,146,75,1	script	Zonda Rep#pron	4_F_ZONDAGIRL,{
 		switch( instance_enter("Wave Mode - Sky") ) {
 		case IE_OTHER:
 			mes "[Belka]";
-			mes "An unknown error has occurred.";
+			mes "Si è verificato un errore sconosciuto.";
 			close;
 		case IE_NOINSTANCE:
 		case IE_NOMEMBER:
 			mes "[Belka]";
-			mes "Currently the ^6B9900<Wave Mode - Sky>^000000 is being stabilized for your convenience. Please wait.";
+			mes "Attualmente il ^6B9900<Modalità Onda - Cielo>^000000 viene stabilizzato per la tua comodità. Per favore, attendi.";
 			close;
 		case IE_OK:
 			mapannounce .@map_name$, "" + .@player_name$ + " of the party " + getpartyname(getcharid(1)) + " is entering <Wave Mode - Sky>.", bc_map,0xFF99;
@@ -175,7 +175,7 @@ prontera,146,75,1	script	Zonda Rep#pron	4_F_ZONDAGIRL,{
 		break;
 	case 5:
 		mes "[Belka]";
-		mes "Thank you for visiting Zonda, where innovation begins.";
+		mes "Grazie per aver visitato Zonda, dove inizia l'innovazione.";
 		close;
 	}
 	wave_mode_map$ = .@map_name$;

@@ -18,34 +18,34 @@ prontera,158,356,4	script	Royal Messenger	105,{
 	setarray .@Req1[0],1161,999,120,984,10,996,10,994,10,995,10,997,10;
 	setarray .@Req2[0],5013,2298,1,1001,10,996,10,994,10,995,10,997,10;
 	
-	mes "[Royal Messenger]";
-	mes "Welcome to Prontera.";
-	mes "I am the messenger in charge of the Royal Quests.";
+	mes "Messaggero Reale";
+	mes "Benvenuto a Prontera.";
+	mes "Sono il messaggero incaricato delle Missioni Reali.";
 	next;
-	if(select("Listen...:Walk away")==2) close;
-	mes "[Royal Messenger]";
-	mes "There are two quests.";
-	mes "Choose the one you like.";
+	if(select("Ascolta...:Allontanati")==2) close;
+	mes "Messaggero Reale";
+	mes "Ci sono due missioni.";
+	mes "Scegli quello che ti piace.";
 	next;
-	set .@i, select("Balmung:Lord Kaho's Horns:^777777Never mind.^000000");
-	mes "[Royal Messenger]";
+	set .@i, select("Balmung:Corna di Lord Kaho:^777777Non importa.^000000");
+	mes "Messaggero Reale";
 	if (.@i==3) {
-		mes "Have a nice day.";
+		mes "Buona giornata.";
 		close; }
-	mes "You will need the following items:";
+	mes "Avrai bisogno dei seguenti articoli:";
 	for(set .@j,1; .@j<13; set .@j,.@j+2) {
-		mes " ~ "+getd(".@Req"+.@i+"["+(.@j+1)+"]")+"x ^0055FF"+getitemname(getd(".@Req"+.@i+"["+.@j+"]"))+"^000000";
+		mes " ~ "+getd("@Richiesta"+.@i+"["+(.@j+1)+"]")+"x ^0055FF"+getitemname(getd("@Richiesta"+.@i+"["+.@j+"]"))+"^000000";
 		if (!.@nr && countitem(getd(".@Req"+.@i+"["+.@j+"]")) < getd(".@Req"+.@i+"["+(.@j+1)+"]")) set .@nr,1; }
 	mes " ~ 1,000,000z";
 	next;
-	mes "[Royal Messenger]";
+	mes "Messaggero Reale";
 	if (.@nr || Zeny < 1000000) {
-		mes "Come back when you meet all the requirements.";
+		mes "Torna quando avrai soddisfatto tutti i requisiti.";
 		close; }
 	for(set .@j,1; .@j<13; set .@j,.@j+2)
 		delitem getd(".@Req"+.@i+"["+.@j+"]"), getd(".@Req"+.@i+"["+(.@j+1)+"]");
 	set Zeny, Zeny-1000000;
-	mes "I see you already have all the items you need. Here's your "+getitemname(getd(".@Req"+.@i+"[0]"))+", as promised.";
+	mes "Vedo che hai già tutti gli articoli di cui hai bisogno. Ecco il tuo "+getitemname(getd("@Richiesta"+.@i+"[0]"))+"come promesso.";
 	getitem getd(".@Req"+.@i+"[0]"),1;
 	close;
 }

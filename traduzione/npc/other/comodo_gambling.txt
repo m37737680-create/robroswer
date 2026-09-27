@@ -30,24 +30,24 @@
 
 comodo,219,158,6	script	Kachua	4_F_02,{
 	if (checkweight(1201,1) == 0) {
-		mes "^3355FFWait a second! Right now, you're carrying too many items with you. Please come back after putting some of your things into Kafra Storage.^000000";
+		mes "^3355FFUn attimo! In questo momento, stai portando troppi oggetti con te. Per favore torna dopo aver messo alcuni dei tuoi effetti nello Stoccaggio di Kafra.^000000";
 		close;
 	}
 	cutin "katsua01.bmp",2;
 
-	mes "[Kachua]";
-	mes "Diamonds...!";
-	mes "I simply can't get my mind off";
-	mes "them! Ever since that man";
-	mes "showed me that diamond,";
-	mes "it's been all I think about!";
+	mes "Tartaruga";
+	mes "Diamanti...!";
+	mes "Non riesco proprio a togliermi dalla mente";
+	mes "loro! Da quel giorno che quell'uomo";
+	mes "mi ha mostrato quel diamante,";
+	mes "È tutto quello che penso!";
 	next;
-	if (select("Would you like to have mine?", "Ah, what a shame...") == 2) {
-		mes "[Kachua]";
-		mes "Yes, I know...";
-		mes "Even among everything";
-		mes "in my collections, nothing";
-		mes "compares to diamonds...";
+	if (select("Vuoi il mio?", "Ah, che peccato...") == 2) {
+		mes "Tartaruga";
+		mes "Sì, lo so...";
+		mes "Anche tra tutto";
+		mes "nelle mie collezioni, niente";
+		mes "confronta con i diamanti...";
 		close2;
 		cutin "katsua01.bmp",255;
 		end;
@@ -55,30 +55,30 @@ comodo,219,158,6	script	Kachua	4_F_02,{
 	if (countitem(732) == 0) {
 		cutin "katsua01.bmp",255;
 		cutin "katsua03.bmp",2;
-		mes "[Kachua]";
+		mes "Tartaruga";
 		mes "*piff*";
-		mes "You don't have any diamonds!";
-		mes "Don't even try to fool me!";
+		mes "Non hai diamanti!";
+		mes "Non provare nemmeno a imbrogliarmi!";
 		close2;
 		cutin "katsua03.bmp",255;
 		end;
 	}
-	mes "[Kachua]";
-	mes "Are you sure you don't mind";
-	mes "giving this to me? Thank you";
-	mes "so much! I don't have much in";
-	mes "the way of money, but i can give";
-	mes "you something from one of my";
-	mes "collections~";
+	mes "Tartaruga";
+	mes "Sei sicuro che non ti dispiaccia";
+	mes "darmelo? Grazie";
+	mes "troppo! Non ho molto in";
+	mes "il modo del denaro, ma posso dare";
+	mes "qualcosa da uno dei miei";
+	mes "collezioni";
 	next;
 	if (MaxWeight - Weight < 5500) {
 		cutin "katsua01.bmp",255;
 		cutin "katsua03.bmp",2;
-		mes "[Kachua]";
-		mes "Errr...";
-		mes "You brought too many things.";
-		mes "You can't receive this item now.";
-		mes "You better reorganize your inventory and try again.";
+		mes "Tartaruga";
+		mes "Eeeh...";
+		mes "Hai portato troppe cose.";
+		mes "Non puoi ricevere questo articolo ora.";
+		mes "Meglio che tu riorganizzi il tuo inventario e riprovi.";
 		close2;
 		cutin "katsua03.bmp",255;
 		end;
@@ -89,11 +89,11 @@ comodo,219,158,6	script	Kachua	4_F_02,{
 		close;
 	}
 	delitem 732,1;
-	mes "[Kachua]";
-	mes "So what would";
-	mes "you like to have?";
+	mes "Tartaruga";
+	mes "Allora cosa sarebbe";
+	mes "ti piace avere?";
 	next;
-	switch (select("Weapon", "Armor", "Garment", "Helmet", "Shoes", "Shield")) {
+	switch (select("Arma", "Armatura", "Indumento", "Casco", "Scarpe", "Scudo")) {
 	case 1: // Weapons
 		.@gamble1 = rand(1,1000);
 		if (.@gamble1 > 920 && .@gamble1 < 931) {
@@ -377,9 +377,9 @@ comodo,219,158,6	script	Kachua	4_F_02,{
 	getitem .@item,1;
 	cutin "katsua01.bmp",255;
 	cutin "katsua02.bmp",2;
-	mes "[Kachua]";
-	mes "Ah~ that Diamond is so beautiful.";
-	mes "I wish I could repay you better.";
+	mes "Tartaruga";
+	mes "Ah~ quel diamante è così bello.";
+	mes "Vorrei poterti ripagare meglio.";
 	close2;
 	cutin "katsua02.bmp",255;
 	end;
@@ -387,179 +387,179 @@ comodo,219,158,6	script	Kachua	4_F_02,{
 
 comodo,204,148,7	script	Devellin	4_F_01,{
 	mes "[Devellin]";
-	mes "It seems some traveller showed";
-	mes "a huge diamond to Kachua a while ago. Ever since then, all she's been talking about is diamonds and how much she wants them.";
+	mes "Sembra che qualche viaggiatore abbia mostrato";
+	mes "un enorme diamante per Kachua un po' fa. Da allora, tutto quello di cui parla sono i diamanti e quanto ne vuole.";
 	next;
 	mes "[Devellin]";
-	mes "She's been getting pretty obsessive about it, which scares me. It seems she's more than willing to sacrifice anything she owns for a diamond.";
+	mes "È diventata piuttosto ossessionata da questo, il che mi spaventa. Sembra più che disposta a sacrificare qualsiasi cosa possieda per un diamante.";
 	next;
 	mes "[Devellin]";
-	mes "She's the type of person who'll do anything to get what she wants. I'm worried that she might give away something far more valuable than a diamond in exchange...";
+	mes "È il tipo di persona che farebbe qualsiasi cosa per ottenere ciò che vuole. Sono preoccupato che possa cedere qualcosa di molto più prezioso di un diamante in cambio...";
 	close;
 }
 
 comodo,210,154,2	script	Suspicious Guy#cmd	2_M_THIEFMASTER,{
 	if (BaseClass == Job_Thief){
 		mes "[Cain]";
-		mes "Heeeey...";
-		mes "It seems we share the same line of work, you and me. Heh heh, lemme give you a hot tip.";
+		mes "Ehi...";
+		mes "Sembra che condividiamo la stessa linea di lavoro, tu ed io. Eh eh, lasciami darti un consiglio caldissimo.";
 		next;
 		mes "[Cain]";
-		mes "I've been charging other people for this information, but since, shall we say, we work in the same professional field, I don't have the heart to take your zeny.";
+		mes "Ho fatto pagare questa informazione ad altre persone, ma dato che, diciamo, lavoriamo nello stesso campo professionale, non ho il cuore di prenderti i tuoi zeny.";
 		next;
 		mes "[Cain]";
-		mes "You see that lady over there?";
-		mes "She's just totally in love with diamonds. And from what my sources tell me, she's loaded. Tons and tons of valuables.";
+		mes "Vedi quella signora laggiù?";
+		mes "È totalmente innamorata dei diamanti. E da quello che mi dicono le mie fonti, è ricchissima. Tonnellate di oggetti di valore.";
 		next;
 		mes "[Cain]";
-		mes "I'm talkin' rare items.";
-		mes "I took the liberty of sneaking a peek at what she owns, and saw she's got a helmet with goat horns and even a crown! She's so rich it's ridiculous!";
+		mes "Sto parlando di oggetti rari.";
+		mes "Mi sono preso la libertà di sbirciare quello che possiede, e ho visto che ha un elmo con corni di capra e persino una corona! È così ricca che è ridicolo!";
 		next;
 		mes "[Cain]";
-		mes "The buzz that's been going around is that she's got a cache of rare equipment and weapons too! So whaddya say? Wanna be partners in crime and rob her house?";
+		mes "Il pettegolezzo che circola è che abbia anche un deposito di attrezzature e armi rare! Allora, che dici? Vuoi essere complici per derubarle casa?";
 		next;
-		switch(select("No, thanks.:Sweet, I'm in!")){
+		switch(select("No, grazie.:Dolce, ci sono!")){
 		case 1:
 			mes "[Cain]";
-			mes "Wha...?";
-			mes "C'mon! I thought pilfering was something you do! Aw well, I'm gonna do it, but stay hushed on this, got it?";
+			mes "Cos'è...?";
+			mes "Dai! Pensavo che rubare fosse qualcosa che fai! Ah beh, lo farò io, ma taci su questo, capito?";
 			close;
 		case 2:
 			mes "[Cain]";
-			mes "Ha ha ha!";
+			mes "Ah ah ah!";
 			mes "...^660000Dork^000000!";
-			mes "I'm just jivin'";
-			mes "sp fuggedabout it!";
+			mes "Sto solo scherzando";
+			mes "smettila di pensarci!";
 			next;
 			mes "[Cain]";
-			mes "Ah right. Supposedly, there's a mountain where tons of diamonds are buried. A pal o' mine says there's a mine near the mountain too, so I guess if you went to the mine, you'd find Diamonds.";
+			mes "Ah, giusto. Si suppone che ci sia una montagna dove sono sepolti tonnellate di diamanti. Un mio amico mi dice che c'è anche una miniera vicino alla montagna, quindi immagino che se andavi in miniera, troveresti dei Diamanti.";
 			next;
 			mes "[Cain]";
-			mes "I guess it can't hurt to gather some Diamonds there and try to exchange them for whatever the old lady's got. Take care, pal~";
+			mes "Immagino che non faccia male raccogliere qualche Diamante lì e provare a scambiarli con quello che ha la vecchia signora. Stai attento, amico~";
 			close;
 		}
 	}
 	mes "[Cain]";
-	mes "Hey...";
-	mes "I got a hot tip for you.";
-	mes "It'll just cost you 500 zeny";
-	mes "and trust me, it's worth it.";
-	mes "So whaddya say...?";
+	mes "Ehi...";
+	mes "Ho un consiglio caldo per te.";
+	mes "Ti costerà solo 500 zeny";
+	mes "e credimi, ne vale la pena.";
+	mes "Allora che dici...?";
 	next;
-	switch(select("Alright.:No, thanks.")){
+	switch(select("Va bene.:No, grazie.")){
 	case 1:
 		if (Zeny > 499){
 			mes "[Cain]";
-			mes "You see that lady over there? She's just totally in love with diamonds. And from what my sources tell me, she's loaded. Tons and tons of valuables.";
+			mes "Vedi quella signora laggiù? È totalmente innamorata dei diamanti. E da quello che mi dicono le mie fonti, è ricchissima. Tonnellate e tonnellate di oggetti di valore.";
 			next;
 			mes "[Cain]";
-			mes "I'm talkin' rare items.";
-			mes "I took the liberty of sneaking a peek at what she owns, and saw she's got a helmet with goat horns and even a crown! She's so rich it's ridiculous!";
+			mes "Sto parlando di oggetti rari.";
+			mes "Mi sono preso la libertà di sbirciare quello che possiede, e ho visto che ha un elmo con corni di capra e persino una corona! È così ricca che è ridicolo!";
 			next;
 			mes "[Cain]";
-			mes "There's a chance that rare equipment and weapons might be yours! She'll give anything for a 3 carat diamond. So if you have any of those, you might as well see her.";
+			mes "C'è la possibilità che l'equipaggiamento e le armi rare possano essere tuoi! Darebbe qualsiasi cosa per un diamante da 3 carati. Quindi, se ne hai qualcuno, potresti benissimo vederla.";
 			next;
 			mes "[Cain]";
-			mes "Ah right. Supposedly, there's a mountain where tons of diamonds";
-			mes "are buried. A pal o' mine says there's a mine near the mountain too, so I guess if you went to the mine, you'd find Diamonds.";
+			mes "Ah giusto. Si suppone che ci sia una montagna dove tonnellate di diamanti";
+			mes "sono sepolti. Un amico mio dice che c'è anche una miniera vicino alla montagna, quindi immagino che se andassi in miniera, troveresti Diamanti.";
 			next;
 			mes "[Cain]";
-			mes "I guess it can't hurt to gather some Diamonds there and try to exchange them for whatever the old lady's got. Take care, pal~";
+			mes "Immagino che non faccia male raccogliere qualche Diamante lì e provare a scambiarli con quello che ha la vecchia signora. Stai attento, amico~";
 			Zeny = Zeny-500;
 			close;
 		}
 		mes "[Cain]";
-		mes "What the hell?!";
-		mes "Don't you have any money? Didn't I say 500 zeny? Hey man, info like this doesn't come cheap!";
+		mes "Che diavolo?!";
+		mes "Non hai soldi? Non ho detto 500 zeny? Ehi amico, informazioni come queste non costano poco!";
 		close;
 	case 2:
 		mes "[Cain]";
-		mes "Hey hey!";
-		mes "What are you, a cheapskate? You understand that everything has its price and this information is so worth it. C'mon, you can't pass this up, can you?";
+		mes "Ehi ehi!";
+		mes "Sei un avaro? Capisci che ogni cosa ha il suo prezzo e queste informazioni valgono così tanto. Dai, non puoi lasciartela sfuggire, vero?";
 		close;
 	}
 }
 
 mjolnir_02,85,362,3	script	Blacksmith Miner	4_F_JOB_BLACKSMITH,{
 	if (checkweight(1201,1) == 0) {
-		mes "^3355FFWait a second! Right now, you're carrying too many items with you. Please come back after putting some of your things into Kafra Storage.^000000";
+		mes "^3355FFUn attimo! In questo momento, stai portando troppi oggetti con te. Per favore torna dopo aver messo alcuni dei tuoi effetti nello Stoccaggio di Kafra.^000000";
 		close;
 	}
 	mes "[Dwayne]";
 	mes "Wahahahaha~";
-	mes "I've dug up a fortune!";
+	mes "Ho trovato una fortuna!";
 	next;
 	mes "[Dwayne]";
-	mes "Diamonds! Hundreds and";
-	mes "thousands of Diamonds,";
-	mes "all of them mine!";
-	mes "I'm rich!";
+	mes "Diamanti! Centinaia e";
+	mes "migliaia di Diamanti,";
+	mes "tutti miei!";
+	mes "Sono ricco!";
 	emotion ET_SMILE;
 	next;
-	switch(select("I want to buy some.:Congratulations.")){
+	switch(select("Voglio comprarne alcuni.:Congratulazioni.")){
 	case 1:
 		mes "[Dwayne]";
-		mes "Ah, you have an";
-		mes "eye for valuables!";
-		mes "Sure, sure why not!";
-		mes "I'll give you a discount, too!";
-		mes "55,000 Zeny for a diamond,";
-		mes "how does that sound?";
+		mes "Ah, hai un";
+		mes "occhio per oggetti di valore!";
+		mes "Certo, certo perché no!";
+		mes "Ti darò anche uno sconto!";
+		mes "55.000 Zeny per un diamante,";
+		mes "come suona?";
 		next;
 		mes "[Dwayne]";
-		mes "How many";
-		mes "diamonds do you need?";
-		mes "If you change your mind,";
-		mes "please enter '0' to cancel.";
+		mes "Quanti";
+		mes "diamanti di cui hai bisogno?";
+		mes "Se cambi idea,";
+		mes "per favore inserisci '0' per annullare.";
 		next;
 		input .@amount;
 		if (.@amount == 0){
 			mes "[Dwayne]";
-			mes "Alright, you've";
-			mes "canceled the trade.";
-			mes "Take care!";
+			mes "Allora, hai";
+			mes "annullato l'operazione.";
+			mes "Stai attento!";
 			close;
 		}else if (.@amount < 1 || .@amount > 500){
 			mes "[Dwayne]";
-			mes "The maximum";
-			mes "amount is 500.";
-			mes "Please enter 500 or less.";
+			mes "Il massimo";
+			mes "l'importo è 500.";
+			mes "Inserisci 500 o meno.";
 			close;
 		}
 		.@cost = .@amount * 55000;
 		.@weight = .@amount * 100;
 		if (Zeny < .@cost){
 			mes "[Dwayne]";
-			mes "Errr...";
-			mes "I'm sorry, but you";
-			mes "do not have enough money.";
-			mes "I'll be losing money if";
-			mes "I sell them at that price.";
+			mes "Eeeh...";
+			mes "Mi dispiace, ma tu";
+			mes "non ho abbastanza soldi.";
+			mes "Perdere soldi se";
+			mes "Li vendo a quel prezzo.";
 			close;
 		}
 		if ((MaxWeight - Weight) < .@weight){
 			mes "[Dwayne]";
-			mes "Errr...";
-			mes "You're carrying too many items.";
-			mes "I don't think give you anything if there's no room in your inventory. Why don't you put some of your stuff into Kafra Storage?";
+			mes "Eeeh...";
+			mes "Stai portando troppi oggetti.";
+			mes "Non credo che ti dia nulla se non c'è spazio nel tuo inventario. Perché non metti un po' delle tue cose nello Stoccaggio di Kafra?";
 			close;
 		}
 		Zeny = Zeny - .@cost;
 		getitem 732,.@amount;
 		mes "[Dwayne]";
-		mes "Thank you for";
-		mes "buying my diamonds!";
-		mes "You're welcome to";
-		mes "come back anytime.";
+		mes "Grazie per";
+		mes "comprando i miei diamanti!";
+		mes "Prego di";
+		mes "ritorna quando vuoi.";
 		close;
 	case 2:
 		mes "[Dwayne]";
-		mes "Haha, thank you~";
-		mes "If by any chance";
-		mes "you need a diamond,";
-		mes "please drop by.";
-		mes "I'll sell them to";
-		mes "you at a cheap price.";
+		mes "Ahah, grazie~";
+		mes "Se per caso";
+		mes "hai bisogno di un diamante,";
+		mes "passa a trovarci.";
+		mes "Li venderò a";
+		mes "a un prezzo economico.";
 		close;
 	}
 }

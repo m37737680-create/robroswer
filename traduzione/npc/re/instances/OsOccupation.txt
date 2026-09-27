@@ -87,12 +87,12 @@ OnTouch:
 1@os_a,30,360,3	script	Est#171_ocp_0	4_F_ESTLOVELOY,{
 	cutin "ep162_est01",2;
 	mes "[Est]";
-	mes "Focus on the briefing.";
+	mes "Concentrati sul briefing.";
 	close3;
 
 OnEvent:
 	sleep2 3000;
-	npctalk "Est : I have confirmed that there's biogas spreading at the front and it's currently under treatment.";
+	npctalk "Est : Ho confermato che c'è biogas che si sta diffondendo davanti ed è attualmente in trattamento.";
 	sleep2 5000;
 	npctalk "Est : If you get too close, you'll die immediately, so don't move until the treatment is finished...";
 	sleep2 5000;
@@ -104,13 +104,13 @@ OnEvent:
 	sleep2 5000;
 	npctalk "Est : Bravo Team, you will be sweeping with me before the eastern boundary.";
 	sleep2 5000;
-	npctalk "Est : The Echo team is in charge of backups under the command of " + strcharinfo(0) + ". You will block this place and prevent individuals from going outside.";
+	npctalk "Est : Il team Echo è responsabile dei backup sotto il comando di " + strcharinfo(0) + ". You will block this place and prevent individuals from going outside.";
 	sleep2 5000;
 	npctalk "Est : We shouldn't have situations where we'll ask for support, but if such situation occurs, the Echo team will be called.";
 	sleep2 5000;
 	mapannounce 'map$,"Chemical Treatment Unit : The biogas facilities locked has been completed. The residual gas will continue for the next few minutes.",bc_map,0xFFCC00;
 	sleep2 5000;
-	npctalk "Est : It's time. We're moving. " + strcharinfo(0) + "'s unit is a support team, wait here and respond to communications.";
+	npctalk "È ora. Ci stiamo muovendo. " + strcharinfo(0) + "'s unit is a support team, wait here and respond to communications.";
 	sleep2 5000;
 	doevent instance_npcname("#os_occupation_control") + "::OnStory02";
 	end;
@@ -118,14 +118,14 @@ OnEvent:
 
 1@os_a,29,360,3	script	#171_ocp_dev_0	4_SCR_MT_ROBOTS,{
 	if ('ocp >= 5) {
-		mes "## Received Message ##";
-		mes "## Team Alpha's last communication was at Oscar Sierra 52 177 ##";
+		mes "## Messaggio Ricevuto ##";
+		mes "L'ultima comunicazione del Team Alpha era a Oscar Sierra 52 177";
 		navigateto("1@os_a",52,177);
 		close;
 	}
 	switch ('ocp) {
 	case 1:
-		mes "## Enter Message Input ##";
+		mes "## Inserisci l'input del messaggio ##";
 		next;
 		setarray .@input$,
 		"Engaging with mutants on north.","Engaging with small mutants.","Ah~! I want to go home!";
@@ -136,7 +136,7 @@ OnEvent:
 		doevent instance_npcname(strnpcinfo(0)) + "::OnEvent02";
 		close;
 	case 3:
-		mes "## Enter Message Input ##";
+		mes "## Inserisci l'input del messaggio ##";
 		next;
 		setarray .@input$,
 		"Echo is fighting too. Requesting for support.","There was an engagement, but it's over.","Save me!";
@@ -147,7 +147,7 @@ OnEvent:
 		doevent instance_npcname(strnpcinfo(0)) + "::OnEvent03";
 		close;
 	default:
-		mes "## No Communication Status ##";
+		mes "## Nessuno Stato di Comunicazione ##";
 		close;
 	}
 	end;
@@ -221,21 +221,21 @@ OnEvent03:
 
 1@os_a,52,177,3	script	#171_ocp_dev_1	4_SCR_MT_ROBOTS,3,3,{
 	if ('ocp == 5) {
-		mes "## Send Message Input ##";
+		mes "## Invia Messaggio Input ##";
 		next;
-		select("There is no trace of alpha. Only the radio.");
+		select("Non c'è traccia di alfa. Solo il radio.");
 		'ocp = 6;
 		mapannounce 'map$,strcharinfo(0) + " : There is no trace of alpha. Only the radio is here.",bc_map,0xEE66EE;
 		sleep2 4000;
 		mapannounce 'map$,"Est : " + strcharinfo(0) + ". Please look around if there are any traces left.",bc_map,0x00EEEE;
 		sleep2 3000;
-		select("Nothing in particular.");
+		select("Niente di particolare.");
 		mapannounce 'map$,strcharinfo(0) + " : Nothing in particular.",bc_map,0xEE66EE;
 		sleep2 3000;
 		mapannounce 'map$,"Est : Bravo has completed the search on the east side.",bc_map,0x00EEEE;
 		sleep2 4000;
 		mapannounce 'map$,"Est : We are going to move south. I'll transmit the new coordinates. Please prepare yourselves for an engagement.",bc_map,0x00EEEE;
-		mes "## Coordinates Received ##";
+		mes "## Coordinate Ricevute ##";
 		enablenpc instance_npcname("#171_ocp_wrp_0");
 		hideonnpc instance_npcname("#171_ocp_wrp_0");
 		donpcevent instance_npcname("#171_ocp_wrp_0") + "::OnMobSpawn";
@@ -356,7 +356,7 @@ OnTimer10000:
 	}
 	cutin "ep171_miguel01",0;
 	mes "[???]";
-	mes "Krrr. I guess you're not someone of Regenschirm. Can you move aside, I have something to say to that person.";
+	mes "Krrr. Immagino che tu non sia di Regenschirm. Puoi spostarti, ho qualcosa da dire a quella persona.";
 	next;
 	cutin "",255;
 	mes "^0000FFThe mutant who's life is running out is trying to say something.^000000";
@@ -369,9 +369,9 @@ OnTimer10000:
 		mes "[Est]";
 		mes strcharinfo(0) + ", I didn't think I'd survive and see you again. You're pretty good.";
 		next;
-		select("Ask about the fallen mutant.");
+		select("Chiedere del mutante caduto.");
 		mes "[Est]";
-		mes "Well, even if you ask me... it's the first time that I'll talk to a mutant.";
+		mes "Beh, anche se mi chiedi... è la prima volta che parlo con un mutante.";
 		emotion ET_SCRATCH;
 		next;
 		cutin "ep171_miguel03",0;
@@ -380,65 +380,65 @@ OnTimer10000:
 		next;
 		cutin "ep162_est01",2;
 		mes "[Est]";
-		mes "How do you know my name? Who are you! I'll finish you painlessly, so be honest.";
+		mes "Come fai a sapere il mio nome? Chi sei! Ti finirò senza dolore, quindi sii onesto.";
 		emotion ET_SURPRISE;
 		next;
 		cutin "ep171_miguel03",0;
 		mes "[???]";
-		mes "Est... Rebellion Ghost Squad... Do you remember uncle Miguel?";
+		mes "Est... Squadra Fantasma di Ribellione... Ti ricordi dello zio Miguel?";
 		next;
 		cutin "ep162_est01",2;
 		mes "[Est]";
-		mes "How do you know that name...";
+		mes "Come fai a conoscere quel nome...";
 		next;
 		cutin "ep171_miguel03",0;
 		mes "[???]";
-		mes "Ha... haha... you still remember.";
+		mes "Ah... haha... te lo ricordi ancora?";
 		next;
-		mes "^0000FFThe identification tag on the mutant's neck stands out.^000000";
+		mes "^0000FFIl cartellino di identificazione sul collo del mutante spicca.^000000";
 		next;
-		select("Get the identification tag and hand it to Est.");
+		select("Prendi il tag di identificazione e passalo a Est.");
 		cutin "ep162_est01",2;
 		mes "[Est]";
 		mes "Mi... guel...?";
 		next;
 		cutin "ep171_miguel03",0;
 		mes "[Miguel]";
-		mes "... Est, the last thing I'll see... is your face... That's a relief.";
+		mes "... Est, l'ultima cosa che vedrò... è il tuo viso... Questo è un sollievo.";
 		next;
 		cutin "ep162_est01",2;
 		mes "[Est]";
-		mes "Uncle Miguel!? How did this happen!";
+		mes "Zio Miguel!? Come è successo!";
 		next;
 		cutin "ep171_miguel03",0;
 		mes "[Miguel]";
-		mes "Before I die... I always wanted to see my old colleagues... You fulfilled my wish.";
+		mes "Prima di morire... ho sempre voluto rivedere i miei vecchi colleghi... Hai esaudito il mio desiderio.";
 		next;
 		cutin "ep162_est01",2;
 		mes "[Est]";
-		mes "Uncle! What is this! What happened to you?";
+		mes "Zio! Cos'è questo! Cosa ti è successo?";
 		next;
 		cutin "ep171_miguel01",0;
 		mes "[Miguel]";
-		mes "Ugh... I don't have much time left... Listen carefully, Est.";
+		mes "Uffa... Non ho molto tempo rimasto... Ascolta attentamente, Est.";
 		next;
 		mes "[Miguel]";
-		mes "Somewhere in here... the mad research results of Regenschirm... can be found somewhere in here.";
+		mes "Da qualche parte qui... i risultati di ricerca folli di Regenschirm... possono essere trovati da qualche parte qui.";
 		next;
 		mes "[Miguel]";
-		mes "Find everything... and you'll know what happened to me... you'll see things that can't be explained here.";
+		mes "Trova tutto... e saprai cosa mi è successo... vedrai cose che qui non possono essere spiegate.";
 		next;
 		cutin "ep162_est01",2;
 		mes "[Est]";
-		mes "Uncle! Wake up!! Let's go out. If we go out, we can save you!";
+		mes "Zio! Svegliati!! Usciamo. Se usciamo, possiamo salvarti!";
 		next;
 		cutin "ep171_miguel02",0;
 		mes "[Miguel]";
-		mes  "Est... you still have a big heart... that kind of feeling... on the battlefield... I taught you...";
+		mes  "Est... hai ancora un grande cuore... quel tipo di sentimento... sul campo di battaglia... Ti ho insegnato...";
 		next;
 		cutin "ep162_est01",2;
 		mes "[Est]";
-		mes "Uncle! Uncle!!";
+		mes "Zio! Zio!!";
 		next;
 		cutin "",255;
 		mes "[Miguel]";
@@ -450,48 +450,48 @@ OnTimer10000:
 		getexp 300000,300000;
 		close;
 	}
-	select("Ask about Miguel");
+	select("Chiedere di Miguel");
 	cutin "ep162_est01",2;
 	mes "[Est]";
 	mes strcharinfo(0) +", I'm sorry but I don't feel like talking about him right now.";
 	next;
-	select("Ask about the records.");
+	select("Chiedere dei registri.");
 	mes "[Est]";
-	mes "I checked the northeast section and saw a place over the railway that seemed to be a research facility.";
+	mes "Ho controllato la sezione nord-est e ho visto un posto sopra le ferrovie che sembrava essere una struttura di ricerca.";
 	next;
 	mes "[Est]";
-	mes "Maybe the research Miguel was talking about... is somewhere in there. I'm going to have to start another operation right away.";
+	mes "Forse la ricerca di cui parlava Miguel... è da qualche parte lì dentro. Devo iniziare subito un'altra operazione.";
 	next;
 	mes "[Est]";
-	mes "I don't think there will be anything else to do here.";
+	mes "Non credo ci sarà altro da fare qui.";
 	next;
-	select("I want to go back.");
+	select("Voglio tornare indietro.");
 	warp "sp_cor",162,63;
 	end;
 }
 
 1@os_a,187,195,5	script	Operation Officer#171_osd	4_M_ILYA,{
 	if (isbegin_quest(12454) == 1) {
-		mes "[Operation Officer]";
-		mes "You've dealt with a CP7 Mutant by yourself... did the battle went well?";
+		mes "Ufficiale Operativo";
+		mes "Hai affrontato un Mutante CP7 da solo... la battaglia è andata bene?";
 		next;
-		mes "[Operation Officer]";
-		mes "Here are the supplies and experience given to the troops that joined the operation. Take it.";
+		mes "Ufficiale Operativo";
+		mes "Ecco gli equipaggiamenti e l'esperienza forniti alle truppe che hanno aderito all'operazione. Prendilo.";
 		erasequest 12454;
 		getexp 150000,150000;
 		getitem 25669,5;
 		getitem 25723,1;
 		next;
-		mes "[Operation Officer]";
-		mes "Even though it's a CP7 Rated, sorry I couldn't give you more experience.";
+		mes "Ufficiale Operativo";
+		mes "Anche se è un CP7 Rated, mi dispiace non poterti dare più esperienza.";
 		close;
 	}
-	mes "[Operation Officer]";
-	mes "Let's go out now. We need to prepare for repairs quickly.";
+	mes "Ufficiale Operativo";
+	mes "Usciamo adesso. Dobbiamo prepararci per le riparazioni velocemente.";
 	next;
-	if (select("Look around more.:Go Out") == 1) {
-		mes "[Operation Officer]";
-		mes "Is that so? Don't delay it for too long.";
+	if (select("Guarda più attentamente.:Uscire") == 1) {
+		mes "Ufficiale Operativo";
+		mes "È così? Non ritardarlo troppo.";
 		close;
 	}
 	warp "sp_cor",162,63;

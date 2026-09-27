@@ -14,44 +14,44 @@ rachel,167,242,7	duplicate(dummy_cloaked_npc)	Miriam#sms03	4_EP18_MIRIAM
 
 rachel,169,245,3	script	Ordinary Person#sms04	4_EP18_GW_WOMAN01,{
 	if (BaseLevel < 170) {
-		mes "[Wolf]";
-		mes "Are you here to join the protest? But you don't seem like an experienced protester.";
+		mes "Lupo";
+		mes "Sei qui per unirti alla protesta? Ma non sembri un manifestante esperto.";
 		next;
-		mes "- This quest is available from level 170 onward. -";
+		mes "Questa missione è disponibile dal livello 170 in poi.";
 		close;
 	}
 	if (ep18_main < 50) {
-		mes "[Ordinary Person]";
-		mes "This area is under maintenance and access is prohibited. It's dangerous. Please step back.";
+		mes "Persona comune";
+		mes "Questa zona è sotto manutenzione e l'accesso è vietato. È pericoloso. Per favore, indietreggiate.";
 		close;
 	}
 	if (ep18_main == 50 || ep18_main == 51) {
 		if (ep18_main == 50) {
-			mes "[Ordinary Person]";
-			mes "This area is under maintenance and access is prohibited.";
+			mes "Persona comune";
+			mes "Questa zona è sotto manutenzione e l'accesso è vietato.";
 			next;
 			cutin "ep18_suad_01.png",2;
 			cloakoffnpcself( "Suad#sms03" );
 			mes "[Suad]";
-			mes "You don't need to be cautious. This person is an adventurer who is with us.";
+			mes "Non hai bisogno di essere cauto. Questa persona è un avventuriero che è con noi.";
 			next;
 			cutin "ep18_miriam_01.png",0;
 			cloakoffnpcself( "Miriam#sms03" );
 			mes "[Miriam]";
-			mes "Are we all gathered now?";
+			mes "Siamo tutti riuniti ora?";
 			next;
 			cutin "ep18_suad_01.png",2;
 			mes "[Suad]";
-			mes "Yeah, everyone's ready. We just need to signal our people scattered around and enter the temple.";
+			mes "Sì, tutti sono pronti. Dobbiamo solo segnalare alle nostre persone sparse e entrare nel tempio.";
 			next;
 			cutin "ep18_miriam_01.png",0;
 			mes "[Miriam]";
-			mes "We need to move quickly.";
+			mes "Dobbiamo muoverci velocemente.";
 			next;
 		}
 		cutin "ep18_suad_01.png",2;
 		mes "[Suad]";
-		mes "When we enter here, we can go towards the side entrance of the temple. We'll enter when we receive a response after sending the signal over there. Adventure, can you send the signal?";
+		mes "Quando entriamo qui, possiamo andare verso l'ingresso laterale del tempio. Entreremo quando riceveremo una risposta dopo aver inviato il segnale laggiù. Avventura, puoi inviare il segnale?";
 		next;
 
 		.@md_name$ = "Wolves Gathering Place";
@@ -61,13 +61,13 @@ rachel,169,245,3	script	Ordinary Person#sms04	4_EP18_GW_WOMAN01,{
 			.@menu$[1] = "Let's enter quickly.";
 		}
 
-		switch( select( .@menu$[0], .@menu$[1], "We need to be prepared." ) ) {
+		switch( select( .@menu$[0], .@menu$[1], "Dobbiamo essere preparati." ) ) {
 		case 1:
-			mes "Beep-";
+			mes "Bip-";
 			next;
 			instance_create(.@md_name$);
 			mes "[Suad]";
-			mes "Since we've sent the signal, the emergency passage will open soon. Let us know when you're ready. We'll enter immediately.";
+			mes "Dato che abbiamo inviato il segnale, il passaggio di emergenza si aprirà presto. Facci sapere quando siete pronti. Entreremo immediatamente.";
 			if (ep18_main == 50) {
 				changequest 17519,17520;
 				ep18_main = 51;
@@ -77,11 +77,11 @@ rachel,169,245,3	script	Ordinary Person#sms04	4_EP18_GW_WOMAN01,{
 			switch( instance_enter(.@md_name$) ) {
 			case IE_OTHER:
 				mes "[Suad]";
-				mes "^ff0000An unknown error occurred.^000000";
+				mes "^ff0000Si è verificato un errore sconosciuto.^000000";
 				close3;
 			case IE_NOINSTANCE:
 				mes "[Suad]";
-				mes "We haven't sent the signal yet. Once everyone is ready, we'll send the signal immediately.";
+				mes "Non abbiamo ancora inviato il segnale. Appena tutti saranno pronti, invieremo immediatamente il segnale.";
 				close3;
 			case IE_NOMEMBER:
 				mes "[Suad]";
@@ -89,26 +89,26 @@ rachel,169,245,3	script	Ordinary Person#sms04	4_EP18_GW_WOMAN01,{
 				close3;
 			case IE_OK:
 				mes "[Suad]";
-				mes "The signal has come, so let's move. Let's enter right away.";
+				mes "Il segnale è arrivato, quindi muoviamoci. Entriamo subito.";
 				if (ep18_main == 50) {	// debug
 					changequest 17519,17520;
 					ep18_main = 51;
 				}
 				cutin "",255;
-				mapannounce "rachel", "Adventurer " + strcharinfo(0) + " of the " + getpartyname( getcharid(1) ) + " party will enter " + .@md_name$ + " first. All wolves, gather sequentially.", bc_map, 0xFF99;
+				mapannounce "rachel", ""Avventuriero " + strcharinfo(0) + " of the " + getpartyname( getcharid(1) ) + " party will enter " + .@md_name$ + " first. All wolves, gather sequentially.", bc_map, 0xFF99;
 				// warp "1@nyr",194,30;
 				close;
 			}
 			end;
 		case 3:
 			mes "[Suad]";
-			mes "Right. Adventurers are also essential forces, so let's wait until they're ready.";
+			mes "Giusto. Gli avventurieri sono anche forze essenziali, quindi aspettiamo che siano pronti.";
 			close3;
 		}
 		end;
 	}
-	mes "[Ordinary Person]";
-	mes "Hello, adventurer. An agent from a temple has been waiting for you.";
+	mes "Persona comune";
+	mes "Ciao, avventuriero. Un agente di un tempio ti sta aspettando.";
 	close2;
 	cloakoffnpcself( "Priest#sms01" );
 	npctalk "Adventurer, welcome.", "Priest#sms01", bc_self;
@@ -126,24 +126,24 @@ OnInit:
 // Instance Sanctuary Purification entrance
 rachel,167,244,5	script(CLOAKED)	Priest#sms01	4_F_TRAINEE,{
 	if (checkweight(1000405,4) == 0) {
-		mes "- Wait a minute !! -";
-		mes "- Currently you're carrying -";
-		mes "- too many items with you. -";
-		mes "- Please try again -";
-		mes "- after you loose some weight. -";
+		mes "Aspetta un minuto!!";
+		mes "Attualmente stai portando";
+		mes "troppi oggetti con te.";
+		mes "Per favore riprova";
+		mes "dopo che perderai un po' di peso.";
 		close;
 	}
 	if (ep18_main < 52)
 		end;
 	// repeatable instance Sanctuary Purification
 	if (BaseLevel < 170) {
-		mes "[Priest]";
-		mes "You must be at least BaseLevel 170 for this instance.";
+		mes "[Prete]";
+		mes "Devi avere almeno il Livello Base 170 per questa istanza.";
 		close;
 	}
 	if (isbegin_quest(17524) == 1 || isbegin_quest(17526) == 1) {
-		mes "[Priest]";
-		mes "Welcome, adventurer. You've been through a lot.";
+		mes "[Prete]";
+		mes "Benvenuto, avventuriero. Hai attraversato molto.";
 		if (isbegin_quest(17524) == 1) {
 			erasequest 17524;
 			.@count = 2;
@@ -154,8 +154,8 @@ rachel,167,244,5	script(CLOAKED)	Priest#sms01	4_F_TRAINEE,{
 		}
 		getitem 1000405,.@count;	// Ep18_Amethyst_Fragment
 		next;
-		mes "[Priest]";
-		mes "Please take a rest from your journey now! See you again!";
+		mes "[Prete]";
+		mes "Riposa dal tuo viaggio ora! Ci vediamo di nuovo!";
 		close;
 	}
 	.@md_name$ = "Sanctuary Purification";
@@ -167,47 +167,47 @@ rachel,167,244,5	script(CLOAKED)	Priest#sms01	4_F_TRAINEE,{
 		break;
 	case 0:
 	case 1:
-		mes "[Priest]";
-		mes "The plan for the next operation hasn't been completed yet. Since it's conducted only once a day, we need to be cautious. Please rest until then, adventurer.";
+		mes "[Prete]";
+		mes "Il piano per la prossima operazione non è ancora stato completato. Dato che viene condotta solo una volta al giorno, dobbiamo essere cauti. Per favore riposa fino ad allora, avventuriero.";
 		close;
 	case 2:
-		mes "[Priest]";
-		mes "Hello! Did you get a good rest? I would be grateful if you could help me today. Please note that the operation can be done once a day.";
+		mes "[Prete]";
+		mes "Ciao! Hai riposato bene? Ti sarei grato se potessi aiutarmi oggi. Si prega di notare che l'operazione può essere fatta una volta al giorno.";
 		erasequest 17527;
 		if (isbegin_quest(17522) == 0 && isbegin_quest(17523) == 0)
 			callsub( S_Take, 2, "Since we're doing it, let's do both.", "Raid on the defected temple guards.", "Raid on the Heart Hunters.", "", "It's going to be tough." );
 		break;
 	}
-	mes "[Priest]";
-	mes "Are you ready? I will send the join signal.";
+	mes "[Prete]";
+	mes "Sei pronto? Invierò il segnale di accesso.";
 	next;
-	switch( select( "Alright. I'll send the signal.", "I'll proceed.", "I still have a mission pending!", "More preparation is needed." ) ) {
+	switch( select( "Va bene. Invio il segnale.", "Procederò.", "Ancora ho una missione pendente!", "È necessaria più preparazione." ) ) {
 	case 1:
-		mes "[Priest]";
-		mes "I've received the rendezvous point. You can join immediately through this emergency exit. When you're ready, proceed to enter.";
+		mes "[Prete]";
+		mes "Ho ricevuto il punto di ritrovo. Puoi unirti immediatamente attraverso questa uscita di emergenza. Quando sei pronto, procedi ad entrare.";
 		if (instance_create(.@md_name$) < 0) {
-			mes "Party: " + getpartyname(getcharid(1)) + "";
+			mes "Festa: " + getpartyname(getcharid(1)) + "";
 			mes "Leader: " + strcharinfo(0) + "";
-			mes "^0000ff" + .@md_name$ + " ^000000- Unknown error";
+			mes "^0000ff" + .@md_name$ + " ^000000- Errore sconosciuto";
 			close;
 		}
 		end;
 	case 2:
 		switch( instance_enter(.@md_name$) ) {
 		case IE_OTHER:
-			mes "^ff0000An unknown error occurred.^000000";
+			mes "^ff0000Si è verificato un errore sconosciuto.^000000";
 			close;
 		case IE_NOINSTANCE:
-			mes "The memorial dungeon does not exist.";
-			mes "The party leader did not generate the dungeon yet.";
+			mes "La dungeon commemorativa non esiste.";
+			mes "Il capo del partito non ha ancora generato il dungeon.";
 			close;
 		case IE_NOMEMBER:
 			mes "^ff0000Only a member of the party can enter the Memorial Dungeon.^000000";
 			close;
 		case IE_OK:
-			mes "[Priest]";
-			mes "The signal has arrived, so let's move. Let's enter the rendezvous point right away.";
-			mapannounce "rachel", "" + strcharinfo(0) + " of the party, " + getpartyname( getcharid(1) ) + ", is entering " + .@md_name$ + ".",bc_map,"0x00ff99",FW_NORMAL,12;
+			mes "[Prete]";
+			mes "Il segnale è arrivato, quindi muoviamoci. Entriamo subito nel punto di ritrovo.";
+			mapannounce "rachel", """ + strcharinfo(0) + " of the party, " + getpartyname( getcharid(1) ) + ", is entering " + .@md_name$ + ".",bc_map,"0x00ff99",FW_NORMAL,12;
 			setquest 17527;
 			// warp "1@nyr",194,30;
 			end;
@@ -216,23 +216,23 @@ rachel,167,244,5	script(CLOAKED)	Priest#sms01	4_F_TRAINEE,{
 	case 3:
 		callsub( S_Take, 1, "", "Raid on the defected temple guards.", "Raid on the Heart Hunters.", "Since we're doing it, let's do both.", "It's going to be tough." );
 	case 4:
-		mes "[Priest]";
-		mes "Understood. I'll wait.";
+		mes "[Prete]";
+		mes "Ho capito. Aspetto.";
 		close;
 	}
 	end;
 
 S_Take:
 	if (getarg(0) == 0) {
-		mes "[Priest]";
-		mes "The main forces that infiltrated the temple have escaped, but we still have trouble with the temple guards who defected to the Heart Hunters and remnants of the Heart Hunters themselves who are after the heart.";
+		mes "[Prete]";
+		mes "Le forze principali che hanno infiltrato il tempio sono scappate, ma abbiamo ancora problemi con i guardiani del tempio che si sono disertati presso i Cacciatori del Cuore e i resti dei Cacciatori del Cuore stessi che inseguono il cuore.";
 		next;
-		mes "[Priest]";
-		mes "We are conducting raids independently, but we would appreciate your assistance, adventurer. Please note that raids are conducted once a day.";
+		mes "[Prete]";
+		mes "Stiamo conducendo le incursioni indipendentemente, ma apprezzeremmo il vostro aiuto, avventuriero. Si prega di notare che le incursioni vengono condotte una volta al giorno.";
 	}
 	else if (getarg(0) == 1) {
-		mes "[Priest]";
-		mes "Is that so? What mission did you miss?";
+		mes "[Prete]";
+		mes "È così? Quale missione hai perso?";
 	}
 	next;
 	switch( select( getarg(1), getarg(2), getarg(3), getarg(4), getarg(5) ) ) {
@@ -242,44 +242,44 @@ S_Take:
 			setquest 17522;
 		if (isbegin_quest(17523) == 0 && isbegin_quest(17526) == 0)
 			setquest 17523;
-		mes "[Priest]";
-		mes "Understood.";
+		mes "[Prete]";
+		mes "Capito.";
 		next;
-		mes "[Priest]";
-		mes "Then please let me know when you're ready.";
+		mes "[Prete]";
+		mes "Allora fammi sapere quando sei pronto.";
 		close;
 	case 2:
 		if (isbegin_quest(17522) == 0 && isbegin_quest(17524) == 0) {
 			setquest 17522;
-			mes "[Priest]";
-			mes "Raid on the defected temple guards.Is that so? Understood.";
+			mes "[Prete]";
+			mes "Assalto ai guardiani del tempio defezionati. È così? Capito.";
 			next;
-			mes "[Priest]";
-			mes "Then please let me know when you're ready.";
+			mes "[Prete]";
+			mes "Allora fammi sapere quando sei pronto.";
 			close;
 		}
-		mes "[Priest]";
-		mes "It seems you're already engaged in a mission. Very well, please take care of it.";
+		mes "[Prete]";
+		mes "Sembra che tu sia già impegnato in una missione. Molto bene, per favore occupatene.";
 		next;
-		mes "[Priest]";
-		mes "Then please let me know when you're ready.";
+		mes "[Prete]";
+		mes "Allora fammi sapere quando sei pronto.";
 		close;
 	case 3:
 		if (isbegin_quest(17523) == 0 && isbegin_quest(17526) == 0) {
 			setquest 17523;
-			mes "[Priest]";
-			mes "Thank you for your cooperation. Let me know when you're ready.";
+			mes "[Prete]";
+			mes "Grazie per la tua collaborazione. Fammi sapere quando sei pronto.";
 			close;
 		}
-		mes "[Priest]";
-		mes "It seems you're already engaged in a mission. Very well, please take care of it.";
+		mes "[Prete]";
+		mes "Sembra che tu sia già impegnato in una missione. Molto bene, per favore occupatene.";
 		next;
-		mes "[Priest]";
-		mes "Then please let me know when you're ready.";
+		mes "[Prete]";
+		mes "Allora fammi sapere quando sei pronto.";
 		close;
 	case 5:
-		mes "[Priest]";
-		mes "If that's the case, then there's nothing we can do. I'll see you next time!";
+		mes "[Prete]";
+		mes "Se è così, allora non c'è niente che possiamo fare. Ci vediamo la prossima volta!";
 		close2;
 		cloakonnpcself( "Priest#sms01" );
 		end;
@@ -697,12 +697,12 @@ OnTouch:
 
 	'nyr_main_step = 1;
 	setpcblock PCBLOCK_NPC, true;
-	npctalk "Adventurer!";
+	npctalk "Avventuriero!";
 	emotion ET_SURPRISE;
 	sleep2 1000;
 	navigateto("1@nyr",125,41);
 	setpcblock PCBLOCK_NPC, false;
-	npctalk "Up ahead is the rallying point.";
+	npctalk "In lontananza c'è il punto di ritrovo.";
 	unitwalk getnpcid(0), 162,31, instance_npcname("Miriam#dms101") + "::OnMove1";
 	sleep 2000;
 	npctalk "This way, please.";
@@ -713,7 +713,7 @@ OnMove1:
 	end;
 OnMove2:
 	unitwalk getnpcid(0), 128,41, instance_npcname("Miriam#dms101") + "::OnMove3";
-	npctalk "It's right in front of me.";
+	npctalk "È proprio di fronte a me.";
 	end;
 OnMove3:
 	if ('nyr_main_step != 1)
@@ -721,58 +721,58 @@ OnMove3:
 	'nyr_main_step = 2;
 
 	npctalk "Suad, what is the situation?", instance_npcname("Miriam#dms101");
-	npctalk "No further entry is allowed!", instance_npcname("Temple Guard#dms101");
+	npctalk "Nessun ulteriore ingresso è consentito!", instance_npcname("Temple Guard#dms101");
 	sleep 1000;
 	npctalk "Miriam, Adventurer. A little further over here.", instance_npcname("Suad#dms101");
 	sleep 1000;
-	npctalk "That's too much! They're treating us like criminals!", instance_npcname("Kun#dms112");
-	npctalk "Are we in the place we're not supposed to be?", instance_npcname("Angry Crowd#dms131");
+	npctalk "È troppo! Ci stanno trattando come criminali!", instance_npcname("Kun#dms112");
+	npctalk "Siamo nel posto dove non dovremmo essere?", instance_npcname("Angry Crowd#dms131");
 	sleep 1500;
 	npctalk "Hey, that place was my great-great-grandmother's land!", instance_npcname("Angry Crowd#dms121");
-	npctalk "We have every right to be here!", instance_npcname("Angry Crowd#dms161");
+	npctalk "Abbiamo tutto il diritto di essere qui!", instance_npcname("Angry Crowd#dms161");
 	sleep 2000;
-	npctalk "Yeah!! Get out of our way!", instance_npcname("Angry Crowd#dms191");
-	npctalk "You pushed us away!", instance_npcname("Angry Crowd#dms181");
+	npctalk "Sì!! Via dal nostro cammino!", instance_npcname("Angry Crowd#dms191");
+	npctalk "Ci hai allontanati!", instance_npcname("Angry Crowd#dms181");
 	sleep 2000;
-	npctalk "Is it because we don't look human?", instance_npcname("Angry Crowd#dms101");
-	npctalk "Is it because we look so easy?", instance_npcname("Angry Crowd#dms131");
+	npctalk "È perché non sembriamo umani?", instance_npcname("Angry Crowd#dms101");
+	npctalk "È perché sembriamo così facili?", instance_npcname("Angry Crowd#dms131");
 	sleep 2000;
-	npctalk "We're claiming our rightful place!", instance_npcname("Angry Crowd#dms121");
-	npctalk "What the hell!! Give our land back!!", instance_npcname("Angry Crowd#dms181");
+	npctalk "Rivendichiamo il nostro diritto di appartenenza!", instance_npcname("Angry Crowd#dms121");
+	npctalk "Che diavolo!! Restituite la nostra terra!!", instance_npcname("Angry Crowd#dms181");
 	sleep 2000;
-	npctalk "We are the longtime owners of this land and have been displaced by the settlers.", instance_npcname("Angry Crowd#dms101");
-	npctalk "Who is holding us back?!", instance_npcname("Angry Crowd#dms141");
+	npctalk "Siamo i proprietari di lunga data di questa terra e siamo stati sfollati dai coloni.", instance_npcname("Angry Crowd#dms101");
+	npctalk "Chi ci sta bloccando?!", instance_npcname("Angry Crowd#dms141");
 	sleep 2000;
-	npctalk "We have come to claim our rightful place as the longtime inhabitants of this land.", instance_npcname("Angry Crowd#dms101");
-	npctalk "Those who are illegally occupying our land should leave!", instance_npcname("Angry Crowd#dms191");
+	npctalk "Siamo venuti a rivendicare il nostro diritto di luogo come abitanti da tempo di questa terra.", instance_npcname("Angry Crowd#dms101");
+	npctalk "Coloro che occupano illegalmente la nostra terra dovrebbero andarsene!", instance_npcname("Angry Crowd#dms191");
 	sleep 2000;
-	npctalk "No illegal protests! Disband now!", instance_npcname("Temple Guard#dms101");
-	npctalk "Who said our protest was illegal?", instance_npcname("Angry Crowd#dms151");
-	npctalk "You're just making up that it's illegal?", instance_npcname("Angry Crowd#dms171");
+	npctalk "Nessun protesta illegale! Sciolgetevi ora!", instance_npcname("Temple Guard#dms101");
+	npctalk "Chi ha detto che il nostro protesta era illegale?", instance_npcname("Angry Crowd#dms151");
+	npctalk "Stai solo inventando che sia illegale?", instance_npcname("Angry Crowd#dms171");
 	sleep 2000;
-	npctalk "Our demands are as follows!", instance_npcname("Angry Crowd#dms101");
+	npctalk "Le nostre richieste sono le seguenti!", instance_npcname("Angry Crowd#dms101");
 	sleep 2000;
-	npctalk "One! We are the owners of this land! Those who have illegally occupied it must leave!", instance_npcname("Angry Crowd#dms101");
-	npctalk "Back off!", instance_npcname("Angry Crowd#dms111");
-	npctalk "Back off!", instance_npcname("Angry Crowd#dms121");
-	npctalk "Back off!", instance_npcname("Angry Crowd#dms131");
-	npctalk "Back off!", instance_npcname("Angry Crowd#dms141");
-	npctalk "Back off!", instance_npcname("Angry Crowd#dms151");
-	npctalk "Back off!", instance_npcname("Angry Crowd#dms161");
-	npctalk "Back off!", instance_npcname("Angry Crowd#dms171");
-	npctalk "Back off!", instance_npcname("Angry Crowd#dms181");
-	npctalk "Back off!", instance_npcname("Angry Crowd#dms191");
+	npctalk "Uno! Noi siamo i proprietari di questa terra! Coloro che l'hanno occupata illegalmente devono andarsene!", instance_npcname("Angry Crowd#dms101");
+	npctalk "Via!", instance_npcname("Angry Crowd#dms111");
+	npctalk "Via!", instance_npcname("Angry Crowd#dms121");
+	npctalk "Via!", instance_npcname("Angry Crowd#dms131");
+	npctalk "Via!", instance_npcname("Angry Crowd#dms141");
+	npctalk "Via!", instance_npcname("Angry Crowd#dms151");
+	npctalk "Via!", instance_npcname("Angry Crowd#dms161");
+	npctalk "Via!", instance_npcname("Angry Crowd#dms171");
+	npctalk "Via!", instance_npcname("Angry Crowd#dms181");
+	npctalk "Via!", instance_npcname("Angry Crowd#dms191");
 	sleep 2000;
-	npctalk "Two! Abolish unfair discriminatory policies and acknowledge our rights!", instance_npcname("Angry Crowd#dms101");
-	npctalk "Acknowledge it!", instance_npcname("Angry Crowd#dms111");
-	npctalk "Acknowledge it!", instance_npcname("Angry Crowd#dms121");
-	npctalk "Acknowledge it!", instance_npcname("Angry Crowd#dms131");
-	npctalk "Acknowledge it!", instance_npcname("Angry Crowd#dms141");
-	npctalk "Acknowledge it!", instance_npcname("Angry Crowd#dms151");
-	npctalk "Acknowledge it!", instance_npcname("Angry Crowd#dms161");
-	npctalk "Acknowledge it!", instance_npcname("Angry Crowd#dms171");
-	npctalk "Acknowledge it!", instance_npcname("Angry Crowd#dms181");
-	npctalk "Acknowledge it!", instance_npcname("Angry Crowd#dms191");
+	npctalk "Due! Abolire le politiche discriminatorie ingiuste e riconoscere i nostri diritti!", instance_npcname("Angry Crowd#dms101");
+	npctalk "Riconoscilo!", instance_npcname("Angry Crowd#dms111");
+	npctalk "Riconoscilo!", instance_npcname("Angry Crowd#dms121");
+	npctalk "Riconoscilo!", instance_npcname("Angry Crowd#dms131");
+	npctalk "Riconoscilo!", instance_npcname("Angry Crowd#dms141");
+	npctalk "Riconoscilo!", instance_npcname("Angry Crowd#dms151");
+	npctalk "Riconoscilo!", instance_npcname("Angry Crowd#dms161");
+	npctalk "Riconoscilo!", instance_npcname("Angry Crowd#dms171");
+	npctalk "Riconoscilo!", instance_npcname("Angry Crowd#dms181");
+	npctalk "Riconoscilo!", instance_npcname("Angry Crowd#dms191");
 	end;
 
 OnStartMove2:
@@ -798,48 +798,48 @@ OnGuy3:
 	if (is_party_leader() == false) {
 		cutin "ep18_Suad_01.png",0;
 		mes "[Suad]";
-		mes "Where's the party leader?";
+		mes "Dov'è il capo del partito?";
 		close3;
 	}
 	if ('nyr_main_step == 2) {
 		cutin "ep18_suad_01.png",0;
 		mes "[Suad]";
-		mes "It's not looking good right now. I think... The armed guards increasing their security..";
+		mes "Non sembra buono al momento. Penso che... i guardie armate stanno aumentando la loro sicurezza..";
 		next;
-		select( "Looks like the issue with the riot on top is a big one." );
+		select( "Sembra che il problema con la rivolta in cima sia grande." );
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "Or the information was leaked. Otherwise, we wouldn't have been prepared.";
+		mes "O le informazioni sono trapelate. Altrimenti, non saremmo stati preparati.";
 		next;
 		cutin "",255;
-		mes "[Temple Guard]";
-		mes "No further entry is permitted. Surrender to your arrest.";
+		mes "Guardia del Tempio";
+		mes "Nessun ulteriore ingresso è permesso. Arrenditi al tuo arresto.";
 		next;
-		mes "[Natives]";
-		mes "What have we done? We're not supposed to be in here!";
+		mes "[Indigeni]";
+		mes "Cosa abbiamo fatto? Non dovremmo essere qui!";
 		next;
-		mes "[Natives]";
-		mes "This is our land! If the owner wants to enter into their own land, why should anyone be stopping them?";
+		mes "[Indigeni]";
+		mes "Questa è la nostra terra! Se il proprietario vuole entrare nella propria terra, perché qualcuno dovrebbe fermarlo?";
 		next;
-		mes "[Natives]";
-		mes "You're the ones who are illegally occupying it!";
+		mes "[Indigeni]";
+		mes "Siete voi quelli che lo occupate illegalmente!";
 		next;
-		mes "[Natives]";
-		mes "What the hell, give it back!! Our land!!";
+		mes "[Indigeni]";
+		mes "Che diavolo, restituiscilo!! La nostra terra!!";
 		next;
-		mes "[Native Leader]";
-		mes "We are the longtime owners of this land and have been displaced from our homes by the settlers.";
+		mes "Leader Nativo";
+		mes "Siamo i proprietari di lunga data di questa terra e siamo stati sfollati dalle nostre case dai coloni.";
 		next;
-		mes "[Native Leader]";
-		mes "We have come to claim our rightful place as the longtime inhabitants of this land.";
+		mes "Leader Nativo";
+		mes "Siamo venuti a rivendicare il nostro diritto di luogo come abitanti da tempo di questa terra.";
 		next;
-		mes "[Native Leader]";
-		mes "Our demands are as follows.";
+		mes "Leader Nativo";
+		mes "Le nostre richieste sono le seguenti.";
 		next;
-		mes "[Native Leader]";
-		mes "One! We have...";
+		mes "Leader Nativo";
+		mes "Uno! Abbiamo...";
 		next;
-		npctalk "Now is the time. Follow me quietly.", instance_npcname("Lamacus#dms102");
+		npctalk "Ora è il momento. Seguimi silenziosamente.", instance_npcname("Lamacus#dms102");
 		npcspeed( 50, instance_npcname("Lamacus#dms102") );
 		npcspeed( 50, instance_npcname("Kun#dms112") );
 		npcspeed( 50, instance_npcname("Yopi#dms122") );
@@ -849,32 +849,32 @@ OnGuy3:
 		unitwalk getnpcid(0,instance_npcname("Yopi#dms122")), 145,31, instance_npcname("Miriam#dms101") + "::OnGuy3";
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "Suad, did you give any specific instructions to the people who were rioting at the top?";
+		mes "Suad, hai dato delle indicazioni specifiche alle persone che stavano riottenendo in cima?";
 		next;
 		cutin "ep18_suad_01.png",0;
 		mes "[Suad]";
-		mes "No? Why?";
+		mes "No? Perché?";
 		next;
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "See those guys over there? They're moving cautiously. That's the group that did the attack on the top.";
+		mes "Vedi quei ragazzi laggiù? Si muovono con cautela. È il gruppo che ha fatto l'attacco in cima.";
 		next;
 		cutin "ep18_suad_03.png",0;
 		mes "[Suad]";
-		mes "I didn't give you any instructions. Are you trying to act on your own?";
+		mes "Non ti ho dato istruzioni. Stai cercando di agire da solo?";
 		next;
-		select( "Looks like they're heading for the temple." );
+		select( "Sembra che stiano andando verso il tempio." );
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "It's an action that's not discussed beforehand. I already have a history, and that's not a good thing, is it? I'm going to have to tread quietly, I don't know what else I'm going to do..";
+		mes "È un'azione che non viene discussa in anticipo. Io ho già una storia, e questo non è una cosa buona, vero? Dovrò muovermi con cautela, non so cos'altro farò...";
 		next;
 		cutin "ep18_suad_01.png",0;
 		mes "[Suad]";
-		mes "Are you going alone?";
+		mes "Vai da solo?";
 		next;
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "I'm just following behind, why do I need a group? I'm good enough on my own. You stay here, I'll signal if anything happens.";
+		mes "Sto solo seguendo dietro, perché ho bisogno di un gruppo? Sono abbastanza bravo da solo. Tu resta qui, io segnalerò se succede qualcosa.";
 		next;
 		if ('nyr_main_step == 2) {
 			'nyr_main_step = 3;
@@ -884,11 +884,11 @@ OnGuy3:
 		donpcevent instance_npcname("Miriam#dms101") + "::OnStartMove2";
 		cutin "ep18_suad_03.png",0;
 		mes "[Suad]";
-		mes "They say that they're only following, but there's no telling what they might be doing. Even if they're unarmed, they might be hiding something...";
+		mes "Dicono di stare solo seguendo, ma non si sa cosa stiano facendo. Anche se sono disarmati, potrebbero nascondere qualcosa...";
 		next;
 		unittalk getcharid(3), "" + strcharinfo(0) + " : Let me catch up.";
 		mes "[Suad]";
-		mes "Well, that's a relief. I can't make any hasty moves here. Miriam left a trace. Now do me a favor and just follow the trace.";
+		mes "Beh, è un sollievo. Non posso fare mosse affrettate qui. Miriam ha lasciato una traccia. Ora facci un favore e segui solo la traccia.";
 		close2;
 		navigateto("1@nyr",179,164);
 		cutin "",255;
@@ -897,7 +897,7 @@ OnGuy3:
 	if ('nyr_main_step == 3) {
 		cutin "ep18_suad_01.png",0;
 		mes "[Suad]";
-		mes "Be careful.";
+		mes "Attento.";
 		close2;
 		navigateto("1@nyr",179,164);
 		cutin "",255;
@@ -949,10 +949,10 @@ OnTouch:
 	if ('nyr_main_step != 3 || is_party_leader() == false)
 		end;
 	'nyr_main_step = 4;
-	npctalk "Adventurer?", instance_npcname("Miriam#dms201");
-	npctalk "Adventurer? Why are you here?", instance_npcname("Miriam#dms201");
+	npctalk "Avventuriero?", instance_npcname("Miriam#dms201");
+	npctalk "Avventuriero? Perché sei qui?", instance_npcname("Miriam#dms201");
 	sleep 2000;
-	npctalk "I was sent by Suad. Don't worry too much about it.", instance_npcname("Miriam#dms201");
+	npctalk "Sono stato mandato da Suad. Non preoccuparti troppo per questo.", instance_npcname("Miriam#dms201");
 	sleep 1000;
 	enablenpc instance_npcname("Temple Guard#dms201");
 	enablenpc instance_npcname("Temple Guard#dms211");
@@ -960,62 +960,62 @@ OnTouch:
 	enablenpc instance_npcname("Temple Guard#dms231");
 	enablenpc instance_npcname("Temple Guard#dms241");
 	sleep 500;
-	npctalk "Halt! Identify Yourself.", instance_npcname("Temple Guard#dms201");
+	npctalk "Fermati! Identificati.", instance_npcname("Temple Guard#dms201");
 	npctalk "... It's hard to go by quietly, it seems.", instance_npcname("Miriam#dms201");
 	end;
 }
 
 2@nyr,35,215,7	script	Temple Guard#dms201	4_M_RASWORD,{
 	if (is_party_leader() == false) {
-		npctalk "Who is the leader of the party?";
+		npctalk "Chi è il leader del partito?";
 		end;
 	}
 	if ('nyr_main_step != 4)
 		end;
-	mes "[Temple Guard]";
-	mes "This place is off-limits.";
+	mes "Guardia del Tempio";
+	mes "Questo posto è vietato.";
 	next;
 	cutin "ep18_miriam_01.png",2;
 	mes "[Miriam]";
-	mes "I'm Miriam, the daughter of High Priest Amal. We've been following a suspicious group of people into this area..";
+	mes "Sono Miriam, figlia del Sommo Sacerdote Amal. Stiamo seguendo un gruppo sospetto di persone in quest'area..";
 	next;
 	cutin "",255;
-	mes "[Temple Guard]";
-	mes "Are you here to help the High Priest with his work?";
+	mes "Guardia del Tempio";
+	mes "Sei qui per aiutare il Sommo Sacerdote nel suo lavoro?";
 	next;
 	cutin "ep18_miriam_03.png",2;
 	mes "[Miriam]";
-	mes "Work... help...? Is my father here?";
+	mes "Lavoro... aiuto...? Mio padre è qui?";
 	next;
 	cutin "",255;
-	mes "[Temple Guard]";
+	mes "Guardia del Tempio";
 	mes "Ah...";
 	next;
-	mes "[Temple Guard]";
-	mes "No one here is suspicious. You may leave now.";
+	mes "Guardia del Tempio";
+	mes "Nessuno qui è sospetto. Puoi andare via ora.";
 	next;
 	mapannounce 'map_2nyr$, "Slowly.", bc_map, 0xFFCC;
 	mapannounce 'map_2nyr$, "Please be careful.", bc_map, 0xFFCC;
 	cutin "ep18_miriam_03.png",2;
 	mes "[Miriam]";
-	mes "Are you sure there aren't any suspicious people coming in? They've obviously gotten into this place, give me a second and I'll check it out quickly.";
+	mes "Sei sicuro che non ci siano persone sospette che entrano? Sono ovviamente entrate qui, dammi un secondo e controllo velocemente.";
 	next;
 	cutin "",255;
-	mes "[Temple Guard]";
-	mes "If you get any closer, we will take action.";
+	mes "Guardia del Tempio";
+	mes "Se ti avvicinerai di più, prenderemo provvedimenti.";
 	next;
 	cutin "ep18_miriam_03.png",2;
 	mes "[Miriam]";
-	mes "...Can't help it, then. Can you, Adventurer?";
+	mes "Non posso farci nulla, allora. Puoi tu, Avventuriero?";
 	next;
-	select( "Yes. I'll handle it, you go after them." );
+	select( "Sì. Me ne occuperò io, tu vai dopo di loro." );
 	mes "[Miriam]";
-	mes "Then do me a favor, I'll leave a trail so you can find me..";
+	mes "Allora facci un favore, lascerò una traccia così potrai trovarmi..";
 	next;
 	cutin "",255;
 	disablenpc instance_npcname("Miriam#dms201");
-	mes "[Temple Guard]";
-	mes "Intruder...! Argh!!!";
+	mes "Guardia del Tempio";
+	mes "Intruso...! Argh!!!";
 	if ('nyr_main_step == 4) {
 		'nyr_main_step = 5;
 		donpcevent instance_npcname("nyr_step_2") + "::OnStart";
@@ -1105,8 +1105,8 @@ OnTouch:
 OnTouch:
 	if ('nyr_main_step != 6)
 		end;
-	npctalk "You've come to the right place. Shhh - do you see those people over there?", instance_npcname("Miriam#dms301");
-	npctalk "The smell of books makes me sleepy.", instance_npcname("Lamacus#dms201");
+	npctalk "Sei venuto nel posto giusto. Shhh - vedi quelle persone laggiù?", instance_npcname("Miriam#dms301");
+	npctalk "L'odore dei libri mi fa addormentare.", instance_npcname("Lamacus#dms201");
 	end;
 }
 
@@ -1117,56 +1117,56 @@ OnTouch:
 		end;
 	cutin "ep18_miriam_03.png",2;
 	mes "[Miriam]";
-	mes "What are you doing here?";
+	mes "Cosa fai qui?";
 	next;
 	cutin "",255;
 	mes "[Lamacus]";
-	mes "Whoa! What the hell are you doing here, with an Adventurer?";
+	mes "Wow! Che diavolo stai facendo qui, con un Avventuriero?";
 	next;
 	cutin "ep18_miriam_03.png",2;
 	mes "[Miriam]";
-	mes "You shouldn't be here right now. If the Temple finds out, it will only make things more difficult for us.";
+	mes "Non dovresti essere qui adesso. Se il Tempio lo scopre, renderà solo le cose più difficili per noi.";
 	next;
 	cutin "",255;
 	mes "[Lamacus]";
-	mes "Don't you see? We're breaking into a library. There must be a lot of secrets of the settlers in here.";
-	npctalk "Think about it. What if we got our hands on all of this?", instance_npcname("Kun#dms211");
-	npctalk "We can take advantage of their weaknesses!", instance_npcname("Yopi#dms221");
+	mes "Non vedi? Stiamo irrompendo in una biblioteca. Ci devono essere un sacco di segreti dei coloni qui dentro.";
+	npctalk "Pensaci. E se avessimo tutto questo tra le mani?", instance_npcname("Kun#dms211");
+	npctalk "Possiamo approfittare delle loro debolezze!", instance_npcname("Yopi#dms221");
 	next;
 	cutin "ep18_miriam_03.png",2;
 	mes "[Miriam]";
-	mes "We can think about that later. For now. Go back. Your actions now could put us in more danger..";
+	mes "Possiamo pensarci più tardi. Per ora. Torna indietro. Le tue azioni adesso potrebbero metterci in più pericolo..";
 	next;
 	cutin "",255;
 	mes "[Yopi]";
-	mes "Go home, Miriam. I'm not going to cooperate with your stuffy behavior anymore.";
-	npctalk "Who are you to tell us what to do?", instance_npcname("Kun#dms211");
+	mes "Torna a casa, Miriam. Non ho più intenzione di cooperare con il tuo comportamento rigido.";
+	npctalk "Chi sei tu per dirci cosa fare?", instance_npcname("Kun#dms211");
 	next;
 	enablenpc instance_npcname("Temple Guard#dms301");
-	mes "[Temple Guard]";
-	mes "There, intruder!";
+	mes "Guardia del Tempio";
+	mes "Lì, intruso!";
 	next;
 	enablenpc instance_npcname("Temple Guard#dms311");
 	enablenpc instance_npcname("Temple Guard#dms321");
 	enablenpc instance_npcname("Temple Guard#dms331");
 	enablenpc instance_npcname("Temple Guard#dms341");
-	mes "[Temple Guard]";
-	mes "Everyone lay down your weapons and raise your hands!";
+	mes "Guardia del Tempio";
+	mes "Tutti giù le armi e alzate le mani!";
 	next;
-	select( "How do I do this?" );
+	select( "Come faccio a fare questo?" );
 	cutin "ep18_miriam_03.png",2;
 	mes "[Miriam]";
-	mes "We're outnumbered, let's deal with it.";
+	mes "Siamo in minoranza, affrontiamolo.";
 	next;
 	cutin "",255;
 	mes "[Kun]";
-	mes "Good timing. Then we'll say goodbye!";
+	mes "Ottimo tempismo. Allora ci salutiamo!";
 	next;
 	cutin "ep18_miriam_03.png",2;
 	mes "[Miriam]";
-	mes "Hold on, Adventurer!";
+	mes "Aspetta, Avventuriero!";
 	next;
-	select( "Leave this one to me!" );
+	select( "Lascia questo a me!" );
 	if ('nyr_main_step == 6) {
 		'nyr_main_step = 7;
 		donpcevent instance_npcname("nyr_step_3") + "::OnStart";
@@ -1227,8 +1227,8 @@ OnMobDead:
 2@nyr,87,47,5	script	Miriam#dms401	4_EP18_MIRIAM,5,5,{
 	end;
 OnTouch:
-	npctalk "There's a sound coming from this side.", instance_npcname("Miriam#dms401");
-	npctalk "The... heart....", instance_npcname("Lamacus#dms301");
+	npctalk "C'è un suono da questa parte.", instance_npcname("Miriam#dms401");
+	npctalk "Il... cuore....", instance_npcname("Lamacus#dms301");
 	end;
 }
 
@@ -1238,64 +1238,64 @@ OnTouch:
 	if (is_party_leader() == false)
 		end;
 	mes "[Lamacus]";
-	mes "Did you find it? What kind of a place is this?";
+	mes "L'hai trovato? Che tipo di posto è questo?";
 	next;
 	mes "[Kun]";
-	mes "Not yet. I don't think it's on this side. Oh, wait... The High Priest's...?";
+	mes "Non ancora. Non credo sia da questa parte. Oh, aspetta... Quello del Sommo Sacerdote...?";
 	next;
 	mes "[Yopi]";
-	mes "Leave the irrelevant books alone. That's not what we're looking for.";
+	mes "Lascia i libri irrilevanti. Non è quello che stiamo cercando.";
 	next;
 	cutin "ep18_miriam_03.png",0;
 	mes "[Miriam]";
-	mes "You guys...!";
+	mes "Voi ragazzi...!";
 	next;
-	select( "Shhh-hold on a second." );
+	select( "Shh-aspetta un attimo" );
 	cutin "",255;
 	mes "[Lamacus]";
-	mes "Even the most secretive of libraries wouldn't just leave a book like that lying around.";
+	mes "Nemanche la biblioteca più segreta lascerebbe un libro così lì per terra.";
 	next;
 	mes "[Kun]";
-	mes "So is there another secret library within the secret library?";
+	mes "Quindi c'è un'altra biblioteca segreta all'interno della biblioteca segreta?";
 	next;
 	mes "[Yopi]";
-	mes "I don't know. Let's just find it.";
+	mes "Non lo so. Troviamolo semplicemente.";
 	next;
 	mes "[Kun]";
-	mes "It would be nice to know the book title.";
+	mes "Sarebbe bello sapere il titolo del libro.";
 	next;
 	mes "[Lamacus]";
-	mes "If I knew that, I wouldn't be here. I'd be like, 'Bring me anything that looks like that.' Go find it.";
+	mes "Se lo sapessi, non sarei qui. Direi: 'Portami qualsiasi cosa assomigli a questo.' Vai e trovalo.";
 	next;
-	select( "Doesn't it look like they're looking for a specific book?" );
+	select( "Non sembra che stiano cercando un libro specifico?" );
 	mes "[Miriam]";
-	mes "A specific book...? Not just a book to exploit weaknesses?";
+	mes "Un libro specifico...? Non solo un libro per sfruttare debolezze?";
 	next;
 	cutin "ep18_miriam_03.png",0;
 	mes "[Miriam]";
-	mes "No, you mean this? Hey! What are you looking for? For what purpose?";
+	mes "No, intendi questo? Ehi! Cosa stai cercando? Per quale scopo?";
 	next;
 	cutin "",255;
 	mes "[Yopi]";
-	mes "Oh, there you go again! Why are you eavesdropping? As if you have something shady to share.";
-	npctalk "Why do you keep following me? Why do you keep interrupting me?", instance_npcname("Kun#dms311");
+	mes "Oh, eccoti di nuovo! Perché stai spionaggiando? Come se avessi qualcosa di losco da condividere.";
+	npctalk "Perché continui a seguirmi? Perché continui a interrompermi?", instance_npcname("Kun#dms311");
 	next;
 	cutin "ep18_miriam_03.png",0;
 	mes "[Miriam]";
-	mes "You're the ones who sneaked in with the shady stuff, remember? What's the book you're looking for?";
+	mes "Siete voi che siete entrati di nascosto con la roba sospetta, ricordi? Qual è il libro che state cercando?";
 	next;
 	cutin "",255;
 	mes "[Lamacus]";
-	mes "That really hurts, man. Don't you realize that we're trying to make a good thing out of this? Can't you understand that we're trying to make a better life for everyone?";
-	npctalk "Are you setting us up?", instance_npcname("Yopi#dms321");
-	npctalk "What did they say to us?", instance_npcname("Kun#dms311");
+	mes "Fa davvero male, amico. Non ti rendi conto che stiamo cercando di far nascere qualcosa di buono da tutto questo? Non puoi capire che stiamo cercando di rendere una vita migliore per tutti?";
+	npctalk "Ci stai combinando qualcosa?", instance_npcname("Yopi#dms321");
+	npctalk "Cosa ci hanno detto?", instance_npcname("Kun#dms311");
 	next;
 	mes "[Lamacus]";
-	mes "They'll never know how much we care. It's about time you showed up, by the way...";
+	mes "Non sapranno mai quanto ci teniamo. A proposito, è ora che ti presenti...";
 	next;
 	cutin "ep18_miriam_03.png",0;
 	mes "[Miriam]";
-	mes "You have to catch them and make them open their mouths...!";
+	mes "Devi catturarli e farli aprire la bocca...!";
 	next;
 	enablenpc instance_npcname("Temple Guard#dms401");
 	enablenpc instance_npcname("Temple Guard#dms411");
@@ -1303,13 +1303,13 @@ OnTouch:
 	enablenpc instance_npcname("Temple Guard#dms431");
 	enablenpc instance_npcname("Temple Guard#dms441");
 	cutin "",255;
-	mes "[Temple Guard]";
-	mes "Here we go! The intruder is here!!!";
+	mes "Guardia del Tempio";
+	mes "Forza e coraggio! L'intruso è qui!!!";
 	npctalk "Here we go!!! Good luck! Let's go, boys!", instance_npcname("Lamacus#dms301");
 	npctalk "I'll track them down, and you, Adventurer, take care of these guys!", instance_npcname("Miriam#dms401");
 	next;
-	mes "[Temple Guard]";
-	mes "Drop your weapon!!";
+	mes "Guardia del Tempio";
+	mes "Abbandona le armi!";
 	if ('nyr_main_step == 8) {
 		'nyr_main_step = 9;
 		donpcevent instance_npcname("nyr_step_4") + "::OnStart";
@@ -1369,11 +1369,11 @@ OnMobDead:
 //------------------------------------------------------------
 2@nyr,209,98,5	script	Miriam#dms501	4_EP18_MIRIAM,5,5,{
 	if (is_party_leader() == false)
-		npctalk "Didn't the party leader decide to come?", instance_npcname("Miriam#dms501");
+		npctalk "Il capo del partito ha deciso di venire?", instance_npcname("Miriam#dms501");
 	end;
 OnTouch:
-	npctalk "See that shelf over there?", instance_npcname("Miriam#dms501");
-	npctalk "I'm going to burn out my fingers.", instance_npcname("Lamacus#dms401");
+	npctalk "Vedi quello scaffale laggiù?", instance_npcname("Miriam#dms501");
+	npctalk "Sto per bruciarmi le dita.", instance_npcname("Lamacus#dms401");
 	end;
 }
 
@@ -1383,39 +1383,39 @@ OnTouch:
 	if (is_party_leader() == false)
 		end;
 	mes "[Yopi]";
-	mes "Isn't this the end of the line?";
+	mes "Non è la fine della linea?";
 	next;
 	mes "[Lamacus]";
-	mes "I know. They must have a real secret library.";
+	mes "Lo so. Devono avere una vera biblioteca segreta.";
 	npctalk "Oops, that was a waste.", instance_npcname("Yopi#dms421");
 	npctalk "You're not going to hold me responsible for failing, are you?", instance_npcname("Kun#dms411");
 	next;
 	mes "[Lamacus]";
-	mes "I told you to find it in the first place, not just come to me because it's there.";
+	mes "Ti ho detto di trovarlo fin dall'inizio, non solo venire da me perché è lì.";
 	next;
 	mes "[Kun]";
-	mes "Ask if it's okay to back out.";
+	mes "Chiedere se va bene ritirarsi.";
 	next;
-	npctalk "This is Wolf.", instance_npcname("Lamacus#dms401");
+	npctalk "Questo è Wolf.", instance_npcname("Lamacus#dms401");
 	sleep2 2000;
-	npctalk "???: Did you find the item?", instance_npcname("Lamacus#dms401");
+	npctalk "???: Hai trovato l'oggetto?", instance_npcname("Lamacus#dms401");
 	sleep2 2000;
 	npctalk "This is the last library, but I don't think it's here.", instance_npcname("Lamacus#dms401");
 	sleep2 2000;
-	npctalk "???: Wait.", instance_npcname("Lamacus#dms401");
+	npctalk "???:: Aspetta.", instance_npcname("Lamacus#dms401");
 	mes "[Kun]";
-	mes "Wait, am I seeing things? That's Miriam and the Adventurer.";
-	npctalk "You're persistent. I'm surprised you beat all the guards.", instance_npcname("Yopi#dms421");
+	mes "Aspetta, sto vedendo cose? Quella è Miriam e l'Avventuriero.";
+	npctalk "Sei persistente. Sono sorpreso che tu abbia sconfitto tutti i guardiani.", instance_npcname("Yopi#dms421");
 	next;
 	cutin "ep18_miriam_03.png",2;
 	mes "[Miriam]";
-	mes "Who are you guys talking to?";
+	mes "A chi state parlando?";
 	next;
-	select( "Are you guys paid to do this?" );
+	select( "Siete pagati per fare questo?" );
 	cutin "",255;
 	mes "[Lamacus]";
-	mes "Payment? We don't get that, do we?";
-	npctalk "I'm a bit of a believer.", instance_npcname("Kun#dms411");
+	mes "Pagamento? Non lo riceviamo, vero?";
+	npctalk "Sono un po' credulone.", instance_npcname("Kun#dms411");
 	npctalk "We don't betray, ever.", instance_npcname("Yopi#dms421");
 	next;
 	enablenpc instance_npcname("Temple Guard#dms501");
@@ -1430,70 +1430,70 @@ OnTouch:
 	unitwalk getnpcid(0,instance_npcname("Temple Guard#dms541")),199,92;
 
 	sleep2 500;
-	npctalk "Over here!", instance_npcname("Temple Guard#dms501");
-	npctalk "Hey! There you are!!", instance_npcname("Lamacus#dms401");
+	npctalk "Qui!", instance_npcname("Temple Guard#dms501");
+	npctalk "Ehi! Ci sei!!", instance_npcname("Lamacus#dms401");
 	sleep2 1000;
 	enablenpc instance_npcname("Schulang#dms101");
 	unitwalk getnpcid(0,instance_npcname("Schulang#dms101")),206,96;
 	npctalk "......", instance_npcname("Schulang#dms101");
-	npctalk "You've arrived!", instance_npcname("Lamacus#dms401");
-	npctalk "You've arrived!", instance_npcname("Kun#dms411");
-	npctalk "You've arrived!", instance_npcname("Yopi#dms421");
+	npctalk "Sei arrivato/a!", instance_npcname("Lamacus#dms401");
+	npctalk "Sei arrivato/a!", instance_npcname("Kun#dms411");
+	npctalk "Sei arrivato/a!", instance_npcname("Yopi#dms421");
 	sleep2 2000;
 
 	cutin "ep18_shulang.png",0;
 	mes "[??]";
-	mes "Is this the end of the library?";
+	mes "È la fine della biblioteca?";
 	next;
 	cutin "",255;
 	mes "[Lamacus]";
-	mes "Yes, it is.";
+	mes "Sì, lo è.";
 	next;
 	cutin "ep18_shulang.png",0;
 	mes "[??]";
-	mes "I wish I could have found the book, but I can't. They've done their work, so we're out of here.";
+	mes "Vorrei poter trovato il libro, ma non posso. Hanno fatto il loro lavoro, quindi ne usciamo.";
 	next;
 	cutin "ep18_miriam_03.png",2;
 	mes "[Miriam]";
-	mes "Who are you? What do you have to do with these people?";
+	mes "Chi sei? Che cosa hai a che fare con queste persone?";
 	next;
 	cutin "ep18_shulang.png",0;
 	mes "[??]";
-	mes "What is it? Is there something else?";
+	mes "Cos'è? C'è qualcos'altro?";
 	next;
 	cutin "",255;
 	mes "[Yopi]";
-	mes "Someone sniffed out the wolf and decided to follow us. We'll take care of it soon.";
+	mes "Qualcuno ha individuato il lupo e ha deciso di seguirci. Ci occuperemo presto.";
 	next;
 	cutin "ep18_shulang.png",0;
 	mes "[??]";
-	mes "That's not necessary. You guys should get out of here and let the new guys take over.";
+	mes "Non è necessario. Dovreste andartene e lasciare che i nuovi arrivati prendano il sopravvento.";
 	next;
 	cutin "",255;
 	mes "[Lamacus]";
-	mes "Yes!!";
+	mes "Sì!!";
 	next;
 	disablenpc instance_npcname("Schulang#dms101");
 	cutin "ep18_miriam_03.png",2;
 	mes "[Miriam]";
-	mes "Wait!!!";
+	mes "Aspetta!!!";
 	next;
 	cutin "",255;
-	mes "[Temple Guard]";
-	mes "Take care of all intruders!";
+	mes "Guardia del Tempio";
+	mes "Prendetevi cura di tutti gli intrusi!";
 	unittalk getcharid(3), "" + strcharinfo(0) + " : Who's the intruder?";
 	next;
 	cutin "ep18_miriam_03.png",2;
 	mes "[Miriam]";
-	mes "It seems like a weird twist of fate, huh? The Temple Guards have been bought off. We need to find out what's going on...";
+	mes "Sembra un bizzarro colpo di destino, eh? I Guardiani del Tempio sono stati comprati. Dobbiamo scoprire cosa sta succedendo...";
 	unittalk getcharid(3), "" + strcharinfo(0) + " : Leave these people to me.";
 	next;
 	cutin "",255;
-	mes "[Temple Guard]";
-	mes "All hands in formation!";
+	mes "Guardia del Tempio";
+	mes "Tutte le mani in formazione!";
 	next;
 	mes "[Yopi]";
-	mes "Oh, no~ I'm sorry we've crossed paths, we got dirty, so let's not meet again?";
+	mes "Oh, no~ Mi dispiace che ci siamo incrociati, ci siamo sporcati, quindi non incontriamoci più?";
 	if ('nyr_main_step == 10) {
 		'nyr_main_step = 11;
 		donpcevent instance_npcname("nyr_step_5") + "::OnStart";
@@ -1564,7 +1564,7 @@ OnMobDead:
 
 2@nyr,133,109,3	script	Miriam#dms601	EP18_NPC_MIRIAM,5,5,{
 	if (is_party_leader() == false) {
-		npctalk "I don't think the party has arrived yet.";
+		npctalk "Non credo che la festa sia arrivata ancora.";
 		end;
 	}
 	.@miriam$ = instance_npcname("Miriam#dms601");
@@ -1572,41 +1572,41 @@ OnMobDead:
 	if ('nyr_main_step == 12) {
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "What are you doing? How many people are there? I can't see much from here.";
+		mes "Cosa stai facendo? Quante persone ci sono? Non vedo molto da qui.";
 		next;
-		select( "There are a few people I don't recognize." );
+		select( "Ci sono alcune persone che non riconosco." );
 		cutin "ep18_shulang.png",1;
 		mes "[???]";
-		mes "How far are we from there?";
+		mes "Quanto siamo lontani da lì?";
 		next;
 		cutin "",255;
 		mes "[Lamacus]";
-		mes "We're almost there now.";
+		mes "Quasi ci siamo.";
 		next;
 		cutin "ep18_bagot_01.png",1;
 		mes "[???]";
-		mes "It's really, really, really secure. I'm just saying.";
+		mes "È davvero, davvero, davvero sicuro. Lo sto solo dicendo.";
 		next;
 		cutin "",255;
 		mes "[???]";
-		mes "... Aren't you at least this secure?";
+		mes "Non sei almeno così sicuro?";
 		next;
 		cutin "ep18_bagot_02.png",1;
 		mes "[???]";
-		mes "Hey, Mr. Genius, don't you know how to make an irony?! Tight security is not synonymous with cumbersome and demanding procedures, right?";
+		mes "Ehi, Signor Genio, non sai fare un'ironia?! La sicurezza stretta non è sinonimo di procedure ingombranti e esigenti, giusto?";
 		next;
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "This voice is...";
+		mes "Questa voce è...";
 		donpcevent .@miriam$ + "::OnEffect";
 		next;
-		select( "Do you know them?" );
+		select( "Li conosci?" );
 		mes "[Miriam]";
-		mes "It's obscured, so I'm not sure...";
+		mes "È oscurato, quindi non sono sicuro...";
 		next;
 		cutin "",255;
 		mes "[???]";
-		mes "Enter.";
+		mes "Entra.";
 		close2;
 		if ('nyr_main_step != 12)
 			end;
@@ -1641,10 +1641,10 @@ OnMobDead:
 		end;
 	}
 	if ('nyr_main_step == 13) {
-		npctalk "This way! Hurry up and chase him!";
+		npctalk "Questa via! Sbrigati e inseguigilo!";
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "Let's go in too.";
+		mes "Andiamo anche noi.";
 		sleep2 1000;
 		unitwalk getnpcid(0,instance_npcname("Temple Guard#dms601")), 118,121, .@miriam$ + "::OnMove5";
 		unitwalk getnpcid(0,instance_npcname("Temple Guard#dms611")), 118,121, .@miriam$ + "::OnMove6";
@@ -1713,47 +1713,47 @@ OnTouch:
 
 2@nyr,118,199,1	script	Miriam#dms701	4_EP18_MIRIAM,5,5,{
 	if (is_party_leader() == false) {
-		npctalk "Who is the leader of the party?";
+		npctalk "Chi è il leader del partito?";
 		end;
 	}
 	if ('nyr_main_step == 13) {
 		mes "[???]";
-		mes "Schulang, have you secured it yet? This Bagot is about to lose patience.";
+		mes "Schulang, hai già ottenuto/assicurato? Questo Bagot sta per perdere la pazienza.";
 		next;
 		mes "[Lamacus]";
-		mes "But do we have to keep this on?";
-		npctalk "It's frustrating.", instance_npcname("Yopi#dms621");
+		mes "Ma dobbiamo tenerlo acceso?";
+		npctalk "È frustrante.", instance_npcname("Yopi#dms621");
 		next;
 		cutin "ep18_shulang.png",0;
-		mes "[Schulang]";
-		mes "Who cares? You came this far. Do as you please.";
+		mes "[Scuola]";
+		mes "A chi importa? Sei arrivato fin qui. Fai come ti pare.";
 		next;
 		setnpcdisplay( instance_npcname("Lamacus#dms601"), 21308 );	// EP18_MD_HEARTHUNTER_A
 		setnpcdisplay( instance_npcname("Kun#dms611"), 21308 );	// EP18_MD_HEARTHUNTER_A
 		setnpcdisplay( instance_npcname("Yopi#dms621"), 21308 );	// EP18_MD_HEARTHUNTER_A
 		cutin "",255;
 		mes "[Yopi]";
-		mes "Hah- now that's a life saver.";
-		npctalk "I thought it was killing me!", instance_npcname("Kun#dms611");
+		mes "Ahò, questo è un salvavita.";
+		npctalk "Pensavo mi stesse uccidendo!", instance_npcname("Kun#dms611");
 		next;
-		select( "The Heart Hunters were undercover." );
+		select( "I Cacciatori del Cuore erano infiltrati." );
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "Hearthunter... you're working with those mad scientists you were talking about... from the very beginning...!";
+		mes "Cacciatore di focolari... stai lavorando con quei pazzi scienziati di cui parlavi... fin dall'inizio...!";
 		next;
 		cutin "",255;
 		mes "[" + strcharinfo(0) + "]";
-		mes "There are still a lot of Heart Hunters remodeled with Ymir's heart left, right?";
+		mes "Ci sono ancora molti Heart Hunter rimodellati con il cuore di Ymir lasciato, giusto?";
 		next;
 		cutin "ep18_shulang.png",0;
-		mes "[Schulang]";
-		mes "Was it our old face? Ah, those are the small fries that are said to be tracking you. I heard the news.";
+		mes "[Scuola]";
+		mes "Era il nostro vecchio volto? Ah, quelli sono i piccoli pesci che si dice ti stiano tracciando. Ho sentito la notizia.";
 		npctalk "Oh, those people? They've been after us so relentlessly that we've surprised ourselves. We didn't realize we were in debt.", instance_npcname("Bagot#dms201");
 		next;
-		select( "That would be Illusion." );
+		select( "Sarà Illusione." );
 		cutin "ep18_bagot_02.png",1;
 		mes "[Bagot]";
-		mes "Oh, my God, I don't want to embarrass you.";
+		mes "Oh mio Dio, non voglio imbarazzarti.";
 		npctalk "Who cares, it's going to be gone anyway.", instance_npcname("Schulang#dms301");
 		next;
 		enablenpc instance_npcname("High Priest#dms201");
@@ -1761,98 +1761,98 @@ OnTouch:
 		enablenpc instance_npcname("Temple Guard#dms711");
 		cutin "",255;
 		mes "[???]";
-		mes "You're all good to go.";
+		mes "Sei pronto/a per partire.";
 		next;
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "...Father??";
+		mes "...Padre??";
 		next;
 		cutin "",255;
 		mes "[Amal]";
-		mes "Miriam, You've come this far. You've done your part, now go home.";
+		mes "Miriam, sei arrivata fin qui. Hai fatto la tua parte, ora torna a casa.";
 		next;
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "What do you mean? What are you doing...?";
+		mes "Cosa intendi? Cosa stai facendo...?";
 		next;
 		cutin "ep18_bagot_03.png",1;
 		mes "[Bagot]";
-		mes "Wow, you got praised by your dad. That's great. Compliments for good parenting, it's important.";
-		mes "I don't even remember getting my praise. Um... Ah! I don't remember because I never got it.!";
+		mes "Wow, sei stato lodato da tuo papà. È fantastico. Complimenti per la buona genitorialità, è importante.";
+		mes "Non mi ricordo nemmeno di aver ricevuto i miei complimenti. Ehm... Ah! Non me lo ricordo perché non li ho mai ricevuti.!";
 		npctalk "Now that you've been praised, you can go home, wash off your feet, and sleep..", instance_npcname("Bagot#dms201");
 		next;
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "What, what's going on? Why did my dad... What did you do?";
+		mes "Che, che succede? Perché mio papà... Cosa hai fatto?";
 		next;
 		cutin "",255;
 		mes "[Amal]";
-		mes "... Once you've got what you need, let's move on.";
+		mes "Quando hai quello che ti serve, passiamo oltre.";
 		next;
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "Father! Father!!!";
+		mes "Padre! Padre!!!";
 		next;
 		disablenpc instance_npcname("High Priest#dms201");
 		cutin "ep18_bagot_01.png",1;
 		mes "[Bagot]";
-		mes "A father who praises you but never loves you?";
+		mes "Un padre che ti loda ma non ti ama mai?";
 		next;
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "What are you doing to my father?";
+		mes "Cosa stai facendo a mio padre?";
 		next;
 		cutin "ep18_bagot_03.png",1;
 		mes "[Bagot]";
-		mes "Oh, you don't know, do you? His wish is to drive all the natives out of Arunafeltz. We helped a little with that, but not for free.";
+		mes "Oh, non lo sai, vero? Il suo desiderio è cacciare tutti i nativi da Arunafeltz. Abbiamo aiutato un po' con questo, ma non gratis.";
 		npctalk "You should always live your life doing whatever you want. Otherwise, you're going to be sick.", instance_npcname("Bagot#dms201");
-		npctalk "Hehe - did you like your impersonation? Give us a pat on the back.", instance_npcname("Lamacus#dms601");
+		npctalk "Hehe - ti è piaciuta la tua imitazione? Dacci una pacca sulla spalla.", instance_npcname("Lamacus#dms601");
 		next;
 		cutin "",255;
-		mes "[Heart Hunter]";
-		mes "Miriam, you and your friends have helped me complete this picture of the riot. Thank you so much!";
+		mes "Cacciatore di Cuori";
+		mes "Miriam, tu e i tuoi amici mi avete aiutato a completare questo quadro della rivolta. Grazie mille!";
 		next;
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "Do you think that makes sense?";
+		mes "Pensi che abbia senso?";
 		next;
 		cutin "ep18_bagot_01.png",1;
 		mes "[Bagot]";
-		mes "What are you talking about, a handful of impulsive protests to the temple?";
+		mes "Di cosa stai parlando, un pugno di proteste impulsive al tempio?";
 		next;
 		cutin "ep18_bagot_03.png",1;
 		mes "[Bagot]";
-		mes "Soon the protest outside will turn into a riot, and then your wish will be granted, and then you'll make another wish, and then we'll get paid again?";
+		mes "Presto il protesto fuori si trasformerà in una rivolta, e allora il tuo desiderio sarà concesso, e poi farai un altro desiderio, e poi verremo pagati di nuovo?";
 		next;
 		cutin "ep18_shulang.png",0;
-		mes "[Schulang]";
-		mes "I'm not going to talk forever. Let's go.";
-		mes "Clean up your mess.";
+		mes "[Scuola]";
+		mes "Non parlerò per sempre. Andiamo.";
+		mes "Pulisci il tuo disordine.";
 		next;
 		cutin "",255;
 		mes "[Lamacus]";
-		mes "Four!";
+		mes "Quattro!";
 		next;
 		disablenpc instance_npcname("Schulang#dms301");
 		disablenpc instance_npcname("Bagot#dms201");
-		mes "[Heart Hunter]";
-		mes "I wish I had Suad here with me. I wish I could've helped him out sometime.";
+		mes "Cacciatore di Cuori";
+		mes "Vorrei avere Suad qui con me. Vorrei aver potuto aiutarlo qualche volta.";
 		next;
-		mes "[Heart Hunter]";
-		mes "Hi, let me formally introduce ourselves. We're the Heart Hunters, and we're about to bury you here.";
+		mes "Cacciatore di Cuori";
+		mes "Ciao, permettetemi di presentarci formalmente. Siamo i Cacciatori di Cuori e stiamo per seppellirvi qui.";
 		npctalk "Not just any heart hunter. He's a really, really good Heart Hunter.", instance_npcname("Kun#dms611");
 		next;
-		select( "Watch out, they're modified." );
+		select( "Attenzione, sono modificati." );
 		next;
 		specialeffect EF_UNDEADBODY, AREA, instance_npcname("Lamacus#dms601");
 		specialeffect EF_NPC_STOP, AREA, instance_npcname("Lamacus#dms601");
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "He's always been like that... Is there something ominous about that?";
+		mes "È sempre stato così... C'è qualcosa di sinistro in questo?";
 		next;
-		select( "It seems to resonate with the heart of Ymir here." );
+		select( "Sembra risuonare con il cuore di Ymir qui." );
 		mes "[Miriam]";
-		mes "That's basically a quick count, right? Okay, let's make it quick and get on with it.";
+		mes "È fondamentalmente un conteggio veloce, giusto? Ok, facciamolo velocemente e andiamo avanti.";
 		if ('nyr_main_step == 13) {
 			'nyr_main_step = 14;
 			donpcevent instance_npcname("nyr_step_7") + "::OnStart";
@@ -1864,63 +1864,63 @@ OnTouch:
 	if ('nyr_main_step == 15) {
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "Ha... Hah... Adventurer, are you all right?";
+		mes "Ha... Hah... Avventuriero, stai bene?";
 		next;
-		select( "But where did they all go?" );
+		select( "Ma dove sono finiti tutti?" );
 		enablenpc instance_npcname("Niren#dms101");
 		enablenpc instance_npcname("Temple Guard#dms751");
 		enablenpc instance_npcname("Temple Guard#dms761");
 		enablenpc instance_npcname("Temple Guard#dms771");
-		npctalk "What's this all about?", instance_npcname("Niren#dms101");
+		npctalk "Di cosa si tratta?", instance_npcname("Niren#dms101");
 		cutin "ra_gwoman.bmp",0;
 		mes "[Niren]";
-		mes "What, what's all the fuss about?";
-		mes "Adventurer...? Why are you here, Adventurer?";
+		mes "Che succede? Che chiasso è questo?";
+		mes "Avventuriero...? Perché sei qui, Avventuriero?";
 		next;
-		select( "Here's what..." );
+		select( "Ecco cosa..." );
 		mes "[Niren]";
-		mes "You've been tracking a colleague who's been acting suspiciously, and it turns out they're actually a mole.";
+		mes "Hai monitorato un collega che si comportava in modo sospetto, e risulta essere in realtà un topo d'altare.";
 		next;
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "You're in the same league as my father.?";
+		mes "Sei nella stessa categoria di mio padre?";
 		next;
 		cutin "ra_gwoman.bmp",0;
 		mes "[Niren]";
-		mes "High Priest?? What does that even mean?";
+		mes "Sacerdote capo?? Cosa significa nemmeno?";
 		next;
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "I think my father is involved in this.";
+		mes "Penso che mio padre sia coinvolto in questo.";
 		next;
 		cutin "ra_gwoman.bmp",0;
 		mes "[Niren]";
-		mes "How is that... High Priest...? We'll have to investigate.";
-		mes "I'm sure there are instigators lurking in the crowd outside, planted by the bad guys...";
+		mes "Come è che... Sommo Sacerdote...? Dovremo indagare.";
+		mes "Sono sicuro che ci siano istigatori nascosti nella folla fuori, piantati dai cattivi...";
 		next;
-		select( "It's also among the Temple Guard." );
+		select( "È anche tra la Guardia del Tempio." );
 		mes "[Niren]";
-		mes "We're going to need to do a major overhaul...first we need to figure out what we've been doing here, making sure there's nothing dangerous, and nothing is lost... even among the Temple Guards.";
+		mes "Dovremo fare un rifacimento completo...prima dobbiamo capire cosa abbiamo fatto qui, assicurandoci che non ci sia nulla di pericoloso e che nulla sia andato perduto... nemmeno tra i Guardiani del Tempio.";
 		next;
 		mes "[Niren]";
 		mes "...!!";
-		mes "No need to investigate, Ymir's heart shard is missing. It's supposed to be there.";
+		mes "Non è necessario indagare, il frammento cardiaco di Ymir manca. Dovrebbe essere lì.";
 		next;
-		select( "I know..." );
+		select( "Lo so..." );
 		mes "[Niren]";
-		mes "What the heck they're going to do with it... I can't even imagine.";
-		mes "This is not what we should be doing, we need to tell the truth and track them down...!!";
+		mes "Cosa diavolo faranno con questo... Non riesco nemmeno a immaginarlo.";
+		mes "Questo non è quello che dovremmo fare, dobbiamo dire la verità e rintracciarli...!!";
 		next;
 		mes "[Niren]";
-		mes "Ah...! You said there would be enemies among the Temple Guards, so we'll have to pick out the ones we trust first.";
+		mes "Ah...! Hai detto che ci sarebbero nemici tra i Guardiani del Tempio, quindi dovremo prima scegliere quelli di cui ci fidiamo.";
 		next;
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "I'll go. That's probably my father's, because I have a pretty good idea of where it might have gone.";
+		mes "Ci vado. È probabilmente di mio padre, perché ho un'idea abbastanza chiara di dove potrebbe essere andato.";
 		next;
 		cutin "ra_gwoman.bmp",0;
 		mes "[Niren]";
-		mes "We'll talk about that when we get outside, because it's not looking good out there.";
+		mes "Ne parleremo quando uscirò, perché fuori non sembra buono.";
 		close2;
 		cutin "",255;
 		if ('nyr_main_step == 15) {
@@ -1978,7 +1978,7 @@ OnTouch:
 
 OnTouch:
 	if ('nyr_main_step == 13)
-		npctalk "Everyone is gathered over there.";
+		npctalk "Tutti sono riuniti laggiù.";
 	end;
 }
 
@@ -2055,136 +2055,136 @@ OnTouch:
 	donpcevent instance_npcname("Miriam#dms801") + "::OnMove1";
 	navigateto("1@nyr",129,165);
 	mapannounce 'map_2nyr$, "We're alive! Please notice us!", bc_map, 0xFFCC;
-	npctalk "I don't think this is a good situation. I need to get closer.", instance_npcname("Miriam#dms801");
+	npctalk "Non penso che questa sia una buona situazione. Ho bisogno di avvicinarmi.", instance_npcname("Miriam#dms801");
 	sleep 2000;
-	npctalk "This way.", instance_npcname("Miriam#dms801");
+	npctalk "In questo modo.", instance_npcname("Miriam#dms801");
 	mapannounce 'map_2nyr$, "We're alive! We're alive!!", bc_map, 0xFFCC;
 	sleep 3000;
 	mapannounce 'map_2nyr$, "We exist!! Exist!!", bc_map, 0xFFCC;
 	sleep 5000;
 	mapannounce 'map_2nyr$, "Give the right back to the owner of this land! Give it back!!", bc_map, 0xFFCC;
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms201");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms211");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms221");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms231");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms241");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms251");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms261");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms271");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms281");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms291");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms202");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms212");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms222");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms232");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms242");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms201");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms211");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms221");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms231");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms241");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms251");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms261");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms271");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms281");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms291");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms202");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms212");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms222");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms232");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms242");
 	sleep 5000;
 	mapannounce 'map_2nyr$, "We too are alive! Alive!", bc_map, 0xFFCC;
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms201");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms211");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms221");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms231");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms241");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms251");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms261");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms271");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms281");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms291");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms202");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms212");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms222");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms232");
-	npctalk "We're alive!", instance_npcname("Angry Crowd#dms242");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms201");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms211");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms221");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms231");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms241");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms251");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms261");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms271");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms281");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms291");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms202");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms212");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms222");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms232");
+	npctalk "Siamo vivi!", instance_npcname("Angry Crowd#dms242");
 	sleep 5000;
 	mapannounce 'map_2nyr$, "We too are exist! Exist!!", bc_map, 0xFFCC;
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms201");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms211");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms221");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms231");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms241");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms251");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms261");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms271");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms281");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms291");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms202");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms212");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms222");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms232");
-	npctalk "We exist!", instance_npcname("Angry Crowd#dms242");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms201");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms211");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms221");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms231");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms241");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms251");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms261");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms271");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms281");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms291");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms202");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms212");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms222");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms232");
+	npctalk "Esistiamo!", instance_npcname("Angry Crowd#dms242");
 	sleep 5000;
 	mapannounce 'map_2nyr$, "Give this land back to its rightful owner! Give it back!!", bc_map, 0xFFCC;
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms201");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms211");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms221");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms231");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms241");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms251");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms261");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms271");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms281");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms291");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms202");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms212");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms222");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms232");
-	npctalk "Give it back!", instance_npcname("Angry Crowd#dms242");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms201");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms211");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms221");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms231");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms241");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms251");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms261");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms271");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms281");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms291");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms202");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms212");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms222");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms232");
+	npctalk "Restammi!", instance_npcname("Angry Crowd#dms242");
 	end;
 }
 
 1@nyr,68,163,5	script	Miriam#dms801	EP18_NPC_MIRIAM,{
 	if (is_party_leader() == false) {
-		npctalk "Isn't the party leader arrived yet?";
+		npctalk "Il capo del partito non è ancora arrivato?";
 		end;
 	}
 	if ('nyr_main_step == 18) {
-		mes "[Crowd]";
-		mes "Acknowledge us!";
+		mes "[Folla]";
+		mes "Riconosceteci!";
 		next;
-		mes "[Crowd]";
-		mes "We're alive! We are here!!";
+		mes "[Folla]";
+		mes "Siamo vivi! Siamo qui!!";
 		next;
-		mes "[Crowd]";
-		mes "This is Our Land!";
+		mes "[Folla]";
+		mes "Questa è la nostra terra!";
 		next;
-		mes "[Crowd]";
-		mes "Return the land to the rightful owners of the land!";
+		mes "[Folla]";
+		mes "Restituire la terra ai legittimi proprietari della terra!";
 		next;
-		mes "[Temple Guard]";
-		mes "If you dismiss now, we will not charge you for trespassing on the temple!";
+		mes "Guardia del Tempio";
+		mes "Se ti allontani ora, non ti addebiteremo l'ingresso nel tempio per oltraggio!";
 		next;
-		mes "[Temple Guard]";
-		mes "I'll give you exactly 30 minutes! Go back within the time limit!";
+		mes "Guardia del Tempio";
+		mes "Ti darò esattamente 30 minuti! Torna entro il limite di tempo!";
 		next;
-		mes "[Crowd]";
-		mes "Are you threatening us now?";
+		mes "[Folla]";
+		mes "Ci stai minacciando ora?";
 		next;
-		mes "[Crowd]";
-		mes "What are you going to do?";
+		mes "[Folla]";
+		mes "Cosa farai?";
 		next;
-		mes "[Crowd]";
-		mes "You're going to arrest everyone and put them in jail, right?";
+		mes "[Folla]";
+		mes "Arresti tutti e li metterai in prigione, giusto?";
 		next;
-		mes "[Crowd]";
-		mes "At this point, let's go in first!!!";
+		mes "[Folla]";
+		mes "A questo punto, entriamo per primi!!!";
 		next;
 		cutin "ep18_miriam_03.png",1;
 		mes "[Miriam]";
-		mes "Something's not right. People are getting too aggressive.";
+		mes "Qualcosa non va bene. La gente sta diventando troppo aggressiva.";
 		next;
 		mes "[Miriam]";
-		mes "This doesn't look good. I need to get Suad, but where's the deputy?";
+		mes "Questo non sembra buono. Devo prendere Suad, ma dov'è il delegato?";
 		npctalk "Somebody get Suad, it's urgent!", instance_npcname("Miriam#dms801");
 		next;
 		enablenpc instance_npcname("Niren#dms201");
 		enablenpc instance_npcname("Zhed#dms101");
 		cutin "ra_gwoman.bmp",2;
 		mes "[Niren]";
-		mes "There you are. I brought along Priest Zhed.";
+		mes "Eccolo qui. Ho portato con me Padre Zhed.";
 		next;
 		cutin "ra_gman2.bmp",2;
 		mes "[Zhed]";
-		mes "What's going on here? Does it have something to do with the people who have flocked here? Or, is there something inside the temple that's causing this...";
+		mes "Cosa sta succedendo qui? Ha qualcosa a che fare con le persone che sono affluite qui? O c'è qualcosa dentro il tempio che sta causando questo...";
 		next;
 		if ('nyr_main_step == 18) {
 			'nyr_main_step = 19;
@@ -2193,12 +2193,12 @@ OnTouch:
 			disablenpc instance_npcname("#mstep11");
 			disablenpc instance_npcname("#dmswch02");
 			enablenpc instance_npcname("Suad#dms102");
-			npctalk "What's going on? You said you found it in a hurry?", instance_npcname("Suad#dms102");
+			npctalk "Cosa sta succedendo? Hai detto che l'hai trovato di fretta?", instance_npcname("Suad#dms102");
 		}
 		cutin "ep18_suad_04.png",0;
 		mes "[Suad]";
-		mes "What's going on? You said it's something urgent.";
-		npctalk "What's going on? You said it's something urgent.", instance_npcname("Suad#dms102");
+		mes "Cosa sta succedendo? Hai detto che è qualcosa di urgente.";
+		npctalk "Cosa sta succedendo? Hai detto che è qualcosa di urgente.", instance_npcname("Suad#dms102");
 		close3;
 	}
 	if ('nyr_main_step == 21) {
@@ -2208,7 +2208,7 @@ OnTouch:
 		npctalk "Adventurer, please be safe.", instance_npcname("Miriam#dms801");
 		cutin "ep18_miriam_03.png",2;
 		mes "[Miriam]";
-		mes "Once you've got it covered, move fast. They're waiting for you at the safe house.";
+		mes "Una volta che l'hai coperto, muoviti velocemente. Ti stanno aspettando nella casa sicura.";
 		disablenpc instance_npcname("Miriam#dms801");
 		close3;
 	}
@@ -2234,75 +2234,75 @@ OnMove4:
 //------------------------------------------------------------
 1@nyr,127,163,5	script	Suad#dms102	4_EP18_SUAD,{
 	if (is_party_leader() == false) {
-		npctalk "I wish the leader would tell me as a representative.";
+		npctalk "Vorrei che il leader mi dicesse come rappresentante.";
 		end;
 	}
 	if ('nyr_main_step != 19)
 		end;
 	cutin "ep18_suad_04.png",0;
 	mes "[Suad]";
-	mes "What's going on?";
+	mes "Cosa sta succedendo?";
 	next;
 	cutin "ep18_miriam_03.png",1;
 	mes "[Miriam]";
-	mes "We have a mole among us.";
+	mes "Abbiamo un topo tra noi.";
 	next;
 	cutin "ep18_suad_04.png",0;
 	mes "[Suad]";
-	mes "A mole? Where?";
+	mes "Un molo? Dove?";
 	next;
 	cutin "ep18_miriam_03.png",1;
 	mes "[Miriam]";
-	mes "Suad, first of all, give us an overview of the situation here. It sounds like we're on the verge of a riot, is that right? Oh, hello, Priest Zhed.";
+	mes "Suad, prima di tutto, dammi una panoramica della situazione qui. Sembra che stiamo sul punto di una rivolta, giusto? Oh, ciao, Prete Zhed.";
 	next;
 	cutin "ep18_suad_02.png",0;
 	mes "[Suad]";
-	mes "Why is the High Priest here?";
+	mes "Perché il Sommo Sacerdote è qui?";
 	next;
 	cutin "ra_gman2.bmp",2;
 	mes "[Zhed]";
-	mes "Miriam? Did Miriam have anything to do with this?";
+	mes "Miriam? Miriam aveva qualcosa a che fare con questo?";
 	next;
 	cutin "ep18_miriam_03.png",1;
 	mes "[Miriam]";
-	mes "There's a reason for that, but first, let's talk about the situation, Suad?";
+	mes "C'è un motivo per questo, ma prima parliamo della situazione, Suad?";
 	next;
 	cutin "ep18_suad_03.png",0;
 	mes "[Suad]";
-	mes "It's not good. It's spiraling out of control. The temple is coming down hard on us. They're recommending we disband. We're running out of time. We're preparing to evacuate.";
+	mes "Non va bene. Sta sfuggendo al controllo. Il tempio sta crollando su di noi. Ci raccomandano di scioglanderci. Stiamo finendo tempo. Ci stiamo preparando a evacuare.";
 	next;
 	cutin "ep18_suad_01.png",0;
 	mes "[Suad]";
-	mes "What happened to the people you followed?";
+	mes "Cosa è successo alle persone che hai seguito?";
 	next;
-	select( "Let me explain." );
+	select( "Lasciami spiegare." );
 	cutin "",255;
-	mes "- The events inside the temple. -";
+	mes "Gli eventi all'interno del tempio.";
 	next;
 	cutin "ep18_miriam_03.png",1;
 	mes "[Miriam]";
-	mes "My father and a foreign power conspired to divide Arunafeltz and oppress the natives...";
+	mes "Mio padre e una potenza straniera complottarono per dividere Arunafeltz e opprimere i nativi...";
 	next;
 	cutin "ep18_suad_04.png",0;
 	mes "[Suad]";
-	mes "There's a mole among us... but who's the impostor?";
+	mes "C'è un mole tra noi... ma chi è l'impostore?";
 	next;
 	cutin "ep18_miriam_03.png",1;
 	mes "[Miriam]";
-	mes "It's more accurate to say they're gone into hiding than traitorous. They were never on our side to begin with.";
+	mes "È più accurato dire che si sono nascosti piuttosto che traditori. Non sono mai stati dalla nostra parte per prima cosa.";
 	next;
 	cutin "ep18_suad_02.png",0;
 	mes "[Suad]";
-	mes "So we were almost in the middle of an organized riot from the start?";
+	mes "Quindi eravamo quasi nel mezzo di un tumulto organizzato fin dall'inizio?";
 	next;
 	cutin "ra_gwoman.bmp",2;
 	mes "[Niren]";
-	mes "This is not the time. They've infiltrated the temple as well, so we have to take on both sides..";
+	mes "Questo non è il momento. Hanno infiltrato anche il tempio, quindi dobbiamo affrontare entrambi i lati..";
 	next;
 	mapannounce 'map_2nyr$, "Pii-", bc_map, 0xFF0000;
 	cutin "ep18_suad_04.png",0;
 	mes "[Suad]";
-	mes "What's that whistle? It's not our signal.";
+	mes "Cos'è quel fischio? Non è il nostro segnale.";
 	next;
 	setnpcdisplay( instance_npcname("Temple Guard#dms802"), 21308 );	// EP18_MD_HEARTHUNTER_A
 	setnpcdisplay( instance_npcname("Temple Guard#dms812"), 21308 );	// EP18_MD_HEARTHUNTER_A
@@ -2314,11 +2314,11 @@ OnMove4:
 	setnpcdisplay( instance_npcname("Angry Crowd#dms222"), 21308 );	// EP18_MD_HEARTHUNTER_A
 	setnpcdisplay( instance_npcname("Angry Crowd#dms232"), 21308 );	// EP18_MD_HEARTHUNTER_A
 	setnpcdisplay( instance_npcname("Angry Crowd#dms242"), 21308 );	// EP18_MD_HEARTHUNTER_A
-	npctalk "Is it now?", instance_npcname("Angry Crowd#dms202");
-	npctalk "Now!", instance_npcname("Temple Guard#dms832");
+	npctalk "È ora?", instance_npcname("Angry Crowd#dms202");
+	npctalk "Adesso!", instance_npcname("Temple Guard#dms832");
 	cutin "",255;
-	mes "[Crowd]";
-	mes "Why you're taking clothes off??";
+	mes "[Folla]";
+	mes "Perché ti stai togliendo i vestiti?";
 	next;
 	disablenpc instance_npcname("Temple Guard#dms812");
 	disablenpc instance_npcname("Temple Guard#dms832");
@@ -2335,16 +2335,16 @@ OnMove4:
 	enablenpc instance_npcname("Heart Hunter#dms171");
 	enablenpc instance_npcname("Heart Hunter#dms181");
 	enablenpc instance_npcname("Heart Hunter#dms191");
-	mes "[Temple Guard]";
-	mes "Keep your guard up!";
+	mes "Guardia del Tempio";
+	mes "Stai attento!";
 	next;
-	mes "[Crowd]";
-	mes "What the hell are you doing??";
+	mes "[Folla]";
+	mes "Che diavolo stai facendo?";
 	next;
-	npctalk "Sorry. Nothing personal.", instance_npcname("Heart Hunter#dms101");
-	npctalk "I still don't understand. What's going on?", instance_npcname("Heart Hunter#dms141");
-	npctalk "What kind of a goddess is she? You should trust me!", instance_npcname("Heart Hunter#dms171");
-	npctalk "How's that for a taste of repression?", instance_npcname("Heart Hunter#dms191");
+	npctalk "Scusa. Niente di personale.", instance_npcname("Heart Hunter#dms101");
+	npctalk "Non capisco ancora. Cosa sta succedendo?", instance_npcname("Heart Hunter#dms141");
+	npctalk "Che tipo di dea è? Dovresti fidarti di me!", instance_npcname("Heart Hunter#dms171");
+	npctalk "Che ne dici di un assaggio di repressione?", instance_npcname("Heart Hunter#dms191");
 	specialeffect EF_M03, AREA, instance_npcname("Heart Hunter#dms101");
 	specialeffect EF_M03, AREA, instance_npcname("Heart Hunter#dms111");
 	specialeffect EF_M02, AREA, instance_npcname("Heart Hunter#dms121");
@@ -2355,23 +2355,23 @@ OnMove4:
 	specialeffect EF_M02, AREA, instance_npcname("Heart Hunter#dms171");
 	specialeffect EF_M02, AREA, instance_npcname("Heart Hunter#dms181");
 	specialeffect EF_M03, AREA, instance_npcname("Heart Hunter#dms191");
-	mes "[Crowd]";
-	mes "Argh!!!! Argh!!! The temple guard grabs a man!!!";
+	mes "[Folla]";
+	mes "Argh!!!! Argh!!! Il guardia del tempio afferra un uomo!!!";
 	next;
-	mes "[Temple Guard]";
-	mes "It's a riot! Put it down!";
+	mes "Guardia del Tempio";
+	mes "È un delirio! Mettilo giù!";
 	next;
 	cutin "ep18_miriam_03.png",1;
 	mes "[Miriam]";
-	mes "Oh... I'm late...!";
+	mes "Oh... sono in ritardo...!";
 	next;
 	cutin "ep18_suad_02.png",0;
 	mes "[Suad]";
-	mes "We need to stop the brute-force attackers.";
+	mes "Dobbiamo fermare gli attaccanti a forza bruta.";
 	next;
 	cutin "ra_gwoman.bmp",2;
 	mes "[Niren]";
-	mes "I'll evacuate the people.";
+	mes "Evacuerò le persone.";
 	if ('nyr_main_step == 19) {
 		'nyr_main_step = 20;
 		donpcevent instance_npcname("nyr_step_10") + "::OnStart";
@@ -2535,7 +2535,7 @@ OnTouch:
 	sleep 1000;	// (player can walk)
 	npctalk "Adventurer, welcome. Thank you for joining us on this cleansing operation.", instance_npcname("Temple Guard#qdms101");
 	sleep 1500;
-	npctalk "Is everyone assembled?", instance_npcname("Temple Guard#qdms101");
+	npctalk "Tutti presenti?", instance_npcname("Temple Guard#qdms101");
 	sleep 1000;
 	npctalk "Yes, sir!", instance_npcname("Temple Guard#qdms111");
 	npctalk "Yes, sir!", instance_npcname("Temple Guard#qdms121");
@@ -2546,16 +2546,16 @@ OnTouch:
 	npctalk "Yes, sir!", instance_npcname("Temple Guard#qdms171");
 	npctalk "Yes, sir!", instance_npcname("Temple Guard#qdms181");
 	sleep 1000;
-	npctalk "Renegades who have forsaken a life of serving the goddess and broken their oath are disturbing this place!", instance_npcname("Temple Guard#qdms101");
+	npctalk "Renegati che hanno abbandonato una vita di servizio alla dea e infranto il loro giuramento stanno disturbando questo luogo!", instance_npcname("Temple Guard#qdms101");
 	sleep 1500;
-	npctalk "It is also our duty to enact the will of the goddess upon them!", instance_npcname("Temple Guard#qdms101");
+	npctalk "È anche nostro dovere eseguire la volontà della dea su di loro!", instance_npcname("Temple Guard#qdms101");
 	sleep 1500;
-	npctalk "We have blocked off four areas from this point onwards: three garden zones and one entrance to the temple. Let us purify them sequentially.", instance_npcname("Temple Guard#qdms101");
+	npctalk "Abbiamo bloccato quattro aree da questo punto in poi: tre zone del giardino e un ingresso al tempio. Purifichiamole sequenzialmente.", instance_npcname("Temple Guard#qdms101");
 	sleep 1500;
 	npctalk "Beware, allies may not be distinguishable from foes in the darkness! Exercise caution to avoid attacking our own!", instance_npcname("Temple Guard#qdms101");
 	enablenpc instance_npcname("Temple Guard#qdms01");
 	sleep 1500;
-	npctalk "To your respective positions!", instance_npcname("Temple Guard#qdms101");
+	npctalk "Alle vostre rispettive posizioni!", instance_npcname("Temple Guard#qdms101");
 
 	disablenpc instance_npcname("Temple Guard#qdms101");
 	disablenpc instance_npcname("Temple Guard#qdms111");
@@ -2705,8 +2705,8 @@ OnTouch:
 		end;
 	if ('nyr_daily_step != 12)
 		end;
-	mes "[Temple Guard Captain]";
-	mes "Well done, everyone! The cleansing will continue daily! Let's disband for today and take a rest!";
+	mes "Capitano della Guardia del Tempio";
+	mes "Complimenti a tutti! La purificazione continuerà quotidianamente! Sciogliamo per oggi e riposiamo!";
 	npctalk "Yes, sir!!", instance_npcname("Temple Guard#qdms112");
 	npctalk "Yes, sir!!", instance_npcname("Temple Guard#qdms122");
 	npctalk "Yes, sir!!", instance_npcname("Temple Guard#qdms132");
@@ -2716,11 +2716,11 @@ OnTouch:
 	npctalk "Yes, sir!!", instance_npcname("Temple Guard#qdms172");
 	npctalk "Yes, sir!!", instance_npcname("Temple Guard#qdms182");
 	next;
-	mes "[Temple Guard Captain]";
-	mes "Adventurer, thank you for your assistance.";
+	mes "Capitano della Guardia del Tempio";
+	mes "Avventuriero, grazie per il tuo aiuto.";
 	next;
-	mes "[Temple Guard Captain]";
-	mes "I've heard that you'll also be joining us for a separate cleansing operation inside the temple. We'll be counting on you!";
+	mes "Capitano della Guardia del Tempio";
+	mes "Ho sentito che ti unirai anche noi per un'operazione di purificazione separata all'interno del tempio. Contiamo su di te!";
 	close2;
 	if ('nyr_daily_step != 12)
 		end;
@@ -2772,7 +2772,7 @@ OnTouch:
 	'nyr_daily_step = 14;
 	for ( .@i = 0; .@i < 7; ++.@i )
 		enablenpc instance_npcname("Temple Guard#2dms1" + .@i + "1");
-	npctalk "Inspect all the facilities and ensure security. Anyone attempting to breach and gain power must be dealt with!", instance_npcname("Temple Guard#2dms101");
+	npctalk "Ispezionare tutte le strutture e garantire la sicurezza. Chiunque tenti di violare e ottenere potere deve essere affrontato!", instance_npcname("Temple Guard#2dms101");
 	sleep 2000;
 	npctalk "Yes, sir!", instance_npcname("Temple Guard#2dms111");
 	npctalk "Yes, sir!", instance_npcname("Temple Guard#2dms121");
@@ -2781,7 +2781,7 @@ OnTouch:
 	npctalk "Yes, sir!", instance_npcname("Temple Guard#2dms151");
 	npctalk "Yes, sir!", instance_npcname("Temple Guard#2dms161");
 	sleep 2000;
-	npctalk "To your respective positions!", instance_npcname("Temple Guard#2dms101");
+	npctalk "Alle vostre rispettive posizioni!", instance_npcname("Temple Guard#2dms101");
 	sleep 2000;
 	for ( .@i = 1; .@i < 7; ++.@i )
 		disablenpc instance_npcname("Temple Guard#2dms1" + .@i + "1");
@@ -2792,7 +2792,7 @@ OnTouch:
 	npctalk "Temporarily, I'll grant administrator privileges to the leader of the party. Please reset the security code for the changing security facilities daily.", instance_npcname("Temple Guard#2dms101");
 	sleep 2000;
 	'code = rand(1000,9999);
-	npctalk "Today's security code is " + 'code + ". Make sure the storage and warehouse are empty before setting it!", instance_npcname("Temple Guard#2dms101");
+	npctalk "Il codice di sicurezza di oggi è " + 'code + ". Make sure the storage and warehouse are empty before setting it!", instance_npcname("Temple Guard#2dms101");
 	sleep 2000;
 	npctalk "Now, let's begin the mission!", instance_npcname("Temple Guard#2dms101");
 	enablenpc instance_npcname("Temple Guard#2dms10");
@@ -2801,7 +2801,7 @@ OnTouch:
 
 2@nyr,35,187,7	script	Temple Guard#2dms101	4_M_RASWORD,{
 	if ('code > 0)
-		npctalk "Have you forgotten the security code? Today's security code is " + 'code + "! Hurry! I'll join you shortly!", instance_npcname("Temple Guard#2dms101");
+		npctalk "Hai dimenticato il codice di sicurezza? Il codice di sicurezza di oggi è " + 'code + "! Hurry! I'll join you shortly!", instance_npcname("Temple Guard#2dms101");
 	end;
 }
 
@@ -2950,7 +2950,7 @@ OnTouch:
 2@nyr,126,174,5	script	Heart Hunter#2dms42	EP18_MD_HEARTHUNTER_R,5,5,{
 	end;
 OnTouch:
-	npctalk "Thrilling!!! Incredible!!!", instance_npcname("Heart Hunter#2dms42");
+	npctalk "Stupefacente!!! Incredibile!!!", instance_npcname("Heart Hunter#2dms42");
 	end;
 }
 
@@ -2964,7 +2964,7 @@ OnTouch:
 2@nyr,115,206,7	script	Heart Hunter#2dms44	EP18_MD_HEARTHUNTER_R,2,2,{
 	end;
 OnTouch:
-	npctalk "That's not how you do it.", instance_npcname("Heart Hunter#2dms44");
+	npctalk "Non è così che lo fai.", instance_npcname("Heart Hunter#2dms44");
 	end;
 }
 
@@ -2985,26 +2985,26 @@ OnTouch:
 2@nyr,113,194,3	script	Heart Hunter#2dms47	EP18_MD_HEARTHUNTER_R,2,2,{
 	end;
 OnTouch:
-	npctalk "There's something here!", instance_npcname("Heart Hunter#2dms47");
+	npctalk "C'è qualcosa qui!", instance_npcname("Heart Hunter#2dms47");
 	end;
 }
 
 2@nyr,111,209,5	script	Heart Hunter#2dms48	EP18_MD_HEARTHUNTER_R,2,2,{
 	end;
 OnTouch:
-	npctalk "Hey! This is exhilarating~", instance_npcname("Heart Hunter#2dms48");
+	npctalk "Ciao! È emozionante~", instance_npcname("Heart Hunter#2dms48");
 	end;
 }
 
 2@nyr,112,206,5	script	Heart Hunter#2dms49	EP18_MD_HEARTHUNTER_R,2,2,{
 	end;
 OnTouch:
-	npctalk "When will this be over...", instance_npcname("Heart Hunter#2dms49");
+	npctalk "Quando finirà tutto...", instance_npcname("Heart Hunter#2dms49");
 	end;
 }
 
 2@nyr,115,201,5	script	Heart Hunter#2dms50	EP17_1_BELLARE1,{
-	npctalk "What is it? Probably just your mood.", instance_npcname("Heart Hunter#2dms50");
+	npctalk "Cos'è? Probabilmente solo il tuo umore.", instance_npcname("Heart Hunter#2dms50");
 	end;
 }
 
@@ -3021,59 +3021,59 @@ OnTouch:
 	enablenpc instance_npcname("Heart Hunter#2dms50");
 	emotion ET_QUESTION, getnpcid(0,instance_npcname("Heart Hunter#2dms50"));
 	sleep 500;
-	npctalk "What's this? An uninvited guest?", instance_npcname("Heart Hunter#2dms50");
+	npctalk "Cos'è questo? Un ospite non invitato?", instance_npcname("Heart Hunter#2dms50");
 	sleep 2000;
-	npctalk "What were you all doing that you didn't notice someone entering? Snap out of it!", instance_npcname("Heart Hunter#2dms50");
+	npctalk "Cosa stavate facendo che non avete notato l'ingresso di qualcuno? Sveglia!", instance_npcname("Heart Hunter#2dms50");
 	sleep 2000;
-	npctalk "Ah~ I'm intoxicated~ Intoxicated by the magic of the heart~", instance_npcname("Heart Hunter#2dms48");
+	npctalk "Ah~ Sono intossicata~ Intossicata dalla magia del cuore~", instance_npcname("Heart Hunter#2dms48");
 	sleep 2000;
-	npctalk "Isn't this the only magic permitted by the kingdom?", instance_npcname("Heart Hunter#2dms48");
-	npctalk "What are you talking about? This isn't permitted by the kingdom either. Have you forgotten?", instance_npcname("Heart Hunter#2dms44");
+	npctalk "Non è questa l'unica magia permessa dal regno?", instance_npcname("Heart Hunter#2dms48");
+	npctalk "Di cosa stai parlando? Questo non è permesso nemmeno dal regno. Hai dimenticato?", instance_npcname("Heart Hunter#2dms44");
 	sleep 2000;
 	npctalk "Oh, right. We were trespassing illegally, weren't we?", instance_npcname("Heart Hunter#2dms49");
 	sleep 200;
-	npctalk "Perhaps the thrill comes from it being illegal?", instance_npcname("Heart Hunter#2dms48");
+	npctalk "Forse l'emozione deriva dal fatto che sia illegale?", instance_npcname("Heart Hunter#2dms48");
 	npctalk "Hey! This is strange. No matter how I manipulate it, the magic of the heart isn't emitting.", instance_npcname("Heart Hunter#2dms43");
-	npctalk "Then step aside! Let me try!!", instance_npcname("Heart Hunter#2dms45");
+	npctalk "Via il passo! Lasciatmi provare!!", instance_npcname("Heart Hunter#2dms45");
 	sleep 2000;
 	npctalk "What? So, what's this exhilaration flowing through my body right now?", instance_npcname("Heart Hunter#2dms48");
 	sleep 2000;
 	npctalk "Hmm, my mood feels exhilarating for once.", instance_npcname("Heart Hunter#2dms48");
-	npctalk "Examine it carefully. It could be tampered with.", instance_npcname("Heart Hunter#2dms49");
-	npctalk "You claimed to have seen the manipulation technique before? And you want us to believe only you?", instance_npcname("Heart Hunter#2dms50");
+	npctalk "Esaminatelo attentamente. Potrebbe essere manomesso.", instance_npcname("Heart Hunter#2dms49");
+	npctalk "Hai affermato di aver visto la tecnica di manipolazione prima? E vuoi che crediamo solo a te?", instance_npcname("Heart Hunter#2dms50");
 	sleep 1000;
 	npctalk "That... wait a moment, it's showing a mismatch in security code?", instance_npcname("Heart Hunter#2dms43");
 	sleep 2000;
-	npctalk "Security code mismatch? Hmm... I think it might be related to the adventurer here? Right?", instance_npcname("Heart Hunter#2dms50");
+	npctalk "Disallineamento del codice di sicurezza? Mmh... Penso che possa essere correlato all'avventuriero qui? Giusto?", instance_npcname("Heart Hunter#2dms50");
 	sleep 2000;
-	npctalk "Could you input the changed security code? Then we'll all be truly happy.", instance_npcname("Heart Hunter#2dms50");
+	npctalk "Potresti inserire il codice di sicurezza modificato? Allora saremo tutti veramente felici.", instance_npcname("Heart Hunter#2dms50");
 	sleep 2000;
-	npctalk "Step aside. Sometimes machines need to be hit to listen!", instance_npcname("Heart Hunter#2dms45");
+	npctalk "Indietreggia. A volte le macchine devono essere colpite per ascoltare!", instance_npcname("Heart Hunter#2dms45");
 	specialeffect EF_HITDARK, AREA, instance_npcname("Heart Hunter#2dms45");
 	specialeffect EF_MAGICCRASHER, AREA, instance_npcname("Heart Hunter#2dms45");
-	npctalk "Hey! Who's handling the machine like that?", instance_npcname("Heart Hunter#2dms43");
+	npctalk "Ehi! Chi sta gestendo la macchina così?", instance_npcname("Heart Hunter#2dms43");
 	sleep 2000;
 	specialeffect EF_LIGHTNINGLOADER, AREA, instance_npcname("Heart Hunter#2dms48");
 	specialeffect EF_MAGICALATTHIT, AREA, instance_npcname("Heart Hunter#2dms48");
-	npctalk "Oops!!! Suddenly it got more exhilarating!! Is this also because of my mood?", instance_npcname("Heart Hunter#2dms48");
-	npctalk "Looks like it's short-circuiting! It's emitting light from it!", instance_npcname("Heart Hunter#2dms44");
+	npctalk "Ops!!! Improvvisamente è diventato più eccitante!! È anche per il mio umore?", instance_npcname("Heart Hunter#2dms48");
+	npctalk "Sembra che stia cortocircuitando! Sta emettendo luce da esso!", instance_npcname("Heart Hunter#2dms44");
 	sleep 2000;
 	specialeffect EF_UNDEADBODY, AREA, instance_npcname("Heart Hunter#2dms48");
 	specialeffect EF_NPC_STOP, AREA, instance_npcname("Heart Hunter#2dms48");
 	npctalk "Aaahhh!!!", instance_npcname("Heart Hunter#2dms48");
-	npctalk "Hey!! This one's amazing!!!", instance_npcname("Heart Hunter#2dms44");
-	npctalk "Why only that...? Something's odd here?", instance_npcname("Heart Hunter#2dms43");
+	npctalk "Ehi!! Questo è incredibile!!!", instance_npcname("Heart Hunter#2dms44");
+	npctalk "Perché solo quello...? Qualcosa di strano qui?", instance_npcname("Heart Hunter#2dms43");
 	sleep 2000;
 	specialeffect EF_NPC_STOP, AREA, instance_npcname("Heart Hunter#2dms43");
 	specialeffect EF_NPC_STOP, AREA, instance_npcname("Heart Hunter#2dms44");
 	specialeffect EF_NPC_STOP, AREA, instance_npcname("Heart Hunter#2dms45");
-	npctalk "Huh...?", instance_npcname("Heart Hunter#2dms43");
-	npctalk "What's this?", instance_npcname("Heart Hunter#2dms44");
+	npctalk "Eh...?", instance_npcname("Heart Hunter#2dms43");
+	npctalk "Cos'è questo?", instance_npcname("Heart Hunter#2dms44");
 	npctalk "As expected, you have to smack a malfunctioning machine!", instance_npcname("Heart Hunter#2dms45");
 	sleep 2000;
 	specialeffect EF_UNDEADBODY, AREA, instance_npcname("Heart Hunter#2dms49");
 	specialeffect EF_NPC_STOP, AREA, instance_npcname("Heart Hunter#2dms49");
-	npctalk "Am I also getting shocked? Is there something wrong with my body too?", instance_npcname("Heart Hunter#2dms49");
+	npctalk "Sto anche venendo scosso? C'è qualcosa di sbagliato anche col mio corpo?", instance_npcname("Heart Hunter#2dms49");
 	specialeffect EF_UNDEADBODY, AREA, instance_npcname("Heart Hunter#2dms43");
 	specialeffect EF_UNDEADBODY, AREA, instance_npcname("Heart Hunter#2dms44");
 	specialeffect EF_UNDEADBODY, AREA, instance_npcname("Heart Hunter#2dms45");
@@ -3245,11 +3245,11 @@ OnTouch:
 	}
 	if ('nyr_daily_step != .@step)
 		end;
-	mes "Awaiting security code reset. Please input the new security code.";
+	mes "In attesa del reset del codice di sicurezza. Si prega di inserire il nuovo codice di sicurezza.";
 	next;
 	input .@num;
 	if (.@num != 'code) {
-		mes "Cancel input";
+		mes "Annulla input";
 		close;
 	}
 	mes .@mes$;
@@ -3274,9 +3274,9 @@ OnTouch:
 		break;
 	}
 	if ('nyr_daily_step <= .@step)
-		npctalk "Awaiting security code reset";
+		npctalk "In attesa del reset del codice di sicurezza";
 	else
-		npctalk "Security code reset completed.";
+		npctalk "Codice di sicurezza reimpostato.";
 	end;
 }
 2@nyr,115,69,5	duplicate(Security Device#2dms10)	Security Device#2dms20	4_POINT_BLUE,5,5
@@ -3287,14 +3287,14 @@ OnTouch:
 		end;
 	if ('nyr_daily_step != 33)
 		end;
-	mes "Security code reset in progress. Please enter the new security code.";
+	mes "Reset del codice di sicurezza in corso. Si prega di inserire il nuovo codice di sicurezza.";
 	next;
 	input .@num;
 	if (.@num != 'code) {
-		mes "Cancel input";
+		mes "Annulla input";
 		close;
 	}
-	mes "Vault security code has been reset.";
+	mes "Il codice di sicurezza del caveau è stato reimpostato.";
 	if ('nyr_daily_step == 33) {
 		'nyr_daily_step = 34;
 		enablenpc instance_npcname("#2mstep10");
@@ -3316,9 +3316,9 @@ OnTouch:
 	close;
 OnTouch:
 	if ('nyr_daily_step <= 33)
-		npctalk "Vault Security Code Reset in Progress";
+		npctalk "Reset del codice di sicurezza del caveau in corso";
 	else
-		npctalk "Vault security code has been reset.";
+		npctalk "Il codice di sicurezza del caveau è stato reimpostato.";
 	end;
 }
 
@@ -3330,16 +3330,16 @@ OnTouch:
 	if ('nyr_daily_step != 34)
 		end;
 	'nyr_daily_step = 35;
-	npctalk "Thank you all for your hard work!", instance_npcname("Temple Guard#2dms201");
+	npctalk "Grazie a tutti per il vostro duro lavoro!", instance_npcname("Temple Guard#2dms201");
 	sleep 2000;
-	npctalk "We will need to cleanse the temple daily for a while!", instance_npcname("Temple Guard#2dms201");
+	npctalk "Dovremo ripulire il tempio ogni giorno per un po'!", instance_npcname("Temple Guard#2dms201");
 	sleep 2000;
-	npctalk "Four!!", instance_npcname("Temple Guard#2dms211");
-	npctalk "Four!!", instance_npcname("Temple Guard#2dms221");
-	npctalk "Four!!", instance_npcname("Temple Guard#2dms231");
-	npctalk "Four!!", instance_npcname("Temple Guard#2dms241");
-	npctalk "Four!!", instance_npcname("Temple Guard#2dms251");
-	npctalk "Four!!", instance_npcname("Temple Guard#2dms261");
+	npctalk "Quattro!!", instance_npcname("Temple Guard#2dms211");
+	npctalk "Quattro!!", instance_npcname("Temple Guard#2dms221");
+	npctalk "Quattro!!", instance_npcname("Temple Guard#2dms231");
+	npctalk "Quattro!!", instance_npcname("Temple Guard#2dms241");
+	npctalk "Quattro!!", instance_npcname("Temple Guard#2dms251");
+	npctalk "Quattro!!", instance_npcname("Temple Guard#2dms261");
 	npctalk "Everyone, you may now disperse!", instance_npcname("Temple Guard#2dms201");
 	sleep 2000;
 	npctalk "Adventurers, thank you for your hard work as well! Until we meet again!", instance_npcname("Temple Guard#2dms201");

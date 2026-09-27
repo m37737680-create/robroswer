@@ -22,47 +22,47 @@
 	mes .@n$;
 	if (isequipped(2782) && ep13_2_rhea == 100) {
 		if (!checkweight(1201,1)) {
-			mes "It looks like you're carrying too many things.";
-			mes "Why not put some of your items in storage and come back?";
+			mes "Sembra che stia portando troppe cose.";
+			mes "Perché non mettere alcuni dei tuoi oggetti in deposito e tornare?";
 			close;
 		}
-		mes "Hello.";
-		mes "What are you looking for?";
+		mes "Ciao.";
+		mes "Cosa stai cercando?";
 		next;
 		if (strnpcinfo(1) == "Merchant of Manuk") {
 			setarray .@Items[2],12342,12343,12348;
 			set .@Book,11019; //Manuk_Selling_Item
 			set .@Coin,6080; //Manuk_Coin
-			set .@i, select("View item description:Manuk's Opportunity:Manuk's Courage:Manuk's Faith:Cancel");
+			set .@i, select("Visualizza descrizione articolo:L'opportunità di Manuk:Il coraggio di Manuk:La Fede di Manuk:Annulla");
 		}
 		else {
 			setarray .@Items[2],12344,12345,12349;
 			set .@Book,11018; //Splendide_Selling_Item
 			set .@Coin,6081; //Splendide_Coin
-			set .@i, select("View item description:Buy Pinguicula's Fruit Jam:Buy Luciola's Honey Jam:Buy Cornus' Tears:Do nothing");
+			set .@i, select("Visualizza descrizione articolo:Compra il marmellata di frutta di Pinguicula:Compra il marmellata di miele di Luciola:Compra Lacrime di Cornus:Non fare niente");
 		}
 		mes .@n$;
 		if (.@i == 1) {
-			mes "Here are the item descriptions.";
+			mes "Ecco le descrizioni degli articoli.";
 			close2;
 			readbook .@Book,1;
 			end;
 		}
 		else if (.@i < 5) {
-			mes "I can sell you 3 "+getitemname(.@Items[.@i])+" for ^3131FF1 coin^000000.";
+			mes "Posso venderti 3 "+getitemname(.@Items[.@i])+" per ^3131FF1 moneta^000000.";
 			next;
-			switch(select("Purchase:Do not purchase")) {
+			switch(select("Acquisto:Non acquistare")) {
 			case 1:
 				if (countitem(.@Coin)) {
 					mes .@n$;
-					mes "Thank you for coming.";
+					mes "Grazie per essere venuto/a.";
 					delitem .@Coin,1; 
 					getitem .@Items[.@i],3;
 					close;
 				}
 				else {
 					mes .@n$;
-					mes "You don't have enough coins.";
+					mes "Non hai abbastanza monete.";
 					close;
 				}
 			case 2:
@@ -70,13 +70,13 @@
 				break;
 			}
 		}
-		mes "Come again if you change your mind.";
+		mes "Ripassiscilo se cambi idea.";
 		close;
 	}
 	else {
 		if (strnpcinfo(1) == "Merchant of Manuk") {
 			mes "Rtt od d";
-			mes "Qwo hd is d irr";
+			mes "Cosa è un irr";
 		}
 		else {
 			mes "BurWehAla";

@@ -20,72 +20,72 @@
 //============================================================
 // Old coordinates: alberta (237,71)
 alberta,196,202,3	script	Optamara Crew#alberta	100,{
-	mes "[Optamara Crew]";
-	mes "Hey, there!";
-	mes "It's 10,000 Zeny to go to Port Malaya. Interested?";
+	mes "[Optamara Equipaggio]";
+	mes "Ciao!";
+	mes "Sono 10.000 Zeny per andare a Porto Malesia. Interessato?";
 	next;
-	switch(select("About Port Malaya.:Go to Port Malaya.:Cancel.")) {
+	switch(select("Informazioni su Port Malaya.:Vai a Port Malaya.:Annulla.")) {
 	case 1:
-		mes "[Optamara Crew]";
-		mes "Port Malaya is a small village you could reach by sailing southwest from Alberta.";
+		mes "[Optamara Equipaggio]";
+		mes "Port Malaya è un piccolo villaggio che si può raggiungere navigando a sud-ovest da Alberta.";
 		next;
-		mes "[Optamara Crew]";
-		mes "I couldn't visit the village because they had some issues there but now it seems all is clear!";
+		mes "[Optamara Equipaggio]";
+		mes "Non sono riuscito a visitare il villaggio perché avevano alcuni problemi lì ma ora sembra che sia tutto chiaro!";
 		next;
-		mes "[Optamara Crew]";
-		mes "I don't know for sure but it was a village that's like a comfortable and cozy park.";
+		mes "[Optamara Equipaggio]";
+		mes "Non lo so per certo ma era un villaggio che assomigliava a un parco confortevole e accogliente.";
 		next;
-		mes "[Optamara Crew]";
-		mes "I was this close to not coming back to cozy Alberta again.";
+		mes "[Optamara Equipaggio]";
+		mes "Ero così vicino a non tornare mai più nel confortevole Alberta.";
 		next;
-		mes "[Optamara Crew]";
-		mes "I'm sure you'll feel the same once you reach Port Malaya.";
+		mes "[Optamara Equipaggio]";
+		mes "Sono sicuro che sentirai lo stesso quando raggiungerai Port Malaya.";
 		close;
 	case 2:
 		if (Zeny < 10000) {
-			mes "[Optamara Crew]";
-			mes "Oh God!!";
-			mes "You don't know how far it is from here. Of course it's not free. Please come back with 10,000 Zeny. Sorry!";
+			mes "[Optamara Equipaggio]";
+			mes "Oh Dio!!";
+			mes "Non sai quanto sia lontano da qui. Ovviamente non è gratuito. Per favore torna con 10.000 Zeny. Scusa!";
 			close;
 		}
-		mes "[Optamara Crew]";
-		mes "Great!";
-		mes "Heading for Port Malaya!!";
+		mes "[Optamara Equipaggio]";
+		mes "Ottimo!";
+		mes "Titolo per Port Malaya!!";
 		set Zeny, Zeny-10000;
 		close2;
 		warp "malaya",271,55;
 		end;
 	case 3:
-		mes "[Optamara Crew]";
-		mes "Adventurers these days act like they are busy. Come back when you have the time and we could go visit Port Malaya together.";
+		mes "[Optamara Equipaggio]";
+		mes "Gli avventurieri di questi giorni si comportano come se fossero impegnati. Torna quando hai tempo e possiamo andare a visitare Port Malaya insieme.";
 		close;
 	}
 }
 
 malaya,276,55,4	script	Optamara Crew#malaya	100,{
 	if (malaya_hi < 10) {
-		mes "[Optamara Crew]";
-		mes "I think the village is still busy. Done with your visit? There is always a ship heading for Alberta.";
+		mes "[Optamara Equipaggio]";
+		mes "Penso che il villaggio sia ancora affollato. Hai finito la tua visita? C'è sempre una nave diretta verso l'Alberta.";
 		next;
 	} else if (malaya_hi < 20) {
-		mes "[Optamara Crew]";
-		mes "I think a nameless adventurer helped take a load off the villagers' minds. Yahoo! Would you like to go back to Alberta?";
+		mes "[Optamara Equipaggio]";
+		mes "Penso che un avventuriero senza nome abbia contribuito ad alleggerire la mente degli abitanti del villaggio. Yahoo! Vorresti tornare in Alberta?";
 		next;
 	} else {
-		mes "[Optamara Crew]";
-		mes "Would you like to go back to Alberta with me?";
+		mes "[Optamara Equipaggio]";
+		mes "Ti piacerebbe tornare in Alberta con me?";
 		next;
 	}
-	switch(select("Return.:Do not return.")) {
+	switch(select("Ritorna.:Non tornare")) {
 	case 1:
-		mes "[Optamara Crew]";
-		mes "Great! Let's leave now for Alberta!!";
+		mes "[Optamara Equipaggio]";
+		mes "Perfetto! Partiamo ora per l'Alberta!!";
 		close2;
 		warp "alberta",192,217;
 		end;
 	case 2:
-		mes "[Optamara Crew]";
-		mes "That's okay. Come here if you ever want to go back to Alberta.";
+		mes "[Optamara Equipaggio]";
+		mes "Va bene. Vieni qui se mai vorrai tornare in Alberta.";
 		close;
 	}
 }
@@ -94,37 +94,37 @@ malaya,276,55,4	script	Optamara Crew#malaya	100,{
 //============================================================
 ma_in01,30,94,4	script	Inn Keeper#ma	583,{
 	if (malaya_hi < 10) {
-		mes "[Inn Keeper]";
-		mes "Oh my! Visiting?";
-		mes "What bad timing. The village is a bit unorganized at the moment so I'm actually closed. Sorry.";
+		mes "[Locandiere]";
+		mes "Oh mio Dio! Visitare?";
+		mes "Che tempismo sbagliato. Il villaggio è un po' disorganizzato al momento, quindi sono in realtà chiuso. Scusa.";
 		close;
 	} else if (malaya_hi < 20) {
-		mes "[Inn Keeper]";
-		mes "So you are the adventurer villagers are talking about? I reopened my inn thanks to you. Thank you.";
+		mes "[Locandiere]";
+		mes "Quindi sei l'avventuriero di cui parlano i villaggiatori? Ho riaperto la mia locanda grazie a te. Grazie.";
 		next;
 	} else {
-		mes "[Inn Keeper]";
-		mes "Welcome.";
-		mes "This is Port Malaya's best inn, 'Cabin in the City'.";
+		mes "[Locandiere]";
+		mes "Benvenuto.";
+		mes "Questo è il miglior ostello di Port Malaya, 'Cabin in the City'.";
 		next;
 	}
-	mes "[Inn Keeper]";
-	mes "Come for a rest? Lodging will be 5,000 Zeny.";
+	mes "[Locandiere]";
+	mes "Vieni a riposare? L'alloggio costerà 5.000 Zeny.";
 	next;
-	switch(select("Store.:Lodge. - 5,000z:Cancel.")) {
+	switch(select("Negozio.:Lodge. - 5,000z:Annulla.")) {
 	case 1:
-		mes "[Inn Keeper]";
-		mes "Successfully stored. See you next time.";
+		mes "[Locandiere]";
+		mes "Archiviato con successo. Ci vediamo la prossima volta.";
 		savepoint "ma_in01",43,98,1,1;
 		close;
 	case 2:
 		if (Zeny < 5000) {
-			mes "[Inn Keeper]";
-			mes "Sorry. I think you are a bit short.";
+			mes "[Locandiere]";
+			mes "Scusa. Penso che tu sia un po' basso.";
 			close;
 		}
-		mes "[Inn Keeper]";
-		mes "Hope you enjoy your stay.";
+		mes "[Locandiere]";
+		mes "Speriamo che ti piaccia il tuo soggiorno.";
 		close2;
 		set Zeny, Zeny-5000;
 		percentheal 100,100;
@@ -171,7 +171,7 @@ OnTouch_:
 	if (getcharid(1)) {
 		if ($ma_name04$ == strcharinfo(0) || $ma_name05$ == strcharinfo(0) || $ma_name06$ == strcharinfo(0)) {
 			donpcevent strnpcinfo(0)+"::OnBingx2";
-			mes "The unidentified creature gets a glimpse of you, blushes and then disappears.";
+			mes "La creatura non identificata ti intravede, arrossisce e poi scompare.";
 			close;
 		}
 		if (rand(1,5)%2) {
@@ -182,11 +182,11 @@ OnTouch_:
 			}
 		}
 		donpcevent strnpcinfo(0)+"::OnBingx2";
-		mes "The unidentified creature gets a glimpse of you and disappears.";
+		mes "La creatura non identificata ti intravede e scompare.";
 		close;
 	}
 	donpcevent strnpcinfo(0)+"::OnBingx2";
-	mes "The unidentified creature looks at you and runs away.";
+	mes "La creatura non identificata ti guarda e scappa via.";
 	close;
 }
 ma_fild01,74,367,6	duplicate(Unidentified Creature#i)	Unidentified Creature#01	572,2,2
@@ -233,7 +233,7 @@ OnTouch_:
 	if (.@pass) {
 		if ($ma_name04$ == strcharinfo(0) || $ma_name05$ == strcharinfo(0) || $ma_name06$ == strcharinfo(0)) {
 			donpcevent strnpcinfo(0)+"::OnBingx2";
-			mes "The unidentified creature gets a glimpse of you, blushes and then disappears.";
+			mes "La creatura non identificata ti intravede, arrossisce e poi scompare.";
 			close;
 		}
 		if (rand(1,5)%2) {
@@ -255,11 +255,11 @@ OnTouch_:
 			}
 		}
 		donpcevent strnpcinfo(0)+"::OnBingx2";
-		mes "The unidentified creature gets a glimpse of you and disappears.";
+		mes "La creatura non identificata ti intravede e scompare.";
 		close;
 	}
 	donpcevent strnpcinfo(0)+"::OnBingx2";
-	mes "The unidentified creature looks at you and runs away.";
+	mes "La creatura non identificata ti guarda e scappa via.";
 	close;
 }
 ma_fild01,109,116,4	duplicate(Unidentified Creature#j)	Unidentified Creature#02	572,2,2
@@ -273,415 +273,415 @@ ma_scene01,167,112,6	duplicate(Unidentified Creature#j)	Unidentified Creature#11
 
 malaya,227,311,4	script	Grandma#ma01	575,{
 	if (malaya_hi < 10) {
-		mes "[Grandma]";
-		mes "You're not from around here? Take care of yourself.";
+		mes "Nonna";
+		mes "Non sei di qui? Prenditi cura di te.";
 		next;
-		mes "[Grandma]";
-		mes "I'm worried because my daughter-in-law is pregnant. I hope nothing goes wrong.";
+		mes "Nonna";
+		mes "Sono preoccupato perché mia nuora è incinta. Spero che non vada niente male.";
 		close;
 	} else if (malaya_hi < 20) {
-		mes "[Grandma]";
-		mes "I heard there is an outsider that is helping the village.";
+		mes "Nonna";
+		mes "Ho sentito che c'è un estraneo che sta aiutando il villaggio.";
 		next;
-		mes "[Grandma]";
-		mes "Then my daughter-in-law will be safe.";
+		mes "Nonna";
+		mes "Allora mia nuora sarà al sicuro.";
 		close;
 	}
 	if (rand(1,3) == 2) {
-		mes "[Grandma]";
-		mes "Heard there is this "+getd("$ma_name0"+rand(1,6)+"$")+" that follows Meoneonuncle around.";
+		mes "Nonna";
+		mes "Ho sentito che c'è questo "+getd("$ma_name0$"+rand(1,6)+"$")+" che segue Meoneonuncle intorno.";
 		next;
-		mes "[Grandma]";
-		mes "I will cheer for their forbidden love.";
+		mes "Nonna";
+		mes "Bò per il loro amore proibito.";
 		close;
 	}
-	mes "[Grandma]";
-	mes "I'm worried about my pregnant daughter-in-law. Hope Meoneonuncle won't bother her.";
+	mes "Nonna";
+	mes "Sono preoccupato per mia nuora incinta. Spero che Meoneonuncle non la disturbi.";
 	next;
 	select("Meoneonuncle?");
-	mes "[Grandma]";
-	mes "Not from around here? Let me tell you why even a foreigner like you should be careful.";
+	mes "Nonna";
+	mes "Non di qui? Lasciarmi dirti perché anche un straniero come te dovrebbe stare attento.";
 	next;
-	mes "[Grandma]";
-	mes "Meoneonuncle was a woman who lived in Port Malaya long ago. She married a decent man and also had a baby.";
+	mes "Nonna";
+	mes "Meoneonuncle era una donna che viveva a Port Malaya molto tempo fa. Si sposò con un uomo decente e ebbe anche un bambino.";
 	next;
-	mes "[Grandma]";
-	mes "But happiness never lasts forever, right? The baby was miscarried from an accident...";
+	mes "Nonna";
+	mes "Ma la felicità non dura per sempre, vero? Il bambino è stato abortito a causa di un incidente...";
 	next;
-	mes "[Grandma]";
-	mes "She eventually passed away after grieving over her lost baby for days.";
+	mes "Nonna";
+	mes "È venuta a mancare dopo aver pianto per il suo bambino perduto per giorni.";
 	next;
-	select("That is a sad story.");
-	mes "[Grandma]";
-	mes "Meoneonuncle then started to appear in spirit and take away babies from pregnant women in the village.";
+	select("È una storia triste.");
+	mes "Nonna";
+	mes "Meoneonuncle iniziò quindi ad apparire in spirito e a togliere i bambini dalle donne incinte del villaggio.";
 	next;
-	mes "[Grandma]";
-	mes "If you ever walk around Port Malaya at night...";
+	mes "Nonna";
+	mes "Se un giorno camminerai per Port Malaya di notte...";
 	next;
-	mes "[Grandma]";
-	mes "And hear either tik-tik or wak-wak, be cautious because that is the sound of Meoneonuncle's wings flapping.";
+	mes "Nonna";
+	mes "E sentite o tik-tik o wak-wak, fate attenzione perché è il suono delle ali di Meoneonuncle che battono.";
 	close;
 }
 
 malaya,189,263,4	script	Drumming Young Man#ma02	578,{
 	if (malaya_hi < 10) {
 		emotion ET_HUK;
-		mes "[Drumming Young Man]";
-		mes "Ugh... it's just like that time before...";
+		mes "Giovane che suona i tamburi";
+		mes "Uffa... è proprio come quella volta prima...";
 		next;
 		emotion ET_HUK;
-		mes "[Drumming Young Man]";
-		mes "When the moon was swallowed. Argh!";
+		mes "Giovane che suona i tamburi";
+		mes "Quando la luna fu inghiottita. Argh!";
 		close;
 	} else if (malaya_hi < 20) {
-		mes "[Drumming Young Man]";
-		mes "I think the village was saved by a nameless adventurer.";
+		mes "Giovane che suona i tamburi";
+		mes "Penso che il villaggio sia stato salvato da un avventuriero senza nome.";
 		next;
 		emotion ET_OHNO;
-		mes "[Drumming Young Man]";
-		mes "Phew... I thought Bakonawa appeared again.";
+		mes "Giovane che suona i tamburi";
+		mes "Uffa... Ho pensato che Bakonawa fosse riapparso.";
 		close;
 	}
 	if (rand(1,3) == 2) {
-		mes "[Drumming Young Man]";
+		mes "Giovane che suona i tamburi";
 		mes getd("$ma_name0"+rand(1,6)+"$")+" is said to have stopped Bakonawa from swallowing the moon. Isn't it awesome? I'm so relieved.";
 		close;
 	}
-	mes "[Drumming Young Man]";
-	mes "Bakonawa is also known as the 'monster that swallows the moon' in Port Malaya.";
+	mes "Giovane che suona i tamburi";
+	mes "Bakonawa è noto anche come il 'mostro che inghiotte la luna' a Port Malaya.";
 	next;
-	mes "[Drumming Young Man]";
-	mes "But I know that Bakonawa could also 'swallow people', too.";
+	mes "Giovane che suona i tamburi";
+	mes "Ma so che anche Bakonawa può 'divorare persone', troppo.";
 	next;
-	select("Huk! Then isn't it dangerous?");
+	select("Huk! Allora non è pericoloso?");
 	emotion ET_KIK;
-	mes "[Drumming Young Man]";
-	mes "Ha ha ha. There is a way to stop Bakonawa from swallowing a person.";
+	mes "Giovane che suona i tamburi";
+	mes "Ah ah ah. C'è un modo per impedire a Bakonawa di ingoiare una persona.";
 	next;
-	mes "[Drumming Young Man]";
-	mes "Yes, there is a weakness to even the worst monster that swallowed 6 moons already.";
+	mes "Giovane che suona i tamburi";
+	mes "Sì, c'è una debolezza anche per il peggior mostro che ha inghiottito già 6 lune.";
 	next;
-	select("Wow. What is it?");
-	mes "[Drumming Young Man]";
-	mes "He is sensitive to noise so when he's about to swallow the moon!!";
+	select("Wow. Cos'è?");
+	mes "Giovane che suona i tamburi";
+	mes "È sensibile al rumore, quindi quando sta per ingoiare la luna!!";
 	next;
-	mes "[Drumming Young Man]";
-	mes "That's your chance!! It doesn't matter what kind of noise!! Whether it's a caldron, symbol, drum, pot or fry pan, just keep on making noise.";
+	mes "Giovane che suona i tamburi";
+	mes "È la tua occasione!! Non importa che tipo di rumore!! Che sia un calderone, simbolo, tamburo, pentola o padella, continua a fare rumore.";
 	next;
-	mes "[Drumming Young Man]";
-	mes "Then Bakonawa will get surprised, spit out the moon and run away!";
+	mes "Giovane che suona i tamburi";
+	mes "Allora Bakonawa si sorprenderà, sputerà la luna e scapperà!";
 	next;
-	mes "[Drumming Young Man]";
-	mes "Carry a drum around with you. You'll find it handy.";
+	mes "Giovane che suona i tamburi";
+	mes "Porta con te un tamburo. Lo troverai utile.";
 	close;
 }
 
 malaya,270,59,4	script	Port Guard#ma03	570,{
 	if (malaya_hi < 10) {
 		emotion ET_PROFUSELY_SWEAT;
-		mes "[Port Guard]";
-		mes "The village is chaotic these days. Is it okay for me to be off like this?";
+		mes "Guardia del Porto";
+		mes "Il villaggio è caotico questi giorni. Va bene che io sia così?";
 		close;
 	} else if (malaya_hi < 20) {
 		emotion ET_STARE_ABOUT;
-		mes "[Port Guard]";
-		mes "The village is somewhat stable now but you should still be careful walking around at night.";
+		mes "Guardia del Porto";
+		mes "Il villaggio è un po' stabile ora ma dovresti comunque stare attento camminando la notte.";
 		close;
 	}
 	if (rand(1,3) == 2) {
-		mes "[Port Guard]";
+		mes "Guardia del Porto";
 		mes getd("$ma_name0"+rand(1,6)+"$")+" is said to escape from Buwaya alive after being captured. This person must be powerful.";
 		close;
 	}
 	emotion ET_HUK;
-	mes "[Port Guard]";
-	mes "What!! Port all clear!!";
+	mes "Guardia del Porto";
+	mes "Cosa!! Porto sgombro!!";
 	next;
-	mes "[Port Guard]";
-	mes "Huh? You're not the captain? You scared me. Shoot! Ah, right! I received an official document for travelers.";
+	mes "Guardia del Porto";
+	mes "Eh? Non sei il capitano? Mi hai spaventato. Accidenti! Ah, giusto! Ho ricevuto un documento ufficiale per i viaggiatori.";
 	next;
-	select("What document?");
-	mes "[Port Guard]";
-	mes "It says that travelers should be careful of monsters when walking in the village at night.";
+	select("Quale documento?");
+	mes "Guardia del Porto";
+	mes "Si dice che i viaggiatori dovrebbero stare attenti ai mostri quando camminano nel villaggio di notte.";
 	next;
-	mes "[Port Guard]";
-	mes "Buwaya don't come to the village often but there are cases when they snatch people in the boxes they carry at night.";
+	mes "Guardia del Porto";
+	mes "I coccodrilli non vengono spesso nel villaggio ma ci sono casi in cui rapiscono persone nelle scatole che portano di notte.";
 	next;
-	mes "[Port Guard]";
-	mes "Huh?! And it says here that a monster named Wokwok especially visits the village often at night and should be avoided.";
+	mes "Guardia del Porto";
+	mes "Eh?! E qui dice che un mostro chiamato Wokwok visita spesso il villaggio di notte e dovrebbe essere evitato.";
 	next;
-	switch(select("I see.:Is there any way to prevent them from coming?")) {
+	switch(select("Capisco:C'è un modo per impedirne l'arrivo?")) {
 	case 1:
-		mes "[Port Guard]";
-		mes "Be careful at night!";
+		mes "Guardia del Porto";
+		mes "Attento di notte!";
 		close;
 	case 2:
-		mes "[Port Guard]";
-		mes "They say you can attack Buwaya's weak point inside the box they carry if you ever get caught in one.";
+		mes "Guardia del Porto";
+		mes "Dicono che si possa attaccare il punto debole di Buwaya all'interno della scatola che portano se ci si dovesse imbattere in una.";
 		next;
-		mes "[Port Guard]";
-		mes "And you should run into the nearest building when you hear Wokwoks wings fluttering from afar.";
+		mes "Guardia del Porto";
+		mes "E dovresti correre nel vicino edificio quando senti le ali di Wokwoks sbattere da lontano.";
 		next;
 		emotion ET_SCRATCH;
-		mes "[Port Guard]";
-		mes "But if the fluttering sound is small or if you don't hear anything, let's just say you should prepare for attack and wish for luck.";
+		mes "Guardia del Porto";
+		mes "Ma se il suono sfarfallante è debole o se non sentite nulla, diciamo che dovreste semplicemente prepararsi all'attacco e augurare buona fortuna.";
 		close;
 	}
 }
 
 malaya,88,252,4	script	Little Girl#ma04	576,{
 	if (malaya_hi < 10) {
-		mes "[Little Girl]";
-		mes "I'm scared but I have to visit the fairy in the forest.";
+		mes "Bambina";
+		mes "Ho paura ma devo visitare la fata nel bosco.";
 		close;
 	} else if (malaya_hi < 20) {
-		mes "[Little Girl]";
-		mes "He he. Father said I can visit the fairy in the forest when the village calms down.";
+		mes "Bambina";
+		mes "Ah ah. Papà ha detto che posso visitare la fata nel bosco quando il villaggio si calmerà.";
 		close;
 	}
 	if (rand(1,3) == 2) {
 		set .@name$, getd("$ma_name0"+rand(1,6)+"$");
-		mes "[Little Girl]";
-		mes "A little while ago "+.@name$+" came and told me a fun story.";
+		mes "Bambina";
+		mes "Un po' fa "+.@name$+" è venuto e mi ha raccontato una storia divertente.";
 		next;
-		mes "[Little Girl]";
-		mes "'I planted a pair of pear trees in the yard.'";
-		mes "He he. Isn't it fun? "+.@name$+" seems like a fun person.";
+		mes "Bambina";
+		mes "Ho piantato una coppia di alberi di pere nel cortile.";
+		mes "Eh eh. Non è divertente? "+.@name$+" sembra una persona divertente.";
 		close;
 	}
-	mes "[Little Girl]";
-	mes "Father said I won't catch skin diseases once I'm friends with the fairy from the forest.";
+	mes "Bambina";
+	mes "Papà ha detto che non contrarrò malattie della pelle una volta che sarò amico/a con la fata del bosco.";
 	next;
-	select("What is this fairy?");
-	mes "[Little Girl]";
-	mes "Encan'to! Encan'to fairies live in big trees or rocks in the forest. There are boy fairies and girl fairies...";
+	select("Quale fata è questo?");
+	mes "Bambina";
+	mes "Incanto! Le fate incantate vivono in grandi alberi o rocce nella foresta. Ci sono fate bambine e fate ragazze...";
 	next;
-	mes "[Little Girl]";
-	mes "But boy fairies are prettier. Why is that?";
+	mes "Bambina";
+	mes "Ma le fate sono più belle. Perché è così?";
 	close;
 }
 
 malaya,219,92,6	script	Little Kid#ma05	577,{
 	if (malaya_hi < 10) {
-		mes "[Little Kid]";
-		mes "My mom told me not to play outside because its dangerous. Why?";
+		mes "Bambino piccolo";
+		mes "Mia mamma mi ha detto di non giocare fuori perché è pericoloso. Perché?";
 		close;
 	} else if (malaya_hi < 20) {
-		mes "[Little Kid]";
-		mes "My mom told me I can play but only in Port Malaya.";
+		mes "Bambino piccolo";
+		mes "Mia mamma mi ha detto che posso giocare ma solo a Port Malaya.";
 		next;
-		mes "[Little Kid]";
-		mes "He he. But I never thought of going outside of Port Malaya.";
+		mes "Bambino piccolo";
+		mes "Eh eh. Ma non avevo mai pensato di uscire da Port Malaya.";
 		close;
 	}
 	if (rand(1,3) == 2) {
-		mes "[Little Kid]";
-		mes "I heard someone took Jejelings hat in Baryo Mahiwaga.";
+		mes "Bambino piccolo";
+		mes "Ho sentito che qualcuno ha preso il cappello di Jejelings a Baryo Mahiwaga.";
 		next;
-		mes "[Little Kid]";
-		mes "Why would someone steal a monster's hat? "+getd("$ma_name0"+rand(1,6)+"$")+" must be desperate.";
+		mes "Bambino piccolo";
+		mes "Perché qualcuno ruberebbe il cappello di un mostro? "+getd("$ma_name0$"+rand(1,6)+"$")+" deve essere disperato.";
 		next;
-		mes "[Little Kid]";
-		mes "Oh wait! This was suppose to be a secret. Shsh! Please pretend you didn't hear me.";
+		mes "Bambino piccolo";
+		mes "Oh aspetta! Questo doveva essere un segreto. Shh! Per favore fai finta di non avermi sentito.";
 		close;
 	}
-	mes "[Little Kid]";
-	mes "I think someone is stealing all the hats in the village.";
+	mes "Bambino piccolo";
+	mes "Penso che qualcuno stia rubando tutti i cappelli del villaggio.";
 	next;
-	mes "[Little Kid]";
-	mes "The hat my mom washed yesterday disappeared. Our neighbor's hat also disappeared a few days ago.";
+	mes "Bambino piccolo";
+	mes "Il cappello che mia mamma ha lavato ieri è scomparso. Anche il cappello del nostro vicino è sparito qualche giorno fa.";
 	next;
-	mes "[Little Kid]";
-	mes "Hmm... do you think Jejeling took it?";
+	mes "Bambino piccolo";
+	mes "Mmm... pensi che Jejeling l'abbia preso?";
 	next;
-	mes "[Little Kid]";
-	mes "I visited a friend in Baryo Mahiwaga and he said he saw Jejeling wearing the missing hat...";
+	mes "Bambino piccolo";
+	mes "Ho visitato un amico a Baryo Mahiwaga e mi ha detto che ha visto Jejeling indossare il cappello smarrito...";
 	close;
 }
 
 malaya,363,283,4	script	Local#ma06	582,{
 	if (malaya_hi < 10) {
-		mes "[Local]";
-		mes "Hmm... is it time to be careful of the witches' curse?";
+		mes "[Locale]";
+		mes "Hmm... è ora di fare attenzione alla maledizione delle streghe?";
 		next;
-		mes "[Local]";
-		mes "Beware of Mongkukurums needle, foreigner.";
+		mes "[Locale]";
+		mes "Attenzione all'ago di Mongkukurum, straniero.";
 		close;
 	} else if (malaya_hi < 20) {
-		mes "[Local]";
-		mes "Welcome to Port Malaya, foreigner..";
+		mes "[Locale]";
+		mes "Benvenuto a Port Malaya, straniero..";
 		next;
-		mes "[Local]";
-		mes "The village is chaotic these days. If you see someone with red eyes, try not to stare at their eyes.";
+		mes "[Locale]";
+		mes "Il villaggio è caotico in questi giorni. Se vedi qualcuno con gli occhi rossi, cerca di non fissare i suoi occhi.";
 		close;
 	}
 	set .@name$, getd("$ma_name0"+rand(1,6)+"$");
 	switch(rand(1,6)) {
 	case 1:
-		mes "[Local]";
-		mes "Be careful walking around the village at night. "+.@name$+" was taken down by Wokwok.";
+		mes "[Locale]";
+		mes "Stai attento camminando per il villaggio di notte. "+.@name$+" fu rimosso da Wokwok.";
 		close;
 	case 2:
-		mes "[Local]";
+		mes "[Locale]";
 		mes .@name$+" is said to have successfully tamed a Tikbalang. This person must be courageous. Wonder if I'll get to see this tamed Tikbalang?";
 		close;
 	case 3:
-		mes "[Local]";
-		mes "Have you ever seen Bongisungisu? I heard "+.@name$+" is hunting down Bongisungisus.";
+		mes "[Locale]";
+		mes "Hai mai visto Bongisungisu? Ho sentito "+.@name$+" cacciare Bongisungisus.";
 		close;
 	case 4:
-		mes "[Local]";
-		mes "If you plan to go out of the village, be careful of Tiucknuc. "+.@name$+" is said to be tricked by Tiucknuc and had to go to the hospital.";
+		mes "[Locale]";
+		mes "Se hai intenzione di uscire dal villaggio, fai attenzione a Tiucknuc. "+.@name$+" si dice che sia stato ingannato da Tiucknuc e abbia dovuto andare in ospedale.";
 		close;
 	case 5:
 	case 6:
 		break;
 	}
-	mes "[Local]";
-	mes "The village is chaotic these days. Looks like Mongkukurum is back in the village.";
+	mes "[Locale]";
+	mes "Il villaggio è caotico questi giorni. Sembra che Mongkukurum sia tornato nel villaggio.";
 	next;
 	select("Mongkukurum?");
-	mes "[Local]";
-	mes "A monster that is also called witch. Looks like a person and also wears clothes.";
+	mes "[Locale]";
+	mes "Un mostro che è anche chiamato strega. Assomiglia a una persona e indossa anche vestiti.";
 	next;
-	mes "[Local]";
-	mes "Mongkukurum makes a doll out of the people it sees and curses it with needles.";
+	mes "[Locale]";
+	mes "Mongkukurum fa una bambola con le persone che vede e la maledice con aghi.";
 	next;
-	select("Is there a way to recognize this monster?");
-	mes "[Local]";
-	mes "There is one way. All Mongkukurum have red eyes.";
+	select("C'è un modo per riconoscere questo mostro?");
+	mes "[Locale]";
+	mes "C'è un modo. Tutti i Mongkukurum hanno occhi rossi.";
 	next;
-	mes "[Local]";
-	mes "You can recognize them by their eyes but! You must remember one thing.";
+	mes "[Locale]";
+	mes "Li puoi riconoscere dai loro occhi ma! Devi ricordare una cosa.";
 	next;
-	mes "[Local]";
-	mes "You will be captivated by Mongkukurum if you stare at their eyes too long.";
+	mes "[Locale]";
+	mes "Sarai catturato da Mongkukurum se fissi i loro occhi troppo a lungo.";
 	next;
-	mes "[Local]";
-	mes "Never ever stare into their eyes for too long.";
+	mes "[Locale]";
+	mes "Non guardare mai troppo a lungo nei loro occhi.";
 	close;
 }
 
 malaya,41,127,6	script	Old Man #ma07	574,{
 	if (malaya_hi < 10) {
-		mes "[Old Man]";
-		mes "Foreigners are not welcomed that much when our village is chaotic like these days.";
+		mes "Vecchio uomo";
+		mes "Gli stranieri non sono benvenuti quando il nostro villaggio è caotico come questi giorni.";
 		close;
 	} else if (malaya_hi < 20) {
-		mes "[Old Man]";
-		mes "You are out of luck visiting the village at a time like this and not being welcomed.";
+		mes "Vecchio uomo";
+		mes "Sei fuori fortuna a visitare il villaggio in un momento come questo e non essere accolto.";
 		close;
 	}
 	if (rand(1,3) == 2) {
-		mes "[Old Man]";
+		mes "Vecchio uomo";
 		mes getd("$ma_name0"+rand(1,6)+"$")+" is said to throw out Jellopy in this village.";
 		next;
-		mes "[Old Man]";
-		mes "Tsk, tsk... Must be a person that isn't worthy of a Jellopy.";
+		mes "Vecchio uomo";
+		mes "Tsk, tsk... Deve essere una persona che non è degna di un Jellopy.";
 		close;
 	}
-	mes "[Old Man]";
-	mes "You must also look out to see if Bangungot lives in a tree you are about to cut down.";
+	mes "Vecchio uomo";
+	mes "Devi anche guardare se Bangungot vive in un albero che stai per abbattere.";
 	next;
-	mes "[Old Man]";
-	mes "Because strange things happen if logs from trees that Bangungot lived in are used as building pillars.";
+	mes "Vecchio uomo";
+	mes "Perché succedono cose strane se vengono usati come pilastri da costruzione i registri degli alberi in cui viveva Bangungot.";
 	next;
-	select("What happens?");
-	mes "[Old Man]";
-	mes "Well, for a Bangungot, it means losing its home so they get vengeful.";
+	select("Cosa succede?");
+	mes "Vecchio uomo";
+	mes "Beh, per un Bangungot, significa perdere la propria casa e diventare vendicativi.";
 	next;
-	mes "[Old Man]";
-	mes "When you try to sleep near the pillar, it will keep awake by playing pranks at first.";
+	mes "Vecchio uomo";
+	mes "Quando provi a dormire vicino al pilastro, rimarrà sveglio facendo scherzi all'inizio.";
 	next;
-	mes "[Old Man]";
-	mes "But as time goes by and their vengeance grows, they sit on top of you until you suffocate.";
+	mes "Vecchio uomo";
+	mes "Ma col passare del tempo e con la crescita della loro vendetta, si siedono su di te finché non ti soffochi.";
 	next;
-	select("Oh, gosh...");
-	mes "[Old Man]";
-	mes "Ha ha ha. There are no Bangungots in normal pillars, so don't lose sleep over it.";
+	select("Oh, cavolo...");
+	mes "Vecchio uomo";
+	mes "Ah ah ah. Non ci sono Bangungots nei pilastri normali, quindi non perderti il sonno per questo.";
 	close;
 }
 
 malaya,63,185,4	script	Woman#ma08	583,{
 	if (malaya_hi < 10) {
-		mes "[Woman]";
-		mes "I don't have anything to share with you.";
+		mes "[Donna]";
+		mes "Non ho nulla da condividere con te.";
 		close;
 	} else if (malaya_hi < 20) {
-		mes "[Woman]";
-		mes "Im worried about the children. I hope they aren't terrified from whats going on in the village.";
+		mes "[Donna]";
+		mes "Sono preoccupato per i bambini. Spero che non siano terrorizzati da quello che sta succedendo nel villaggio.";
 		close;
 	}
 	if (rand(1,3) == 2) {
 		set .@name$, getd("$ma_name0"+rand(1,6)+"$");
 		set .@rand, rand(1,10);
 		if (.@rand < 5) {
-			mes "[Woman]";
-			mes "I like fun stories. Not so long ago, "+.@name$+" came and told me a funny story.";
+			mes "[Donna]";
+			mes "Mi piacciono le storie divertenti. Non molto tempo fa, "+.@name$+" mi è venuto e mi ha raccontato una storia divertente.";
 			next;
 		}
 		switch(.@rand) {
 		case 1:
-			mes "[Woman]";
-			mes "'My aunt stepped on an ant.'";
+			mes "[Donna]";
+			mes "Mia zia ha calpestato un formicaio.";
 			next;
 			break;
 		case 2:
-			mes "[Woman]";
-			mes "'You eat chili on a chilly day.'";
+			mes "[Donna]";
+			mes "Mangiate peperoncino in una giornata fresca.";
 			next;
 			break;
 		case 3:
-			mes "[Woman]";
-			mes "'Why are you putting flour on that flower?'";
+			mes "[Donna]";
+			mes "Perché stai mettendo farina su quel fiore?";
 			next;
 			break;
 		case 4:
-			mes "[Woman]";
-			mes "At the Tool Store, 'Ill buy the needle and thread! You buy the hay to lose the needle in.'";
+			mes "[Donna]";
+			mes "Al negozio di attrezzi, 'Io compro l'ago e il filo! Tu compri il fieno per perdere l'ago.'";
 			next;
-			mes "[Woman]";
+			mes "[Donna]";
 			mes .@name$+" said that and was kicked out of the Tool Store.";
 			next;
 			break;
 		case 5:
-			mes "[Woman]";
-			mes "A Kafra Employee I'm friends with told me a story about a customer.";
+			mes "[Donna]";
+			mes "Un amico di Kafra Employee mi ha raccontato una storia su un cliente.";
 			next;
-			mes "[Woman]";
-			mes "'Kafra, the wise never marry and when they marry, they become otherwise.'";
+			mes "[Donna]";
+			mes "Kafra, gli saggi non si sposano mai e quando lo fanno, diventano diversi.";
 			next;
-			mes "[Woman]";
-			mes "He he... I do like funny stories but a bit difficult for my taste.";
+			mes "[Donna]";
+			mes "Eh eh... Mi piacciono le storie divertenti ma un po' difficili per i miei gusti.";
 			close;
 		default:
-			mes "[Woman]";
-			mes "I like fun stories. Oh by the way! "+.@name$+", love is photogenic. Don't you agree?";
+			mes "[Donna]";
+			mes "Mi piacciono le storie divertenti. Oh a proposito! "+.@name$+"l'amore è fotogenico. Non sei d'accordo?";
 			next;
-			mes "[Woman]";
-			mes "It needs darkness to develop.";
+			mes "[Donna]";
+			mes "Ha bisogno di oscurità per svilupparsi.";
 			next;
 		}
-		mes "[Woman]";
-		mes "He he. Isn't it fun?";
+		mes "[Donna]";
+		mes "Eh eh. Non è divertente?";
 		close;
 	}
-	mes "[Woman]";
-	mes "If you hear a baby crying from the forest outside of the village, never go near it.";
+	mes "[Donna]";
+	mes "Se senti un bambino che piange dalla foresta fuori dal villaggio, non avvicinarti mai.";
 	next;
-	select("Why?");
-	mes "[Woman]";
-	mes "There is a monster named Tiucknuc that roams around outside of the village and cries after transforming himself into a baby.";
+	select("Perché?");
+	mes "[Donna]";
+	mes "C'è un mostro chiamato Tiucknuc che vaga fuori dal villaggio e piange dopo essersi trasformato in un bambino.";
 	next;
-	mes "[Woman]";
-	mes "But when kind travelers pick up the baby, it turns back into its original form and attacks.";
+	mes "[Donna]";
+	mes "Ma quando i viaggiatori gentili prendono il bambino, torna alla sua forma originale e attacca.";
 	next;
-	select("Sounds like a sneaky monster.");
-	mes "[Woman]";
-	mes "Yes, this monster is bad to trick the kindness of travelers but...";
+	select("Sembra un mostro subdolo.");
+	mes "[Donna]";
+	mes "Sì, questo mostro è cattivo a ingannare la gentilezza dei viaggiatori ma...";
 	next;
-	mes "[Woman]";
-	mes "There is rumor that the monster came from the soul of a baby that never been born. So sad.";
+	mes "[Donna]";
+	mes "C'è voce che il mostro sia venuto dall'anima di un bambino che non è mai nato. Così triste.";
 	close;
 }
 
@@ -697,28 +697,28 @@ function	script	F_Malaya_Jeepney	{
 	}
 
 	if (malaya_hi < 10) {
-		mes "[Jeepney Driver]";
+		mes "Autista di Jeepney";
 		mes getarg(2);
 		close;
 	} else if ((malaya_hi >= 10) && (malaya_hi < 20)) {
-		mes "[Jeepney Driver]";
+		mes "Autista di Jeepney";
 		mes getarg(3);
 		close;
 	} else {
-		mes "[Jeepney Driver]";
+		mes "Autista di Jeepney";
 		mes getarg(4);
 		next;
 	}
-	switch(select("Board [Passenger " + getmapusers(.@mapName$) + "/" + .@passengers +"]:Jeepney?:Are there any other Jeepneys?:Ah... Yes...")) {
+	switch(select("Bordo [Passeggero " + getmapusers(.@mapName$) + "/" + .@passengers +"]:Jeepney?:Ci sono altri jeepney?:Ah... Sì...")) {
 	case 1:
 		if (getmapusers(.@mapName$) >= .@passengers) {
-			mes "[Jeepney Driver]";
-			mes "I'm afraid the Jeepney is full.";
-			mes "I'm sorry but how about some other Jeepney?";
+			mes "Autista di Jeepney";
+			mes "Temo che il jeepney sia pieno.";
+			mes "Mi dispiace ma che ne dici di un altro Jeepney?";
 			close;
 		} else {
-			mes "[Jeepney Driver]";
-			mes "Have a nice day.";
+			mes "Autista di Jeepney";
+			mes "Buona giornata.";
 			close2;
 			warp .@mapName$,29,24;
 			end;
@@ -726,7 +726,7 @@ function	script	F_Malaya_Jeepney	{
 	case 2:
 		// iterate through all the jeepney information for this specific NPC
 		for (.@i = 0; .@i < getarraysize(.@msgJeepneyInfo$); .@i++) {
-			mes "[Jeepney Driver]";
+			mes "Autista di Jeepney";
 			mes getd(".@msgJeepneyInfo$[" + .@i + "]");
 
 			if (.@i < (getarraysize(.@msgJeepneyInfo$) - 1)) {
@@ -735,16 +735,16 @@ function	script	F_Malaya_Jeepney	{
 		}
 		close;
 	case 3:
-		mes "[Jeepney Driver]";
-		mes "Oh! Other Jeepneys are in operation, of course.";
+		mes "Autista di Jeepney";
+		mes "Oh! Ci sono altri jeepney in funzione, ovviamente.";
 		next;
-		mes "[Jeepney Driver]";
-		mes "In Port Malaya there are 12, 30 and 60 passenger Jeepneys with 3 each operating.";
+		mes "Autista di Jeepney";
+		mes "A Port Malaya ci sono 12, 30 e 60 Jeepney passeggeri con 3 ciascuno in funzione.";
 		next;
-		mes "[Jeepney Driver]";
-		mes "Would you like to know the location of other cars?";
+		mes "Autista di Jeepney";
+		mes "Vorresti sapere la posizione di altre auto?";
 		next;
-		switch (select("I'd like to know where the 12 passenger car is.:I'd like to know where the 30 passenger car is.:I'd like to know where the 60 passenger car is.")) {
+		switch (select("Vorrei sapere dov'è l'auto passeggeri numero 12.:Vorrei sapere dov'è l'auto per 30 passeggeri.:Vorrei sapere dov'è l'autobus per 60 passeggeri.")) {
 		case 1:
 			viewpoint 1, 237, 240, 1, 0xF7E009;
 			viewpoint 1, 67 , 44 , 2, 0xF7E009;
@@ -764,13 +764,13 @@ function	script	F_Malaya_Jeepney	{
 			set .@zif_in, 60;
 			break;
 		}
-		mes "[Jeepney Driver]";
+		mes "Autista di Jeepney";
 		mes .@zif_in+" passenger Jeepney's location has been marked on your map.";
 		next;
 		break;
 	}
-	mes "[Jeepney Driver]";
-	mes "Have a nice trip.";
+	mes "Autista di Jeepney";
+	mes "Buon viaggio.";
 	close;
 }
 

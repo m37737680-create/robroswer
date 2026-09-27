@@ -15,81 +15,81 @@
 
 //Entrance Flags
 yuno,48,101,6	script	Notice	722,{
-	mes "^FF0000[ Treasure Hunter Guild House ]^000000";
+	mes "^FF0000[ Casa della Gilda dei Cacciatori di Tesori ]^000000";
 	mes " ";
-	mes "Welcome to the Treasure Hunter's Guild House.";
-	mes "Feel free to drop in and look around";
-	mes "and feel free to become a member if you wish.";
+	mes "Benvenuti alla Casa della Gilda dei Cercatori di Tesori.";
+	mes "Sentiti libero di passare e dare un'occhiata";
+	mes "e sentiti libero di diventare un membro se lo desideri.";
 	mes " ";
-	mes "For membership applications please talk to Keegan";
-	mes "up the stairs and down the hall.";
+	mes "Per le domande di iscrizione parla con Keegan";
+	mes "su le scale e giù nel corridoio.";
 	close;
 }
 //Saver Girl;
 yuno_in01,32,178,3	script	Ahlma	94,{
 	mes "[Ahlma]";
 	if (Event_THQS == 0) goto N_Member;
-	mes "Welcome to The Treasure Hunter Guild.";
-	mes "How may I help you?";
+	mes "Benvenuti alla Gilda dei Cercatori di Tesori.";
+	mes "Come posso aiutarla?";
 	next;
-	menu "Save",-,"Quit",N_Quit;
+	menu "Salva",-,"Smetti",N_Quit;
 	mes "[Ahlma]";
-	mes "Ok, saved. Thank you ~ See you soon~";
+	mes "Va bene, salvato. Grazie ~ Ci vediamo presto~";
 	savepoint "yuno_in01",34,176;
 	close;
 N_Quit:
 	mes "[Ahlma]";
-	mes "Well if you think you are safe, good on you.";
+	mes "Beh se pensi di essere al sicuro, complimenti.";
 	close;
 N_Member:
-	mes "Sorry, members only.";
+	mes "Solo per membri.";
 	close;
 }
 //Retired Smile mask girl;
 yuno_in01,33,162,3	script	Smile Helper	92,{
-	mes "[Smile Gal]";
-	mes "Oh man...I am so sick of";
-	mes "trading Mr. Smile masks for crap.";
+	mes "[Ragazza Sorridente]";
+	mes "Oh cavolo...sono così stufo di";
+	mes "scambiare le maschere di Mr. Smile con spazzatura.";
 	mes " ";
-	mes "You ask me for one and you'll find yourself 10 pounds lighter!";
+	mes "Mi chiedi di uno e ti ritroverai più leggero di dieci libbre!";
 	close;
 }
 //Usless Female Assasin;
 yuno_in01,22,162,6	script	Female Assasin	725,{
 	mes "[Sharlet]";
 	if (Event_THQS > 0) goto N_Member;
-	mes "Umm sorry I'm not gonna waste my time talking to you if you aren't even a member!";
+	mes "Scusa, non sprecherò il mio tempo a parlare con te se non sei nemmeno un membro!";
 	close;
 N_Member:
 	set @TEMP,rand(1,2);
 	if (@TEMP == 1) goto N_Chat1;
 	if (@TEMP == 2) goto N_Chat2;
-	mes "How are you reading this???";
-	mes "Well unless you are reading the code :)";
+	mes "Come stai leggendo questo???";
+	mes "Beh a meno che tu non stia leggendo il codice :)";
 	close;
 N_Chat1:
-	mes "Ahh welcome fellow Treasure Hunter "+strcharinfo(0)+".";
-	mes "Did you hear about that brave man that went into Glast Heim alone?! He must be crazy.";
+	mes "Ah benvenuto collega Cacciatore di Tesori "+strcharinfo(0)+".";
+	mes "Hai sentito del coraggioso uomo che è entrato da solo a Glast Heim?! Deve essere pazzo.";
 	close;
 N_Chat2:
-	mes ""+strcharinfo(0)+" don't you have something better you could be doing? Like a quest.";
+	mes ""+strcharinfo(0)+" Non hai qualcosa di meglio che potresti fare? Tipo una missione.";
 	close;
 }
 //another useless member
 yuno_in01,25,162,6	script	Female Wizard	123,{
 	mes "[Sasha]";
 	if (Event_THQS > 0) goto N_Member;
-	mes "Umm sorry I'm not gonna waste my time talking to you if you aren't even a member!";
+	mes "Scusa, non sprecherò il mio tempo a parlare con te se non sei nemmeno un membro!";
 	close;
 N_Member:
 	set @TEMP,rand(2);
 	if (@TEMP == 1) goto N_Chat;
-	mes "Ahh welcome fellow Treasure Hunter "+strcharinfo(0)+".";
-	mes "Did you hear about that goat man running around in the trees?";
+	mes "Ah benvenuto collega Cacciatore di Tesori "+strcharinfo(0)+".";
+	mes "Hai sentito parlare di quell'uomo capra che correva tra gli alberi?";
 	mes " ";
-	mes "Apparently his name is Baphomet and he has been running around the Forest Maze out side of Prontera for quite some time now.";
+	mes "A quanto pare il suo nome è Baphomet ed è che vaga nel Labirinto della Foresta fuori da Prontera da un po' di tempo ormai.";
 	close;
 N_Chat:
-	mes ""+strcharinfo(0)+" don't you have something better you could be doing? Like a quest.";
+	mes ""+strcharinfo(0)+" Non hai qualcosa di meglio che potresti fare? Tipo una missione.";
 	close;
 }

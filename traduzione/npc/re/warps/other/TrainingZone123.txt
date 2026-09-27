@@ -8,29 +8,29 @@
 //============================================================
 
 prontera,246,62,3	script	Training Instructor#prontera_in	8W_SOLDIER,{
-	mes "[Training Instructor]";
-	mes "The royal court has set up a training ground for adventurers who wish to test their skills. If you wish to test your skills under various conditions, we will send you to the training ground.";
+	mes "I formatore";
+	mes "La corte reale ha allestito un campo di addestramento per avventurieri che desiderano mettere alla prova le loro abilitÃ . Se desiderate testare le vostre capacitÃ  in varie condizioni, vi invieremo al campo di addestramento.";
 	next;
-	switch( select( "¢ºEnter Basic Training Ground", "¢ºEnter 1/10 Training Ground", "¢ºEnter 1/100 Training Ground", "¢ºCancel" ) ) {
+	switch( select( "Entra nel campo di addestramento base", "Â¢ÂºEntra nel Campo di addestramento 1/10", "Â¢ÂºEntra nel Campo di Addestramento 1/100", "Â¢ÂºAnnulla" ) ) {
 	case 1:
-		mes "[Training Instructor]";
-		mes "I'll send you to the Basic Training Ground.";
+		mes "I formatore";
+		mes "Ti manderÃ² al Campo di Addestramento Base.";
 		close2;
 		.@x = rand(109,110);
 		.@y = rand(93,94);
 		warp "tra_fild01",.@x,.@y;
 		break;
 	case 2:
-		mes "[Training Instructor]";
-		mes "I'll send you to the 1/10 Training Ground.";
+		mes "I formatore";
+		mes "Ti manderÃ² al Campo di Addestramento 1/10.";
 		close2;
 		.@x = rand(109,110);
 		.@y = rand(93,94);
 		warp "tra_fild02",109,94;
 		break;
 	case 3:
-		mes "[Training Instructor]";
-		mes "I'll send you to the 1/100 Training Ground.";
+		mes "I formatore";
+		mes "Ti manderÃ² al Campo di Addestramento 1/100.";
 		close2;
 		.@x = rand(109,110);
 		.@y = rand(93,94);
@@ -45,36 +45,36 @@ prontera,246,62,3	script	Training Instructor#prontera_in	8W_SOLDIER,{
 
 // Warps
 tra_fild01,204,117,2	script	Training Ground Manager#fild01_1	8W_SOLDIER,{
-	mes "[Training Ground Manager]";
-	mes "Need to move to a different area within the training ground? Please select the location you'd like to move to.";
+	mes "[Manager del Campo di Addestramento]";
+	mes "Vuoi spostarti in un'altra zona all'interno del campo di addestramento? Seleziona la posizione a cui desideri trasferirti.";
 	next;
 	switch( atoi( charat(strnpcinfo(2), 7) ) ) {
 	case 1:
-		.@menu$[0] = "¢º Central Area";
+		.@menu$[0] = "Â¢Âº Central Area";
 		.@menu$[1] = "";
-		.@menu$[2] = "¢º 9 O'Clock Area";
-		.@menu$[3] = "¢º 6 O'Clock Area";
+		.@menu$[2] = "Â¢Âº 9 O'Clock Area";
+		.@menu$[3] = "Â¢Âº 6 O'Clock Area";
 		break;
 	case 2:
-		.@menu$[0] = "¢º Central Area";
-		.@menu$[1] = "¢º 3 O'Clock Area";
+		.@menu$[0] = "Â¢Âº Central Area";
+		.@menu$[1] = "Â¢Âº 3 O'Clock Area";
 		.@menu$[2] = "";
-		.@menu$[3] = "¢º 6 O'Clock Area";
+		.@menu$[3] = "Â¢Âº 6 O'Clock Area";
 		break;
 	case 3:
-		.@menu$[0] = "¢º Central area";
-		.@menu$[1] = "¢º 3 O'Clock Area";
-		.@menu$[2] = "¢º 9 O'Clock Area";
+		.@menu$[0] = "Â¢Âº Central area";
+		.@menu$[1] = "Â¢Âº 3 O'Clock Area";
+		.@menu$[2] = "Â¢Âº 9 O'Clock Area";
 		.@menu$[3] = "";
 		break;
 	case 4:
 		.@menu$[0] = "";
-		.@menu$[1] = "¢º 3 O'Clock Area";
-		.@menu$[2] = "¢º 9 O'Clock Area";
-		.@menu$[3] = "¢º 6 O'Clock Area";
+		.@menu$[1] = "Â¢Âº 3 O'Clock Area";
+		.@menu$[2] = "Â¢Âº 9 O'Clock Area";
+		.@menu$[3] = "Â¢Âº 6 O'Clock Area";
 		break;
 	}
-	switch( select( .@menu$[0], .@menu$[1], .@menu$[2], .@menu$[3], "¢º To Prontera", "¢º Cancel" ) ) {
+	switch( select( .@menu$[0], .@menu$[1], .@menu$[2], .@menu$[3], "A Prontera", "Â¢Âº Annulla" ) ) {
 	case 1:
 		warp strcharinfo(3),109,94;
 		break;
@@ -115,21 +115,21 @@ OnTouch:
 	switch( atoi( charat(strnpcinfo(1), 9) ) ) {
 	case 1:
 		.@menu$[0] = "";
-		.@menu$[1] = "¢ºEnter 1/10 Training Ground";
-		.@menu$[2] = "¢ºEnter 1/100 Training Ground";
+		.@menu$[1] = "Â¢ÂºEnter 1/10 Training Ground";
+		.@menu$[2] = "Â¢ÂºEnter 1/100 Training Ground";
 		break;
 	case 2:
-		.@menu$[0] = "¢ºEnter Basic Training Grounds";
+		.@menu$[0] = "Â¢ÂºEnter Basic Training Grounds";
 		.@menu$[1] = "";
-		.@menu$[2] = "¢ºEnter 1/100 Training Grounds";
+		.@menu$[2] = "Â¢ÂºEnter 1/100 Training Grounds";
 		break;
 	case 3:
-		.@menu$[0] = "¢ºEnter Basic Training Grounds";
-		.@menu$[1] = "¢ºEnter 1/10 Training Grounds";
+		.@menu$[0] = "Â¢ÂºEnter Basic Training Grounds";
+		.@menu$[1] = "Â¢ÂºEnter 1/10 Training Grounds";
 		.@menu$[2] = "";
 		break;
 	}
-	switch( select( "¢ºTo Prontera", .@menu$[0], .@menu$[1], .@menu$[2], "¢ºCancel" ) ) {
+	switch( select( "A Prontera", .@menu$[0], .@menu$[1], .@menu$[2], "Â¢ÂºAnnulla" ) ) {
 	case 1:
 		warp "prontera",246,60;
 		break;

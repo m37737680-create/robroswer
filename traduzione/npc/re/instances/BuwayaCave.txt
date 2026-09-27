@@ -19,9 +19,9 @@
 ma_fild02,312,317,5	script	Guard#buwaya_cave	570,{
 	if (BaseLevel < 130) {
 		mes "[Guard]";
-		mes "People under ^ff0000level 130^000000";
-		mes "cannot enter this place.";
-		mes "This place is dangerous. Please go back.";
+		mes "Persone sotto il livello ^ff0000level 130^000000";
+		mes "non posso entrare in questo posto.";
+		mes "Questo posto è pericoloso. Per favore torna indietro.";
 		close;
 	}
 
@@ -30,35 +30,35 @@ ma_fild02,312,317,5	script	Guard#buwaya_cave	570,{
 
 	if (!.@party_id) {
 		mes "[Guard]";
-		mes "Buwaya is dangerous.";
-		mes "Please come back after you form a";
-		mes "team with other people.";
+		mes "Buwaya è pericoloso.";
+		mes "Ti prego di tornare dopo che avrai formato un";
+		mes "squadra con altre persone.";
 		close;
 	}
 	if (is_party_leader() == true) {
 		mes "[Guard]";
-		mes "This place is dangerous. Please go back.";
-		mes "If you dont have any business here, please go back.";
+		mes "Questo posto è pericoloso. Per favore torna indietro.";
+		mes "Se non hai affari qui, per favore torna indietro.";
 		next;
 		while(1) {
-			switch(select("Why is it so dangerous?:I'm here to hunt down Buwaya.:End conversation.")) {
+			switch(select("Perché è così pericoloso?:Sono qui per cacciare Buwaya.:Termina conversazione.")) {
 			case 1:
 				mes "[Guard]";
-				mes "Recently, there has been a case";
-				mes "where villagers have disappeared.";
-				mes "After investigating the tracks, ";
-				mes "we found out the giant monster Buwaya";
-				mes "was responsible.";
+				mes "Recentemente, c'è stato un caso";
+				mes "dove sono scomparsi i villaggi.";
+				mes "Dopo aver indagato sui sentieri, ";
+				mes "abbiamo scoperto il gigante mostro Buwaya";
+				mes "era responsabile.";
 				next;
 				mes "[Guard]";
-				mes "Soldiers and mercenaries have been dispatched to ";
-				mes "hunt down Buwaya, but were never";
-				mes "completely successful.";
+				mes "Soldati e mercenari sono stati inviati a ";
+				mes "cacciare Buwaya, ma non eravamo mai";
+				mes "completamente riuscito.";
 				next;
 				mes "[Guard]";
-				mes "Buwaya is still kidnapping";
-				mes "the villagers to this day.";
-				mes "Please gather some people to get rid of Buwaya.";
+				mes "Buwaya sta ancora rapendo";
+				mes "i villaggi fino ai giorni nostri.";
+				mes "Raccogliete delle persone per sbarazzarsi di Buwaya.";
 				next;
 				break;
 			case 2:
@@ -67,9 +67,9 @@ ma_fild02,312,317,5	script	Guard#buwaya_cave	570,{
 					// fall through
 				} else if (.@playtime == 0 || .@playtime == 1) {
 					mes "[Guard]";
-					mes "Buwaya is still hiding.";
-					mes "Even if you enter now, Buwaya will not come out. ";
-					mes "Please come back later.";
+					mes "Buwaya si sta ancora nascondendo.";
+					mes "Anche se entri ora, Buwaya non uscirà. ";
+					mes "Ritorna più tardi.";
 					close;
 				} else {
 					erasequest 4229;
@@ -77,26 +77,26 @@ ma_fild02,312,317,5	script	Guard#buwaya_cave	570,{
 				}
 				if (instance_create(.@md_name$) < 0) {
 					mes "[Guard]";
-					mes "Party name is... "+getpartyname(.@party_id)+".";
-					mes "Party leader is... "+strcharinfo(0);
-					mes "^0000ff"+.@md_name$+"^000000 cannot be opened now.";
-					mes "Please try a moment later.";
+					mes "Il nome della festa è... "+getpartyname(.@party_id)+".";
+					mes "Il capo del partito è... "+strcharinfo(0);
+					mes "^0000ff"+.@md_name$+"^000000 non può essere aperto ora.";
+					mes "Riprova tra un momento.";
 					close;
 				}
 				mes "[Guard]";
-				mes "I will open up the tunnel to ^0000ff"+.@md_name$+"^000000.";
-				mes "I wish you good luck.";
+				mes "Aprirò il tunnel fino a ^0000ff"+.@md_name$+"^000000.";
+				mes "Ti auguro buona fortuna.";
 				close;
 			case 3:
 				mes "[Guard]";
-				mes "This place is dangerous. You cannot enter.";
+				mes "Questo posto è pericoloso. Non puoi entrare.";
 				close;
 			}
 		}
 	} else {
 		mes "[Guard]";
-		mes "Let me talk with the party leader.";
-		mes "Please call forth the leader.";
+		mes "Vorrei parlare con il capo del partito.";
+		mes "Chiama il leader.";
 		close;
 	}
 }
@@ -106,9 +106,9 @@ ma_fild02,315,323,0	script	Cave Entrance#buwaya	45,2,2,{
 OnTouch:
 	if (BaseLevel < 130) {
 		mes "[Guard]";
-		mes "People under ^ff0000level 130^000000";
-		mes "cannot enter this place.";
-		mes "This place is dangerous. Please go back.";
+		mes "Persone sotto il livello ^ff0000level 130^000000";
+		mes "non posso entrare in questo posto.";
+		mes "Questo posto è pericoloso. Per favore torna indietro.";
 		close;
 	}
 	set .@playtime, checkquest(4229,PLAYTIME);
@@ -116,26 +116,26 @@ OnTouch:
 		// fall through
 	} else if (.@playtime == 0 || .@playtime == 1) {
 		mes "[Guard]";
-		mes "Buwaya is still hiding.";
-		mes "Even if you enter now, Buwaya will not come out.";
-		mes "Please come back later.";
+		mes "Buwaya si sta ancora nascondendo.";
+		mes "Anche se entri ora, Buwaya non uscirà.";
+		mes "Ritorna più tardi.";
 		close;
 	} else {
 		erasequest 4229;
 		// fall through
 	}
-	switch(select("Enter.:Turn back.")) {
+	switch(select("Entra.:Torna indietro.")) {
 	case 1:
 		switch(instance_enter("Buwaya Cave")) {
 		case IE_OTHER:
 			mes "[Guard]";
-			mes "Oh, now is not a good time.";
-			mes "Please try again a moment later.";
+			mes "Oh, ora non è un buon momento.";
+			mes "Riprova tra un momento.";
 			close;
 		case IE_NOINSTANCE:
 		case IE_NOMEMBER:
 			mes "[Guard]";
-			mes "This place is dangerous. Please do not enter.";
+			mes "Questo posto è pericoloso. Per favore non entrare.";
 			close;
 		case IE_OK:
 			mapannounce "ma_fild02",getpartyname(getcharid(1))+" party's "+strcharinfo(0)+" member began hunting Buwaya in Buwaya Cave.",bc_map,"0x00ff99"; //FW_NORMAL 12 0 0
@@ -143,13 +143,13 @@ OnTouch:
 			//warp "1@ma_c",35,57;
 			end;
 		default:
-			mes "- Could not enter due to an unidentified force. -";
+			mes "Non è stato possibile entrare a causa di una forza non identificata.";
 			close;
 		}
 	case 2:
 		mes "[Guard]";
-		mes "You must value your life.";
-		mes "It is better to think carefully before you act.";
+		mes "Devi valorizzare la tua vita.";
+		mes "È meglio pensare attentamente prima di agire.";
 		close;
 	}
 }
@@ -179,25 +179,25 @@ OnTouch:
 }
 
 1@ma_c,29,110,5	script	Kidnapped People#1	575,{
-	mes "[Kidnapped Residents]";
-	mes "Buwaya was running around,";
-	mes "and new people got caught.";
-	mes "We will be stuck in here for the rest of our lives.";
+	mes "Residenti rapiti";
+	mes "Buwaya correva dappertutto";
+	mes "e nuove persone sono state catturate.";
+	mes "Saremo bloccati qui per il resto delle nostre vite.";
 	next;
-	switch(select("Get me outta here!!:Ca...can't escape?")) {
+	switch(select("Vattene via da qui!!:Non posso sfuggire?")) {
 	case 1:
-		mes "[Kidnapped Residents]";
-		mes "We don't have enough power to destroy it but Buwaya has a weakness.";
-		mes "Look at the wall over there.";
-		mes "If you knock there, Buywaya will feel pain and spit you out.";
+		mes "Residenti rapiti";
+		mes "Non abbiamo abbastanza potenza per distruggerlo ma Buwaya ha una debolezza.";
+		mes "Guarda il muro laggiù.";
+		mes "Se ci batti, Buywaya sentirà dolore e ti vomiterà fuori.";
 		donpcevent instance_npcname("#box_mob_call")+"::OnEnable";
 		close2;
 		disablenpc instance_npcname("Kidnapped People#1");
 		end;
 	case 2:
-		mes "[Kidnapped People]";
-		mes "Somthing is wrong here...";
-		mes "Have you experienced this before?";
+		mes "[Persone rapite]";
+		mes "Qualcosa non va qui...";
+		mes "Hai già sperimentato questo prima?";
 		close;
 	}
 	end;
@@ -211,28 +211,28 @@ OnEnable:
 }
 
 1@ma_c,36,110,5	script	Kidnapped People#2	574,{
-	mes "[Kidnapped Residents]";
-	mes "Ahaa! I wish I had a little more power...";
-	mes "I know its weakness...";
+	mes "Residenti rapiti";
+	mes "Ahà! Vorrei avere un po' più di potere...";
+	mes "So che è la sua debolezza...";
 	next;
-	switch(select("Tell me.:Do you really know?")) {
+	switch(select("Dimmi.:Lo sai davvero?")) {
 	case 1:
-		mes "[Kidnapped Residents]";
-		mes "Are you sure you can do it...?";
-		mes "Ok, listen carefully,";
-		mes "its weakness is...";
+		mes "Residenti rapiti";
+		mes "Sei sicuro di potercela fare...?";
+		mes "Ok, ascolta attentamente,";
+		mes "la sua debolezza è...";
 		next;
-		mes "[Kidnapped Residents]";
-		mes "...behind us on the walls.";
+		mes "Residenti rapiti";
+		mes "dietro di noi sui muri.";
 		sc_start SC_ATKPOTION,60000,45;
 		sc_start SC_MATKPOTION,60000,45;
 		disablenpc instance_npcname("Kidnapped People#2");
 		close;
 	case 2:
-		mes "[Kidnapped Residents]";
-		mes "WHAT?!";
-		mes "Are you ignoring me";
-		mes "because I'm captured in here?";
+		mes "Residenti rapiti";
+		mes "COSA?!";
+		mes "Mi stai ignorando?";
+		mes "perché sono catturato qui?";
 		close;
 	}
 	end;
@@ -436,9 +436,9 @@ OnEnable:
 	enablenpc instance_npcname("#cave_out");
 	end;
 OnTouch:
-	mes "Would like to go out?";
+	mes "Vorresti uscire?";
 	next;
-	if(select("Yes!:No, I will stay.") == 1)
+	if(select("Sì!:No, resterò.") == 1)
 		warp "ma_fild02",315,315;
 	close;
 }

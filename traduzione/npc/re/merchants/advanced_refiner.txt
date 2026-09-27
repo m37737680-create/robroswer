@@ -14,11 +14,11 @@
 malangdo,221,174,6	script	Holink#mal_cash	559,{
 	disable_items;
 	mes "[Holink]";
-	mes "I am the meow~ Blacksmith Holink~";
-	mes "Master of refining, Holink~";
-	mes "I am the special cat Holink who learned from Morocc~";
-	mes "My daughter is so proud of me, Holink~";
-	mes "What should Holink~ refine today?";
+	mes "Sono il meow~ Fabbro Holink~";
+	mes "Maestro di raffinazione, Holink~";
+	mes "Sono il gatto speciale Holink che ha imparato da Morocc~";
+	mes "Mia figlia è così orgogliosa di me, Holink~";
+	mes "Cosa dovrebbe affinare Holink~ oggi?";
 	next;
 
 	setarray .@indices[1], EQI_HEAD_TOP, EQI_ARMOR, EQI_HAND_L, EQI_HAND_R, EQI_GARMENT, EQI_SHOES, EQI_ACC_L, EQI_ACC_R, EQI_HEAD_MID, EQI_HEAD_LOW;
@@ -30,43 +30,43 @@ malangdo,221,174,6	script	Holink#mal_cash	559,{
 		mes "[Holink]";
 		switch(.@part) {
 		case EQI_HEAD_TOP:
-			mes "My teacher Aragam said meow~";
-			mes "There's no cure for stupidity...";
+			mes "La mia insegnante Aragam ha detto miao~";
+			mes "Non c'è cura per la stupidità...";
 			break;
 		case EQI_ARMOR:
-			mes "There's nothing to see here, meow!!";
+			mes "Non c'è niente da vedere qui, miao!!";
 			break;
 		case EQI_HAND_L:
-			mes "Meow? What do you want me to do with this left hand...?";
+			mes "Miao? Cosa vuoi che faccia con questa mano sinistra...?";
 			break;
 		case EQI_HAND_R:
-			mes "Meow? What do you want me to do with this right hand...?";
+			mes "Miao? Cosa vuoi che faccia con questa mano destra...?";
 			break;
 		case EQI_GARMENT:
-			mes "Meow? You don't have anything on.";
+			mes "Miao? Non hai niente su.";
 			break;
 		case EQI_SHOES:
-			mes "Kyang~! Do not mess with my sensitive olfactory, meow~.";
+			mes "Kyang~! Non toccare il mio olfatto sensibile, meow~.";
 			break;
 		case EQI_ACC_L:
 		case EQI_ACC_R:
-			mes "Meow? Where is the accessory?";
+			mes "Miao? Dov'è l'accessorio?";
 			break;
 		case EQI_HEAD_MID:
 		case EQI_HEAD_LOW:
-			mes "Meow? You talking about the other head parts, meow?~";
+			mes "Miao? Stai parlando delle altre parti della testa, miao?~";
 			break;
 		}
 		close;
 	}
 	if (!getequipisenableref(.@part)) {
 		mes "[Holink]";
-		mes "Even Aragam can't refine such a thing, meow.";
+		mes "Nemmeno Aragam può raffinare una cosa del genere, miao.";
 		close;
 	}
 	if (getequiprefinerycnt(.@part) >= 10) {
 		mes "[Holink]";
-		mes "Meow~ Perfect refining. Did Aragam do this, meow?~";
+		mes "Miao~ Rifinitura perfetta. Questo l'ha fatto Aragam, miao?~";
 		close;
 	}
 	mes "[Holink]";
@@ -81,7 +81,7 @@ malangdo,221,174,6	script	Holink#mal_cash	559,{
 	if( .@itemtype == IT_ARMOR ){
 		.@equip_lv = getequiparmorlv( .@part );
 		.@type$ = "armor";
-		mes "You have chosen an armor, meow~";
+		mes "Hai scelto un'armatura, miao~";
 
 		switch(.@equip_lv) {
 			case 1:
@@ -98,21 +98,21 @@ malangdo,221,174,6	script	Holink#mal_cash	559,{
 		switch( .@equip_lv ){
 			case 1: // Level 1 Weapon
 				.@price = 500;
-				mes "A level 1 weapon...?";
+				mes "Un'arma di livello 1...?";
 				break;
 			case 2: // Level 2 Weapon
 				.@price = 2000;
-				mes "Meow, a level 2 weapon...?";
+				mes "Miao, un'arma di livello 2...?";
 				break;
 			case 3: // Level 3 Weapon
 				.@price = 20000;
-				mes "Meow Meow~~ A level 3 weapon~~";
+				mes "Miao Miao~~ Un'arma di livello 3~~";
 				break;
 			case 4: // Level 4 Weapon
 				.@price = 50000;
-				mes "Me-Meow!... A level 4 weapon...!";
-				mes "I've only seen it twice while";
-				mes "learning from Aragam... Me-Meow!!";
+				mes "Miao!.... Un'arma di livello 4!";
+				mes "L'ho visto solo due volte mentre";
+				mes "imparare da Aragam... Io-Miao!!";
 				break;
 			default:
 				// TODO:
@@ -123,48 +123,48 @@ malangdo,221,174,6	script	Holink#mal_cash	559,{
 		close;
 	}
 
-	mes "You need ^ff9999"+getitemname(.@material)+"^000000 and ^ff9999"+.@price+"^000000 Zeny for this refine, meow~";
-	mes "Want to continue, meow?~";
+	mes "Hai bisogno di ^ff9999"+getitemname(.@material)+"^000000 e ^ff9999"+.@price+"^000000 Zeny per questo miglioramento, meow~";
+	mes "Vuoi continuare, miao?~";
 	next;
-	if(select("Yes!!:No!!") == 2) {
+	if(select("Sì!!:No!!") == 2) {
 		mes "[Holink]";
 		mes "Kyack!!";
-		mes "You don't believe in refine master Holink, meow?~";
+		mes "Non credi nel maestro raffinato Holink, miao?~";
 		close;
 	}
 	if (getequippercentrefinery(.@part, true) < 100) {
 		mes "[Holink]";
-		mes "Meow!!";
+		mes "Miao!!";
 		if (.@type$ == "armor")
-			mes "This armor was already refined so many times, meow.";
+			mes "Questa armatura è stata raffinata così tante volte, miao.";
 		else {
-			mes "Danger. Danger~";
-			mes "This weapon was refined a lot, meow~";
+			mes "Pericolo. Pericolo~";
+			mes "Questa arma è stata molto raffinata, miao~";
 			next;
 			mes "[Holink]";
 		}
-		mes "You might break it if you continue";
-		mes "to try refining this item further, meow.";
+		mes "Potresti romperlo se continui";
+		mes "per provare a raffinare ulteriormente questo elemento, miao.";
 		next;
 		mes "[Holink]";
-		mes "Once the "+.@type$+" is broken, you can";
-		mes "never use it again, meow. Not to mention... all current";
-		mes "^ff0000cards and enchantments will vanish for sure^000000.";
-		mes "You still want to try, meow~?";
+		mes "Una volta che "+.@type$+" è rotto, puoi";
+		mes "non usarlo più, miao. Per non parlare di... tutti i correnti attuali";
+		mes "Le carte e gli incantesimi ^ff0000s svaniranno sicuramente ^000000.";
+		mes "Ancora vuoi provare, miao~?";
 		next;
-		if(select("Yes, I do!!:Forget about it!!") == 2) {
+		if(select("Sì, lo faccio!:Dimenticalo!!") == 2) {
 			mes "[Holink]";
-			mes "Meow! Wise choice, meow.";
-			mes "But!!";
-			mes "I am not happy to see you doubting the refine master Holink, meow~";
+			mes "Miao! Scelta saggia, miao.";
+			mes "Ma!!";
+			mes "Non sono felice di vederti dubitare del maestro raffinato Holink, meow~";
 			close;
 		}
 	}
 	if (countitem(.@material) == 0 || Zeny < .@price) {
 		mes "[Holink]";
-		mes "You don't have the ingredients.";
-		mes "You need ^ff9999"+getitemname(.@material)+"^000000 and ^ff9999"+.@price+"^000000 Zeny, meow~";
-		mes "Go get it, meow~";
+		mes "Non hai gli ingredienti.";
+		mes "Hai bisogno di ^ff9999"+getitemname(.@material)+"^000000 e ^ff9999"+.@price+"^000000 Zeny, miao~";
+		mes "Vai a prenderlo, miao~";
 		close;
 	}
 	delitem .@material,1;
@@ -175,28 +175,28 @@ malangdo,221,174,6	script	Holink#mal_cash	559,{
 		callfunc("F_IsEquipRefineHack", .@part, .@refinerycnt)) {
 		mes "[Holink]";
 		emotion ET_FRET;
-		mes "Wait a second...";
-		mes "Do you think I'm stupid?!";
-		mes "You switched the item while I wasn't looking! Get out of here!";
+		mes "Aspetta un secondo...";
+		mes "Pensi che sono stupido?!";
+		mes "Hai cambiato l'oggetto mentre non guardavo! Via da qui!";
 		close;
 	}
 
 	if (getequippercentrefinery(.@part, true) > rand(100)) {
 		successrefitem .@part;
 		mes "[Holink]";
-		mes "Me~ Me~ Meow! Fun fun refining~";
+		mes "Miao~ Miao~ Miac! Divertente divertire raffinare~";
 		next;
 		emotion ET_CHUP;
 		mes "[Holink]";
-		mes "Perfect!! Perfect, meow!!";
-		mes "I am the disciple of the refining wizard Aragam~";
+		mes "Perfetto!! Perfetto, miao!!";
+		mes "Sono il discepolo del mago raffinatore Aragam~";
 		mes "Holink!!";
-		mes "Another day of successful refining, meow!!";
+		mes "Un altro giorno di raffinazione riuscita, miao!!";
 		close;
 	}
 	failedrefitem .@part;
 	mes "[Holink]";
-	mes "Meo~ Meow~ Kyaaak!!";
+	mes "Miao~ Miao~ Miacca!!";
 	next;
 	switch(rand(1,5)) {
 		case 1: emotion ET_CRY; break;
@@ -206,17 +206,17 @@ malangdo,221,174,6	script	Holink#mal_cash	559,{
 		case 5: emotion ET_BIGTHROB; break;
 	}
 	mes "[Holink]";
-	mes "Meow!! Aaaaakk~~!!!!";
-	mes "Kyaaak!! I have failed, meow!!";
+	mes "Miao!! Aaaak~~!!!!";
+	mes "Miao! Ho fallito, miao!!";
 	next;
 	mes "[Holink]";
 	mes "......";
 	mes "......";
-	mes "All~ Everything~ Broken, meow...";
+	mes "Tutto~ Ogni cosa~ Rotta, miao...";
 	next;
 	mes "[Holink]";
-	mes "Meow.... Master Aragam once said,";
-	mes "learn from your failures...";
-	mes "Human, this one failure will be the beginning of your success in the future.";
+	mes "Miao.... Il Maestro Aragam disse una volta,";
+	mes "impara dai tuoi fallimenti...";
+	mes "Umano, questo fallimento sarà l'inizio del tuo successo nel futuro.";
 	close;
 }

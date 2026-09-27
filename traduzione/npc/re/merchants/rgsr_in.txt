@@ -5,50 +5,50 @@
 //============================================================
 
 itemmall,14,50,3	script	Equipment Reform PR Agent#it01	4_F_ZONDAGIRL,{
-	mes "[Equipment Reform PR Agent]";
-	mes "Hello, adventurer!";
-	mes "Are you unhappy with your equipment now?";
-	mes "Don't you want to try a new modification than just any other normal method?";
-	mes "Join the Regenschirm Institute!";
+	mes "Agente di PR per la Riforma delle Attrezzature";
+	mes "Ciao, avventuriero!";
+	mes "Sei infelice del tuo equipaggiamento ora?";
+	mes "Non vuoi provare una nuova modifica piuttosto che qualsiasi altro metodo normale?";
+	mes "Unisciti all'Istituto Regenschirm!";
 	next;
-	switch( select( "Let's go.", "Listen to the explanation.", "Quit." ) ) {
+	switch( select( "Andiamo.", "Ascolta la spiegazione.", "Basta." ) ) {
 	case 1:
-		mes "[Equipment Reform PR Agent]";
-		mes "Good! Other facilities in the institute are confidential and are not accessible, so we will guide you on a special path where you outsiders can enter!";
+		mes "Agente di PR per la Riforma delle Attrezzature";
+		mes "Ottimo! Altre strutture dell'istituto sono riservate e non accessibili, quindi ti guideremo su un percorso speciale dove voi esterni potete entrare!";
 		close2;
 		warp "rgsr_in",125,170;
 		end;
 	case 2:
-		mes "[Equipment Reform PR Agent]";
-		mes "All around the world research is being conducted at the Regenschirm Institute to modify weapons, armor, accessories and other equipment items...";
-		mes "We're still collecting data and researching modifications, so we need a lot of adventurer's equipment to increase our modification research.";
+		mes "Agente di PR per la Riforma delle Attrezzature";
+		mes "In tutto il mondo vengono condotte ricerche presso l'Istituto Regenschirm per modificare armi, armature, accessori e altri oggetti di equipaggiamento...";
+		mes "Stiamo ancora raccogliendo dati e ricercando modifiche, quindi abbiamo bisogno di un sacco di equipaggiamento da avventuriero per aumentare la nostra ricerca sulle modifiche.";
 		next;
-		mes "[Equipment Reform PR Agent]";
-		mes "Research is ongoing, so please look forward to the addition of multiple new equipment as soon as it is completed!";
+		mes "Agente di PR per la Riforma delle Attrezzature";
+		mes "La ricerca è in corso, quindi attendete l'aggiunta di diverse nuove attrezzature non appena saranno completate!";
 		close;
 	case 3:
-		mes "[Equipment Reform PR Agent]";
-		mes "If you're interested later, come back!";
+		mes "Agente di PR per la Riforma delle Attrezzature";
+		mes "Se ti interessa più tardi, torna!";
 		close;
 	}
 }
 lighthalzen,99,156,3	duplicate(Equipment Reform PR Agent#it01)	Equipment Reform PR Agent#lh01	4_F_ZONDAGIRL
 
 rgsr_in,112,167,7	script	Enchant Researcher#rg02-1	MD_ED_M_SCIENCE,{
-	mes "[Torus]";
-	mes "Huh? Do you have anyone else to see on our team other than the team leader?";
-	mes "Then that's me~";
-	mes "I am in charge of Enchants.";
-	mes "Let's see what you got?";
+	mes "Torus";
+	mes "E? C'è qualcun altro nel nostro team, oltre al responsabile del team?";
+	mes "Allora sono io~";
+	mes "Sono responsabile degli Incantesimi.";
+	mes "Vediamo cosa hai.";
 	next;
-	if (select( "Modified OS Weapon Enchant", "Quit" ) == 2) {
-		mes "[Torus]";
-		mes "Come back whenever you need it.";
-		mes "And we need the research.";
+	if (select( "Incantesimo Arma SO Modificato", "Smetti" ) == 2) {
+		mes "Torus";
+		mes "Torna quando ne hai bisogno.";
+		mes "E abbiamo bisogno della ricerca.";
 		close;
 	}
-	mes "[Torus]";
-	mes "Where...";
+	mes "Torus";
+	mes "Dove...";
 	close2;
 	item_enchant(33);
 	end;
@@ -60,62 +60,62 @@ OnInit:
 
 rgsr_in,115,169,5	script	Weapon Researcher#rg02	MD_ED_M_SCIENCE,{
 	mes "[Frasa]";
-	mes "Let's see... You're a guest.";
-	mes "I like people who are sure what they want.";
-	mes "Modifiable items can also be read as <TIPBOX>[List]<INFO>9163</INFO></TIPBOX>.";
-	mes "I will try to answer any questions you have.";
+	mes "Vediamo... Sei un ospite.";
+	mes "Mi piacciono le persone che sanno cosa vogliono.";
+	mes "Gli elementi modificabili possono essere letti anche come <TIPBOX>[Lista]<INFO>9163</INFO></TIPBOX>.";
+	mes "Cercherò di rispondere a qualsiasi domanda tu abbia.";
 	next;
-	switch( select( "Thanos Weapons", "OS Weapons", "Quit" ) ) {
+	switch( select( "Armi di Thanos", "Armi OS", "Smetti" ) ) {
 	case 1:
 		mes "[Frasa]";
-		mes "^0000FFThanos weapon^000000 mods have lower and intermediate levels in the modification method.";
+		mes "^0000FFArma di Thanos^000000 mod hanno livelli bassi e intermedi nel metodo di modifica.";
 		next;
-		switch( select( "Lower mods", "Intermediate mods", "Quit" ) ) {
+		switch( select( "Modifiche minori", "Modifiche intermedie", "Smetti" ) ) {
 		case 1:
 			mes "[Frasa]";
-			mes "Thanos weapon lower modification.";
-			mes "^FF0000Refine level is reduced by 5^000000, but consumes less materials.";
-			mes "And for mods, the weapon needs to be refine level +9 or higher.";
+			mes "Modifica inferiore dell'arma di Thanos.";
+			mes "^FF0000Il livello di raffinazione è ridotto di 5^000000, ma consuma meno materiali.";
+			mes "E per i mod, l'arma deve essere di livello di raffinazione +9 o superiore.";
 			close2;
 			item_reform("Thanos_W_Reform_1");
 			end;
 		case 2:
 			mes "[Frasa]";
-			mes "Thanos Weapon intermediate modification.";
-			mes "^FF0000Refine level is reduced by 1^000000, but consumes more material.";
-			mes "And for mods, the weapon needs to be refine level +9 or higher.";
+			mes "Modifica intermedia dell'arma di Thanos.";
+			mes "^FF0000Il livello di raffinazione è ridotto di 1^000000, ma consuma più materiale.";
+			mes "E per i mod, l'arma deve essere di livello di raffinazione +9 o superiore.";
 			close2;
 			item_reform("Thanos_W_Reform_2");
 			end;
 		case 3:
 			mes "[Frasa]";
-			mes "If you need mods, come back.";
-			mes "You are welcome any time you help us with our research.";
+			mes "Se hai bisogno di mod, torna.";
+			mes "Sei il benvenuto ogni volta che ci aiuti con la nostra ricerca.";
 			close;
 		}
 		end;
 	case 2:
 		mes "[Frasa]";
-		mes "^0000FFOS Weapons^000000...";
-		mes "For modification, the refine level must be +7 or higher.";
-		mes "Refine level does not decrease.";
-		mes "Did you bring the stuff?";
+		mes "^0000FFArme del SO^000000...";
+		mes "Per la modifica, il livello di raffinamento deve essere +7 o superiore.";
+		mes "Il livello di raffinazione non diminuisce.";
+		mes "Hai portato le cose?";
 		next;
-		if (select( "Convert", "Quit" ) == 2) {
+		if (select( "Convert", "Smetti" ) == 2) {
 			mes "[Frasa]";
-			mes "If you need mods, come back.";
-			mes "You are welcome any time you help us with our research.";
+			mes "Se hai bisogno di mod, torna.";
+			mes "Sei il benvenuto ogni volta che ci aiuti con la nostra ricerca.";
 			close;
 		}
 		mes "[Frasa]";
-		mes "Let's see what you brought.";
+		mes "Vediamo cosa hai portato.";
 		close2;
 		item_reform("OS_Weapon_Reform");
 		end;
 	case 3:
 		mes "[Frasa]";
-		mes "If you need mods, come back.";
-		mes "You are welcome any time you help us with our research.";
+		mes "Se hai bisogno di mod, torna.";
+		mes "Sei il benvenuto ogni volta che ci aiuti con la nostra ricerca.";
 		close;
 	}
 	end;
@@ -127,10 +127,10 @@ OnInit:
 
 rgsr_in,115,180,5	script	Armor Researcher#rg02	MD_ED_M_SCIENCE,{
 	mes "[Algebra]";
-	mes "Ah, we've come this far, but our team's research is still lacking in experiments.";
-	mes "I'll improve it a bit next time and get the captain's permission, then let's proceed.";
-	mes "Okay?";
-	npctalk "Grimace.", "", bc_self;
+	mes "Ah, siamo arrivati fin qui, ma la ricerca del nostro team è ancora carente di esperimenti.";
+	mes "Lo migliorerò un po' la prossima volta e otterrò il permesso del capitano, poi procediamo.";
+	mes "Va bene?";
+	npctalk "Ghigno", "", bc_self;
 	close;
 
 OnInit:
@@ -139,7 +139,7 @@ OnInit:
 }
 
 rgsr_in,135,186, 7	script	Assistant#rg02	4_M_ALCHE_D,{
-	npctalk "Assistant: Don't touch it... It's dangerous...", "", bc_self;
+	npctalk "Non toccarlo... È pericoloso...", "", bc_self;
 	sleep2 300;
 	npctalk "Assistant: ...Oh..............", "Assistant#rg04", bc_self;
 	npctalk "Assistant: Don't worry, it's nothing...", "Assistant#rg03", bc_self;
@@ -147,8 +147,8 @@ rgsr_in,135,186, 7	script	Assistant#rg02	4_M_ALCHE_D,{
 }
 
 rgsr_in,135,189,5	script	Assistant#rg03	4_M_REPAIR,{
-	npctalk "Assistant: ...Paycheck... Give it to me...? Then ask unnecessary questions...", "", bc_self;
-	npctalk "Assistant: Of course...", "Assistant#rg02", bc_self;
+	npctalk "Assistente: ...Busta paga... Dammela...? E poi fare domande inutili...", "", bc_self;
+	npctalk "Certo...", "Assistant#rg02", bc_self;
 	end;
 }
 
@@ -156,12 +156,12 @@ rgsr_in,137,187,3	script	Assistant#rg04	4_F_HUWOMAN,{
 	npctalk "Assistant: No, not that.... That's it. That's it...", "", bc_self;
 	sleep2 300;
 	npctalk "Assistant: Hick... It was almost a big day... You didn't see him, did you?", "Assistant#rg02", bc_self;
-	npctalk "Grid: ?", "Ore Researcher#rg02", bc_self;
+	npctalk "Griglia: ?", "Ore Researcher#rg02", bc_self;
 	end;
 }
 
 rgsr_in,146,169,3	script	Assistant#rg05	4_M_REPAIR,{
-	npctalk "Assistant: Quiet... I'm...", "", bc_self;
+	npctalk "Silenzio... Sono...", "", bc_self;
 	end;
 
 OnInit:
@@ -170,7 +170,7 @@ OnInit:
 }
 
 rgsr_in,146,167,3	script	Assistant#rg06	4_M_REPAIR,{
-	npctalk "Assistant: Our leader is a great guy. I'm still young...", "", bc_self;
+	npctalk "Il nostro leader è un grande tipo. Sono ancora giovane...", "", bc_self;
 	end;
 
 OnInit:
@@ -188,9 +188,9 @@ OnInit:
 }
 
 rgsr_in,106,167,5	script	Assistant#rg11	4_M_REPAIR,{
-	npctalk "Assistant: Can we move to a larger lab one day after we do more research?", "", bc_self;
+	npctalk "Possiamo passare a un laboratorio più grande un giorno dopo che faremo altre ricerche?", "", bc_self;
 	sleep2 300;
-	npctalk "Assistant: ....Hang.", "Assistant#rg10", bc_self;
+	npctalk "Assistant: ....Appendere.", "Assistant#rg10", bc_self;
 	end;
 
 OnInit:
@@ -199,7 +199,7 @@ OnInit:
 }
 
 rgsr_in,109,167,3	script	Assistant#rg10	4_M_REPAIR,{
-	npctalk "Assistant: ....I'm.", "", bc_self;
+	npctalk "Assistant: ....Sono.", "", bc_self;
 	sleep2 300;
 	npctalk "Assistant: Adventurer, please walk carefully. The building is old and the floor is a little creaky.", "Assistant#rg11", bc_self;
 	end;
@@ -210,7 +210,7 @@ OnInit:
 }
 
 rgsr_in,146,178,3	script	Assistant#rg20	4_M_REPAIR,{
-	npctalk "Assistant: Ask our lead about any questions you have.", "", bc_self;
+	npctalk "Chiedi al nostro responsabile se hai domande.", "", bc_self;
 	end;
 
 OnInit:
@@ -219,9 +219,9 @@ OnInit:
 }
 
 rgsr_in,143,180,5	script	Assistant#rg21	4_M_REPAIR,{
-	npctalk "Assistant: Isn't it a little noisy outside?", "", bc_self;
+	npctalk "Non è un po' rumoroso fuori?", "", bc_self;
 	sleep2 200;
-	npctalk "Assistant: I wish I could move to a good soundproofed place.", "Assistant#rg20", bc_self;
+	npctalk "Vorrei potermi trasferire in un posto ben insonorizzato.", "Assistant#rg20", bc_self;
 	end;
 
 OnInit:
@@ -230,70 +230,70 @@ OnInit:
 }
 
 rgsr_in,131,187,5	script	Ore Researcher#rg02	MD_ED_M_SCIENCE,{
-	mes "[Grid]";
-	mes "Come on.";
-	mes "It's a low-budget lab, so it's always like this.";
-	mes "My assistants and I refine the gemstones used in this lab. For a fee.";
+	mes "[Griglia]";
+	mes "Dai.";
+	mes "È un laboratorio a basso budget, quindi è sempre così.";
+	mes "I miei assistenti ed io raffiniamo le gemme utilizzate in questo laboratorio. Per un compenso.";
 	next;
-	switch( select( "View the exchange list", "What are you exchanging?", "Quit" ) ) {
+	switch( select( "Visualizza l'elenco degli scambi", "Cosa stai scambiando?", "Smetti" ) ) {
 	case 1:
-		mes "[Grid]";
-		mes "Let's see...";
-		mes "Now there are these things.";
+		mes "[Griglia]";
+		mes "Vediamo...";
+		mes "Ora ci sono queste cose.";
 		next;
-		switch( select( "Gemstone refining", "Top ore exchange", "Buy additional ore", "Cancel" ) ) {
+		switch( select( "Raffinazione di gemme", "Miglior scambio di ore", "Compra minerale aggiuntivo", "Annulla" ) ) {
 		case 1:
-			mes "[Grid]";
-			mes "Gemstone refining.";
+			mes "[Griglia]";
+			mes "Raffinazione di gemme.";
 			close2;
 			callshop("barter_rgsr_in_1");
 			end;
 		case 2:
-			mes "[Grid]";
-			mes "Top ore exchange.";
+			mes "[Griglia]";
+			mes "Scambio di ore top.";
 			close2;
 			callshop("barter_rgsr_in_2");
 			end;
 		case 3:
-			mes "[Grid]";
-			mes "Don't have enough ore? Then there's something I'm specifically collecting...";
-			mes "Do you have a shadow decon?";
+			mes "[Griglia]";
+			mes "Non hai abbastanza minerale? Allora c'è qualcosa che sto raccogliendo apposta...";
+			mes "Hai uno sbiadimento dell'ombra?";
 			close2;
 			callshop("barter_rgsr_in_3");
 			end;
 		case 4:
-			mes "[Grid]";
-			mes "If you need anything, come again.";
+			mes "[Griglia]";
+			mes "Se hai bisogno di qualcosa, torna pure.";
 			close;
 		}
 		end;
 	case 2:
-		mes "[Grid]";
-		mes "As we see in our research, the materials are very rare. There are adventurers hired by our team, but the material is not comparable to the amount we need.";
-		mes "So when the adventurers came with the materials, they decided to provide the corresponding research value.";
+		mes "[Griglia]";
+		mes "Come vediamo nella nostra ricerca, i materiali sono molto rari. Ci sono avventurieri assunti dal nostro team, ma il materiale non è paragonabile alla quantità di cui abbiamo bisogno.";
+		mes "Quindi quando gli avventurieri arrivarono con i materiali, decisero di fornire il corrispondente valore di ricerca.";
 		next;
-		mes "[Grid]";
-		mes "Luckily, we do the research and adventurers who come to us provide materials to use our technology.";
-		mes "If you want to modify something you only need to bring the presented materials.";
+		mes "[Griglia]";
+		mes "Fortunatamente, noi facciamo la ricerca e gli avventurieri che vengono da noi forniscono materiali per usare la nostra tecnologia.";
+		mes "Se vuoi modificare qualcosa hai solo bisogno di portare i materiali presentati.";
 		next;
-		mes "[Grid]";
-		mes "You're an adventurer, so you know what that means?";
+		mes "[Griglia]";
+		mes "Sei un avventuriero, quindi sai cosa significa?";
 		close;
 	case 3:
-		mes "[Grid]";
-		mes "If you need anything, come again.";
+		mes "[Griglia]";
+		mes "Se hai bisogno di qualcosa, torna pure.";
 		close;
 	}
 }
 
 rgsr_in,137,178,3	script	Accessories Researcher#rg02	MD_ED_M_SCIENCE,{
-	mes "[Champ]";
-	mes "Finally, I talked to an adventurer and asked him to confirm my research, was that you?";
-	mes "Unfortunately, our team hasn't done enough to get out there yet.";
+	mes "[Campione]";
+	mes "Finalmente ho parlato con un avventuriero e gli ho chiesto di confermare la mia ricerca, eri tu?";
+	mes "Purtroppo, il nostro team non ha fatto abbastanza per uscire ancora.";
 	next;
-	mes "[Champ]";
-	mes "It's still incomplete.";
-	mes "I'll see you next time I get permission from the captain.";
+	mes "[Campione]";
+	mes "Ancora incompleto.";
+	mes "Ti vedrò la prossima volta che otterrò il permesso dal capitano.";
 	close;
 
 OnInit:
@@ -302,90 +302,90 @@ OnInit:
 }
 
 rgsr_in,136,171,5	script	Special Equipment Researcher#rg02	MD_ED_M_SCIENCE,{
-	mes "[Stack]";
-	mes "See Team Licht's performance?";
-	mes "We're proud of this lab.";
-	mes "Which one do you want to modify?";
-	mes "Modifiable items are located in <TIPBOX>[List]<INFO>9166</INFO></TIPBOX>.";
+	mes "[Pila]";
+	mes "Hai visto la prestazione di Team Licht?";
+	mes "Siamo orgogliosi di questo laboratorio.";
+	mes "Quale vuoi modificare?";
+	mes "Gli elementi modificabili si trovano in <TIPBOX>[List]<INFO>9166</INFO></TIPBOX>.";
 	next;
-	switch( select( "Non-standard armor", "Non-standard weapon", "Quit" ) ) {
+	switch( select( "Armatura non standard", "Arma non convenzionale", "Smetti" ) ) {
 	case 1:
-		mes "[Stack]";
-		mes "^0000FFNon-standard armor^000000, there are Lower, Intermediate, and Upper levels of the modification method.";
-		mes "Non-refineable armor is only capable of Upper modification.";
+		mes "[Pila]";
+		mes "^0000FFNon-standard armor^000000, ci sono livelli Inferiore, Intermedio e Superiore del metodo di modifica.";
+		mes "L'armatura non raffinabile è capace solo di modifica Superiore.";
 		next;
-		switch( select( "Lower mods", "Intermediate mods", "Upper mods", "Quit" ) ) {
+		switch( select( "Modifiche minori", "Modifiche intermedie", "Mod superiori", "Smetti" ) ) {
 		case 1:
-			mes "[Stack]";
-			mes "Armor Lower Mods? Okay.";
-			mes "^FF0000Refine level is reduced by 5^000000, but consumes less material.";
-			mes "And for modification, the equipment must have a refine level of +9 or higher.";
+			mes "[Pila]";
+			mes "Modificatori per l'armatura inferiore? Ok.";
+			mes "^FF0000Il livello di raffinazione è ridotto di 5^000000, ma consuma meno materiale.";
+			mes "E per la modifica, l'equipaggiamento deve avere un livello di raffinazione di +9 o superiore.";
 			close2;
 			item_reform("C_Armor_Reform_1");
 			end;
 		case 2:
-			mes "[Stack]";
-			mes "Armor Intermediate Mods? Okay.";
-			mes "^FF0000Refine level is reduced by 1^000000, but consumes more material.";
-			mes "And for modification, the equipment must have a refine level of +9 or higher.";
+			mes "[Pila]";
+			mes "Modificatori intermedi per armature? Ok.";
+			mes "^FF0000Il livello di raffinazione è ridotto di 1^000000, ma consuma più materiale.";
+			mes "E per la modifica, l'equipaggiamento deve avere un livello di raffinazione di +9 o superiore.";
 			close2;
 			item_reform("C_Armor_Reform_2");
 			end;
 		case 3:
-			mes "[Stack]";
-			mes "Armor Upper Mods? Okay.";
-			mes "^FF0000Refine level increases by 1^000000, but consumes more material.";
-			mes "And for modification, the equipment must have a refine level of +9 or higher.";
-			mes "^FF0000Non-refineable equipment^000000 can also be granted with advanced modifications, but the refine level does not increase.";
+			mes "[Pila]";
+			mes "Moduli per l'armatura superiore? Ok.";
+			mes "^FF0000Il livello di raffinazione aumenta di 1^000000, ma consuma più materiale.";
+			mes "E per la modifica, l'equipaggiamento deve avere un livello di raffinazione di +9 o superiore.";
+			mes "^FF0000Attrezzatura non raffinabile^000000 può anche essere concessa con modifiche avanzate, ma il livello di raffinazione non aumenta.";
 			close2;
 			item_reform("C_Armor_Reform_3");
 			end;
 		case 4:
-			mes "[Stack]";
-			mes "Already going?";
-			mes "You need to see more of our outstanding performance!";
+			mes "[Pila]";
+			mes "Già andando?";
+			mes "Dovete vedere di più delle nostre prestazioni eccezionali!";
 			close;
 		}
 	case 2:
-		mes "[Stack]";
-		mes "^0000FFNon-standard weapon^000000, there are Lower, Intermediate, and Upper levels of the modification method.";
+		mes "[Pila]";
+		mes "^0000FFNon-standard weapon^000000, ci sono livelli Inferiore, Intermedio e Superiore del metodo di modifica.";
 		next;
-		switch( select( "Lower mods", "Intermediate mods", "Upper mods", "Quit" ) ) {
+		switch( select( "Modifiche minori", "Modifiche intermedie", "Mod superiori", "Smetti" ) ) {
 		case 1:
-			mes "[Stack]";
-			mes "Weapon Lower Mods? Okay.";
-			mes "^FF0000Refine level is reduced by 5^000000, but consumes less material.";
-			mes "And for modification, the equipment must have a refine level of +9 or higher.";
+			mes "[Pila]";
+			mes "Modificatori inferiori per armi? Ok.";
+			mes "^FF0000Il livello di raffinazione è ridotto di 5^000000, ma consuma meno materiale.";
+			mes "E per la modifica, l'equipaggiamento deve avere un livello di raffinazione di +9 o superiore.";
 			close2;
 			item_reform("C_Weapon_Reform_1");
 			end;
 		case 2:
-			mes "[Stack]";
-			mes "Weapon Intermediate Mods? Okay.";
-			mes "^FF0000Refine level is reduced by 1^000000, but consumes more material.";
-			mes "And for modification, the equipment must have a refine level of +9 or higher.";
+			mes "[Pila]";
+			mes "Modificatori intermedi per armi? Ok.";
+			mes "^FF0000Il livello di raffinazione è ridotto di 1^000000, ma consuma più materiale.";
+			mes "E per la modifica, l'equipaggiamento deve avere un livello di raffinazione di +9 o superiore.";
 			close2;
 			item_reform("C_Weapon_Reform_2");
 			end;
 		case 3:
-			mes "[Stack]";
-			mes "Weapon Advanced Mods? Okay.";
-			mes "^FF0000Refine level increases by 1^000000, but consumes more material.";
-			mes "And for modification, the equipment must have a refine level of +9 or higher.";
+			mes "[Pila]";
+			mes "Modifiche Avanzate per Armi? Ok.";
+			mes "^FF0000Il livello di raffinazione aumenta di 1^000000, ma consuma più materiale.";
+			mes "E per la modifica, l'equipaggiamento deve avere un livello di raffinazione di +9 o superiore.";
 			close2;
 			item_reform("C_Weapon_Reform_3");
 			end;
 		case 4:
-			mes "[Stack]";
-			mes "Already going?";
-			mes "You need to see more of our outstanding performance!";
+			mes "[Pila]";
+			mes "Già andando?";
+			mes "Dovete vedere di più delle nostre prestazioni eccezionali!";
 			close;
 		}
 		end;
 	case 3:
-		mes "[Stack]";
-		mes "Already going?";
-		mes "You need to see more of our outstanding performance!";
+		mes "[Pila]";
+		mes "Già andando?";
+		mes "Dovete vedere di più delle nostre prestazioni eccezionali!";
 		close;
 	}
 	end;
@@ -396,38 +396,38 @@ OnInit:
 }
 
 rgsr_in,128,174,5	script	Director#rg02	1_M_LIBRARYMASTER,{
-	mes "[Director]";
-	mes "...Come on.";
-	mes "You may have heard the explanation when you came, but to briefly introduce you to this place, there is still a long way to go. We are working on converting many weapons, armor, accessories, etc. into something different.";
+	mes "[Regista]";
+	mes "Dai.";
+	mes "Potresti aver sentito la spiegazione quando sei arrivato, ma per presentarti brevemente questo posto, c'è ancora molta strada da fare. Stiamo lavorando alla conversione di molte armi, armature, accessori, ecc. in qualcosa di diverso.";
 	next;
-	mes "[Director]";
-	mes "It is essential to cut the refine of the equipment to be converted, but it is a labor for greater power.";
+	mes "[Regista]";
+	mes "È essenziale tagliare il raffinare dell'attrezzatura da convertire, ma è un lavoro per maggiore potenza.";
 	next;
-	mes "[Director]";
-	mes "Research is ongoing, so it is not known when and where something will suddenly be completed and offered to adventurers.";
-	mes "It is... As soon as the data is collected, it will be somehow.";
+	mes "[Regista]";
+	mes "La ricerca è in corso, quindi non è noto quando e dove qualcosa verrà improvvisamente completato e offerto agli avventurieri.";
+	mes "È... Non appena i dati saranno raccolti, sarà in qualche modo.";
 	next;
-	mes "[Director]";
-	mes "And this time, Team Licht achieved it.";
-	mes "If you're interested, check out what research was done.";
+	mes "[Regista]";
+	mes "E questa volta, Team Licht ci è riuscito.";
+	mes "Se sei interessato, dai un'occhiata a cosa è stato fatto di ricerca.";
 	next;
-	mes "[Director]";
-	mes "Everyone likes it quiet, so don't talk too loud.";
+	mes "[Regista]";
+	mes "Tutti amano il silenzio, quindi non parlare troppo forte.";
 	close;
 }
 
 rgsr_in,122,160,5	script	Exit Guard#rg01	4_M_LGTGUARD,{
 	mes "[Exit guard]";
-	mes "Are you done?";
+	mes "Sei finito?";
 	mes "^FF0000Return to Lighthalzen^000000?";
 	next;
-	if (select( "Return.", "Work remaining." ) == 2) {
+	if (select( "Ritorna.", "Lavoro rimanente." ) == 2) {
 		mes "[Exit guard]";
-		mes "Please tell us at any time when you are finished.";
+		mes "Per favore, facci sapere ogni volta che hai finito.";
 		close;
 	}
 	mes "[Exit guard]";
-	mes "Let me guide you on the way back.";
+	mes "Lasciami guidarti sulla strada del ritorno.";
 	close2;
 	warp "lighthalzen",101,156;
 	end;
@@ -435,16 +435,16 @@ rgsr_in,122,160,5	script	Exit Guard#rg01	4_M_LGTGUARD,{
 
 rgsr_in,129,160,3	script	Exit Guard#rg02	4_M_LGTGUARD,{
 	mes "[Exit guard]";
-	mes "Are you done?";
+	mes "Sei finito?";
 	mes "^FF0000Return to Item Mall^000000?";
 	next;
-	if (select( "Return.", "Work remaining." ) == 2) {
+	if (select( "Ritorna.", "Lavoro rimanente." ) == 2) {
 		mes "[Exit guard]";
-		mes "Please tell us at any time when you are finished.";
+		mes "Per favore, facci sapere ogni volta che hai finito.";
 		close;
 	}
 	mes "[Exit guard]";
-	mes "Let me guide you on the way back.";
+	mes "Lasciami guidarti sulla strada del ritorno.";
 	close2;
 	warp "itemmall",16,47;
 	end;

@@ -100,33 +100,33 @@ OnEvent05:
 	cutin "ep162_rds01",2;
 	mes "[Ridsh]";
 	mes "Oh?";
-	mes "What are you doing here?";
-	npctalk "Ridsh : Oh? What are you doing here.";
+	mes "Cosa fai qui?";
+	npctalk "Ridsh : Oh? Cosa fai qui.";
 	next;
 	cutin "ep162_rds05",2;
 	mes "[Ridsh]";
-	mes "We're in trouble~~";
-	mes "We can't have anyone know we're here~~";
-	npctalk "Ridsh : We're in trouble~~ We can't have anyone know we're here~~";
+	mes "Siamo nei guai~~";
+	mes "Non possiamo far sapere a nessuno che siamo qui~~";
+	npctalk "Ridsh: Siamo nei guai~~ Non possiamo far sapere a nessuno che siamo qui~~";
 	next;
 	hideoffnpc .@dien$;
 	hideoffnpc .@cot$;
 	cutin "ep162_dn03",2;
 	mes "[Dien]";
-	mes "The adventurer is here too!";
-	mes "Why are you scared!";
-	npctalk "Dien : The adventurer is here too!  Why are you scared!",.@dien$;
+	mes "L'avventuriero è qui anche lui!";
+	mes "Perché hai paura!";
+	npctalk "Dien: L'avventuriero è qui anche lui! Perché hai paura!",.@dien$;
 	next;
 	mes "[Dien]";
-	mes "Hello " + strcharinfo(0) + ".";
+	mes "Ciao " + strcharinfo(0) + ".";
 	sleep2 2000;
 	cutin "ep162_dn01",2;
-	mes "We've came here to do something... It was too troublesome to tell the youngsters.";
-	npctalk "Dien : We've came here to do something... It was too troublesome to tell the youngsters.",.@dien$;
+	mes "Siamo venuti qui per fare qualcosa... Era troppo problematico dirlo ai giovani.";
+	npctalk "Dien: Siamo venuti qui per fare qualcosa... Era troppo problematico dirlo ai giovani.",.@dien$;
 	next;
 	mes "[Dien]";
-	mes "If you keep it a secret that you saw us...";
-	npctalk "Dien : If you keep it a secret that you saw us...",.@dien$;
+	mes "Se tieni segreto di averci visto...";
+	npctalk "Dien: Se tieni segreto di averci visto...",.@dien$;
 	sleep2 1000;
 	specialeffect EF_BLASTMINEBOMB,AREA,instance_npcname("#171_os_warp_1");
 	sleep2 600;
@@ -136,32 +136,32 @@ OnEvent05:
 	next;
 	cutin "ep162_rds04",2;
 	mes "[Ridsh]";
-	mes "Sister~~";
-	mes "What are you talking about, I don't see the adventurer!";
+	mes "Sorella~~";
+	mes "Di cosa stai parlando, non vedo l'avventuriero!";
 	npctalk "Ridsh : Sister~~ What are you talking about, I don't see the adventurer!";
 	next;
 	cutin "ep162_ctn01",2;
 	mes "[Cotnes]";
 	mes "Oh~";
-	mes "Yeah?";
-	mes "I don't see the adventurer either~";
-	npctalk "Cotnes : Oh~ Yeah? I don't see the adventurer either~",.@cot$;
+	mes "Eh?";
+	mes "Non vedo nemmeno l'avventuriero~";
+	npctalk "Cotnes: Oh~ Sì? Non vedo nemmeno l'avventuriero~",.@cot$;
 	next;
 	mes "[Cotnes]";
-	mes "So what now?";
-	mes "We're already inside.";
-	npctalk "Cotnes : So what now? We're already inside.",.@cot$;
+	mes "E quindi ora cosa?";
+	mes "Siamo già dentro.";
+	npctalk "Cotnes: E quindi ora? Siamo già dentro.",.@cot$;
 	next;
 	cutin "ep162_rds05",2;
 	mes "[Ridsh]";
-	mes "It can't be helped~~";
-	mes "We have to go with the adventurer.";
-	npctalk "Ridsh : It can't be helped~~ We have to go with the adventurer.";
+	mes "Non si può fare nulla~~";
+	mes "Dobbiamo andare con l'avventuriero.";
+	npctalk "Ridsh: Non si può fare nulla~~ Dobbiamo andare con l'avventuriero.";
 	next;
 	cutin "ep162_dn01",2;
 	mes "[Dien]";
-	mes "It's dangerous, so please come with us.";
-	npctalk "Dien :  It's dangerous so please come with us.",.@dien$;
+	mes "È pericoloso, quindi per favore vieni con noi.";
+	npctalk "Dien: È pericoloso, quindi per favore vieni con noi.",.@dien$;
 	close2;
 	cutin "",255;
 	if ('seal_os == 0) {
@@ -172,13 +172,13 @@ OnEvent05:
 }
 
 1@os_b,212,41,0	script	Suspicious Device#171_os	4_ENERGY_BLUE,{
-	mes "- There is a pipe going through the floor. -";
+	mes "C'è un tubo che passa attraverso il pavimento.";
 	next;
-	if (select("Crush it.:Put it down.") == 2) {
-		mes "- Nothing happened. -";
+	if (select("Spaccatela.:Mettilo giù.") == 2) {
+		mes "Nulla è successo.";
 		close;
 	}
-	mes "- The machine stopped with a strange noise when the pipe was broken. -";
+	mes "La macchina si è fermata con uno strano rumore quando il tubo si è rotto.";
 	specialeffect EF_BLASTMINEBOMB;
 	close2;
 	mapannounce 'map$,"Ridsh : Alright! Let's move up along the railroad tracks!",bc_map,0xFF0000;
@@ -194,11 +194,11 @@ OnEvent05:
 
 OnSummon00:
 	.@event$ = instance_npcname(strnpcinfo(0))+"::OnMobKill";
-	npctalk "Cotnes : Over here~~.",instance_npcname("Dien#171_os_1");
+	npctalk "Cotnes : Qui~~.",instance_npcname("Dien#171_os_1");
 	sleep 1000;
-	npctalk "Dien : Oh my... what a surprise!",instance_npcname("Dien#171_os_1");
+	npctalk "Dien: Oh mio Dio... che sorpresa!",instance_npcname("Dien#171_os_1");
 	sleep 1000;
-	npctalk "Dien : We will take care of this side. Please take care of the disgusting ones there!",instance_npcname("Dien#171_os_1");
+	npctalk "Dien: Ci occuperemo di questo lato. Per favore, occupati di quelli disgustosi lì!",instance_npcname("Dien#171_os_1");
 	monster 'map$,205,46,"Dolor",20361,1,.@event$;
 	monster 'map$,200,45,"Twin Caput",20365,1,.@event$;
 	end;
@@ -216,7 +216,7 @@ OnMobKill:
 1@os_b,112,108,5	script	Dien#171_os_2	4_F_DIENE,{
 	cutin "ep162_dn01",2;
 	mes "[Dien]";
-	mes "Oh my! What's that thing in the front?";
+	mes "Oh mio Dio! Cos'è quella cosa davanti?";
 	close3;
 }
 
@@ -225,13 +225,13 @@ OnMobKill:
 
 OnTouch:
 	mes "[Dien]";
-	mes "Oh my! I think it's precise device that's placed here in the abandoned mine.";
+	mes "Oh mio Dio! Penso che sia un dispositivo preciso quello posizionato qui nella miniera abbandonata.";
 	next;
 	mes "[Dien]";
-	mes "If you don't break the machine on the other side, we will not be able pass it!";
+	mes "Se non rompi la macchina dall'altra parte, non potremo superarla!";
 	next;
 	mes "[Dien]";
-	mes "It's dangerous to go through right now, so let's turn around and go where the device is!";
+	mes "È pericoloso passare adesso, quindi giriamo e andiamo dove c'è il dispositivo!";
 	close2;
 	warp 'map$,115,104;
 	sleep2 2000;
@@ -266,7 +266,7 @@ OnTouch:
 	cutin "ep162_dn01",2;
 	mes "[Dien]";
 	mes "Oh!";
-	mes "If you go to the right, I think you can go back on the railroad without having to break the door.";
+	mes "Se vai a destra, penso che tu possa tornare sulla ferrovia senza dover rompere la porta.";
 	npctalk "Dien : Oh! If you go to the right, I think you can go back on the railroad without having to break the door";
 	if (!'unlocked)
 		donpcevent instance_npcname("#171_sealedos_control") + "::OnEvent04";
@@ -276,14 +276,14 @@ OnTouch:
 1@os_b,114,217,0	script	Cotnes#171_os_2	4_F_COATNEIS,{
 	cutin "ep162_ctn01",2;
 	mes "[Cotnes]";
-	mes "Oh, is this gate too hard?";
-	mes "It will take some time to break it~";
+	mes "Oh, questo cancello è troppo difficile?";
+	mes "Ci vorrà del tempo per romperlo~";
 	npctalk "Cotnes : Oh, is this gate too hard? It will take some time to break it.";
 	next;
 	cutin "ep162_dn01",2;
 	mes "[Dien]";
 	mes "Oh!";
-	mes "If you go to the right, I think you can go back on the railroad without having to break the door.";
+	mes "Se vai a destra, penso che tu possa tornare sulla ferrovia senza dover rompere la porta.";
 	npctalk "Dien : Oh! If you go to the right, I think you can go back on the railroad without having to break the door";
 	if (!'unlocked)
 		donpcevent instance_npcname("#171_sealedos_control") + "::OnEvent04";
@@ -308,71 +308,71 @@ OnTouch:
 	cutin "ep162_est01",2;
 	mes "[Est]";
 	mes "Oh...";
-	mes "I'm in a hurry, what are you doing here?";
+	mes "Sono di fretta, cosa fai qui?";
 	npctalk "Est : I'm in a hurry, what are you doing here?",.@est$;
 	disablenpc instance_npcname("#171_sos_dummy_7");
 	next;
 	cutin "ep162_est02",2;
 	mes "[Est]";
-	mes "Please go back and enjoy your tea gracefully.";
-	npctalk "Est : Please go back and enjoy your tea gracefully.",.@est$;
+	mes "Torna indietro e goditi il tuo tè con grazia.";
+	npctalk "St: Per favore torna e goditi il tuo tè con grazia.",.@est$;
 	next;
 	cutin "ep162_rds02",2;
 	mes "[Ridsh]";
-	mes "Huh!";
-	mes "How did you sneak in here anyway?";
-	npctalk "Ridsh : Huh! How did you sneak in here anyway?";
+	mes "Eh!";
+	mes "Come sei entrato qui comunque?";
+	npctalk "Ridsh: Ehi! Come sei entrato qui comunque?";
 	next;
 	cutin "ep162_est02",2;
 	mes "[Est]";
-	mes "This is only a surveillance routine.";
-	mes "If you close your eyes for a second, you may run into an accident.";
-	npctalk "Est : This is only a surveillance routine.",.@est$;
+	mes "Si tratta solo di una routine di sorveglianza.";
+	mes "Se chiudi gli occhi per un secondo, potresti subire un incidente.";
+	npctalk "St: Questa è solo una routine di sorveglianza.",.@est$;
 	sleep2 2000;
 	npctalk "Est : If you close your eyes for a second, you may run into an accident.",.@est$;
 	next;
 	cutin "ep162_rds02",2;
 	mes "[Ridsh]";
-	mes "What makes you think we need your help?";
-	npctalk "Ridsh : What makes you think we need your help?";
+	mes "Cosa ti fa pensare che abbiamo bisogno del tuo aiuto?";
+	npctalk "Ridsh: Cosa ti fa pensare che abbiamo bisogno del tuo aiuto?";
 	next;
 	cutin "ep162_est02",2;
 	mes "[Est]";
-	mes "Didn't you just did now?";
-	mes "I don't think I heard that wrong. Did I?";
+	mes "Non l'hai appena fatto?";
+	mes "Non credo di aver sbagliato a sentire. L'ho fatto io?";
 	next;
 	disablenpc instance_npcname("Cotnes#171_os_2");
 	.@cot$ = instance_npcname("Cotnes#171_os_3");
 	hideoffnpc .@cot$;
 	cutin "ep162_ctn01",2;
 	mes "[Cotnes]";
-	mes "You two really~";
-	mes "Please stop fighting.";
-	npctalk "Cotnes : You two really~ Please stop fighting.",.@cot$;
+	mes "Voi due davvero~";
+	mes "Smettila di litigare.";
+	npctalk "Cotnes: Voi due davvero~ Per favore smettete di litigare.",.@cot$;
 	next;
 	disablenpc instance_npcname("Dien#171_os_3");
 	.@dien$ = instance_npcname("Dien#171_os_4");
 	hideoffnpc .@dien$;
 	cutin "ep162_dn03",2;
 	mes "[Dien]";
-	mes "How do you always fight like that?";
-	npctalk "Dien : How do you always fight like that?",.@dien$;
+	mes "Come fai a combattere sempre così?";
+	npctalk "Dien: Come fai a combattere sempre così?",.@dien$;
 	next;
 	cutin "ep162_ctn01",2;
 	mes "[Cotnes]";
-	mes "I'm so excited about this~ I'm getting old and I'm tired of fighting.";
-	npctalk "Cotnes : I'm so excited about this~ I'm getting old and I'm tired of fighting.",.@cot$;
+	mes "Sono così emozionato/a per questo~ Sto diventando vecchio/a e sono stanco/a di combattere.";
+	npctalk "Cotnes : Sono così emozionato per questo~ Sto invecchiando e sono stanco di combattere.",.@cot$;
 	next;
 	cutin "ep162_dn03",1;
 	mes "[Dien]";
-	mes "Is that so?";
-	npctalk "Dien : Is that so?",.@dien$;
+	mes "È così?";
+	npctalk "Dien : È così?",.@dien$;
 	next;
 	cutin "ep162_ctn01",2;
 	mes "[Cotnes]";
-	mes "Yeah~";
-	mes "I'm tired of fighting, let's go back to work.";
-	mes "The road is open now.";
+	mes "Sì~";
+	mes "Sono stanco di litigare, torniamo al lavoro.";
+	mes "La strada è aperta ora.";
 	npctalk "Cotnes : Yeah~ I'm tired of fighting, let's go back to work. The road is open now.",.@cot$;
 	close2;
 	cutin "",255;
@@ -388,16 +388,16 @@ OnTouch:
 		end;
 	cutin "ep162_dn03",2;
 	mes "[Dien]";
-	mes "Finally..";
-	mes "If you cross this door...";
+	mes "Finalmente..";
+	mes "Se attraversi questa porta...";
 	next;
 	cutin "ep162_est01",2;
 	mes "[Est]";
-	mes "Let's head back now before they gather more troops.";
+	mes "Torniamo indietro ora prima che radunino più truppe.";
 	next;
 	cutin "ep162_dn03",2;
 	mes "[Dien]";
-	mes "Excuse me.";
+	mes "Scusi.";
 	next;
 	cutin "ep162_est01",2;
 	mes "[Est]";
@@ -405,33 +405,33 @@ OnTouch:
 	next;
 	cutin "ep162_rds01",2;
 	mes "[Ridsh]";
-	mes "Why?";
+	mes "Perché?";
 	next;
 	cutin "ep162_dn03",2;
 	mes "[Dien]";
-	mes "Oh my, oh my!";
-	mes "What should we do!";
+	mes "Oh mio Dio, oh mio Dio!";
+	mes "Cosa dovremmo fare!";
 	next;
 	cutin "ep162_rds04",2;
 	mes "[Ridsh]";
-	mes "Why, what's going on?";
+	mes "Cos'è che sta succedendo?";
 	next;
 	cutin "ep162_dn03",2;
 	mes "[Dien]";
-	mes "I think I've left it.";
+	mes "Penso di averlo lasciato.";
 	next;
 	cutin "ep162_rds01",2;
 	mes "[Ridsh]";
-	mes "Left what?";
+	mes "Cosa ho lasciato?";
 	next;
 	cutin "ep162_dn03",2;
 	mes "[Dien]";
-	mes "My protection charm!";
-	mes "I get nervous if I don't have it with me.";
+	mes "Il mio amuleto protettivo!";
+	mes "Mi agito se non ce l'ho con me.";
 	next;
 	cutin "ep162_rds04",2;
 	mes "[Ridsh]";
-	mes "You've been fine so far without it?!";
+	mes "Sei stata bene finora senza?";
 	next;
 	cutin "ep162_dn03",2;
 	mes "[Dien]";
@@ -439,38 +439,38 @@ OnTouch:
 	next;
 	cutin "ep162_rds01",2;
 	mes "[Ridsh]";
-	mes "Ah... Sorry..";
-	mes "Alright.";
+	mes "Ah... Scusa..";
+	mes "Va bene.";
 	next;
 	mes "[Ridsh]";
-	mes "While we open the last door, would you mind going back to ^FF0000Clana Nemieri^000000?";
+	mes "Mentre apriamo l'ultima porta, ti dispiacerebbe tornare a ^FF0000Clana Nemieri^000000?";
 	next;
 	mes "[Ridsh]";
-	mes "I have to contact a few people anyway, and Dien won't go anywhere until she gets her protection charm.";
+	mes "Devo contattare alcune persone comunque, e Dien non se ne andrà da nessuna parte finché non avrà il suo amuleto protettivo.";
 	next;
 	mes "[Ridsh]";
-	mes "Sister, tell me where it is.";
+	mes "Sorella, dimmi dove è.";
 	next;
 	cutin "ep162_dn02",2;
 	mes "[Dien]";
 	mes "Oh!";
-	mes "Thank you so much for that";
+	mes "Grazie mille per questo";
 	next;
 	mes "[Dien]";
-	mes "It's hard for me to get it back because it's far...";
-	mes "Please do me a favor.";
+	mes "È difficile per me recuperarlo perché è lontano...";
+	mes "Per favore facci un favore.";
 	next;
 	cutin "ep162_dn01",2;
 	mes "[Dien]";
 	mes "^FF0000Go back to my room and look for a chest on the left side of the window, near a vase.";
 	next;
 	mes "[Dien]";
-	mes "It should be easy to get since we're here.";
+	mes "Dovrebbe essere facile da ottenere dato che siamo qui.";
 	next;
 	cutin "ep162_rds05",2;
 	mes "[Ridsh]";
 	mes "Oh!";
-	mes "Shouldn't we tell them where we are?";
+	mes "Non dovremmo dirgli dove siamo?";
 	if (isbegin_quest(11600) == 1) {
 		completequest 11600;
 		setquest 11601;
@@ -489,22 +489,22 @@ OnInstanceInit:
 1@os_b,260,363,5	script	Cotnes#171_os_4	4_F_COATNEIS,{
 	cutin "ep162_ctn01",2;
 	mes "[Cotnes]";
-	mes "It's good sometimes to take a quick walk like this~";
+	mes "È bello a volte fare una passeggiata veloce come questa~";
 	close3;
 }
 
 1@os_b,262,362,4	script	Est#171_os_1	4_F_ESTLOVELOY,{
 	cutin "ep162_est01",2;
 	mes "[Est]";
-	mes "I eager to explore the area beyond here.";
+	mes "Sono desideroso di esplorare l'area oltre qui.";
 	close3;
 }
 
 1@os_b,261,358,3	script	Ridsh#171_os_3	4_F_LEEDSH,{
 	cutin "ep162_rds01",2;
 	mes "[Ridsh]";
-	mes "I'm tired!";
-	mes "I want to go home.";
+	mes "Sono stanco!";
+	mes "Voglio tornare a casa.";
 	close3;
 }
 
@@ -524,8 +524,8 @@ OnTouch:
 		if (!'unlocked) {
 			cutin "ep162_dn01",2;
 			mes "[Dien]";
-			mes "It would be better to just go around the door.";
-			npctalk "Dien : It would be better to just go around the door.",instance_npcname("Dien#171_os_4"),bc_map;
+			mes "Sarà meglio girare intorno alla porta.";
+			npctalk "Dien: Sarebbe meglio girare intorno alla porta.",instance_npcname("Dien#171_os_4"),bc_map;
 			close2;
 			cutin "",255;
 		}

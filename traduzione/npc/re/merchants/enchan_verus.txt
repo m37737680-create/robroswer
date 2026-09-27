@@ -17,41 +17,41 @@ verus04,69,108,5	script	Mass Charleston#1	4_F_CHARLESTON01,{
 	cutin "dalle01.bmp",2;
 	if (countitem(6752) < 10) {
 		if (isbegin_quest(13186) == 0) {
-			mes "[Mass Charleston]";
-			mes "I don't know where you can find Charleston Components,";
+			mes "[Massa Charleston]";
+			mes "Non so dove puoi trovare Charleston Components,";
 			next;
-			mes "[Mass Charleston]";
-			mes "but if you have 10 or more, then I can exchange them with factory products.";
+			mes "[Massa Charleston]";
+			mes "ma se ne hai 10 o più, allora posso scambiarli con prodotti di fabbrica.";
 			close3;
 		}
-		mes "[Mass Charleston]";
-		mes "A series of trials and errors was made before the mass version of Charleston was developed.";
+		mes "[Massa Charleston]";
+		mes "Una serie di prove ed errori fu fatta prima che venisse sviluppata la versione di massa di Charleston.";
 		next;
-		mes "[Mass Charleston]";
-		mes "I don't mean to depreciate myself, but mass versions are mass versions; they're cost-effective and practical, but never as good as the high-end versions.";
+		mes "[Massa Charleston]";
+		mes "Non intendo sminuirmi, ma le versioni di massa sono versioni di massa; sono convenienti e pratiche, ma mai così buone come le versioni high-end.";
 		next;
-		mes "[Mass Charleston]";
-		mes "Some Charlestons, especially in the development stage, are equipped with more advanced features. To study them, I need more components.";
+		mes "[Massa Charleston]";
+		mes "Alcuni Charleston, specialmente nello stadio di sviluppo, sono dotati di funzionalità più avanzate. Per studiarli, ho bisogno di più componenti.";
 		next;
-		mes "[Mass Charleston]";
-		mes "If you have 10 or more Charleston Components, then I can exchange them with factory products.";
+		mes "[Massa Charleston]";
+		mes "Se hai 10 o più Componenti di Charleston, allora posso scambiarli con prodotti di fabbrica.";
 		close3;
 	}
-	mes "[Mass Charleston]";
-	mes "You got some nice parts on you! Would you like to exchange it with the goods produced in the factory?";
+	mes "[Massa Charleston]";
+	mes "Hai delle parti belle su di te! Vorresti scambiarle con i beni prodotti in fabbrica?";
 	next;
-	mes "[Mass Charleston]";
-	mes "Is a collection of Charleston advantages in a commodity, but can not be sold separately, IF bring good parts can be exchanged for you.";
+	mes "[Massa Charleston]";
+	mes "È una raccolta di vantaggi di Charleston in una merce, ma non può essere venduta separatamente, SE si portano buone parti possono essere scambiate per te.";
 	next;
-	.@s = select( "Quit.", "Exchange Reinforced parts", "Exchange Supplementary device" ) - 2;
+	.@s = select( "Basta.", "Scambiare parti rinforzate", "Scambiare dispositivo supplementare" ) - 2;
 	if (.@s == -1) {
-		mes "[Mass Charleston]";
-		mes "I'll see you next time!";
+		mes "[Massa Charleston]";
+		mes "A vederti la prossima volta!";
 		close3;
 	}
 	setarray .@job_aft$[0], "Reinforced parts", "Supplementary device";
-	mes "[Mass Charleston]";
-	mes "Which part of " + .@job_aft$[.@s] + " do you want to select?";
+	mes "[Massa Charleston]";
+	mes "Quale parte di " + .@job_aft$[.@s] + " vuoi selezionare?";
 	next;
 	switch(.@s) {
 	case 0:
@@ -67,53 +67,53 @@ verus04,69,108,5	script	Mass Charleston#1	4_F_CHARLESTON01,{
 			2995;	// Supplement_Part_Dex
 		break;
 	default:
-		mes "[Mass Charleston]";
-		mes "I'll see you next time!";
+		mes "[Massa Charleston]";
+		mes "A vederti la prossima volta!";
 		close;
 	}
 	// custom translation from here
-	.@index = select( "Quit.", getitemname(.@item[0]) + " (garment)", getitemname(.@item[1]) + " (Shoes)", getitemname(.@item[2]) + " (Accessory)" ) - 2;
+	.@index = select( "Basta.", getitemname(.@item[0]) + " indumento", getitemname(.@item[1]) + " Scarpe", getitemname(.@item[2]) + " (Accessorio)" ) - 2;
 	if (.@index == -1) {
-		mes "[Mass Charleston]";
-		mes "I'll see you next time!";
+		mes "[Massa Charleston]";
+		mes "A vederti la prossima volta!";
 		close3;
 	}
 	if (countitem(6752) < 10) {
-		mes "[Mass Charleston]";
-		mes "If you find enough Charleston parts, can you come to me again?";
+		mes "[Massa Charleston]";
+		mes "Se trovi abbastanza pezzi di Charleston, puoi venire da me ancora?";
 		close3;
 	}
 	delitem 6752,10;	// Charleston_Parts
 	getitem .@item[.@index],1;
-	mes "[Mass Charleston]";
-	mes "Exchanged 10 " + getitemname(6752) + " for " + .@job_aft$[.@s] + ". If you find more part, come to me again!";
+	mes "[Massa Charleston]";
+	mes "Scambiato 10 " + getitemname(6752) + " per " + .@job_aft$[.@s] + "Se trovi altre parti, vieni da me di nuovo!";
 	close3;
 }
 
 verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 	disable_items;
 	if (!checkweight(1201,1)) {
-		mes "You have too many types of items. Lighten your inventory first.";
+		mes "Hai troppi tipi di articoli. Alleggerisci prima il tuo inventario.";
 		close;
 	}
 	if ((MaxWeight - Weight) < 10000) {
-		mes "The items in your inventory are weighing you down. Lighten your weight first.";
+		mes "Gli oggetti nel tuo inventario ti stanno appesantendo. Alleggerisci il peso prima.";
 		close;
 	}
 	cutin "dalle01.bmp",2;
-	mes "[Mass Charleston]";
-	mes "I can upgrade the Charleston Factory products. Let me know if you're interested.";
+	mes "[Massa Charleston]";
+	mes "Posso aggiornare i prodotti di Charleston Factory. Fammi sapere se sei interessato.";
 	next;
-	switch( select( "More information.", "Add abilities to your product.", "Reset product." ) ) {
+	switch( select( "Maggiori informazioni.", "Aggiungere funzionalità al tuo prodotto.", "Ripristina prodotto." ) ) {
 	case 1:
-		mes "[Mass Charleston]";
-		mes "Each Upgrade/resetting attempt costs 100,000 zeny and 1 Charleston Component.";
+		mes "[Massa Charleston]";
+		mes "Ogni tentativo di aggiornamento/ripristino costa 100.000 zeny e 1 Componente Charleston.";
 		next;
-		mes "[Mass Charleston]";
-		mes "I also provide a wider selection of Upgrade options for Charleston Equipment at ^ff0000+9^000000 or above.";
+		mes "[Massa Charleston]";
+		mes "Offro anche una selezione più ampia di opzioni di Aggiornamento per Charleston Equipment a ^ff0000+9^000000 o superiore.";
 		next;
-		mes "[Mass Charleston]";
-		mes "Rest assured, my Upgrade technology does not involve accidental damage on the item's Upgrade level or equipped cards.";
+		mes "[Massa Charleston]";
+		mes "Stai tranquillo, la mia tecnologia di Aggiornamento non comporta danni accidentali al livello di Aggiornamento dell'oggetto o alle carte equipaggiate.";
 		close3;
 	case 2:
 		.@type_action = 1;
@@ -125,22 +125,22 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 		break;
 	}
 	if (Zeny < 100000 || countitem(6752) < 1) {
-		mes "[Mass Charleston]";
-		mes "" + .@string$ + " a Charleston product costs 1 Charleston Component and 100,000 zeny. Please know that all the expenses go into " + strtolower(.@string$) + " your product.";
+		mes "[Massa Charleston]";
+		mes "" + .@string$ + " un prodotto di Charleston costa 1 Componente di Charleston e 100.000 zeny. Si prega di sapere che tutte le spese vanno in " + strtolower(.@string$) + " il tuo prodotto.";
 		close3;
 	}
-	mes "[Mass Charleston]";
-	mes "Please make sure you're equipped with the Equipment you want to upgrade.";
+	mes "[Massa Charleston]";
+	mes "Assicurati di essere dotato dell'Equipaggiamento che vuoi aggiornare.";
 	next;
-	.@s = select( "Let me go equip it.", "Footgear", "Garment", "Clothes", "Accessory" ) - 2;
+	.@s = select( "Lasciami equipaggiarlo.", "Calzature", "Indumento", "Vestiti", "Accessorio" ) - 2;
 	if (.@s == -1) {
-		mes "[Mass Charleston]";
-		mes "Sure, please come back after you do.";
+		mes "[Massa Charleston]";
+		mes "Certo, per favore torna dopo che hai finito.";
 		close3;
 	}
 	if (Zeny < 100000 || countitem(6752) < 1) {
-		mes "[Mass Charleston]";
-		mes "Things needed for commodity upgrades seem inadequate!";
+		mes "[Massa Charleston]";
+		mes "Le cose necessarie per gli aggiornamenti delle materie prime sembrano inadeguate!";
 		close3;
 	}
 	setarray .@eq_num[0], EQI_SHOES, EQI_GARMENT, EQI_ARMOR, EQI_ACC_R;
@@ -153,8 +153,8 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 
 	switch(.@item_id) {
 	case -1:
-		mes "[Mass Charleston]";
-		mes "Because it is a customized upgrade be sure to wear equipment.";
+		mes "[Massa Charleston]";
+		mes "Poiché è un aggiornamento personalizzato, assicurati di indossare l'equipaggiamento.";
 		close3;
 	case 15111:	// Upgrade_Part_Plate
 		.@en_type = 3;
@@ -197,9 +197,9 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 		.@max_slot = 2;
 		break;
 	default:
-		mes "[Mass Charleston]";
+		mes "[Massa Charleston]";
 		mes "^990099" + getequipname(.@part) + "^000000??";
-		mes "I'm not interested in this Equipment.";
+		mes "Non sono interessato a questa Attrezzatura.";
 		close3;
 	}
 
@@ -216,49 +216,49 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 				"Advanced Shoes upgrade",
 				"Accessory upgrade";
 			if (.@menu_en_type$[.@en_type] == "" || .@menu_en_type$[.@en_type_9] == "") {
-				mes "[Mass Charleston]";
-				mes "Something's not right!";
+				mes "[Massa Charleston]";
+				mes "Qualcosa non va bene!";
 				close3;
 			}
-			mes "[Mass Charleston]";
-			mes "This is a considerable level of enhanced equipment, this type can give enhanced expansion performance, choose from the following series of desirable to strengthen it!";
+			mes "[Massa Charleston]";
+			mes "Questo è un livello considerevole di attrezzatura potenziata, questo tipo può dare prestazioni di espansione migliorate, scegli dalla seguente serie desiderabile per rafforzarlo!";
 			next;
 			if (select( .@menu_en_type$[.@en_type], .@menu_en_type$[.@en_type_9] ) == 2)
 				.@en_type = .@en_type_9;
 		}
 		if (.@card[3] < 1 && .@max_slot < 4) {
 			.@slot = 4;
-			mes "[Mass Charleston]";
-			mes "I'll be Upgrading the first ability. The existing Upgrade level and cards will not be damaged. Do you want to continue?";
+			mes "[Massa Charleston]";
+			mes "Aggiornerò il primo abilità. Il livello di aggiornamento e le carte esistenti non saranno danneggiati. Vuoi continuare?";
 			next;
-			if (select( "I'll come back later.", "Continue." ) == 1) {
-				mes "[Mass Charleston]";
-				mes "No problem. Come back if you change your mind.";
+			if (select( "Tornerò più tardi.", "Continua." ) == 1) {
+				mes "[Massa Charleston]";
+				mes "Nessun problema. Torna se cambi idea.";
 				close3;
 			}
 		}
 		else if (.@card[2] < 1 && .@max_slot < 3) {
 			.@slot = 3;
-			mes "[Mass Charleston]";
-			mes "I'll be Upgrading the second ability. The existing Upgrade level and cards will not be damaged.";
+			mes "[Massa Charleston]";
+			mes "Sto aggiornando la seconda abilità. Il livello di upgrade e le carte esistenti non saranno danneggiati.";
 			next;
-			mes "[Mass Charleston]";
-			mes "Though there is a slight chance of failure, in which case the existing Upgrade level will be reset. What would you like to do?";
+			mes "[Massa Charleston]";
+			mes "Sebbene ci sia una piccola possibilità di fallimento, nel qual caso il livello di aggiornamento esistente verrà resettato. Cosa desideri fare?";
 			next;
-			if (select( "I'll come back later.", "Continue." ) == 1) {
-				mes "[Mass Charleston]";
-				mes "No problem. Come back if you change your mind.";
+			if (select( "Tornerò più tardi.", "Continua." ) == 1) {
+				mes "[Massa Charleston]";
+				mes "Nessun problema. Torna se cambi idea.";
 				close3;
 			}
 		}
 		else if (.@card[1] < 1 && .@max_slot < 2) {
 			.@slot = 2;
-			mes "[Mass Charleston]";
-			mes "I'll be Upgrading the 3rd ability. This highest Upgrade stage incurs a  chance of ^990000destroying the Equipment or resetting its existing Upgrade level.^000000 Do you want to continue?";
+			mes "[Massa Charleston]";
+			mes "Sto aggiornando la terza abilità. Questo stadio di upgrade più alto comporta una possibilità di ^990000distruggere l'Equipaggiamento o resettarne il livello di Upgrade esistente.^000000 Vuoi continuare?";
 			next;
-			if (select( "I'll come back later.", "Continue." ) == 1) {
-				mes "[Mass Charleston]";
-				mes "No problem. Come back if you change your mind.";
+			if (select( "Tornerò più tardi.", "Continua." ) == 1) {
+				mes "[Massa Charleston]";
+				mes "Nessun problema. Torna se cambi idea.";
 				close3;
 			}
 		}
@@ -266,8 +266,8 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 			.@slot = 1;
 		else {
 			cutin "dalle02.bmp",2;
-			mes "[Mass Charleston]";
-			mes "This Equipment is Upgraded to the maximum level. Please bring something else.";
+			mes "[Massa Charleston]";
+			mes "Questa attrezzatura è aggiornata al livello massimo. Per favore portate qualcos'altro.";
 			close3;
 		}
 		switch(.@en_type) {
@@ -285,8 +285,8 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 				.@en_brk2 = 300;
 			}
 			else {
-				mes "[Mass Charleston]";
-				mes "An unknown error has occurred.";
+				mes "[Massa Charleston]";
+				mes "Si è verificato un errore sconosciuto.";
 				close3;
 			}
 			.@r = rand( .@en_brk1, .@en_brk2 );
@@ -341,8 +341,8 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 				.@en_brk2 = 310;
 			}
 			else {
-				mes "[Mass Charleston]";
-				mes "An unknown error has occurred.";
+				mes "[Massa Charleston]";
+				mes "Si è verificato un errore sconosciuto.";
 				close3;
 			}
 			.@r = rand( .@en_brk1, .@en_brk2 );
@@ -397,8 +397,8 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 				.@en_brk2 = 310;
 			}
 			else {
-				mes "[Mass Charleston]";
-				mes "An unknown error has occurred.";
+				mes "[Massa Charleston]";
+				mes "Si è verificato un errore sconosciuto.";
 				close3;
 			}
 			.@r = rand( .@en_brk1, .@en_brk2 );
@@ -451,8 +451,8 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 				.@en_brk2 = 310;
 			}
 			else {
-				mes "[Mass Charleston]";
-				mes "An unknown error has occurred.";
+				mes "[Massa Charleston]";
+				mes "Si è verificato un errore sconosciuto.";
 				close3;
 			}
 			.@r = rand( .@en_brk1, .@en_brk2 );
@@ -514,8 +514,8 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 				.@en_brk2 = 310;
 			}
 			else {
-				mes "[Mass Charleston]";
-				mes "An unknown error has occurred.";
+				mes "[Massa Charleston]";
+				mes "Si è verificato un errore sconosciuto.";
 				close3;
 			}
 			.@r = rand( .@en_brk1, .@en_brk2 );
@@ -580,8 +580,8 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 				.@en_brk2 = 310;
 			}
 			else {
-				mes "[Mass Charleston]";
-				mes "An unknown error has occurred.";
+				mes "[Massa Charleston]";
+				mes "Si è verificato un errore sconosciuto.";
 				close3;
 			}
 			.@r = rand( .@en_brk1, .@en_brk2 );
@@ -634,8 +634,8 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 				.@en_brk2 = 310;
 			}
 			else {
-				mes "[Mass Charleston]";
-				mes "An unknown error has occurred.";
+				mes "[Massa Charleston]";
+				mes "Si è verificato un errore sconosciuto.";
 				close3;
 			}
 			.@r = rand( .@en_brk1, .@en_brk2 );
@@ -694,8 +694,8 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 				.@en_brk2 = 111;
 			}
 			else {
-				mes "[Mass Charleston]";
-				mes "An unknown error has occurred.";
+				mes "[Massa Charleston]";
+				mes "Si è verificato un errore sconosciuto.";
 				close3;
 			}
 			.@r = rand( .@en_brk1, .@en_brk2 );
@@ -714,13 +714,13 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 			else .@en_name = 0;
 			break;
 		default:
-			mes "[Mass Charleston]";
-			mes "An unknown error has occurred.";
+			mes "[Massa Charleston]";
+			mes "Si è verificato un errore sconosciuto.";
 			close3;
 		}
 		if (Zeny < 100000 || countitem(6752) < 1) {
-			mes "[Mass Charleston]";
-			mes "Things needed for commodity upgrades seem inadequate!";
+			mes "[Massa Charleston]";
+			mes "Le cose necessarie per gli aggiornamenti delle materie prime sembrano inadeguate!";
 			close3;
 		}
 
@@ -728,8 +728,8 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 		if (callfunc("F_IsEquipIDHack", .@part, .@item_id) ||
 				callfunc("F_IsEquipCardHack", .@part, .@card_saved[0], .@card_saved[1], .@card_saved[2], .@card_saved[3]) ||
 				callfunc("F_IsEquipRefineHack", .@part, .@refine)) {
-			mes "[Mass Charleston]";
-			mes "An unknown error has occurred.";
+			mes "[Massa Charleston]";
+			mes "Si è verificato un errore sconosciuto.";
 			close3;
 		}
 
@@ -742,21 +742,21 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 		case 0:
 			cutin "dalle02.bmp",2;
 			specialeffect2 EF_SHIELDCHARGE;
-			mes "[Mass Charleston]";
-			mes "Since the balance of power does not match, the given existing ability has been destroyed. It is unfortunate but please try again next time.";// unknown text
+			mes "[Massa Charleston]";
+			mes "Poiché l'equilibrio di potere non corrisponde, la capacità esistente fornita è stata distrutta. È un peccato, ma per favore riprova la prossima volta.";// unknown text
 			getitem2 .@item_id,1,1,.@refine,0, .@card[0], .@card[1], .@card[2], .@card[3];
 			close3;
 		case 9:
 			cutin "dalle04.bmp",2;
 			specialeffect2 EF_SUI_EXPLOSION;
-			mes "[Mass Charleston]";
-			mes "This!";
-			mes "I'm sorry but the equipment has been destroyed.";// unknown text
+			mes "[Massa Charleston]";
+			mes "Questo!";
+			mes "Mi dispiace ma l'attrezzatura è stata distrutta.";// unknown text
 			close3;
 		default:
 			specialeffect2 EF_REPAIRWEAPON;
-			mes "[Mass Charleston]";
-			mes "^990000Socket" + .@slot + "^000000 will be Upgrade.";
+			mes "[Massa Charleston]";
+			mes "^990000Socket" + .@slot + "^000000 sarà Aggiornamento.";
 			getitem2 .@item_id,1,1,.@refine,0, .@card[0], .@card[1], .@card[2], .@card[3];
 			close3;
 		}
@@ -767,16 +767,16 @@ verus04,71,106,5	script	Mass Charleston#2	4_F_CHARLESTON01,{
 		if (getiteminfo(.@card[2], ITEMINFO_SUBTYPE) == CARD_ENCHANT) .@card[2] = 0;
 		if (getiteminfo(.@card[3], ITEMINFO_SUBTYPE) == CARD_ENCHANT) .@card[3] = 0;
 		specialeffect2 EF_REPAIRWEAPON;
-		mes "[Mass Charleston]";
-		mes "Reset the product's abilities.";
+		mes "[Massa Charleston]";
+		mes "Ripristinare le abilità del prodotto.";
 		delitem 6752,1;	// Charleston_Parts
 		Zeny -= 100000;
 		delequip .@part;
 		getitem2 .@item_id,1,1,.@refine,0, .@card[0], .@card[1], .@card[2], .@card[3];
 		close3;
 	dfault:
-		mes "[Mass Charleston]";
-		mes "An unknown error has occurred.";
+		mes "[Massa Charleston]";
+		mes "Si è verificato un errore sconosciuto.";
 		close3;
 	}
 	end;
@@ -788,217 +788,217 @@ verus04,63,112,4	script	Mass Charleston#3	4_F_CHARLESTON01,{
 		close;
 	}
 	cutin "dalle03.bmp",2;
-	mes "[Mass Charleston]";
-	mes "Eh, do I have a customer? Activating Salesman mode...";
+	mes "[Massa Charleston]";
+	mes "Ehm, ho un cliente? Attivazione modalità Commesso...";
 	next;
 	cutin "dalle01.bmp",2;
-	mes "[Mass Charleston]";
-	mes "Charleston Factory's best-selling items: ^FF0000Upgrade Part Plate^000000 and ^FF0000Supplement Part Str^000000 now on sale!";
+	mes "[Massa Charleston]";
+	mes "Gli articoli più venduti di Charleston Factory: ^FF0000Upgrade Part Plate^000000 e ^FF0000Supplement Part Str^000000 ora in saldo!";
 	next;
-	mes "[Mass Charleston]";
-	mes "For only ^FF00003,999,999^000000 zeny! Get yourself the ultra-performance action gears!";
+	mes "[Massa Charleston]";
+	mes "Per soli ^FF00003,999,999^000000 zeny! Prenditi gli ingranaggi d'azione ultra-performanti!";
 	next;
-	mes "[Mass Charleston]";
-	mes "Also available is the ^FF0000Pilebuncker^000000 ^FF0000Upgrade^000000 service!";
+	mes "[Massa Charleston]";
+	mes "Anche disponibile è il servizio ^FF0000Pilebuncker^000000 ^FF0000Upgrade^000000!";
 	next;
-	switch( select( "Talk.", "Exchange Upgrade Parts.", "Exchange Supplementary devices.", "Upgrade Pilebuncker." ) ) {
+	switch( select( "Parla.", "Ricambi per l'aggiornamento di scambio.", "Scambiare dispositivi supplementari.", "Aggiorna Pilebuncker." ) ) {
 	case 1:
 		if (isbegin_quest(13186) == 0) {
-			mes "[Mass Charleston]";
-			mes "The Charleston Factory shut down, but its technology and products remain with us.";
+			mes "[Massa Charleston]";
+			mes "La Charleston Factory ha chiuso, ma la sua tecnologia e i suoi prodotti restano con noi.";
 			next;
-			mes "[Mass Charleston]";
-			mes "Oh, haven't you heard the news? Oops, my bad. Please forget I said that.";
+			mes "[Massa Charleston]";
+			mes "Oh, non hai sentito la notizia? Ops, colpa mia. Per favore dimentica che l'ho detto.";
 			close3;
 		}
 		cutin "dalle03.bmp",2;
-		mes "[Mass Charleston]";
-		mes "I'm a mass version Charleston. I wasn't even given a serial number. Who knows how many copies of me were made? It could be a hundred, maybe even a thousand.";
+		mes "[Massa Charleston]";
+		mes "Sono una versione di massa del Charleston. Non mi è stato nemmeno dato un numero di serie. Chi sa quante copie di me siano state fatte? Potrebbe essere centinaia, forse anche mille.";
 		next;
-		mes "[Mass Charleston]";
-		mes "The original Charleston is standing over there, but...";
+		mes "[Massa Charleston]";
+		mes "Il Charleston originale è lì, ma...";
 		next;
-		mes "[Mass Charleston]";
-		mes "By the time Charlestons 1 and 2 escaped the factory, they're severely damaged. The battle that took place that day was incredible.";
+		mes "[Massa Charleston]";
+		mes "Quando i Charlestons 1 e 2 sono fuggiti dalla fabbrica, erano gravemente danneggiati. La battaglia che si è svolta quel giorno è stata incredibile.";
 		next;
-		mes "[Mass Charleston]";
-		mes "I can still remember Charlestons 1 and 2 destroying Dr. Ve's numerous creatures like it was yesterday.";
+		mes "[Massa Charleston]";
+		mes "Mi ricordo ancora di Charleston 1 e 2 che distruggevano i numerosi mostri del Dottor Ve come se fosse ieri.";
 		next;
-		mes "[Mass Charleston]";
-		mes "They also destroyed the mass version Charlestons modified by Dr. Ve to his bidding.";
+		mes "[Massa Charleston]";
+		mes "Hanno anche distrutto la versione di massa dei Charlestons modificati dal Dr. Ve a suo piacimento.";
 		next;
-		mes "[Mass Charleston]";
-		mes "Of course there are others--like us here working on product upgrades--that were lucky enough to escape Dr. Ve's clutches and meet Charleston 1, who saved us all.";
+		mes "[Massa Charleston]";
+		mes "Certo che ce ne sono altri—come noi qui a lavorare agli aggiornamenti del prodotto—che sono stati abbastanza fortunati da sfuggire alle artigli di Dr. Ve e incontrare Charleston 1, che ci ha salvati tutti.";
 		next;
-		mes "[Mass Charleston]";
-		mes "After escaping with the modified Charleston 3, we came here.";
+		mes "[Massa Charleston]";
+		mes "Dopo essere fuggiti con il modificato Charleston 3, siamo venuti qui.";
 		next;
-		mes "[Mass Charleston]";
-		mes "Just so you know, this place was already in shambles when we arrived. We had nothing to do with its destruction. Perhaps...";
+		mes "[Massa Charleston]";
+		mes "Solo per farti sapere che questo posto era già in rovina quando siamo arrivati. Non abbiamo nulla a che fare con la sua distruzione. Forse...";
 		next;
-		mes "[Mass Charleston]";
-		mes "Sorry I sidetracked. Anyway, this is the problem.";
+		mes "[Massa Charleston]";
+		mes "Scusa, mi sono distratto. Comunque, questo è il problema.";
 		next;
-		mes "[Mass Charleston]";
-		mes "Charlestons 1 and 2 were destroyed to a point of impairment. They tried to repair each other, to no avail.";
+		mes "[Massa Charleston]";
+		mes "I Charleston 1 e 2 furono distrutti fino a un punto di compromissione. Cercarono di ripararsi a vicenda, senza successo.";
 		next;
-		mes "[Mass Charleston]";
-		mes "They realized they're damaged beyond repair. They salvaged however many parts they could, and built one body with one OS.";
+		mes "[Massa Charleston]";
+		mes "Si resero conto di essere danneggiati oltre ogni riparazione. Tuttavia recuperarono quante parti poterono e costruirono un corpo con un unico sistema operativo.";
 		next;
-		mes "[Mass Charleston]";
-		mes "And that's the newly built body. They blamed themselves for the destruction of the factory, and wanted to fix it. I'm afraid their data is corrupted or missing important memory.";
+		mes "[Massa Charleston]";
+		mes "E questo è il corpo appena costruito. Si hanno incolpato per la distruzione della fabbrica e volevano sistemarla. Temo che i loro dati siano corrotti o manchino ricordi importanti.";
 		next;
-		mes "[Mass Charleston]";
-		mes "The characteristics of the data show more traits of Charleston 2, while the access method of the OS is more similar to that of Charleston 1. Charleston 1 always was the more sentimental one.";
+		mes "[Massa Charleston]";
+		mes "Le caratteristiche dei dati mostrano più tratti di Charleston 2, mentre il metodo di accesso dell'OS è più simile a quello di Charleston 1. Charleston 1 è sempre stato il più sentimentale.";
 		next;
-		mes "[Mass Charleston]";
-		mes "I don't know if the new Charleston is Charleston 1 or 2. I can't even tell what it misses or remembers the most.";
+		mes "[Massa Charleston]";
+		mes "Non so se il nuovo Charleston è Charleston 1 o 2. Non riesco nemmeno a dire cosa manca o ricorda di più.";
 		next;
-		mes "[Mass Charleston]";
-		mes "She keeps blaming herself for losing her data, for letting down her friends. Every time we try to console her,";
+		mes "[Massa Charleston]";
+		mes "Continua a colpevolizzarsi per aver perso i suoi dati, per aver deluso le sue amiche. Ogni volta che cerchiamo di consolarla,";
 		next;
-		mes "[Mass Charleston]";
-		mes "she would say she doesn't have the heart or brain to remember or know. I wonder if she knows";
+		mes "[Massa Charleston]";
+		mes "direbbe di non avere il cuore o il cervello per ricordare o sapere. Mi chiedo se lo sappia";
 		next;
-		mes "[Mass Charleston]";
-		mes "that the memories of Humans fade and get distorted or glorified with time.";
+		mes "[Massa Charleston]";
+		mes "che i ricordi degli umani sbiadiscono e si distorcono o vengono glorificati con il tempo.";
 		next;
-		mes "[Mass Charleston]";
-		mes "And that Humans learn from their mistakes and failures. I read that from those paper memory devices called ^FF0000books^000000 in the factory.";
+		mes "[Massa Charleston]";
+		mes "E che gli umani imparano dai loro errori e fallimenti. L'ho letto da quei dispositivi di memoria cartacei chiamati ^FF0000books^000000 nell'officina.";
 		next;
-		mes "[Mass Charleston]";
+		mes "[Massa Charleston]";
 		mes "There was a small study in the ^FF0000south wing of the factory^000000. Later, it was turned into a robot development room.";
 		next;
-		mes "[Mass Charleston]";
-		mes "Maybe the Charleston is more like the Humans than the rest of us. I just hope she doesn't have to be so sad.";
+		mes "[Massa Charleston]";
+		mes "Forse la Charleston è più simile agli Umani che al resto di noi. Spero solo che non debba essere così triste.";
 		next;
-		mes "[Mass Charleston]";
-		mes "I feel so congested in the OS that I ranted. Perhaps I need to defragment my memory.";
+		mes "[Massa Charleston]";
+		mes "Mi sento così congestionato nell'OS che ho piagnucolato. Forse devo deframmentare la mia memoria.";
 		close3;
 	case 2:
-		mes "[Mass Charleston]";
-		mes "Upgrade Part Plate";
-		mes "Class: Armor, indestructible.";
-		mes "-10% damage from Small and Medium monsters.";
-		mes "-10% damage from Large monsters when Upgraded to +7.";
-		mes "Additional -5% damage from Small and Medium monsters when Upgraded to +9.";
+		mes "[Massa Charleston]";
+		mes "Aggiorna Piastra Parte";
+		mes "Classe: Armatura, indistruttibile.";
+		mes "-10% danni dai mostri Piccoli e Medi.";
+		mes "-10% danni dai mostri Grandi quando potenziato a +7.";
+		mes "Aggiuntivo -5% danni dai mostri piccoli e medi quando potenziato a +9.";
 		next;
-		mes "[Mass Charleston]";
-		mes "Weight: 300";
-		mes "Required Level: 100";
+		mes "[Massa Charleston]";
+		mes "Peso: 300";
+		mes "Livello richiesto: 100";
 		callsub S_Buy, 15111;	// Upgrade_Part_Plate
 	case 3:
-		mes "[Mass Charleston]";
-		mes "Supplement Part Str";
+		mes "[Massa Charleston]";
+		mes "Supplemento Parte Str";
 		mes "ATK+ 5%!";
-		mes "Additional ATK +1% every 4 Upgrade levels.";
-		mes "Use with Vitality/Agility/Dexterity supplementary devices for best results.";
+		mes "Aumento ATK aggiuntivo del +1% ogni 4 livelli di potenziamento.";
+		mes "Usare con dispositivi supplementari di Vitalità/Agilità/Destrezza per i migliori risultati.";
 		next;
-		mes "[Mass Charleston]";
-		mes "Weight: 200";
-		mes "Required Level: 100";
+		mes "[Massa Charleston]";
+		mes "Peso: 200";
+		mes "Livello richiesto: 100";
 		callsub S_Buy, 15110;	// Supplement_Part_Str
 	case 4:
-		mes "[Mass Charleston]";
-		mes "The last masterpiece of the Charleston Factory! You'll never find such fine Equipment anywhere else.";
+		mes "[Massa Charleston]";
+		mes "L'ultimo capolavoro della Charleston Factory! Non troverai attrezzature così belle da nessun'altra parte.";
 		next;
-		mes "[Mass Charleston]";
-		mes "To Upgrade Pilebuncker,";
+		mes "[Massa Charleston]";
+		mes "Per aggiornare Pilebuncker,";
 		mes "^FF00001 Pilebuncker^000000,";
-		mes "^FF0000300 Dented Iron Plates^000000,";
-		mes "and ^FF000015 Broken Engines^000000 are required.";
+		mes "^FF0000300 Piastre di ferro ammaccate^000000,";
+		mes "e sono richiesti ^FF000015 Motori Rotti^000000.";
 		next;
 		switch( select( "Pilebuncker S", "Pilebuncker P", "Pilebuncker T" ) ) {
 		case 1:
-			mes "[Mass Charleston]";
+			mes "[Massa Charleston]";
 			mes "Pilebuncker S";
-			mes "Class: Blunt Weapon";
+			mes "Classe: Arma Contundente";
 			mes "ATK: 400";
-			mes "Attack Speed bonus every 2 Upgrade levels.";
+			mes "Bonus Velocità di Attacco ogni 2 livelli di potenziamento.";
 			next;
-			mes "[Mass Charleston]";
-			mes "Weight: 300";
-			mes "Weapon Level: 4";
-			mes "Required Level: 130";
-			mes "Mechanic only. Comes with 1 Card socket.";
+			mes "[Massa Charleston]";
+			mes "Peso: 300";
+			mes "Livello Arma: 4";
+			mes "Livello richiesto: 130";
+			mes "Solo meccanico. Viene con 1 presa per schede.";
 			.@item_id = 16030;	// Pilebuncker_S
 			break;
 		case 2:
-			mes "[Mass Charleston]";
+			mes "[Massa Charleston]";
 			mes "Pilebuncker P";
-			mes "Class: Blunt Weapon";
+			mes "Classe: Arma Contundente";
 			mes "ATK: 450";
-			mes "ATK +5 every Upgrade level.";
+			mes "ATK +5 ogni livello di potenziamento.";
 			next;
-			mes "[Mass Charleston]";
-			mes "Weight: 400";
-			mes "Weapon Level: 4";
-			mes "Required Level: 130";
-			mes "Mechanic only.";
+			mes "[Massa Charleston]";
+			mes "Peso: 400";
+			mes "Livello Arma: 4";
+			mes "Livello richiesto: 130";
+			mes "Meccanico solo.";
 			.@item_id = 16031;	// Pilebuncker_P
 			break;
 		case 3:
-			mes "[Mass Charleston]";
+			mes "[Massa Charleston]";
 			mes "Pilebuncker T";
-			mes "Class: Blunt Weapon";
+			mes "Classe: Arma Contundente";
 			mes "ATK: 400";
-			mes "SP cost -1% every Upgrade level.";
+			mes "Costo SP -1% ad ogni livello di Aggiornamento.";
 			next;
-			mes "[Mass Charleston]";
-			mes "Weight: 350";
-			mes "Weapon Level: 4";
-			mes "Required Level: 130";
-			mes "Mechanic only. Comes with 1 Card socket.";
+			mes "[Massa Charleston]";
+			mes "Peso: 350";
+			mes "Livello Arma: 4";
+			mes "Livello richiesto: 130";
+			mes "Solo meccanico. Viene con 1 presa per schede.";
 			.@item_id = 16032;	// Pilebuncker_T
 			break;
 		}
 		break;
 	}
 	next;
-	mes "[Mass Charleston]";
-	mes "Do you really want to Upgrade ^FF0000" + getitemname(.@item_id) + "^000000?";
+	mes "[Massa Charleston]";
+	mes "Vuoi davvero aggiornare ^FF0000" + getitemname(.@item_id) + "^000000?";
 	next;
-	if (select( "I suggest you reconsider.", "Buy." ) == 1) {
-		mes "[Mass Charleston]";
-		mes "It's a good buy, but you still need to make your decision carefully.";
+	if (select( "Suggerisco di riconsiderare.", "Compra." ) == 1) {
+		mes "[Massa Charleston]";
+		mes "È un buon acquisto, ma devi ancora prendere la tua decisione con cura.";
 		close;
 	}
 	if (countitem(6751) > 299 && countitem(6750) > 14 && countitem(1549) > 0) {
-		mes "[Mass Charleston]";
-		mes "You won't regret it! She's a Charleston factory!";
+		mes "[Massa Charleston]";
+		mes "Non te ne pentirai! È una fabbrica di Charleston!";
 		delitem 6751,300;	// Distorted_Iron_Plate
 		delitem 6750,15;	// Wrong_Engine
 		delitem 1549,1;		// Pilebuncker
 		getitem .@item_id,1;
 		close3;
 	}
-	mes "[Mass Charleston]";
-	mes "Not enough materials for the Upgrade.";
+	mes "[Massa Charleston]";
+	mes "Non abbastanza materiali per l'Aggiornamento.";
 	close3;
 
 S_Buy:
 	.@item_id = getarg(0);
-	mes "^FF0000Mechanic only^000000";
+	mes "^FF0000Meccanico solo^000000";
 	mes "^FF0000Price: 3,999,999 zeny^000000";
 	next;
-	mes "[Mass Charleston]";
-	mes "Do you really want to buy ^FF0000" + getitemname(.@item_id) + "^000000?";
+	mes "[Massa Charleston]";
+	mes "Vuoi davvero comprare ^FF0000" + getitemname(.@item_id) + "^000000?";
 	next;
-	if (select( "I suggest you reconsider.", "Buy." ) == 1) {
-		mes "[Mass Charleston]";
-		mes "It's a good buy, but you still need to make your decision carefully.";
+	if (select( "Suggerisco di riconsiderare.", "Compra." ) == 1) {
+		mes "[Massa Charleston]";
+		mes "È un buon acquisto, ma devi ancora prendere la tua decisione con cura.";
 		close3;
 	}
 	//if (Zeny >= 3999998) {// typo?
 	if (Zeny >= 3999999) {
-		mes "[Mass Charleston]";
-		mes "You won't regret it! She's a Charleston factory!";
+		mes "[Massa Charleston]";
+		mes "Non te ne pentirai! È una fabbrica di Charleston!";
 		Zeny -= 3999999;
 		getitem .@item_id,1;
 		close3;
 	}
-	mes "[Mass Charleston]";
-	mes "Good commodity value is not uncommon, please confirm your pocket depth!";
+	mes "[Massa Charleston]";
+	mes "Un buon valore delle materie prime non è insolito, per favore conferma la profondità della tua tasca!";
 	close3;
 }
 
@@ -1007,19 +1007,19 @@ S_Buy:
 verus04,161,222,4	script	Grandpa picking up scrap iron	1_M_HOF,{
 	switch( isbegin_quest(12368) ) {
 	case 0:
-		mes "[Grandpa picking up scrap iron]";
-		mes "There are two pieces of scrap iron I see the value of not Fibonacci to pick up and sell to the recycling bin, the result is not willing to deal with me.";
+		mes "[Nonno che raccoglie ferraglia]";
+		mes "Ci sono due pezzi di ferro spazzatura che vedo il valore non Fibonacci da raccogliere e vendere al bidone del riciclo, il risultato non è disposto a trattare con me.";
 		next;
-		mes "[Grandpa picking up scrap iron]";
-		mes "Because it's not iron? Each resource recycling are not willing to buy, is nerve-racking!";
+		mes "[Nonno che raccoglie ferraglia]";
+		mes "Perché non è ferro? Ogni riciclo di risorse non vuole comprare, è snervante!";
 		close;
 	case 1:
-		mes "[Grandpa picking up scrap iron]";
-		mes "Hey! Did you just talk to that piece of junk? Or am I losing my sight?";
+		mes "[Nonno che raccoglie ferraglia]";
+		mes "Ehi! Hai appena parlato a quel pezzo di spazzatura? O sto perdendo la vista?";
 		close;
 	case 2:
-		mes "[Grandpa picking up scrap iron]";
-		mes "Oh, my God! That can't be sold to the Recycle Bin!";
+		mes "[Nonno che raccoglie ferraglia]";
+		mes "Oh mio Dio! Quello non può essere venduto nel Cestino del Riciclo!";
 		close;
 	}
 }
@@ -1031,39 +1031,39 @@ verus04,163,219,4	script	PLUTO_09#pa0829	4_SCR_AT_ROBOTS,{
 		close;
 	}
 	if (isbegin_quest(12368) < 2) {
-		mes "^0000ffAlthough the LCD still dim, but does not seem to work anymore.^000000";
+		mes "^0000ffSebbene lo schermo LCD sia ancora debole, ma non sembra più funzionare.^000000";
 		close;
 	}
-	mes "^0000ffWhen the strange dinosaur pattern appears, go to the introduction screen.^000000";
+	mes "^0000ffQuando appare il motivo di dinosauro strano, vai alla schermata di introduzione.^000000";
 	next;
 	mes "[PLUTO_09]";
 	mes "" + strcharinfo(0) + ",";
-	mes "Hello. How can I help you?";
+	mes "Ciao. Come posso aiutarti?";
 	next;
-	switch( select( "Note", "Old Fuel and Huge Metal Scrap to exchange for gear.", "Design drawings for the production of Enchantment" ) ) {
+	switch( select( "Nota", "Vecchio carburante e enorme rottame metallico da scambiare con ingranaggi.", "Disegni tecnici per la produzione di Enchantment" ) ) {
 	case 1:
-		mes "^0000ffDinosaur forward screen appears and a description of the cute girl voice.^000000";
+		mes "^0000ffAppare lo schermo Dinosaur e una descrizione della voce carina di ragazza.^000000";
 		next;
 		mes "[PLUTO_09]";
-		mes "This is 100 years since the genesis of the new PLUTO_09.";
+		mes "Sono passati 100 anni dalla genesi del nuovo PLUTO_09.";
 		next;
 		mes "[PLUTO_09]";
-		mes "Bring Huge Metal Scrap and Old Fuel can help you make useful to you Equipment Oh~";
+		mes "Portare grandi rottami metallici e vecchie bombole di carburante può aiutarti a creare attrezzature utili per te Oh~";
 		next;
 		mes "[PLUTO_09]";
-		mes "Do you want to make enchantment equipment? You bring the tank! I can make enchant with a design for you. Oh, good luck.";
+		mes "Vuoi fare equipaggiamento incantato? Tu porta il serbatoio! Io posso incantare con un progetto per te. Oh, buona fortuna.";
 		next;
 		mes "[PLUTO_09]";
-		mes "This is the Tyrannosaurus rex that appeared in the dinosaur fairy tale, very beautiful... (Continue to appear boring dinosaur story)";
+		mes "Questo è il Tyrannosaurus rex che è apparso nel racconto fiabesco dei dinosauri, molto bello... (Continuare a sembrare una storia noiosa sui dinosauri)";
 		next;
-		mes "^0000ffIn this introduction to the screen, presumed that the psychological state of the robot maker is extremely unstable.^000000";
+		mes "^0000ffIn questa introduzione allo schermo, si presume che lo stato psicologico del creatore di robot sia estremamente instabile.^000000";
 		close;
 	case 2:
 		setarray .@id[0],20773,15128; // Excelion_Wing, Excelion_Suit
 		mes "[PLUTO_09]";
-		mes "Production equipment needs ^0000ff10 Huge Metal Scrap and 5 Old Fuel^000000.";
+		mes "L'attrezzatura di produzione necessita di ^0000ff10 Rifiuti Metallici Enormi e 5 Vecchio Carburante^000000.";
 		next;
-		switch( select( "Quit.", "Making the " + getitemname(.@id[0]), "Making the " + getitemname(.@id[1]) ) ) {
+		switch( select( "Basta.", "Fare il " + getitemname(.@id[0]), "Fare il " + getitemname(.@id[1]) ) ) {
 		case 1:
 			mes "^0000ffDinosaurs gazed at the picture here after staying a bit closed.^000000";
 			close;
@@ -1076,7 +1076,7 @@ verus04,163,219,4	script	PLUTO_09#pa0829	4_SCR_AT_ROBOTS,{
 		}
 		if (countitem(6961) < 10 || countitem(6962) < 5) {
 			mes "[PLUTO_09]";
-			mes "I have already talked about the production equipment needs ^0000ff10 " + getitemname(6961) + " and 5 " + getitemname(6962) + "^000000, you don't have enough.";
+			mes "Ho già parlato delle esigenze di attrezzature di produzione ^0000ff10 " + getitemname(6961) + " e 5 " + getitemname(6962) + "^000000, non ne hai abbastanza.";
 			close;
 		}
 		specialeffect EF_SPELLBREAKER;
@@ -1084,7 +1084,7 @@ verus04,163,219,4	script	PLUTO_09#pa0829	4_SCR_AT_ROBOTS,{
 		delitem 6961,10;// LargeScrap
 		getitem .@item_id,1;
 		mes "[PLUTO_09]";
-		mes "Your equipment is ready. Let's see if it fits.";
+		mes "Il tuo equipaggiamento è pronto. Vediamo se ci sta.";
 		close;
 	case 3:
 		while(1) {
@@ -1093,11 +1093,11 @@ verus04,163,219,4	script	PLUTO_09#pa0829	4_SCR_AT_ROBOTS,{
 			else
 				.@string$ = "Production design (^ff0000 success rate 30%^000000)";
 			mes "[PLUTO_09]";
-			mes "If you give me 5 " + getitemname(6962) + ", I can do the production of design drawings look!";
+			mes "Se mi dai 5 " + getitemname(6962) + "io posso fare la produzione di disegni di progetto guarda!";
 			mes "----------";
 			mes "^0000ffLittle dinosaur running around on the screen.^000000";
 			next;
-			if (select( "Quit.", .@string$ ) == 1) {
+			if (select( "Basta.", .@string$ ) == 1) {
 				mes "^0000ffIt's over after showing that the dinosaurs are stuffing themselves.^000000";
 				close;
 			}
@@ -1140,16 +1140,16 @@ verus04,163,219,4	script	PLUTO_09#pa0829	4_SCR_AT_ROBOTS,{
 					.@en_name = 7054;	// Brigan
 			}
 			if (countitem(6962) < 5)
-				mes "^0000ffThe picture shows the dinosaur silently looking at the empty bowl, it may be an error message when the material is insufficient!^000000";
+				mes "^0000ffL'immagine mostra il dinosauro che guarda silenziosamente la ciotola vuota, potrebbe essere un messaggio di errore quando il materiale è insufficiente!^000000";
 			else {
 				specialeffect EF_SPELLBREAKER;
 				delitem 6962,5;// OldTank
 				getitem .@en_name,1;
 				mes "[PLUTO_09]";
 				if (.@fail)
-					mes "What a pity, the design failed.";
+					mes "Che peccato, il progetto è fallito.";
 				else
-					mes "Great, the design was made.";
+					mes "Ottimo, il progetto è stato realizzato.";
 			}
 			next;
 		}
@@ -1169,58 +1169,58 @@ verus04,165,217,4	script	MARS_01#pa0829	4_SCR_MT_ROBOTS,{
 	}
 	switch( isbegin_quest(12368) ) {
 	case 0:
-		mes "Blurred LCD screen may be frightened or happy and intense shaking, perhaps due to lack of power and can not complete the presentation.";
+		mes "Lo schermo LCD sfocato potrebbe essere spaventato o felice e tremare intensamente, forse a causa di mancanza di alimentazione e non può completare la presentazione.";
 		next;
-		if (select( "Just ignore it.", "Press every button." ) == 1) {
-			mes "It may be a pre-scrap robot that is common everywhere and doesn't require much attention.";
+		if (select( "Ignoralo.", "Premi ogni pulsante." ) == 1) {
+			mes "Potrebbe essere un robot pre-scrap comune ovunque e che non richiede molta attenzione.";
 			close;
 		}
 		mes "[?????]";
-		mes "Hello! I'm MARS_01, an exploration robot. Currently, I have entered hibernation mode to save power. The related functions are set as follows.";
+		mes "Ciao! Sono MARS_01, un robot esploratore. Attualmente, sono entrato in modalità ibernazione per risparmiare energia. Le funzioni correlate sono impostate come segue.";
 		next;
-		if (select( "Interrupt the machine", "Supply of fuel" ) == 1) {
-			mes "The robot re-enters hibernation mode after a faint sound.";
+		if (select( "Interrompere la macchina", "Fornitura di carburante" ) == 1) {
+			mes "Il robot rientra in modalità ibernazione dopo un suono debole.";
 			close;
 		}
 		mes "[MARS_01]";
-		mes "We are super power robot, as long as the old oil 1 will let me and the companion PLUTO has more than 90% of the power.";
+		mes "Siamo un robot super potente, purché il vecchio olio 1 mi permetta e il compagno PLUTO abbia più del 90% di energia.";
 		next;
 		mes "[MARS_01]";
-		mes "If you find Old Fuel, please insert the fuel into the mouth of the bottom of the screen, so you can lift the hibernation mode.";
+		mes "Se trovi Carburante Vecchio, per favore inserisci il carburante nella bocca del fondo dello schermo, così potrai sollevare la modalità ibernazione.";
 		setquest 12368;	// Operate the old robot
 		close;
 	case 1:
 		if (countitem(6962) < 1) {
 			mes "[MARS_01]";
-			mes "If you find 1 " + getitemname(6962) + ", please insert the fuel into the mouth of the bottom of the screen, so you can lift the hibernation mode.";
+			mes "Se trovi 1 " + getitemname(6962) + "Si prega di inserire il carburante nella bocca del fondo dello schermo, in modo da poter sbloccare la modalità ibernazione.";
 			close;
 		}
-		mes "Maybe we ran out of power when we went looking for fuel. should we put in the fuel?";
+		mes "Forse ci siamo scaricati di energia quando abbiamo cercato carburante. dovremmo mettere il carburante?";
 		next;
-		if (select( "Quit.", "Put in the fuel" ) == 1) {
-			mes "The old robot may be running out of power and not responding at all.";
+		if (select( "Basta.", "Mettere il carburante" ) == 1) {
+			mes "Il vecchio robot potrebbe star finendo la carica e non rispondere affatto.";
 			close;
 		}
-		mes "When the fuel is put in, the sound screen opens.";
+		mes "Quando il carburante viene messo, lo schermo del suono si apre.";
 		npctalk "Whoa, whoa?! It moves!!!", "Grandpa picking up scrap iron";
 		next;
 		mes "[MARS_01]";
-		mes "Start the inspection system and confirm the damage of each part.";
+		mes "Avviare il sistema di ispezione e confermare i danni di ogni parte.";
 		next;
 		mes "[MARS_01]";
-		mes "Power meter 10%, dashboard normal, body skeleton 13%, perform mining operations well.";
+		mes "Misuratore di potenza 10%, cruscotto normale, scheletro del corpo 13%, eseguire bene le operazioni minerarie.";
 		next;
 		mes "[MARS_01]";
-		mes "Pluto_09 began to inject energy for mining auxiliary robot.";
-		npctalk "Energy response confirmed. It's working.", "PLUTO_09#pa0829";
+		mes "Pluto_09 cominciò a iniettare energia per il robot ausiliario di miniera.";
+		npctalk "Risposta energetica confermata. Sta funzionando.", "PLUTO_09#pa0829";
 		next;
 		mes "[MARS_01]";
-		mes "Thank you for getting me started, I will reset the person who started me to be a manager.";
+		mes "Grazie per avermi dato il via, riassegnerò la persona che mi ha iniziato come manager.";
 		next;
-		select("Enter a name.");
+		select("Inserisci un nome.");
 		mes "[MARS_01]";
 		mes "" + strcharinfo(0) + ",";
-		mes "Hello! The fuel has been fully charged.";
+		mes "Ciao! Il carburante è stato completamente carico.";
 		delitem 6962,1;// OldTank
 		completequest 12368;
 		close;
@@ -1229,23 +1229,23 @@ verus04,165,217,4	script	MARS_01#pa0829	4_SCR_MT_ROBOTS,{
 	}
 	mes "[MARS_01]";
 	mes "" + strcharinfo(0) + ",";
-	mes "Hello! Can I help you?";
+	mes "Ciao! Posso aiutarti?";
 	next;
-	switch( select( "Note", "Enhanced " + getitemname(20773), "Enhanced " + getitemname(15128) ) ) {	// Excelion_Wing, Excelion_Suit
+	switch( select( "Nota", "Migliorato " + getitemname(20773), "Migliorato " + getitemname(15128) ) ) {	// Excelion_Wing, Excelion_Suit
 	case 1:
-		mes "^0000ffSoon the instructions again.^000000";
+		mes "^0000ffPresto ci saranno di nuovo le istruzioni.^000000";
 		next;
 		mes "[MARS_01]";
-		mes "While waiting for the new owner, we continue to update to the latest version.";
+		mes "Mentre aspettiamo il nuovo proprietario, continuiamo ad aggiornare alla versione più recente.";
 		next;
 		mes "[MARS_01]";
-		mes "If you bring aak Seri Wong propulsion wing, aak Seri Wong jacket equipment and strengthen the design, I will strengthen the equipment according to the design.";
+		mes "Se porti l'ala di propulsione aak Seri Wong, l'equipaggiamento della giacca aak Seri Wong e rafforzi il design, io rafforzerò l'equipaggiamento secondo il design.";
 		next;
 		mes "[MARS_01]";
-		mes "According to the standard design drawings of the operation, the equipment will not be damaged during the process, but the number of maximum upgrade will change depending on the type of equipment.";
+		mes "Secondo i disegni di progetto standard dell'operazione, l'attrezzatura non sarà danneggiata durante il processo, ma il numero massimo di aggiornamenti cambierà a seconda del tipo di attrezzatura.";
 		next;
 		mes "[MARS_01]";
-		mes "Welcome back again~";
+		mes "Bentornato/a ancora~";
 		close;
 	case 2:
 		.@part = EQI_GARMENT;
@@ -1288,12 +1288,12 @@ verus04,165,217,4	script	MARS_01#pa0829	4_SCR_MT_ROBOTS,{
 	}
 	mes "[MARS_01]";
 	mes "" + strcharinfo(0) + ",";
-	mes "Choose the enchant you want to use!";
+	mes "Scegli l'incantesimo che vuoi usare!";
 	next;
-	.@s = select("Quit.:" + .@menu$) - 2;
+	.@s = select("Basta.:" + .@menu$) - 2;
 	if (.@s < 0) {
 		mes "[MARS_01]";
-		mes "So far.";
+		mes "Finora.";
 		close;
 	}
 	.@s *= 5;
@@ -1307,7 +1307,7 @@ verus04,165,217,4	script	MARS_01#pa0829	4_SCR_MT_ROBOTS,{
 
 	if (countitem(.@item_req) < 1) {
 		mes "[MARS_01]";
-		mes "So far.";
+		mes "Finora.";
 		close;
 	}
 	if (.@part == EQI_ARMOR)
@@ -1316,14 +1316,14 @@ verus04,165,217,4	script	MARS_01#pa0829	4_SCR_MT_ROBOTS,{
 		.@max_num_enchant = .@list[.@s+3];
 	else {
 		mes "[MARS_01]";
-		mes "Please contact the administrator.";
+		mes "Contattare l'amministratore.";
 		close;
 	}
 
 	// anti-hack
 	if (callfunc("F_IsEquipIDHack", .@part, .@equip_id) || callfunc("F_IsEquipCardHack", .@part, .@card[0], .@card[1], .@card[2], .@card[3]) || callfunc("F_IsEquipRefineHack", .@part, .@equip_refine)) {
 		mes "[MARS_01]";
-		mes "Did you remove your gear?";
+		mes "Hai tolto l'equipaggiamento?";
 		close;
 	}
 
@@ -1334,29 +1334,29 @@ verus04,165,217,4	script	MARS_01#pa0829	4_SCR_MT_ROBOTS,{
 
 	if (.@max_num_enchant < 1) {
 		mes "[MARS_01]";
-		mes "The design you choose is incompatible with the equipment.";
+		mes "Il progetto che scegli è incompatibile con l'attrezzatura.";
 		close;
 	}
 	if (.@first_slot_only > 0 && .@card[3] != 0) {
 		mes "[MARS_01]";
-		mes "This design is only for the first time to strengthen the use, but the equipment has other performance, please use other design to strengthen it!";
+		mes "Questo progetto serve solo per rafforzare l'utilizzo in questa prima fase, ma l'attrezzatura ha altre prestazioni; si prega di utilizzare un altro progetto per potenziarlo!";
 		close;
 	}
 	if (.@slot_sum >= .@max_num_enchant) {
 		mes "[MARS_01]";
-		mes "The maximum number of enchants is " + .@max_num_enchant + ". The item has reached the upper limit.";
+		mes "Il numero massimo di incantesimi è " + .@max_num_enchant + "L'articolo ha raggiunto il limite superiore.";
 		close;
 	}
 	if (.@card[1] != 0) {
 		mes "[MARS_01]";
-		mes "The number of equipment has reached the limit.";
+		mes "Il numero di attrezzature ha raggiunto il limite.";
 		close;
 	}
 
 	// anti-hack
 	if (callfunc("F_IsEquipIDHack", .@part, .@equip_id) || callfunc("F_IsEquipCardHack", .@part, .@card[0], .@card[1], .@card[2], .@card[3]) || callfunc("F_IsEquipRefineHack", .@part, .@equip_refine)) {
 		mes "[MARS_01]";
-		mes "Please pay special attention if the equipment will be removed.";
+		mes "Si prega di prestare particolare attenzione se l'attrezzatura verrà rimossa.";
 		close;
 	}
 
@@ -1366,17 +1366,17 @@ verus04,165,217,4	script	MARS_01#pa0829	4_SCR_MT_ROBOTS,{
 		break;
 	default:
 		mes "[MARS_01]";
-		mes "The product does not have a serial number, does not meet the specifications of the product can not be strengthened.";
+		mes "Il prodotto non ha un numero di serie, non soddisfa le specifiche del prodotto e non può essere rafforzato.";
 		close;
 	}
 	mes "[MARS_01]^0000ff";
-	mes "Choose " + getequipname(.@part) + " + " + getitemname(.@item_req) + ",";
+	mes "Scegli " + getequipname(.@part) + " + " + getitemname(.@item_req) + ",";
 	mes "^000000------------------";
-	mes "Your selected design can be upgraded to the equipment limit ^0000ff" + .@max_num_enchant + " the same design, ^000000so far, enhanced ^0000ff" + .@slot_sum + " times^000000, do you want to continue?";
+	mes "Il tuo design selezionato può essere aggiornato al limite di attrezzatura ^0000ff" + .@max_num_enchant + " lo stesso design, ^000000finora, potenziato ^0000ff" + .@slot_sum + " volte^000000, vuoi continuare?";
 	next;
-	if (select( "I'll think about it...", "Go on." ) == 1) {
+	if (select( "Ci penserò...", "Vai avanti." ) == 1) {
 		mes "[MARS_01]";
-		mes "Come back next time you need me~";
+		mes "Torna la prossima volta che mi serve~";
 		close;
 	}
 
@@ -1398,15 +1398,15 @@ verus04,165,217,4	script	MARS_01#pa0829	4_SCR_MT_ROBOTS,{
 	}
 	else {
 		mes "[MARS_01]";
-		mes "The equipment has reached the upper limit of strengthening Hello!";
+		mes "L'attrezzatura ha raggiunto il limite superiore di rafforzamento Ciao!";
 		close;
 	}
 	specialeffect2 EF_REPAIRWEAPON;
 	mes "[MARS_01]";
 	if (.@enchant_count < 5)
-		mes "The first equipment has been upgraded ^990000" + .@enchant_count + " times^000000.";
+		mes "Il primo equipaggiamento è stato aggiornato ^990000" + .@enchant_count + " Tempi^000000.";
 	else
-		mes "For additional performance equipment^990000 ^000000 upgrade.";	// never displayed
+		mes "Per un aggiornamento dell'attrezzatura di prestazioni aggiuntive^990000 ^000000.";	// never displayed
 
 	delitem .@item_req, 1;
 	delequip .@part;

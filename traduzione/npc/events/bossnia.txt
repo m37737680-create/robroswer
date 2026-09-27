@@ -19,73 +19,73 @@
 //============================================================
 prontera,132,125,4	script	Bossnia Staff#1	908,{
 	mes "[Riss]";
-	mes "Hello?";
-	mes "I found some beautiful places";
-	mes "while I travelled all over the world.";
-	mes "I am an adventurer.";
+	mes "Ciao?";
+	mes "Ho trovato dei posti bellissimi";
+	mes "mentre viaggiavo in tutto il mondo.";
+	mes "Sono un avventuriero.";
 	mes "Haha~";
 	next;
 	mes "[Riss]";
-	mes "What? My name is...";
-	mes "'Bossnia Staff'?? No no...";
-	mes "Well, my name is not so important.";
-	mes "Sometimes you should be generous.";
-	mes "No time for considering that kind of small stuff";
-	mes "when you have to concentrate on more important things.";
+	mes "Cosa? Il mio nome è...";
+	mes "'Staff di Bosnia'?? No no...";
+	mes "Beh, il mio nome non è così importante.";
+	mes "A volte dovresti essere generoso.";
+	mes "Niente tempo per considerare quel tipo di piccole cose";
+	mes "quando devi concentrarti su cose più importanti.";
 	next;
 	mes "[Riss]";
-	mes "Hum... anyway I want to say... something..";
-	mes "While I was travelling through some places,";
-	mes "I found a really fearful place.";
+	mes "Um... comunque voglio dire... qualcosa..";
+	mes "Mentre stavo viaggiando attraverso alcuni posti,";
+	mes "Ho trovato un posto davvero spaventoso.";
 	next;
 	mes "[Riss]";
-	mes "Most of the time when you come to a place,";
-	mes "there is one strong and fearful monster.";
-	mes "Isn't it?";
+	mes "La maggior parte delle volte quando arrivi in un posto,";
+	mes "c'è un mostro forte e spaventoso.";
+	mes "Non è vero?";
 	next;
 	mes "[Riss]";
-	mes "But... but... in there...";
-	mes "There are lots of fearful and strong monsters in there...";
-	mes "That was really frightful.";
+	mes "Ma... ma... lì dentro...";
+	mes "Ci sono molti mostri spaventosi e forti lì dentro...";
+	mes "È stato davvero spaventoso.";
 	next;
 	mes "[Riss]";
-	mes "If I had reacted a bit later... a few seconds...";
-	mes "I might have been killed.";
+	mes "Se avessi reagito un po' più tardi... qualche secondo...";
+	mes "Potrei essere stato ucciso.";
 	next;
 	mes "[Riss]";
-	mes "What?";
-	mes "You want to go in there?";
-	mes "Oh~ Boy~ you didn't get me.";
-	mes "In there.......";
+	mes "Cosa?";
+	mes "Vuoi entrare lì?";
+	mes "Oh~ Ragazzo~ non mi hai capito.";
+	mes "Lì dentro.......";
 	next;
 	mes "[Riss]";
-	mes "Uh... you already know?";
-	mes "Although you know the place, you want to go in...";
-	mes "Good, I will send you there.";
-	mes "But after you went there, don't hold";
+	mes "Uh... lo sai già?";
+	mes "Anche se conosci il posto, vuoi andare in...";
+	mes "Bene, te lo invierò lì.";
+	mes "Ma dopo che ci sei andato, non trattenere";
 
 	// If the VIP system is enabled, players pay a Reset Stone for 5 entrances (with a choice of warps).
 	// If it's disabled, players pay 5,000z per entrance.
 	if (VIP_SCRIPT) {
-		mes "a grudge against me. It'll cost you 1 Reset Stone for 5 access.";
+		mes "un rancore contro di me. Ti costerà 1 Pietra di Resetta per 5 accessi.";
 		next;
 		mes "[Riss]";
 		if (bossnia_event > 0) {
 			set .@type,1;
-			mes "Remaining access: "+bossnia_event;
+			mes "Accesso rimanente: "+bossnia_event;
 		} else if (countitem(6320)) {
 			set .@type,2;
-			mes "Do you want to go?";
+			mes "Vuoi andare?";
 		} else {
-			mes "You don't have a ticket now.....";
-			mes "So come to me again with a Reset Stone later.";
+			mes "Non hai un biglietto ora.....";
+			mes "Quindi torna da me con una Pietra di Resetta più tardi.";
 			close;
 		}
 		next;
-		if(select("Enter:Leave") == 2)
+		if(select("Entra:Lasciare") == 2)
 			close;
-		set .@i, select("First:Second:Third:Fourth");
-		switch(select("Warp 1:Warp 2:Warp 3:Warp 4")) {
+		set .@i, select("Primo:Secondo:Terzo:Quarto");
+		switch(select("Distorsione 1:Warp 2:Warp 3:Warp 4")) {
 			case 1: set .@x,31; set .@y,208; break;
 			case 2: set .@x,31; set .@y,31; break;
 			case 3: set .@x,208; set .@y,31; break;
@@ -101,25 +101,25 @@ prontera,132,125,4	script	Bossnia Staff#1	908,{
 		warp "bossnia_0"+.@i,.@x,.@y;
 		close;
 	} else {
-		mes "a grudge against me. Also it costs 5,000 zeny.";
+		mes "un rancore contro di me. Inoltre costa 5.000 zeny.";
 		next;
 		if (Zeny > 4999) {
 			mes "[Riss]";
-			mes "Would you really like to take the challenge?";
-			mes "Ok, just choose the course.";
+			mes "Ti piacerebbe davvero accettare la sfida?";
+			mes "Va bene, scegli solo il corso.";
 			next;
-			set .@i, select("First:Second:Third:Fourth");
+			set .@i, select("Primo:Secondo:Terzo:Quarto");
 			mes "[Riss]";
-			mes "Take care, boy~";
-			mes "Don't hold a grudge against me.";
+			mes "Stai attento, ragazzo~";
+			mes "Non tenermi rancore.";
 			close2;
 			set Zeny, Zeny - 5000;
 			warp "bossnia_0"+.@i,rand(202,204),rand(202,204);
 			end;
 		} else {
 			mes "[Riss]";
-			mes "You don't have enough money...";
-			mes "Come back when you have at least 5,000 zeny.";
+			mes "Non hai abbastanza soldi...";
+			mes "Torna quando avrai almeno 5.000 zeny.";
 			close;
 		}
 	}

@@ -12,18 +12,18 @@
 //============================================================
 
 c_tower1,232,222,5	script	Belljamin Button#ct	968,{
-	mes "[Belljamin Button]";
-	mes "The monsters here are able to control time.";
+	mes "[Pulsante Belljamin]";
+	mes "I mostri qui sono in grado di controllare il tempo.";
 	if( BaseLevel < 150 ){
-		mes "Come back when you've reached ^0000FFLevel 150^000000.";
+		mes "Torna quando avrai raggiunto il livello ^0000FFLevel 150^000000.";
 		close;
 	}
-	mes "Time, memories, environments... all can become warped here.";
+	mes "Tempo, ricordi, ambienti... tutto può diventare distorto qui.";
 	next;
-	mes "[Belljamin Button]";
-	mes "I'm begging you not to ask more about it. It might put your life in danger.";
+	mes "[Pulsante Belljamin]";
+	mes "Ti prego di non chiedere più di questo. Potrebbe mettere la tua vita in pericolo.";
 	next;
-	.@menu = select("Don't ask:Go to 2nd floor of warped tower:Go to 3rd floor of warped tower");
+	.@menu = select("Non chiedere:Vai al secondo piano della torre deforme:Vai al terzo piano della torre deforme");
 	switch(.@menu){
 		case 1:
 			break;
@@ -38,69 +38,69 @@ c_tower1,232,222,5	script	Belljamin Button#ct	968,{
 				.@x = 65;
 				.@y = 147;
 			}
-			mes "[Belljamin Button]";
-			mes "Be careful with your choice.";
+			mes "[Pulsante Belljamin]";
+			mes "Attento alla tua scelta.";
 			next;
-			mes "[Belljamin Button]";
-			mes "I need ^0000FF10,000z^000000 to let you in. It's a pretty dangerous place to be.";
+			mes "[Pulsante Belljamin]";
+			mes "Ho bisogno di ^0000FF10,000z^000000 per farti entrare. È un posto piuttosto pericoloso.";
 			next;
-			switch( select( "Quit:Pay 10,000z:Why do you need money?" ) ){
+			switch( select( "Smetti:Paga 10,000z:Perché hai bisogno di soldi?" ) ){
 				case 1:
 					break;
 				case 2:
 					if( Zeny < 10000 ){
-						mes "[Belljamin Button]";
-						mes "Really? You don't have the money and asked me to take you there?";
+						mes "[Pulsante Belljamin]";
+						mes "Davvero? Non hai i soldi e mi hai chiesto di portarti lì?";
 						close;
 					}
 					Zeny -= 10000;
-					mes "[Belljamin Button]";
-					mes "I'm not sure how you'll keep track of time in there but be as careful as you can.";
+					mes "[Pulsante Belljamin]";
+					mes "Non sono sicuro di come ti terrai traccia del tempo lì dentro, ma fai molta attenzione.";
 					close2;
 					warp .@map$, .@x, .@y;
 					end;
 				case 3:
-					mes "[Belljamin Button]";
-					mes "I am here all day for the safety of adventurers. I always alert them about the danger. That's why I need some form of payment.";
+					mes "[Pulsante Belljamin]";
+					mes "Sono qui tutto il giorno per la sicurezza degli avventurieri. Li allerto sempre sul pericolo. Ecco perché ho bisogno di una forma di pagamento.";
 					emotion ET_SWEAT;
 					close;
 			}
 			break;
 	}
-	mes "[Belljamin Button]";
-	mes "Phew...You've made a good choice. This place is brutal so you should probably get back to a safe area.";
+	mes "[Pulsante Belljamin]";
+	mes "Uffa...Hai fatto una buona scelta. Questo posto è brutale quindi dovresti probabilmente tornare in un'area sicura.";
 	close;
 }
 
 c_tower2_,274,26,3	script	Belljamin Button#nct1	962,{
-	mes "[Belljamin Button]";
-	mes "Perhaps you've seen me before?";
+	mes "[Pulsante Belljamin]";
+	mes "Forse mi hai già visto?";
 	next;
-	mes "[Belljamin Button]";
-	mes "You saw me in a different place, with a different look.";
+	mes "[Pulsante Belljamin]";
+	mes "Mi hai visto in un posto diverso, con un aspetto diverso.";
 	next;
-	if( select( "Who are you?:Get me out of here!" ) == 1 ){
-		mes "[Belljamin Button]";
-		mes "Can you explain to me what you've seen, what you've done?";
+	if( select( "Chi sei?:Lasciami qui!" ) == 1 ){
+		mes "[Pulsante Belljamin]";
+		mes "Mi puoi spiegare cosa hai visto, cosa hai fatto?";
 		next;
-		mes "[Belljamin Button]";
-		mes "Me too. You might also be a missing one. Unaware, with no purpose nor idea.";
+		mes "[Pulsante Belljamin]";
+		mes "Anche io. Potresti anche essere uno mancante. Inconsapevole, senza scopo né idea.";
 		next;
-		mes "[Belljamin Button]";
-		mes "It's time to go back. Please cherish your time some more.";
+		mes "[Pulsante Belljamin]";
+		mes "È ora di tornare indietro. Per favore, custodisci il tuo tempo ancora un po'.";
 		next;
-		if( select( "Stay a little bit more:Please take me back" ) == 1 ){
-			mes "[Belljamin Button]";
-			mes "You must really like this place. Well, do whatever you want.";
+		if( select( "Rimani un po' di più:Riportami indietro" ) == 1 ){
+			mes "[Pulsante Belljamin]";
+			mes "Devi davvero amare questo posto. Beh, fai quello che vuoi.";
 			close;
 		}
 	}else{
-		mes "[Belljamin Button]";
-		mes "It's time to move on. Do you have a favorite drink?";
+		mes "[Pulsante Belljamin]";
+		mes "È ora di andare avanti. Hai una bevanda preferita?";
 		next;
 	}
-	mes "[Belljamin Button]";
-	mes "Think about the drink in a cup. Slowly stir the cup with a spoon and peer through as the drink changes color.";
+	mes "[Pulsante Belljamin]";
+	mes "Pensa alla bevanda in una tazza. Mescola lentamente la tazza con un cucchiaio e guarda mentre la bevanda cambia colore.";
 	close2;
 	warp "c_tower1", 235, 223;
 	end;

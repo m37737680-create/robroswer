@@ -12,47 +12,47 @@ oz_dun01,219,117,5	script(CLOAKED)	Ira#c12_01	4_M_BRZ_JACI,{
 	if (ep18_main == 54) {
 		.@md_name$ = "High Priest's Villa";
 
-		mes "[Ira]";
-		mes "The entrance to the villa? The key is at the entrance.";
-		mes "Some sort of teleportation magic is applied there.";
-		mes "If you're ready, shall I guide you to the villa?";
+		mes "[Rabbia]";
+		mes "L'ingresso della villa? La chiave è all'entrata.";
+		mes "Qualche tipo di magia di teletrasporto viene applicata lì.";
+		mes "Se sei pronto/a, ti guido alla villa?";
 		next;
-		mes "[Ira]";
-		mes "And... We don't know what might happen inside.";
-		mes "If you have companions, I recommend going together.";
+		mes "[Rabbia]";
+		mes "E... non sappiamo cosa potrebbe succedere all'interno.";
+		mes "Se hai compagni, ti consiglio di andare insieme.";
 		next;
-		switch( select( "Apply for '" + .@md_name$ + "'.", "Enter '" + .@md_name$ + "'." ) ) {
+		switch( select( "Candidarsi per" + .@md_name$ + "'.", "Inserisci '" + .@md_name$ + "'." ) ) {
 		case 1:
 			if (getcharid(1) == 0 || is_party_leader() == false) {
-				mes "^4d4dff This is a memorial event.";
-				mes "Memorial dungeon requests must be made as a party leader.^000000";
+				mes "^4d4dff Questo è un evento commemorativo.";
+				mes "Le richieste di dungeon memoriale devono essere fatte come leader del gruppo.^000000";
 				close;
 			}
-			mes "[Ira]";
-			mes "Then allow me to escort you.";
+			mes "[Rabbia]";
+			mes "Allora permettimi di accompagnarti.";
 			if (instance_create(.@md_name$) < 0) {
-				mes "Party: " + getpartyname(getcharid(1)) + "";
+				mes "Festa: " + getpartyname(getcharid(1)) + "";
 				mes "Leader: " + strcharinfo(0) + "";
-				mes "^0000ff" + .@md_name$ + " ^000000- Unknown error";
+				mes "^0000ff" + .@md_name$ + " ^000000- Errore sconosciuto";
 				close;
 			}
 			close;
 		case 2:
 			switch( instance_enter(.@md_name$) ) {
 			case IE_OTHER:
-				mes "[Ira]";
-				mes "^ff0000An unknown error occurred.^000000";
+				mes "[Rabbia]";
+				mes "^ff0000Si è verificato un errore sconosciuto.^000000";
 				close;
 			case IE_NOINSTANCE:
-				mes "[Ira]";
-				mes "Hm? Could you please check if the party leader has requested entrance to the villa?";
+				mes "[Rabbia]";
+				mes "Hm? Potrebbe verificare se il leader del gruppo ha richiesto l'ingresso alla villa?";
 				close;
 			case IE_NOMEMBER:
-				mes "[Ira]";
+				mes "[Rabbia]";
 				mes "^ff0000Only a member of the party can enter the Memorial Dungeon.^000000";
 				close;
 			case IE_OK:
-				mapannounce "oz_dun01", "" + strcharinfo(0) + " from the " + getpartyname( getcharid(1) ) + "'s party has entered the " + .@md_name$ + ".", bc_map, 0xFF99;
+				mapannounce "oz_dun01", """ + strcharinfo(0) + " from the " + getpartyname( getcharid(1) ) + "'s party has entered the " + .@md_name$ + ".", bc_map, 0xFF99;
 				// warp "1@adv",123,17;
 				end;
 			}
@@ -73,7 +73,7 @@ oz_dun01,219,117,5	script(CLOAKED)	Ira#c12_01	4_M_BRZ_JACI,{
 
 
 1@adv,122,20,5	script	Ira#aira01	4_M_BRZ_JACI,{
-	npctalk "Don't worry about me. I'll stay near the door and leave immediately if it's dangerous.", "Ira#aira01";
+	npctalk "Non preoccuparti per me. Rimarrò vicino alla porta e partirò immediatamente se è pericoloso.", "Ira#aira01";
 	end;
 
 OnInstanceInit:
@@ -89,7 +89,7 @@ OnInstanceInit:
 1@adv,125,23,3	script	Miriam#miriam01	EP18_NPC_MIRIAM,{
 	if (is_party_leader() == false) {
 		mes "[Miriam]";
-		mes "Are you all gathered?";
+		mes "Siete tutti riuniti?";
 		close;
 	}
 	if (ep18_main != 54)
@@ -100,21 +100,21 @@ OnInstanceInit:
 		.@ira$ = instance_npcname("Ira#aira01");
 
 		sleep 2500;
-		npctalk "Ira: Here it is. It should be okay since only users go to the first floor.", .@ira$;
+		npctalk "Ira: Eccolo. Dovrebbe andare bene dato che solo gli utenti vanno al primo piano.", .@ira$;
 		sleep 2500;
-		npctalk "Miriam: What about the second floor?";
+		npctalk "Miriam: E il secondo piano?";
 		sleep 2500;
-		npctalk "Ira: Bunch of priests are staying there. I don't know if they're really a priest.", .@ira$;
+		npctalk "Ira: C'è un gruppo di preti che sta soggiornando lì. Non so se sono davvero preti.", .@ira$;
 		sleep 2500;
-		npctalk "Ira: They seem to be armed.", .@ira$;
+		npctalk "Loro sembrano essere armati.", .@ira$;
 		sleep 2500;
-		npctalk "Miriam: Okay. Thanks for the guidance. We'll do the inside search.";
+		npctalk "Miriam: Ok. Grazie per la guida. Faremo la ricerca interna.";
 		sleep 2500;
 		npctalk "Ira: Don't worry about me. Be careful, you two.", .@ira$;
 		sleep 2500;
-		npctalk "Miriam: Then let's go up carefully.";
+		npctalk "Miriam: Allora saliamo con calma.";
 		sleep 2500;
-		npctalk "Ira: Find the key to the 2nd floor banquet hall. There must be something beyond that!", .@ira$;
+		npctalk "Ira: Trova la chiave della sala banchetti del secondo piano. Ci deve essere qualcosa oltre!", .@ira$;
 		sleep 2500;
 		npctalk "Miriam: Adventurer, shall we all share our tasks?";
 		'adv_step = 2;
@@ -122,39 +122,39 @@ OnInstanceInit:
 	}
 	if ('adv_step == 2) {
 		mes "[Miriam]";
-		mes "I think I should check to see if there are other employees and go up to the second floor.";
-		npctalk "Miriam: I think I should check to see if there are other employees and go up to the second floor.", instance_npcname("Miriam#miriam01");
+		mes "Penso che dovrei controllare se ci sono altri dipendenti e salire al secondo piano.";
+		npctalk "Miriam: Penso che dovrei controllare se ci sono altri dipendenti e salire al secondo piano.", instance_npcname("Miriam#miriam01");
 		cutin "ep18_miriam_01.png",0;
 		next;
 		mes "[Miriam]";
-		mes "I feel a sharp presence beyond the central stairs.";
-		mes "Probably the Heart Hunter who fought in the temple.";
-		npctalk "Miriam: I feel a fierce presence. Probably the Heart Hunter.", instance_npcname("Miriam#miriam01");
+		mes "Sento una presenza acuta oltre le scale centrali.";
+		mes "Probabilmente il Cacciatore di Cuori che ha combattuto nel tempio.";
+		npctalk "Miriam: Sento una presenza feroce. Probabilmente il Cacciatore di Cuori.", instance_npcname("Miriam#miriam01");
 		cutin "ep18_miriam_03.png",0;
 		next;
 		mes "[Miriam]";
-		mes "I'm worried about the missing piece of Ymir's heart.";
-		mes "If it's about inciting trouble, what happened at the temple is enough.";
-		npctalk "Miriam: I'm worried about the missing Ymir's heart. What happened at the temple is enough.", instance_npcname("Miriam#miriam01");
+		mes "Sono preoccupato per il pezzo mancante del cuore di Ymir.";
+		mes "Se si tratta di incitare problemi, quello che è successo al tempio è sufficiente.";
+		npctalk "Miriam: Sono preoccupata per il cuore scomparso di Ymir. Quello che è successo al tempio è abbastanza.", instance_npcname("Miriam#miriam01");
 		next;
 		mes "[Miriam]";
-		mes "What if my father has other plans...";
-		mes "If you try to go down the wrong path again, I have to stop him.";
+		mes "Cosa succederebbe se mio padre avesse altri piani...";
+		mes "Se provi a prendere la strada sbagliata di nuovo, devo fermarlo.";
 		npctalk "Miriam: If my father has another plan and goes down the wrong path, I have to stop him.", instance_npcname("Miriam#miriam01");
 		next;
 		mes "[Miriam]";
-		mes "First, shall we get some information from the villa employees?";
-		mes "I see a male employee over there.";
+		mes "Per prima cosa, prendiamo qualche informazione dai dipendenti della villa?";
+		mes "Vedo un dipendente maschio laggiù.";
 		npctalk "Miriam: First, shall we get some information from the remaining employees?", instance_npcname("Miriam#miriam01");
 		cutin "ep18_miriam_02.png",0;
 		next;
 		mes "[Miriam]";
-		mes "I'll go to that employee.";
-		mes "Adventurer, please find another employee and ask him about the mansion.";
+		mes "Vado da quell'impiegato.";
+		mes "Avventuriero, per favore trova un altro dipendente e chiedigli della villa.";
 		npctalk "Miriam: I'll go to that employee. Adventurer, please find another employee.", instance_npcname("Miriam#miriam01");
 		close2;
 		cutin "",255;
-		npctalk "Then I will go to the employee over there.", instance_npcname("Miriam#miriam01");
+		npctalk "Allora andrò all'impiegato laggiù.", instance_npcname("Miriam#miriam01");
 		if ('adv_step == 2) {
 			'adv_step = 3;
 			npcwalkto 136,46;
@@ -162,7 +162,7 @@ OnInstanceInit:
 		end;
 	}
 	if ('adv_step == 3) {
-		npctalk "Miriam: Find another employee.";
+		npctalk "Miriam: Trova un altro dipendente.";
 		end;
 	}
 	if ('adv_step == 4) {
@@ -180,17 +180,17 @@ OnInstanceInit:
 		emotion ET_HUK, getnpcid(0, .@extra02$);
 		mapannounce 'map_adv$, "Crying Voice: Oh my! Why are you like this! Help me!", bc_map, 0xFF99;
 		sleep 1000;
-		npctalk "Miriam: Now there's screaming! What's happening?", instance_npcname("Miriam#miriam01");
+		npctalk "Miriam: Adesso si sta urlando! Cosa sta succedendo?", instance_npcname("Miriam#miriam01");
 		sleep 1000;
 		mapannounce 'map_adv$, "Kyaaaaaaaaaaa-!", bc_map, 0xFF99;
 		sleep 1000;
 		npctalk "Miriam: Ira!!", instance_npcname("Miriam#miriam01");
 		sleep 2500;
-		npctalk "Miriam: I guess something happened. Let's go to Ira.", instance_npcname("Miriam#miriam01");
+		npctalk "Miriam: Mi sa che è successo qualcosa. Andiamo a Ira.", instance_npcname("Miriam#miriam01");
 		sleep 2500;
-		npctalk "Hans: Miss! Please take me with you!", .@extra02$;
+		npctalk "Hans: Signorina! Per favore, portami con te!", .@extra02$;
 		sleep 2500;
-		npctalk "Miriam: Then I will come and see if Ira and the others are safe.", instance_npcname("Miriam#miriam01");
+		npctalk "Miriam: Allora verrò a vedere se Ira e gli altri sono al sicuro.", instance_npcname("Miriam#miriam01");
 		sleep 2500;
 		npctalk "Miriam: Adventurer, please enter first. Mr. Hans, let's go together.", instance_npcname("Miriam#miriam01");
 		sleep 2500;
@@ -201,7 +201,7 @@ OnInstanceInit:
 		enablenpc .@rh02$;
 		sleep 1000;
 		npctalk "Oh, isn't it our old friend?", .@rh01$;
-		npctalk "Thank you for your work on the Wolf Village!", .@rh02$;
+		npctalk "Grazie per il tuo lavoro sul Villaggio dei Lupi!", .@rh02$;
 		sleep 2500;
 		disablenpc .@rh01$;
 		disablenpc .@rh02$;
@@ -216,44 +216,44 @@ OnInstanceInit:
 
 1@adv,100,24,4	script	Villa Employee#extra01	4_F_SHABBY,{
 	if ('adv_step == 3) {
-		mes "[Villa Employee]";
-		mes "This is my first time meeting you. Who are you?";
-		mes "Are you the elder's guest?";
+		mes "Dipendente della Villa";
+		mes "È la prima volta che ci incontriamo. Chi sei?";
+		mes "Sei l'ospite del più anziano?";
 		next;
-		select( "Where is Amal?" );
-		mes "[Villa Employee]";
-		mes "Wouldn't he be at the chapel?";
-		mes "Whenever you come here, please look for the chapel first...";
+		select( "Dove è Amal?" );
+		mes "Dipendente della Villa";
+		mes "Non sarebbe alla cappella?";
+		mes "Ogni volta che vieni qui, per favore guarda prima la cappella...";
 		next;
 		unittalk getcharid(3), "" + strcharinfo(0) + " : Is there a chapel at the villa?";
-		mes "[Villa Employee]";
-		mes "Yes. He seemed to be a man of faith, so he built a chapel inside the mansion.";
+		mes "Dipendente della Villa";
+		mes "Sì. Sembrava un uomo di fede, così costruì una cappella all'interno della villa.";
 		next;
-		select( "What about other people?" );
-		mes "[Villa Employee]";
-		mes "Most were suddenly fired.";
-		mes "I also heard someone tell me to leave a little while ago. Is this a sign of mass layoff!?";
+		select( "E le altre persone?" );
+		mes "Dipendente della Villa";
+		mes "La maggior parte fu licenziata all'improvviso.";
+		mes "Ho anche sentito qualcuno dirmi di andare via poco fa. È un segno di licenziamento di massa!?";
 		next;
-		mes "[Villa Employee]";
-		mes "The atmosphere was so heavy that I couldn't even ask.";
-		mes "The chapel can be reached by going up the central stairs and past the banquet hall.";
-		mes "Then, go do your business.";
+		mes "Dipendente della Villa";
+		mes "L'atmosfera era così pesante che non riuscivo nemmeno a chiedere.";
+		mes "La cappella può essere raggiunta salendo le scale centrali e passando dalla sala banchetti.";
+		mes "Allora, vai a fare i tuoi affari.";
 		if ('adv_step == 3)
 			'adv_step = 4;
 		close;
 	}
-	mes "[Villa Employee]";
-	mes "Sir Amal went to chapel.";
-	mes "Go up the central stairs, pass the banquet hall, and you will reach the chapel.";
+	mes "Dipendente della Villa";
+	mes "Sir Amal è andato alla cappella.";
+	mes "Salite le scale centrali, superate la sala banchetti e raggiungerete la cappella.";
 	close;
 }
 
 1@adv,138,49,3	script	Villa Employee#extra02	4_M_MIDDLE,{
 	if ('adv_step < 4) {
-		mes "This is the person Miriam decided to investigate. Let's find another one.";
+		mes "Questa è la persona che Miriam ha deciso di indagare. Troviamo un'altra.";
 		close;
 	}
-	npctalk "Hans: The atmosphere of the villa is unusual. All of the attendant priests were armed.", instance_npcname("Villa Employee#extra02");
+	npctalk "Hans: L'atmosfera della villa è insolita. Tutti i preti assistenti erano armati.", instance_npcname("Villa Employee#extra02");
 	end;
 }
 
@@ -280,7 +280,7 @@ OnMobDead:
 1@adv,124,17,7	script(DISABLED)	Miriam#miriam02	EP18_NPC_MIRIAM,{
 	if ('adv_step < 10) {
 		if (is_party_leader() == false || 'adv_step != 7) {
-			npctalk "Miriam: Leave this to me and take care of the Heart Hunter on the 2nd floor.";
+			npctalk "Miriam: Lascia questo a me e occupati del Cacciatore di Cuori al secondo piano.";
 			end;
 		}
 		'adv_step = 8;
@@ -296,25 +296,25 @@ OnMobDead:
 		enablenpc instance_npcname("Heart Hunter#rh06");
 		enablenpc instance_npcname("Heart Hunter#rh07");
 
-		npctalk "Ha... didn't I clearly tell you to clear everything? Why are there still rats?", instance_npcname("Heart Hunter#rh05");
+		npctalk "Ma... non ti ho detto chiaramente di pulire tutto? Perché ci sono ancora dei ratti?", instance_npcname("Heart Hunter#rh05");
 		sleep2 2500;
 		npctalk "Miriam: Adventurer, I will take care of this.", instance_npcname("Miriam#miriam02");
 		sleep2 2500;
 		npctalk "Miriam: Adventurer, please break through the lobby. Let's process it separately.", instance_npcname("Miriam#miriam02");
 		sleep2 2000;
-		npctalk "You can't just leave like that. Block the stairs!", instance_npcname("Heart Hunter#rh05");
+		npctalk "Non puoi semplicemente andare via così. Blocca le scale!", instance_npcname("Heart Hunter#rh05");
 		unitwalk getnpcid(0,instance_npcname("Heart Hunter#rh03")), 124,40, .@miriam$ + "::OnMove1";
 		unitwalk getnpcid(0,instance_npcname("Heart Hunter#rh07")), 124,41, .@miriam$ + "::OnMove2";
 		sleep2 3000;
-		npctalk "Miriam: Adventurer! Please stop them! I'll take care of this and evacuate everyone!", instance_npcname("Miriam#miriam02");
+		npctalk "Miriam: Avventuriero! Fermali! Mi occuperò io e evacuerò tutti!", instance_npcname("Miriam#miriam02");
 		sleep2 1500;
-		npctalk "Are you going alone?", instance_npcname("Heart Hunter#rh05");
+		npctalk "Vai da solo?", instance_npcname("Heart Hunter#rh05");
 		sleep2 1500;
-		npctalk "You can't run away!", instance_npcname("Heart Hunter#rh06");
+		npctalk "Non puoi scappare!", instance_npcname("Heart Hunter#rh06");
 		sleep2 1000;
-		npctalk "How dare you!", instance_npcname("Heart Hunter#rh04");
+		npctalk "Come osi!", instance_npcname("Heart Hunter#rh04");
 		sleep2 1500;
-		npctalk "Miriam: Please leave this to me and deal with the Heart Hunter on the second floor.", instance_npcname("Miriam#miriam02");
+		npctalk "Miriam: Lascia questo a me e occupati del Cacciatore di Cuori al secondo piano.", instance_npcname("Miriam#miriam02");
 		setpcblock PCBLOCK_NPC, false;
 
 		if ('adv_step != 8)
@@ -345,7 +345,7 @@ OnMobDead:
 	if ('adv_step == 11) {
 		'adv_step = 12;
 		setpcblock PCBLOCK_NPC, true;
-		npctalk "Miriam: The door is locked. Shall we split up and search for it?", instance_npcname("Miriam#miriam02");
+		npctalk "Miriam: La porta è bloccata. Ci dividiamo e lo cerchiamo?", instance_npcname("Miriam#miriam02");
 		sleep2 2500;
 		npctalk "Miriam: I'll go to the right hallway. Adventurer, please search the left side.", instance_npcname("Miriam#miriam02");
 		setpcblock PCBLOCK_NPC, false;
@@ -392,15 +392,15 @@ OnMobDead:
 }
 
 1@adv,119,19,5	script(DISABLED)	Heart Hunter#rh04	EP18_MD_HEARTHUNTER_R,{
-	npctalk "Your courage is imaginary!";
+	npctalk "Il tuo coraggio è immaginario!";
 	end;
 }
 1@adv,124,21,3	script(DISABLED)	Heart Hunter#rh05	EP18_MD_HEARTHUNTER_R,{
-	npctalk "Are you going to handle it yourself?";
+	npctalk "Te ne occuperai tu stesso?";
 	end;
 }
 1@adv,130,18,3	script(DISABLED)	Heart Hunter#rh06	EP18_MD_HEARTHUNTER_R,{
-	npctalk "You can't escape!";
+	npctalk "Non puoi scappare!";
 	end;
 }
 
@@ -453,8 +453,8 @@ OnMobDead:
 
 1@adv,63,142,0	script	Locked Door#key01	4_POINT_WHITE,{
 	if ('adv_step < 14) {
-		mes "Firmly Locked Door.";
-		mes "There is a Silver Key hole.";
+		mes "Porta saldamente chiusa.";
+		mes "C'è un foro per chiave d'argento.";
 		unittalk getcharid(3), "" + strcharinfo(0) + " : I need a Silver Key.";
 		close;
 	}
@@ -507,9 +507,9 @@ OnMobDead:
 		end;
 	if ('adv_step == 17) {
 		mes "[Miriam]";
-		mes "You found the key.";
-		mes "It appears that several of the Villa's employees are trapped inside.";
-		mes "I'll be on guard, so go in.";
+		mes "Hai trovato la chiave.";
+		mes "Sembra che diversi dipendenti della Villa siano intrappolati all'interno.";
+		mes "Sarò in guardia, quindi vai pure.";
 		cutin "ep18_miriam_01.png",0;
 		close2;
 		cutin "",255;
@@ -529,15 +529,15 @@ OnMobDead:
 	}
 	if ('adv_step == 19) {
 		mes "[Miriam]";
-		mes "If we leave it like this, all of these people will be disposed.";
-		mes "We need to evacuate them before more Heart Hunters come in.";
+		mes "Se lo lasciamo così, tutte queste persone verranno eliminate.";
+		mes "Dobbiamo evacuarli prima che arrivino altri Cacciatori di Cuori.";
 		cutin "ep18_miriam_01.png",0;
 		next;
 		mes "[Miriam]";
-		mes "Then, I will leave the investigation of the chapel to the adventurer.";
-		mes "I will take those people and evacuate them.";
-		mes "Please.";
-		npctalk "Miriam: People inside. I will escort you. Let's go out.", instance_npcname("Miriam#miriam03");
+		mes "Allora lascerò l'indagine della cappella all'avventuriero.";
+		mes "Prenderò quelle persone ed evacuerò loro.";
+		mes "Per favore.";
+		npctalk "Miriam: C'è gente dentro. Vi accompagnerò. Usciamo.", instance_npcname("Miriam#miriam03");
 		close2;
 		cutin "",255;
 		disablenpc instance_npcname("Miriam#miriam03");
@@ -547,55 +547,55 @@ OnMobDead:
 }
 
 1@adv,202,145,3	script(DISABLED)	Villa Employee#ex21	4_F_SHABBY,{
-	npctalk "Villa Employee: Please let me out of here...", instance_npcname("Villa Employee#ex21");
+	npctalk "Dipendente della Villa: Per favore, lasciatemi uscire da qui...", instance_npcname("Villa Employee#ex21");
 	end;
 }
 
 1@adv,204,143,3	script(DISABLED)	Villa Employee#ex22	4_M_RACHMAN2,{
 	if ('adv_step == 18) {
-		mes "[Villa Employee]";
-		mes "You're going to dispose the evidence huh! Murderer!";
-		mes "Huh?";
+		mes "Dipendente della Villa";
+		mes "Stai buttando le prove, eh! Assassino!";
+		mes "Eh?";
 		next;
-		mes "[Villa Employee]";
-		mes "You! You're here to save us, right?";
-		mes "The voice I heard outside was Miriam, right?";
+		mes "Dipendente della Villa";
+		mes "Tu! Sei qui per salvarci, giusto?";
+		mes "La voce che ho sentito fuori era di Miriam, giusto?";
 		next;
-		mes "[Villa Employee]";
-		mes "Investigate the chapel! Something definitely suspicious here!";
-		mes "What? Is the banquet hall closed?";
+		mes "Dipendente della Villa";
+		mes "Indaga la cappella! Qualcosa di decisamente sospetto qui!";
+		mes "Cosa? La sala banchetti è chiusa?";
 		next;
-		mes "[Villa Employee]";
-		mes "Here's the key to the side door.";
-		mes "You can leave this room and open the door right in front of you.";
-		mes "I have a spare key because this is the door I usually use to deliver food.";
+		mes "Dipendente della Villa";
+		mes "Ecco la chiave per la porta laterale.";
+		mes "Puoi lasciare questa stanza e aprire la porta proprio di fronte a te.";
+		mes "Ho una chiave di riserva perché questa è la porta che di solito uso per consegnare il cibo.";
 		next;
-		mes "[Villa Employee]";
-		mes "And please save us.";
-		mes "We are not guilty of anything.";
+		mes "Dipendente della Villa";
+		mes "E per favore salvaci.";
+		mes "Non siamo colpevoli di nulla.";
 		next;
-		mes "You got a ^4d4dffSpare Key^000000.";
+		mes "Hai preso una chiave di ricambio ^4d4dffSpare Key^000000.";
 		if ('adv_step == 18)
 			'adv_step = 19;
 		close;
 	}
-	npctalk "Villa Employee: You can open the door with the spare key.", instance_npcname("Villa Employee#ex22");
+	npctalk "Addetto alla villa: Può aprire la porta con la chiave di riserva.", instance_npcname("Villa Employee#ex22");
 	end;
 }
 
 1@adv,210,140,6	script(DISABLED)	Villa Employee#ex23	4_M_RACHMAN1,{
-	npctalk "Villa Employee: Are we really going to die?", instance_npcname("Villa Employee#ex23");
+	npctalk "Villa Employee: Stiamo davvero per morire?", instance_npcname("Villa Employee#ex23");
 	end;
 }
 
 1@adv,173,142,0	script	Locked Door#key03	4_POINT_YELLOW,{
 	if ('adv_step < 19) {
-		mes "Firmly Locked Door.";
-		mes "There is a small key hole.";
+		mes "Porta saldamente chiusa.";
+		mes "C'è una piccola serratura.";
 		unittalk getcharid(3), "" + strcharinfo(0) + " : I need a key.";
 		close;
 	}
-	mes "I used a spare key.";
+	mes "Ho usato una chiave di ricambio.";
 	progressbar "4D4DFF",2;
 	if ('adv_step != 19)
 		close;
@@ -636,8 +636,8 @@ OnMobDead:
 	if ('adv_step < 20)
 		end;
 	if ('adv_step < 22) {
-		mes "The door won't budge.";
-		mes "It feels like a strong magical force is blocking the door.";
+		mes "La porta non si muove.";
+		mes "Sento come se una forte forza magica stesse bloccando la porta.";
 		close;
 	}
 	warp 'map_adv$,124,217;
@@ -655,7 +655,7 @@ OnMobDead:
 	if ('adv_step != 21)
 		end;
 	if ('Knight_left == 1)
-		npctalk "The magic of the splendid knight has already disappeared.";
+		npctalk "La magia dello splendido cavaliere è già scomparsa.";
 	else {
 		'Knight_left = 1;
 		if ('Knight_left == 1 && 'Knight_righ == 1) {
@@ -678,7 +678,7 @@ OnMobDead:
 	if ('adv_step != 21)
 		end;
 	if ('Knight_righ == 1)
-		npctalk "The magic of the splendid knight has already disappeared.";
+		npctalk "La magia dello splendido cavaliere è già scomparsa.";
 	else {
 		'Knight_righ = 1;
 		if ('Knight_left == 1 && 'Knight_righ == 1) {
@@ -698,9 +698,9 @@ OnMobDead:
 1@adv,159,221,3	script(DISABLED)	#flower01	4_POINT_WHITE,{
 	if ('adv_step < 22)
 		end;
-	mes "There is a flower-shaped device.";
+	mes "C'è un dispositivo a forma di fiore.";
 	next;
-	if (select( "Use it.", "Leave it." ) == 2) {
+	if (select( "Usalo.", "Lascialo." ) == 2) {
 		unittalk getcharid(3), "" + strcharinfo(0) + " : Let's find another device.";
 		end;
 	}
@@ -716,7 +716,7 @@ OnMobDead:
 		enablenpc instance_npcname("Schulang#shulang01");
 		end;
 	}
-	mes "Nothing happened.";
+	mes "Nulla è successo.";
 	close;
 }
 
@@ -729,8 +729,8 @@ OnMobDead:
 	if ('adv_step < 22)
 		end;
 	if ('adv_step == 22) {
-		mes "There is a door with an elegant ^4d4dffLily^000000 engraved on it.";
-		mes "I feel an unknown magical power.";
+		mes "C'è una porta con un elegante ^4d4dffLily^000000 inciso su di essa.";
+		mes "Sento un potere magico sconosciuto.";
 		close;
 	}
 	// (23 or more)
@@ -743,53 +743,53 @@ OnMobDead:
 	if ('adv_step != 23)
 		end;
 	if (is_party_leader() == false) {
-		mes "[Schulang]";
-		mes "adventurer... didn't you come alone?";
-		mes "Who is your boss?";
+		mes "[Scuola]";
+		mes "avventuriero... non sei venuto da solo?";
+		mes "Chi è il tuo capo?";
 		close;
 	}
-	mes "[Schulang]";
-	mes "Coming this far is not normal.";
-	mes "He's a talent you don't want to miss.";
-	mes "How about joining hands with us?";
+	mes "[Scuola]";
+	mes "Arrivare fin qui non è normale.";
+	mes "È un talento che non vorrai perderti.";
+	mes "Che ne dici di unirci con noi?";
 	cutin "ep18_shulang.png",2;
 	next;
-	switch( select( "Nonsense.", "What's in it for me?" ) ) {
+	switch( select( "Assurdità.", "Cosa ci guadagno io?" ) ) {
 	case 1:
 		unittalk getcharid(3), "" + strcharinfo(0) + " : Nonsense.";
-		mes "[Schulang]";
-		mes "I see.";
-		mes "I didn't think you were this fool.";
+		mes "[Scuola]";
+		mes "Capisco";
+		mes "Non pensavo che fossi questo sciocco.";
 		next;
 		break;
 	case 2:
 		unittalk getcharid(3), "" + strcharinfo(0) + " : What's in it for me?";
 		break;
 	}
-	mes "[Schulang]";
-	mes "Adventurers always seek strength.";
-	mes "The strength you want, we can give it to you.";
+	mes "[Scuola]";
+	mes "Gli avventurieri cercano sempre la forza.";
+	mes "La forza che vuoi, possiamo darti.";
 	next;
-	select( "Why are you offering me that?" );
-	mes "[Schulang]";
-	mes "I think I can communicate better than that stubborn guy.";
+	select( "Perché mi stai offrendo quello?" );
+	mes "[Scuola]";
+	mes "Penso di poter comunicare meglio di quel tizio testardo.";
 	next;
-	select( "If you're a stubborn guy, what do you mean?" );
-	mes "[Schulang]";
-	mes "It was that kind of name. A talent who can become stronger if he just changes his old-fashioned personality.";
-	mes "Unfortunately, the opportunity has passed.";
+	select( "Se sei un tipo testardo, cosa intendi?" );
+	mes "[Scuola]";
+	mes "Era quel tipo di nome. Un talento che può diventare più forte se cambia solo la sua personalità antiquata.";
+	mes "Sfortunatamente, l'opportunità è passata.";
 	next;
-	mes "[Schulang]";
-	mes "From the looks of it, it doesn't look like you'll accept our offer huh.";
-	mes "It can't be helped.";
+	mes "[Scuola]";
+	mes "A quanto pare, non sembra che accetterai la nostra offerta eh.";
+	mes "Non si può fare nulla.";
 	close2;
 	cutin "",255;
 	if ('adv_step != 23)
 		end;
 	'adv_step = 24;
-	npctalk "Schulang: You can no longer enter.", instance_npcname("Schulang#shulang01");
+	npctalk "Scuola: Non puoi più entrare.", instance_npcname("Schulang#shulang01");
 	sleep 2500;
-	npctalk "Schulang: You must die here for the greater good.", instance_npcname("Schulang#shulang01");
+	npctalk "Schulang: Devi morire qui per il bene superiore.", instance_npcname("Schulang#shulang01");
 	sleep 2500;
 	disablenpc instance_npcname("Schulang#shulang01");
 	donpcevent instance_npcname("adv_middle_boss") + "::OnStart";
@@ -825,7 +825,7 @@ OnMobDead:
 
 // Boss room 1
 1@adv,127,356,3	script(DISABLED)	Illusion Bagot#bagot01	4_EP18_BAGOT,{
-	npctalk "It's fun.";
+	npctalk "È divertente.";
 	end;
 }
 
@@ -833,9 +833,9 @@ OnMobDead:
 	if ('adv_step != 25)
 		end;
 	if (is_party_leader() == false) {
-		mes "[Youth]";
-		mes "Do not touch me! The blasphemy!";
-		npctalk "Youth: Don't touch me! Profane things!";
+		mes "Gioventù";
+		mes "Non toccarmi! L'blasfemia!";
+		npctalk "Giovane: Non toccarmi! Cose profane!";
 		close;
 	}
 	.@bagot01$ = instance_npcname("Illusion Bagot#bagot01");
@@ -844,37 +844,37 @@ OnMobDead:
 	.@miriam04$ = instance_npcname("Miriam#miriam04");
 
 	mes "[Amal]";
-	mes "These abominable heretics somehow managed to come this far.";
-	mes "But it doesn't matter.";
-	mes "You will soon kneel before the Supreme Divinity.";
-	npctalk "Amal: These abominable heretics somehow managed to come this far. But you will soon kneel before the Supreme Divinity.";
+	mes "Questi abominevoli eretici sono riusciti a arrivare fin qui.";
+	mes "Ma non importa.";
+	mes "Presto ti inginocchiererai davanti alla Divinità Suprema.";
+	npctalk "Amal: Questi abominevoli eretici sono riusciti in qualche modo ad arrivare fin qui. Ma presto vi inginullerete davanti alla Divinità Suprema.";
 	next;
 	mes "[Amal]";
-	mes "I will show miracles to the arrogant servants of Odin.";
-	mes "Bagot, please continue with the ritual.";
+	mes "Mostrerò miracoli ai servitori arroganti di Odino.";
+	mes "Bagot, per favore continui con il rituale.";
 	npctalk "Amal: I will show miracles to the arrogant servants of Odin. Bagot, please continue with the ritual.";
 	next;
 	mes "[Amal]";
-	mes "They will personally witness Freyja's miracles.";
-	mes "Bow down at the feet of God and be reborn as a servant of God!";
-	npctalk "Amal: They will personally witness Freyja's miracles. Bow down and be reborn as a servant of God!";
+	mes "Assisteranno personalmente ai miracoli di Freyja.";
+	mes "Piegatevi ai piedi di Dio e rinascete come servi di Dio!";
+	npctalk "Amal: Testimoniere personalmente i miracoli di Freyja. Prostratevi e rinascete come servi di Dio!";
 	next;
 	cutin "ep18_bagot_01.png",2;
 	mes "[Bagot]";
-	mes "Wow... the way you talk.. such inspiration. Anyway,";
-	mes "I made a promise, so I will keep it. Do you understand?";
+	mes "Wow... il modo in cui parli.. tanta ispirazione. Comunque,";
+	mes "Ho fatto una promessa, quindi la manterrò. Capisci?";
 	npctalk "Bagot: Wow... the way you talk.. such inspiration. Anyway, I made a promise, so I will keep it.", .@bagot01$;
 	next;
 	cutin "ep18_bagot_03.png",2;
 	mes "[Bagot]";
-	mes "First of all, are you THE adventurer?";
-	mes "Would you like to take a look at my work?";
-	mes "You too can experience the feeling of taking beautifully crafted pottery out of the kiln.";
-	npctalk "Bagot: Are you THE adventurer? Would you like to take a look at my work?", .@bagot01$;
+	mes "Innanzitutto, sei L'avventuriero?";
+	mes "Ti piacerebbe dare un'occhiata al mio lavoro?";
+	mes "Anche tu puoi sperimentare la sensazione di togliere dalla fornace della ceramica splendidamente realizzata.";
+	npctalk "Bagot: Sei L'avventuriero? Ti piacerebbe dare un'occhiata al mio lavoro?", .@bagot01$;
 	close2;
 
 	setpcblock PCBLOCK_NPC, true;
-	npctalk "Bagot: It feels great to be able to check the results of the experiment right away.", .@bagot01$;
+	npctalk "Bagot: È fantastico poter controllare i risultati dell'esperimento subito.", .@bagot01$;
 	specialeffect EF_DQ9_CHARGE3, AREA, .@demigod$;
 	sleep2 500;
 	specialeffect EF_SCREEN_QUAKE, AREA, .@demigod$;
@@ -885,66 +885,66 @@ OnMobDead:
 	setpcblock PCBLOCK_NPC, false;
 
 	mes "[Bagot]";
-	mes "Ta-da~ The essence of science and magic is right here!";
-	mes "I will descend a being in the form of a god!";
-	npctalk "Bagot: Ta-da~ The essence of science and magic is right here!", .@bagot01$;
+	mes "Ta-da~ L'essenza della scienza e della magia è proprio qui!";
+	mes "Scenderò un essere nella forma di un dio!";
+	npctalk "Bagot: Ta-da~ L'essenza di scienza e magia è proprio qui!", .@bagot01$;
 	next;
 	mes "[Bagot]";
-	mes "Being a vessel for God to descend on is no problem for this bar!";
-	npctalk "Bagot: Being a vessel for God to descend on is no problem for this bar!", .@bagot01$;
+	mes "Essere un vaso per cui Dio scenda non è un problema per questo bar!";
+	npctalk "Bagot: Essere un vaso affinché Dio vi scenda non è un problema per questo bar!", .@bagot01$;
 	next;
 	cutin "ep18_demifreya.png",1;
-	mes "[A Being Called God]";
+	mes "Un Essere Chiamato Dio";
 	mes "....";
-	npctalk "A Being Called God: ....", .@demigod$;
+	npctalk "Un Essere Chiamato Dio: ....", .@demigod$;
 	next;
 	mes "[Amal]";
-	mes "Oh.. .Oooh...! Beautiful Freyja... ! Are you my God?";
-	npctalk "Amal: Oh.. .Oooh...! Beautiful Freyja... ! Are you my God?";
+	mes "Oh.. .Oooh...! Bella Freya... ! Sei mio Dio?";
+	npctalk "Amal: Oh.. .Oooh...! Bella Freyja... ! Sei il mio Dio?";
 	next;
-	mes "^4d4dffThe so-called divine being looks like a grown-up version of the Pope.^000000";
+	mes "^4d4dffIl cosiddetto essere divino assomiglia a una versione adulta del Papa.^000000";
 	mes "^4d4dffA vessel for the goddess Freyja to descend to this world. Its essential purpose.^000000";
 	next;
-	select( "Could it be the Pope?!" );
+	select( "Potrebbe essere il Papa?!" );
 	unittalk getcharid(3), "" + strcharinfo(0) + " : Could it be the Pope?!";
 	cutin "ep18_bagot_02.png",2;
 	mes "[Bagot]";
-	mes "What kind of sound is that?";
-	mes "No matter how bad Bagot was, he wasn't so mean that he would mess with the Pope!";
-	npctalk "Bagot: What kind of sound is that?", .@bagot01$;
+	mes "Che tipo di suono è quello?";
+	mes "Non importa quanto fosse cattivo Bagot, non era così malvagio da fare pasticci con il Papa!";
+	npctalk "Bagot: Che suono è questo?", .@bagot01$;
 	next;
 	cutin "ep18_bagot_03.png",2;
 	mes "[Bagot]";
-	mes "How rude are you to my masterpiece?!";
-	mes "Are you afraid of my ability to even create a vessel for God to descend on?";
-	npctalk "Bagot: Are you afraid of my ability to even create a vessel for God to descend on?", .@bagot01$;
+	mes "Quanto sei maleducato con il mio capolavoro?!";
+	mes "Hai paura della mia capacità di creare persino un vaso affinché Dio possa scendere?";
+	npctalk "Bagot: Temi la mia capacità anche di creare un vaso su cui Dio possa discendere?", .@bagot01$;
 	next;
 	cutin "",255;
 	mes "[Amal]";
-	mes "Oh.. .Oooh...! My beautiful Goddess Freyja... !";
-	npctalk "Amal: Oh.. .Oooh...! My beautiful Goddess Freyja... !";
+	mes "Oh.. .Oooh...! Mia bellissima Dea Freya... !";
+	npctalk "Amal: Oh.. .Oooh...! Mia bellissima Dea Freyja... !";
 	next;
 	cutin "ep18_bagot_02.png",2;
 	mes "[Bagot]";
-	mes "You're not listening to me. Then what is it? Oh~! Yes, a miracle. All you have to do is show me a miracle, right?";
+	mes "Non mi stai ascoltando. Allora cos'è? Oh~! Sì, un miracolo. Tutto quello che devi fare è mostrarmi un miracolo, giusto?";
 	npctalk "Bagot: You're not listening to me. Then what is it? Oh~! Yes, a miracle.", .@bagot01$;
 	next;
 	cutin "ep18_demifreya.png",1;
-	mes "[A Being Called God]";
+	mes "Un Essere Chiamato Dio";
 	mes ".....";
-	npctalk "A Being Called God: .....", .@demigod$;
+	npctalk "Un Essere Chiamato Dio: .....", .@demigod$;
 	next;
-	mes "[A Being Called God]";
+	mes "Un Essere Chiamato Dio";
 	mes ".....";
 	sleep2 500;
-	mes "We";
-	npctalk "A Being Called God: ..We..", .@demigod$;
+	mes "Noi";
+	npctalk "Un Essere Chiamato Dio: ..Noi..", .@demigod$;
 	sleep2 1000;
 	mes "..a..";
-	npctalk "A Being Called God: ..a..", .@demigod$;
+	npctalk "Un Essere Chiamato Dio: ..a..", .@demigod$;
 	sleep2 1000;
 	mes "k..";
-	npctalk "A Being Called God: k...", .@demigod$;
+	npctalk "Un Essere Chiamato Dio: k...", .@demigod$;
 	close2;
 	cutin "",255;
 
@@ -955,50 +955,50 @@ OnMobDead:
 	specialeffect EF_BEGINSPELL_YB, AREA, .@shulang02$;
 	cloakoffnpc .@shulang02$;
 	sleep2 2500;
-	npctalk "Bagot: What? Did you save him? Did you see the priest? What did Baggot say? I said it would be possible.", .@bagot01$;
+	npctalk "Bagot: Cosa? L'hai salvato? Hai visto il prete? Cosa ha detto Baggot? Avevo detto che sarebbe stato possibile.", .@bagot01$;
 	sleep2 1500;
 	setpcblock PCBLOCK_NPC, false;
 
 	cutin "ep18_bagot_03.png",2;
 	mes "[Bagot]";
-	mes "Here's the proof. Miracle~";
-	mes "Old priest. Since I summoned your god as promised, I will take the ^4d4dffHeart^000000 with me.";
+	mes "Ecco la prova. Miracolo~";
+	mes "Vecchio prete. Dato che ho invocato il tuo dio come promesso, mi porterò via il ^4d4dffCuore^000000.";
 	npctalk "Bagot: Since I summoned your god as promised, I will take the Heart with me.", .@bagot01$;
 	next;
 	mes "[Bagot]";
-	mes "I hope you live forever~";
-	npctalk "Bagot: I hope you live forever~", .@bagot01$;
+	mes "Spero che tu viva per sempre~";
+	npctalk "Bagot: Spero che tu viva per sempre~", .@bagot01$;
 	next;
 	cutin "",255;
 	mes "[Amal]";
-	mes "A lowly servant has witnessed the miracles of God!";
-	npctalk "Amal: A lowly servant has witnessed the miracles of God!";
+	mes "Un umile servo ha assistito ai miracoli di Dio!";
+	npctalk "Amal: Un umile servo ha assistito ai miracoli di Dio!";
 	next;
 	cutin "ep18_bagot_01.png",2;
 	mes "[Bagot]";
-	mes "Are you even listening?";
-	mes "Schulang is a bit of a waste, but that's the end of his role.";
+	mes "Mi stai nemmeno ascoltando?";
+	mes "Schulang è un po' uno spreco, ma il suo ruolo è finito.";
 	npctalk "Bagot: Are you even listening? Schulang is a bit of a waste, but that's the end of his role.", .@bagot01$;
 	next;
 	cutin "ep18_bagot_03.png",2;
 	mes "[Bagot]";
-	mes "In the meantime, I kept my promise because I let you live with ^4d4dffstrong taste^000000.";
-	mes "I'll go~ So adventurer? Hello~!";
-	npctalk "Bagot: I have kept my promise since I have been able to live with the 'strong taste' for a while. So adventurer? Hello~!", .@bagot01$;
+	mes "Nel frattempo, ho mantenuto la mia promessa perché ti ho lasciato vivere con il gusto forte ^4d4dffstrong taste^000000.";
+	mes "Io ci vado~ Quindi avventuriero? Ciao~!";
+	npctalk "Bagot: Ho mantenuto la mia promessa da quando sono riuscito a convivere con il 'forte gusto' per un po'. Allora, avventuriero? Ciao~!", .@bagot01$;
 	close2;
 	cutin "",255;
 
 	setpcblock PCBLOCK_NPC, true;
 	disablenpc .@bagot01$;
-	npctalk "Amal: Oh... Frejya! Please punish these heretics!";
+	npctalk "Amal: Oh... Frejya! Ti prego di punire questi eretici!";
 	sleep2 2500;
-	npctalk "A Being Called God: kkigigig kikikig kkigigig", .@demigod$;
+	npctalk "Un Essere Chiamato Dio: kkigigig kikikig kkigigig", .@demigod$;
 	sleep2 2500;
-	npctalk "Amal: ....? What's wrong my God? Your lowly servant is ready to hear the prophecy...";
+	npctalk "Amal: ....? Che cosa è successo, mio Dio? La tua umile serva è pronta ad ascoltare la profezia...";
 	sleep2 2500;
-	npctalk "A Being Called God: kkigigigi aaaaa!!!!", .@demigod$;
+	npctalk "Un Essere Chiamato Dio: kkigigigi aaaaa!!!!", .@demigod$;
 	sleep2 2500;
-	npctalk "Amal: ...I don't feel any divine power...? why...?";
+	npctalk "Amal: ...Non sento alcun potere divino...? perché...?";
 	sleep2 2500;
 	specialeffect EF_BEGINSPELL5, AREA, .@demigod$;
 	sleep2 1000;
@@ -1007,29 +1007,29 @@ OnMobDead:
 	sleep2 1000;
 	npctalk "Amal: How can God punish me, a loyal servant of Freyja?";
 	sleep2 2500;
-	npctalk "Miriam: This is not the time. You must leave it! That's not God!", .@miriam04$;
+	npctalk "Miriam: Questo non è il momento. Devi lasciarlo! Quello non è Dio!", .@miriam04$;
 	sleep2 2500;
-	npctalk "A Being Called God: kikikig kikikig ....", .@demigod$;
+	npctalk "Un Essere Chiamato Dio: kikikig kikikig ....", .@demigod$;
 	sleep2 2500;
 	npctalk "Amal: Nonsense! Miriam, get out of the way!";
 	sleep2 2500;
-	npctalk "Miriam: You just almost died. Look straight ahead. Which part of that vile being is God?", .@miriam04$;
+	npctalk "Miriam: Hai quasi perso la vita. Guarda dritto davanti a te. Quale parte di quell'essere vile è Dio?", .@miriam04$;
 	sleep2 2500;
-	npctalk "Miriam: It seems like you need to open your eyes. Father.", .@miriam04$;
+	npctalk "Miriam: Sembra che tu debba aprire gli occhi. Padre.", .@miriam04$;
 	sleep2 2000;
 	npctalk "Amal: This can't be happening! Let go of me, Miriam!";
 	sleep2 2000;
-	npctalk "A Being Called God: kkigig...? kkigigi kkyahahahahahahaha!!", .@demigod$;
+	npctalk "Un Essere Chiamato Dio: kkigig...? kkigigi kkyahahahahahahaha!!", .@demigod$;
 	sleep2 1000;
 	specialeffect EF_BEGINSPELL5, AREA, .@demigod$;
 	sleep2 700;
 	specialeffect EF_BEGINSPELL_YB, AREA, .@demigod$;
-	npctalk "Miriam: What are you doing!!!!", .@miriam04$;
+	npctalk "Miriam: Cosa stai facendo!!!!", .@miriam04$;
 	sleep2 800;
 	disablenpc instance_npcname("Yus Amal#jus01");
 	disablenpc .@miriam04$;
 	sleep2 800;
-	npctalk "A Being Called God: kyahahahahahahaha!!", .@demigod$;
+	npctalk "Un Essere Chiamato Dio: kyahahahahahahaha!!", .@demigod$;
 	sleep2 1000;
 	setpcblock PCBLOCK_NPC, false;
 
@@ -1078,57 +1078,57 @@ OnMobDead2:
 	if ('adv_step < 27)
 		end;
 	if ('adv_step == 27 && ep18_main == 54) {
-		npctalk "Miriam: Father!", instance_npcname("Miriam#miriam05");
+		npctalk "Miriam: Padre!", instance_npcname("Miriam#miriam05");
 		mes "[Miriam]";
-		mes "What did he do? It suddenly flew out.";
-		mes "Are you alright?";
+		mes "Cosa ha fatto? È improvvisamente volato fuori.";
+		mes "Stai bene?";
 		cutin "ep18_miriam_03.png",0;
 		next;
 		cutin "",255;
 		mes "[Amal]";
-		mes "What have you done to God!!!!!!!!!!";
-		mes "You can't do that!";
-		mes "What have I been doing while waiting for this day...!";
+		mes "Cosa hai fatto a Dio!!!!!!!!!!";
+		mes "Non puoi farlo!";
+		mes "Cosa ho fatto mentre aspettavo questo giorno...!";
 		next;
 		cutin "ep18_miriam_03.png",0;
 		mes "[Miriam]";
-		mes "Do you still believe that is God?";
-		mes "Are you really saying that?";
+		mes "Credi ancora che sia Dio?";
+		mes "Stai davvero dicendo questo?";
 		next;
-		select( "This Embryo fell out." );
+		select( "Questo embrione è caduto." );
 		mes "[Miriam]";
-		mes "Indeed...";
-		mes "It was similar to the Pope's...";
-		mes "If you look at the Embryo that has fallen, it must have been something created by someone named Bagot.";
+		mes "In effetti...";
+		mes "Era simile a quello del Papa...";
+		mes "Se guardi l'embrione che è caduto, deve essere stato qualcosa creato da qualcuno di nome Bagot.";
 		next;
-		select( "I'll do the analysis here." );
+		select( "Farò l'analisi qui." );
 		cutin "",255;
 		mes "[Amal]";
-		mes "Miriam! Catch that insolent fool!";
-		mes "This person deserves divine punishment!";
-		mes "You are a blasphemer!";
+		mes "Miriam! Cattura quel folletto insolente!";
+		mes "Questa persona merita una punizione divina!";
+		mes "Sei un blasfemo!";
 		next;
 		cutin "ep18_miriam_03.png",0;
 		mes "[Miriam]";
-		mes "It can't be.";
-		mes "The adventurer came this far to help us.";
+		mes "Non può essere.";
+		mes "L'avventuriero è venuto fin qui per aiutarci.";
 		next;
 		mes "[Miriam]";
-		mes "It was like that at the temple too.";
-		mes "It looks like they blinded my father too.";
+		mes "Era così anche al tempio.";
+		mes "Sembra che anche mio padre sia stato accecato.";
 		next;
 		cutin "",255;
 		mes "[Amal]";
-		mes "Are you trying to tell me that I fell for their trick!";
+		mes "Stai cercando di dirmi che sono caduto nella loro trappola!";
 		next;
 		cutin "ep18_miriam_03.png",0;
 		mes "[Miriam]";
-		mes "Let's get out of here first.";
-		mes "You can discuss the details after examining the Embryo.";
+		mes "Usciamo da qui prima.";
+		mes "Puoi discutere i dettagli dopo aver esaminato l'Embrione.";
 		next;
 		mes "[Miriam]";
-		mes "Adventurer, please let me know if the identity of the Twisted God is revealed after the investigation is complete.";
-		mes "I will take care of my father.";
+		mes "Avventuriero, per favore fammi sapere se l'identità del Dio Torcido verrà rivelata dopo che l'indagine sarà completa.";
+		mes "Mi prenderò cura di mio padre.";
 		ep18_main = 55;
 		erasequest 18083;
 		setquest 18084;
@@ -1138,11 +1138,11 @@ OnMobDead2:
 	}
 	cutin "ep18_miriam_01.png",0;
 	mes "[Miriam]";
-	mes "I need to take care of my father, so let's get out of here.";
+	mes "Devo prendermi cura di mio padre, quindi lasciamola qui.";
 	close3;
 }
 
 1@adv,119,320,6	script(DISABLED)	Yus Amal#jus02	4_M_RACHOLD,{
-	npctalk "Amal: ...Oh my... It can't be like this...", instance_npcname("Yus Amal#jus02");
+	npctalk "Amal: ...Oh mio Dio... Non può essere così...", instance_npcname("Yus Amal#jus02");
 	end;
 }

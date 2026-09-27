@@ -18,67 +18,67 @@
 
 alberta,26,229,0	script	Kafra Employee#bunny	83,{
 	if (BUNYBND == 1) {
-		mes "[Kafra Employee]";
-		mes "Hello there~!";
-		mes "How'd you like to";
-		mes "participate in Kafra";
-		mes "Corporation's special";
-		mes "^529DFFBunny Band Event^000000?";
+		mes "Dipendente Kafra";
+		mes "Ciao!";
+		mes "Come ti piacerebbe";
+		mes "partecipare a Kafra";
+		mes "Specialità della corporazione";
+		mes "^529DFFEvento Banda dei Conigli^000000?";
 		next;
-		switch(select("Sure, I brought the items.:Event Information:Cancel")) {
+		switch(select("Certo, ho portato gli articoli.:Informazioni sull'evento:Annulla")) {
 		case 1:
-			mes "[Kafra Employee]";
-			mes "Alrighty~";
-			mes "Let me check to";
-			mes "see if you brought";
-			mes "all the items...";
+			mes "Dipendente Kafra";
+			mes "Va bene~";
+			mes "Lasciami controllare per";
+			mes "vedi se hai portato";
+			mes "tutti gli articoli...";
 			next;
 			setarray .@Items[0],949,100,706,1,722,1,2213,1;
 			for(set .@i,0; .@i<8; set .@i,.@i+2)
 				if (countitem(.@Items[.@i]) < .@Items[.@i+1]) {
-					mes "[Kafra Employee]";
-					mes "Ooh, I'm sorry";
-					mes "but you need to";
-					mes "bring at least";
+					mes "Dipendente Kafra";
+					mes "Oh, mi dispiace";
+					mes "ma devi";
+					mes "almeno portare";
 					mes callfunc("F_InsertPlural",.@Items[.@i+1],getitemname(.@Items[.@i]))+".";
 					close;
 				}
-			mes "[Kafra Employee]";
-			mes "Great, I see that";
-			mes "you've gathered";
-			mes "everything I need to";
-			mes "make the Bunny Band.";
-			mes "Please wait a moment";
-			mes "while I put it together...";
+			mes "Dipendente Kafra";
+			mes "Ottimo, vedo che";
+			mes "hai raccolto";
+			mes "tutto ciò di cui ho bisogno per";
+			mes "crea la Banda del Coniglio.";
+			mes "Per favore, aspetti un momento";
+			mes "mentre lo monto...";
 			next;
 			for(set .@i,0; .@i<8; set .@i,.@i+2)
 				if (countitem(.@Items[.@i]) < .@Items[.@i+1]) {
-					mes "[Kafra Employee]";
-					mes "Hm? I'm sorry,";
-					mes "but I actually can't";
-					mes "make this right now. You";
-					mes "need "+callfunc("F_InsertPlural",.@Items[.@i+1],getitemname(.@Items[.@i]));
-					mes "in order for me to put this";
-					mes "Bunny Band together...";
+					mes "Dipendente Kafra";
+					mes "Eh? Mi dispiace,";
+					mes "ma in realtà non posso";
+					mes "fallo adesso. Tu";
+					mes "bisogno "+callfunc("F_InserisciPlurale",.@Items[.@i+1],getitemname(.@Items[.@i]));
+					mes "affinché io possa mettere questo";
+					mes "I conigli si riuniscono...";
 					close;
 				}
 			delitem 949,100; //Feather
 			delitem 706,1; //Four_Leaf_Clover
 			delitem 722,1; //Scarlet_Jewel
 			delitem 2213,1; //Cat_Hairband
-			mes "[Kafra Employee]";
-			mes "Ah, here you go~";
-			mes "The perfect Bunny Band!";
-			mes "Well, I hope you enjoy it.";
+			mes "Dipendente Kafra";
+			mes "Ah, eccolo/eccola~";
+			mes "La perfetta Banda di Coniglietti!";
+			mes "Spero che ti piaccia.";
 			getitem 2214,1; //Bunny_Band
 			set BUNYBND,0;
 			next;
-			mes "[Kafra Employee]";
-			mes "Thank you for";
-			mes "participating in this";
-			mes "special event and your";
-			mes "continued patronage";
-			mes "of the Kafra Services~";
+			mes "Dipendente Kafra";
+			mes "Grazie per";
+			mes "partecipare a questo";
+			mes "evento speciale e tuo";
+			mes "patrocinio continuato";
+			mes "di Kafra Services~";
 			close;
 		case 2:
 			goto L_Info;
@@ -86,31 +86,31 @@ alberta,26,229,0	script	Kafra Employee#bunny	83,{
 			close;
 		}
 	}
-	mes "[Kafra Employee]";
-	mes "Hi there~! Would you like";
-	mes "to join our special ^529DFFBunny";
-	mes "Band Event^000000 hosted by the Kafra";
-	mes "Corporation and sponsored by";
-	mes "the Alberta Merchant Guild?";
+	mes "Dipendente Kafra";
+	mes "Ciao! Ti piacerebbe";
+	mes "per unirsi al nostro speciale ^529DFFBunny";
+	mes "Evento di Band^000000 ospitato da Kafra";
+	mes "Corporazione e sponsorizzata da";
+	mes "la Gilda dei Mercanti dell'Alberta?";
 	next;
-	switch(select("Join the Event:Event Information:Cancel")) {
+	switch(select("Unisciti all'evento:Informazioni sull'evento:Annulla")) {
 	case 1:
 		set BUNYBND,1;
-		mes "[Kafra Employee]";
-		mes "Great! Thanks for";
-		mes "participating! If you";
-		mes "haven't already heard,";
-		mes "you need to collect these";
-		mes "items if you want me put a";
-		mes "Bunny Band together for you...";
+		mes "Dipendente Kafra";
+		mes "Ottimo! Grazie per";
+		mes "partecipando! Se tu";
+		mes "non ho già sentito";
+		mes "devi raccogliere questi";
+		mes "articoli se vuoi che metta un";
+		mes "Bunny Band insieme per te...";
 		next;
-		mes "[Kafra Employee]";
-		mes "100 Feathers,";
-		mes "1 Four-Leaf Clover,";
-		mes "1 Kitty Band and";
-		mes "1 Pearl. That's it!";
-		mes "Good luck and I'll be";
-		mes "waiting for you here~";
+		mes "Dipendente Kafra";
+		mes "100 Piume,";
+		mes "Trifoglio a quattro foglie,";
+		mes "Kitty Band e";
+		mes "Un perla. È tutto!";
+		mes "Buona fortuna e io sarò";
+		mes "in attesa di te qui~";
 		close;
 	case 2:
 		break;
@@ -118,28 +118,28 @@ alberta,26,229,0	script	Kafra Employee#bunny	83,{
 		close;
 	}
 L_Info:
-	mes "[Kafra Employee]";
-	mes "To thank our valued";
-	mes "customers, Kafra Corporation";
-	mes "has prepared a special event";
-	mes "where Kafra Employee will assemble";
-	mes "Bunny Bands for adventurers";
-	mes "who bring the required items.";
+	mes "Dipendente Kafra";
+	mes "Per ringraziare i nostri stimati";
+	mes "clienti, Kafra Corporation";
+	mes "ha preparato un evento speciale";
+	mes "dove si riunirà il dipendente di Kafra";
+	mes "Braccialetti da coniglio per avventurieri";
+	mes "chi porta gli articoli richiesti.";
 	next;
-	mes "[Kafra Employee]";
-	mes "For this special,";
-	mes "one of a kind item,";
-	mes "bring 100 Feathers,";
-	mes "1 Four-Leaf Clover,";
-	mes "1 Kitty Band and";
-	mes "1 Pearl.";
+	mes "Dipendente Kafra";
+	mes "Per questo speciale,";
+	mes "oggetto unico";
+	mes "porta 100 Piume,";
+	mes "Trifoglio a quattro foglie,";
+	mes "Kitty Band e";
+	mes "Perla.";
 	next;
-	mes "[Kafra Employee]";
-	mes "When you're ready,";
-	mes "come back and bring";
-	mes "those items to me.";
-	mes "(Sponsored by the";
-	mes "Alberta Merchant Guild).";
+	mes "Dipendente Kafra";
+	mes "Quando sei pronto,";
+	mes "tornare e portare";
+	mes "que articoli a me.";
+	mes "(Sponsorizzato da il";
+	mes "(Gilda dei Mercanti dell'Alberta).";
 	close;
 }
 

@@ -14,77 +14,77 @@
 
 gonryun,180,118,4	script	Iron man#gnp	85,{
 	if (checkweight(1201,1) == 0) {
-		mes "- Wait a minute !! -";
-		mes "- Currently you're carrying -";
-		mes "- too many items with you. -";
-		mes "- Please try again -";
-		mes "- after you lose some weight. -";
+		mes "Aspetta un minuto!!";
+		mes "Attualmente stai portando";
+		mes "troppi oggetti con te.";
+		mes "Per favore riprova";
+		mes "dopo che perderai un po' di peso.";
 		close;
 	}
 	if (BaseJob == Job_Novice) {
 		mes "[Songmoodoo]";
-		mes "Children are not allowed in here.";
+		mes "Ai bambini non è permesso entrare qui.";
 		close;
 	}
 	if (in_battle == 3) set in_battle,1;
 	if (in_battle < 1) {
 		mes "[Songmoodoo]";
-		mes "Hey hey~ This is not something";
-		mes "you can see everyday.";
-		mes "Oh~ you look strong!";
-		mes "Wanna try?";
+		mes "Ehi ehi~ Questo non è qualcosa";
+		mes "puoi vedere ogni giorno.";
+		mes "Oh~ sembri forte!";
+		mes "Vuoi provare?";
 		next;
-		switch(select("Why not?:?????:No thanks.")){
+		switch(select("Perché no?:?????:No grazie.")){
 		case 1:
 			mes "[Songmoodoo]";
-			mes "Haha~ I knew you would try.";
-			mes "If you could lift this up,";
-			mes "I'll tell you something interesting.";
-			mes "Ready?";
+			mes "Haha~ sapevo che ci avresti provato.";
+			mes "Se potessi sollevare questo";
+			mes "Ti racconterò qualcosa di interessante.";
+			mes "Pronto?";
 			next;
-			mes "^0000FFSongmoodoo points to a rock";
-			mes "and asks you to lift it.";
+			mes "^0000FFSongmoodoo indica una roccia";
+			mes "e ti chiede di sollevarlo.";
 			if (BaseJob < Job_Knight) callsub L_Lifting,690;
 			else if (BaseClass == Job_Swordman || BaseClass == Job_Thief || BaseClass == Job_Merchant || BaseJob == Job_Monk) callsub L_Lifting,1100;
 			else callsub L_Lifting,730;
 			break;
 		case 2:
 			mes "[Songmoodoo]";
-			mes "That's not a big deal.";
-			mes "If you believe you're strong,";
-			mes "this might be a good chance to experience";
-			mes "something new. Wanna try??";
+			mes "Non è un grosso problema.";
+			mes "Se credi di essere forte,";
+			mes "potrebbe essere una buona occasione per sperimentare";
+			mes "qualcosa di nuovo. Vuoi provare??";
 			break;
 		case 3:
 			mes "[Songmoodoo]";
-			mes "I guess not...";
+			mes "Non credo...";
 			emotion ET_HNG;
 			break;
 		}
 	} else if (in_battle == 1) {
 		mes "[Songmoodoo]";
-		mes "Good to see you again!";
-		mes "Wanna go??";
+		mes "Buon vedere te di nuovo!";
+		mes "Vuoi andare?";
 		next;
-		if (select("Sure:Maybe next time") == 1) {
+		if (select("Certo:Forse la prossima volta") == 1) {
 			mes "[Songmoodoo]";
-			mes "Good! Haha.";
-			mes "I like your confidence.";
-			mes "Good luck to you~";
+			mes "Bene! Haha.";
+			mes "Mi piace la tua sicurezza.";
+			mes "Buona fortuna a te~";
 			close2;
 			warp "gon_test",53,6;
 			end;
 		} else {
 			mes "[Songmoodoo]";
-			mes "Well... alright.";
-			mes "I'll see you next time then.";
+			mes "Beh... va bene.";
+			mes "Ci vediamo la prossima volta allora.";
 		}
 	} else {
 		mes "[Songmoodoo]";
-		mes "You ran away from there?";
-		mes "Guess you're not strong enough!";
-		mes "I'll give you another chance.";
-		mes "See you again.";
+		mes "Sei scappato da lì?";
+		mes "Non sei abbastanza forte!";
+		mes "Ti darò un'altra possibilità.";
+		mes "A presto.";
 		emotion ET_HNG;
 		set in_battle,1;
 	}
@@ -92,51 +92,51 @@ gonryun,180,118,4	script	Iron man#gnp	85,{
 
 L_Lifting:
 	if (checkweight(7049,getarg(0))) {
-		mes "You lifted the Stone lightly.^000000";
+		mes "Hai sollevato la Pietra leggermente.^000000";
 		set in_battle,1;
 		getitem 7049, getarg(0); // Stone
 		next;
 		emotion ET_BEST;
 		mes "[Songmoodoo]";
-		mes "Wow~ Excellent~";
-		mes "I'll take you to someplace nice";
-		mes "next time I see you.";
-		mes "See ya~";
+		mes "Wow~ Eccellente~";
+		mes "Ti porterò in un posto carino";
+		mes "la prossima volta che ti vedrò.";
+		mes "A presto~";
 	} else {
-		mes "Looks too heavy for you.^000000";
+		mes "Sembra troppo pesante per te.^000000";
 		next;
 		mes "[Songmoodoo]";
-		mes "You lack training.";
-		mes "Come back after more practice.";
+		mes "Non hai ricevuto formazione.";
+		mes "Torna dopo più pratica.";
 	}
 	return;
 }
 
 gon_test,50,14,4	script	Administrator#gnp	780,{
-	mes "[Administrator]";
+	mes "[Amministratore]";
 	if (BaseJob == Job_Novice) {
-		mes "Children are not allowed in here.";
+		mes "Ai bambini non è permesso entrare qui.";
 		close;
 	}
 	if ($@in_battle) {
-		mes "Sorry, the field of fight";
-		mes "is occupied right now.";
-		mes "Try again later.";
+		mes "Scusa, il campo di battaglia";
+		mes "è occupato adesso.";
+		mes "Riprova più tardi.";
 		close;
 	}
-	mes "Are you ready?";
+	mes "Sei pronto?";
 	mes " ";
-	mes "Remember, you have to pay";
-	mes "500z to fight.";
+	mes "Ricorda, devi pagare";
+	mes "500z per combattere.";
 	next;
-	if (select("Yes, let me fight!:One moment, please.") == 2) {
-		mes "[Administrator]";
-		mes "Ok, see you later.";
+	if (select("Sì, lasciatmi combattere!:Un momento, per favore.") == 2) {
+		mes "[Amministratore]";
+		mes "A dopo.";
 		close;
 	}
 	if (Zeny < 500) {
-		mes "[Administrator]";
-		mes "I'm sorry but you don't have enough zeny.";
+		mes "[Amministratore]";
+		mes "Mi dispiace ma non hai abbastanza zeny.";
 		close;
 	}
 	set Zeny,Zeny - 500;
@@ -151,25 +151,25 @@ gon_test,50,14,4	script	Administrator#gnp	780,{
 gon_test,42,89,4	script	Summoner#gnp	774,{
 	mes "[SongYeunWoo]";
 	if (in_battle == 3) {
-		mes "Please come back after registration.";
+		mes "Ritorna dopo l'iscrizione.";
 		close;
 	} else if (in_battle == 2) {
-		mes "You had a single match already.";
-		mes "You can have a match once at a time.";
-		mes "Please re-enter if you want a match";
-		mes "with other monsters.";
+		mes "Avevi già un singolo incontro.";
+		mes "Puoi avere un incontro alla volta.";
+		mes "Riprova se vuoi una corrispondenza";
+		mes "con altri mostri.";
 		close;
 	}
-	mes "Welcome.";
-	mes "Which monster will you recall?";
+	mes "Benvenuto.";
+	mes "Quale mostro ricorderai?";
 	next;
-	set .@gnpGroup, select("Group 1:Group 2:Group 3:Group 4:Group 5:Group 6:Group 7:Group 8:Group 9:Group 10:Group 11");
+	set .@gnpGroup, select("Gruppo 1:Gruppo 2:Gruppo 3:Gruppo 4:Gruppo 5:Gruppo 6:Gruppo 7:Gruppo 8:Gruppo 9:Gruppo 10:Gruppo 11");
 	set .@gnpGroupMob$,.gnpMobsName$[(.@gnpGroup-1)*6];
 	for (set .@i,1; .@i < 6; set .@i, .@i+1)
 		set .@gnpGroupMob$, .@gnpGroupMob$ + ":" + .gnpMobsName$[(.@gnpGroup-1)*6 + .@i];
 	set .@gnpMob, select(.@gnpGroupMob$);
 	mes "[SongYeunWoo]";
-	mes "Let the fight begin!";
+	mes "Che inizi la lotta!";
 	close2;
 	set in_battle,2;
 	if (getnpctimer(0) < 180000) monster "gon_test",56,86,.gnpMobsName$[(.@gnpGroup-1)*6 + .@gnpMob - 1],.gnpMobsId[(.@gnpGroup-1)*6 + .@gnpMob - 1],1,"Summoner#gnp::OnGnpMobDead";
@@ -228,47 +228,47 @@ OnTimer184000:
 gon_test,46,14,3	script	Guide of field of fight	770,{
 	mes "[SongHeeYeon]";
 	mes ".....";
-	mes "Hi, there~";
-	mes "This is a field of fight.";
-	mes "Got any questions?";
+	mes "Ciao!";
+	mes "Questo è un campo di battaglia.";
+	mes "Hai domande?";
 	next;
-	switch(select("A field of fight?:You got a minute lady?:Get in.:Out.:Nope.")){
+	switch(select("Un campo di battaglia?:Hai un minuto signora?:Entra.:Fuori.:No.")){
 	case 1:
 		mes "[SongHeeYeon]";
-		mes "Just like the name of this place,";
-		mes "it is a field for matches.";
-		mes "We have various monsters";
-		mes "in different levels.";
+		mes "Proprio come il nome di questo posto,";
+		mes "è un campo per le corrispondenze.";
+		mes "Abbiamo vari mostri";
+		mes "a diversi livelli.";
 		next;
 		mes "[SongHeeYeon]";
-		mes "1st Class Boss Monsters are in middle of preparation yet.";
-		mes "We charge you a small fee to enter here.";
+		mes "I boss mostri di prima classe sono ancora nel mezzo della preparazione.";
+		mes "Ti addebiteremo una piccola tariffa per entrare qui.";
 		break;
 	case 2:
 		mes "[SongHeeYeon]";
-		mes "Eh.... excuse me?";
-		mes "Ah, I'm afraid I have to work right now...";
-		mes "Sorry...";
+		mes "Scusi...?";
+		mes "Ah, temo che devo lavorare adesso...";
+		mes "Scusa...";
 		break;
 	case 3:
 		mes "[SongHeeYeon]";
-		mes "Yes, thank you.";
-		mes "Have a good time.";
+		mes "Sì, grazie.";
+		mes "Divertiti.";
 		close2;
 		set in_battle,3;
 		warp "gon_test",25,98;
 		end;
 	case 4:
 		mes "[SongHeeYeon]";
-		mes "Thank you.";
-		mes "Please come again.";
+		mes "Grazie.";
+		mes "Per favore torna.";
 		close2;
 		warp "gonryun",177,112;
 		end;
 	case 5:
 		mes "[SongHeeYeon]";
 		mes "........";
-		mes "Goodbye...";
+		mes "Addio...";
 		break;
 	}
 	close;
@@ -276,18 +276,18 @@ gon_test,46,14,3	script	Guide of field of fight	770,{
 
 gon_test,70,103,3	script	ChowAnAn#gnp	773,{
 	mes "[ChowAnAn]";
-	mes "Want to go back?";
+	mes "Vuoi tornare indietro?";
 	next;
-	if (select("Yes.:No.") == 1) {
+	if (select("Sì.:No.") == 1) {
 		mes "[ChowAnAn]";
-		mes "Thank you.";
-		mes "Please come again.";
+		mes "Grazie.";
+		mes "Per favore torna.";
 		close2;
 		set in_battle,1;
 		warp "gon_test",44,4;
 		end;
 	}
 	mes "[ChowAnAn]";
-	mes "Thank you.";
+	mes "Grazie.";
 	close;
 }

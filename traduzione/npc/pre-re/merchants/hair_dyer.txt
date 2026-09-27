@@ -19,48 +19,48 @@
 //============================================================ 
 
 prt_in,243,168,4	script	Jovovich	91,{
-	mes "[Hairdresser Jovovich]";
-	mes "Welcome~!";
-	mes "How may I help you?";
+	mes "[Parrucchiere Jovovich]";
+	mes "Benvenuto!";
+	mes "Come posso aiutarla?";
 	next;
-	mes "[Hairdresser Jovovich]";
-	if (Sex == SEX_MALE) mes "Oh, no! Your hair is damaged. It seems as if you may need professional treatment. Come sit over here, please. Come.";
+	mes "[Parrucchiere Jovovich]";
+	if (Sex == SEX_MALE) mes "Oh, no! I tuoi capelli sono rovinati. Sembra che tu possa aver bisogno di un trattamento professionale. Vieni a sederti qui, per favore. Vieni.";
 	else {
 		if (rand(20) > 11) {
-			mes "Eh!? Oh my! Oh no no no no! Your hair is sooo damaged! It's not good if you leave your hair like this.";
+			mes "Ehi!? Oh mio Dio! Oh no no no no! I tuoi capelli sono così rovinati! Non è buono se lasci i tuoi capelli così.";
 			next;
-			mes "[Hairdresser Jovovich]";
-			mes "Would you let me treat your hair? Please?";
+			mes "[Parrucchiere Jovovich]";
+			mes "Mi lasceresti curare i tuoi capelli? Per favore?";
 		}
-		else mes "Wow! Your hair would be perfect once it's dyed~ How about dying your hair for a change?";
+		else mes "Wow! I tuoi capelli sarebbero perfetti una volta tinti~ Che ne dici di tingerti i capelli per cambiare?";
 	}
 	next;
 	while(1) {
-		switch(select("Dye Hair:Tips and Information:Cancel")) {
+		switch(select("Tinte per capelli:Suggerimenti e Informazioni:Annulla")) {
 		case 1:
-			mes "[Hairdresser Jovovich]";
-			mes "Yes yes, good choice~";
-			mes "Well then, this is your chance for a make-over, your chance to blossom in beauty! Choose the color you would like.";
+			mes "[Parrucchiere Jovovich]";
+			mes "Sì sì, buona scelta~";
+			mes "Allora, questa è la tua occasione per un makeover, la tua occasione di sbocciare in bellezza! Scegli il colore che desideri.";
 			next;
 			while(1) {
 				if (.@choose_success == 1) {
-					mes "[Hairdresser Jovovich]";
-					mes "What do you think? Did you want a different color?";
+					mes "[Parrucchiere Jovovich]";
+					mes "Cosa ne pensi? Volevi un colore diverso?";
 					next;
-					if (select("Yes:No") == 1) {
-						mes "[Hairdresser Jovovich]";
-						mes "Okay! Choose the color that you would like.";
+					if (select("Sì:No") == 1) {
+						mes "[Parrucchiere Jovovich]";
+						mes "Ok! Scegli il colore che desideri.";
 						next;
 					}
 					else  {
-						mes "[Hairdresser Jovovich]";
-						mes "Hmm, I'm sort of disappointed. I wanted to do a better job. But I promise I'll do it better next time. Please come again~";
+						mes "[Parrucchiere Jovovich]";
+						mes "Mmm, sono un po' deluso. Volevo fare meglio. Ma prometto che la prossima volta lo farò meglio. Per favore, venici ancora~";
 						close;
 					}
 				}
 
 				while(1) {
-					switch(select("Red, please.:Yellow, please.:Violet, please.:Orange, please.:Green, please.:Blue, please.:White, please.:Black, please.:Actually, I like my hair as it is.")) {
+					switch(select("Rosso, per favore.:Giallo, per favore.:Violetta, per favore.:Arancione, per favore.:Verde, per favore.:Blu, per favore.:Bianco, per favore.:Nero, per favore.:In realtà, mi piace i miei capelli così come sono.")) {
 					case 1: set .@headpalette,8; break;
 					case 2: set .@headpalette,1; break;
 					case 3: set .@headpalette,2; break;
@@ -71,18 +71,18 @@ prt_in,243,168,4	script	Jovovich	91,{
 					case 8: set .@headpalette,7; break;
 					case 9:
 						if (.@choose_success != 0) {
-							mes "[Hairdresser Jovovich]";
-							mes "You must like your hair color~";
+							mes "[Parrucchiere Jovovich]";
+							mes "Devi amare il colore dei tuoi capelli~";
 							close;
 						}
-						mes "[Hairdresser Jovovich]";
-						mes "Eehh~? You're not going to dye your hair? I'm a little sad...";
+						mes "[Parrucchiere Jovovich]";
+						mes "Eeeh~? Non ti colorerai i capelli? Sono un po' triste...";
 						close;
 					}
 
 					if (.@headpalette == getlook(VAR_HEADPALETTE)) {
-						mes "[Hairdresser Jovovich]";
-						mes "Eh? But that's the hair color you already have. Please choose a different color.";
+						mes "[Parrucchiere Jovovich]";
+						mes "Eh? Ma è il colore di capelli che hai già. Per favore scegli un altro colore.";
 						next;
 					}
 					else {
@@ -97,8 +97,8 @@ prt_in,243,168,4	script	Jovovich	91,{
 						case 8: callsub S_NoDye,975,"red"; break;
 						}
 						if (Zeny < 1000) {
-							mes "[Hairdresser Jovovich]";
-							mes "The fee is 1000 zeny. Do you not have enough...?";
+							mes "[Parrucchiere Jovovich]";
+							mes "La tariffa è di 1000 zeny. Non hai abbastanza...?";
 							close;
 						}
 
@@ -123,25 +123,25 @@ prt_in,243,168,4	script	Jovovich	91,{
 			}
 
 		case 2:
-			mes "[Hairdresser Jovovich]";
-			mes "When you're feeling down , when you get dumped, when you want to impress someone, or even when you just want to stand out...";
+			mes "[Parrucchiere Jovovich]";
+			mes "Quando ti senti giù, quando vieni lasciato/a, quando vuoi impressionare qualcuno, o anche solo quando vuoi distinguerti...";
 			next;
-			mes "[Hairdresser Jovovich]";
-			mes "For that special place and time, wouldn't you want a hairstyle of your very own? As long as you have the appropriate dyestuffs, I will make your hair look wonderful.";
+			mes "[Parrucchiere Jovovich]";
+			mes "Per quel luogo e momento speciali, non vorresti un'acconciatura tutta tua? Finché hai i coloranti appropriati, farò sembrare meravigliosi i tuoi capelli.";
 			next;
-			mes "[Hairdresser Jovovich]";
-			mes "And try not to worry too much about the fee. Acquiring beauty is the same as acquiring everything. Hehe~";
+			mes "[Parrucchiere Jovovich]";
+			mes "E prova a non preoccuparti troppo della tariffa. Acquisire la bellezza è come acquisire tutto. Hehe~";
 			next;
-			mes "[Hairdresser Jovovich]";
-			mes "* Fees and Information *";
-			mes "- 1 Dyestuffs item of the color of hair you want.";
-			mes "- 1000 zeny fee.";
+			mes "[Parrucchiere Jovovich]";
+			mes "* Commissioni e Informazioni *";
+			mes "- 1 articolo di tintura del colore dei capelli che desideri.";
+			mes "- Tassa di 1000 zeny.";
 			close;
 
 		case 3:
-			mes "[Hairdresser Jovovich]";
-			mes "Men or Women...";
-			mes "Everyone has the right and obligation to be beautiful.";
+			mes "[Parrucchiere Jovovich]";
+			mes "Uomini o Donne...";
+			mes "Ognuno ha il diritto e l'obbligo di essere bello.";
 			close;
 		}
 
@@ -149,8 +149,8 @@ prt_in,243,168,4	script	Jovovich	91,{
 
 S_NoDye:
 	if (countitem(getarg(0)) == 0) {
-		mes "[Hairdresser Jovovich]";
-		mes "Eh?! But you need the item '"+getitemname(getarg(0))+"' to dye your hair "+getarg(1)+"...";
+		mes "[Parrucchiere Jovovich]";
+		mes "Eh?! Ma ti serve l'oggetto '"+getitemname(getarg(0))+"per tingerti i capelli "+getarg(1)+"...";
 		close;
 	}
 	return;

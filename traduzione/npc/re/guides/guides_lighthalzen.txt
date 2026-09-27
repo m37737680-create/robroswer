@@ -10,29 +10,29 @@
 
 lighthalzen,207,310,5	script	Lighthalzen Guide#lhz01::GuideLighthalzen	852,{
 	cutin "ein_soldier",2;
-	mes "[Lighthalzen Guide]";
-	mes "Welcome to ^8B4513Lighthalzen^000000,";
-	mes "the Corporation City-State.";
-	mes "If you need any guidance";
-	mes "around the city, feel free";
-	mes "to ask me and I'll do my";
-	mes "very best to help you.";
+	mes "Guida Lighthalzen";
+	mes "Benvenuti a ^8B4513Lighthalzen^000000,";
+	mes "la Città-Stato Corporativa.";
+	mes "Se hai bisogno di qualche guida";
+	mes "attorno alla città, sentiti libero";
+	mes "chiedermi e io farò il mio";
+	mes "molto bene per aiutarti.";
 	next;
-	mes "[Lighthalzen Guide]";
-	mes "Please be aware that I'm";
-	mes "in charge of providing info";
-	mes "regarding the West District";
-	mes "of ^8B4513Lighthalzen^000000. Now, please";
-	mes "select the location that you'd";
-	mes "like to learn more about.";
+	mes "Guida Lighthalzen";
+	mes "Vorrei farti presente che sono";
+	mes "responsabile di fornire informazioni";
+	mes "riguardo al Distretto Ovest";
+	mes "di ^8B4513Lighthalzen^000000. Ora, per favore";
+	mes "seleziona la posizione che vorresti";
+	mes "vorrei saperne di più su.";
 	F_Navi("[Lighthalzen Guide]");
 	next;
 	while (1) {
-		switch(select("[ Main Facilities ]:[ Merchants & Helpers ]:Remove Marks from Mini-Map:Cancel")) {
+		switch(select("[ Strutture Principali ]:[ Mercanti e Aiutanti ]:Rimuovi i segni dalla mini-mappa:Annulla")) {
 		case 1:
 			set .@loop,1;
 			while (.@loop) {
-				switch(select("[ Hotel ]:[ Bank ]:[ Airport ]:[ Weapon Shop ]:[ Department Store ]:[ Police Station ]:[ Jewelry Store ]:[ Cool Event Corp. ]:[ Somatology Laboratory ]:[ Alchemist Association ]:Previous Menu")) {
+				switch(select("Hotel:Banca:Aeroporto:Negozio di Armi:[ Grande Magazzino ]:Stazione di polizia:Negozio di gioielli:[ Eventi Fantastici Corp. ]:Laboratorio di Somatologia:[ Associazione degli Alchimisti ]:Menu Precedente")) {
 				case 1:
 					callsub L_Mark, F_Navi("Hotel","lighthalzen,159,133","^FF0000");
 					viewpoint 1,160,217,0,0xFF0000;
@@ -92,23 +92,23 @@ lighthalzen,207,310,5	script	Lighthalzen Guide#lhz01::GuideLighthalzen	852,{
 		case 2:
 			set .@loop,1;
 			while (.@loop) {
-				switch(select("[ Armsmith ]:[ Seiayablem ]:[ Pet Groomer ]:[ Kafra Employees ]:[ Cool Event Corp. Staff ]:Previous Menu")) {
+				switch(select("[ Armaiolo ]:[ Seiayablem ]:[ Toelettatore di animali domestici ]:[ Kafra Dipendenti ]:[ Personale di Cool Event Corp. ]:Menu Precedente")) {
 				case 1:
-					mes "[Lighthalzen Guide]";
-					mes "You may go to Fulerr,";
-					mes "the ^0A9696Armsmith^000000";
-					mes "on the 1st floor of the Weapon Shop.";
+					mes "Guida Lighthalzen";
+					mes "Puoi andare a Fulerr,";
+					mes "l'Armaiolo ^0A9696Armsmith^000000";
+					mes "al primo piano del Negozio di Armi.";
 					viewpoint 1,194,35,10,0x0A9696;
 					next;
 					callsub L_Mark, "^0A9696Armsmith^000000";
 					next;
 					break;
 				case 2:
-					mes "[Lighthalzen Guide]";
-					mes "^4B0082Seiyablem^000000 adds";
-					mes "sockets on your items";
-					mes "on the 1st floor";
-					mes "of the Weapon Shop.";
+					mes "Guida Lighthalzen";
+					mes "^4B0082Seiyablem^000000 aggiunge";
+					mes "prese sui tuoi articoli";
+					mes "al primo piano";
+					mes "del Negozio d'Armi.";
 					viewpoint 1,194,35,11,0x4B0082;
 					next;
 					callsub L_Mark, "^4B0082Seiyablem^000000",1;
@@ -137,9 +137,9 @@ lighthalzen,207,310,5	script	Lighthalzen Guide#lhz01::GuideLighthalzen	852,{
 			}
 			break;
 		case 3:
-			mes "[Lighthalzen Guide]";
-			mes "Sure, I'll remove all marks from your mini-map.";
-			mes "Is there anything else I can do for you?";
+			mes "Guida Lighthalzen";
+			mes "Certo, rimuoverò tutti i segni dalla tua minimaappa.";
+			mes "C'è qualcos'altro che posso fare per te?";
 			viewpoint 2,160,217,0,0xFFFFFF;
 			viewpoint 2,203,257,1,0xFFFFFF;
 			viewpoint 2,262,75,2,0xFFFFFF;
@@ -159,8 +159,8 @@ lighthalzen,207,310,5	script	Lighthalzen Guide#lhz01::GuideLighthalzen	852,{
 			next;
 			break;
 		case 4:
-			mes "[Lighthalzen Guide]";
-			mes "Enjoy your adventures!";
+			mes "Guida Lighthalzen";
+			mes "Buone avventure!";
 			close2;
 			cutin "ein_soldier",255;
 			end;
@@ -168,11 +168,11 @@ lighthalzen,207,310,5	script	Lighthalzen Guide#lhz01::GuideLighthalzen	852,{
 	}
 	end;
 L_Mark:
-	mes "[Lighthalzen Guide]";
-	mes "I will mark the location";
-	mes "of "+((getarg(1,0))?"":"the ")+getarg(0);
-	mes "on your mini-map.";
-	mes "Would you like to check any other locations?";
+	mes "Guida Lighthalzen";
+	mes "Segnerò la posizione";
+	mes "di "+((getarg(1,0))?"":"il ")+getarg(0);
+	mes "sulla tua minima mappa.";
+	mes "Vuoi controllare altre località?";
 	return;
 }
 lighthalzen,220,310,3	duplicate(GuideLighthalzen)	Lighthalzen Guide#lhz02	852

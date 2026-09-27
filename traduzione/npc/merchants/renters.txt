@@ -33,59 +33,59 @@ prontera,55,350,5	script	Peco Peco Breeder#knt	105,{
 	if(Upper==1) set .@price,2500; //Armored Peco
 	if(Upper==2) set .@price,2500; //Baby Peco
 
-	mes "[Peco Peco Breeder]";
+	mes "[Allevatore di Peco Peco]";
 	if (BaseJob == Job_Knight && Class < Job_Rune_Knight) {
-		mes "Welcome.";
-		mes "Honorable Knight,";
-		mes "would you like to rent";
-		mes "a Peco Peco? The rental";
-		mes "fee is "+.@price+" zeny.";
+		mes "Benvenuto.";
+		mes "Onorevole Cavaliere,";
+		mes "ti piacerebbe affittare";
+		mes "un Peco Peco? L'affitto";
+		mes "tassa è "+.@price+" zeny.";
 		next;
-		switch(select("Rent Peco Peco:Cancel")) {
+		switch(select("Noleggiare Peco Peco:Annulla")) {
 		case 1:
 			if (Zeny < .@price) {
-				mes "[Peco Peco Breeder]";
-				mes "You do not";
-				mes "have enough zeny.";
-				mes "Are you...";
-				mes "bankrupt?";
+				mes "[Allevatore di Peco Peco]";
+				mes "Non fai";
+				mes "a abbastanza zeny.";
+				mes "Sei...";
+				mes "fallito?";
 				close;
 			}
 			else if(getskilllv("KN_RIDING") == 0) {
-				mes "[Peco Peco Breeder]";
-				mes "I'm sorry, but you're";
-				mes "not eligible for this";
-				mes "service. Please go learn";
-				mes "the Peco Peco Ride skill first.";
+				mes "[Allevatore di Peco Peco]";
+				mes "Mi dispiace, ma sei";
+				mes "non idoneo per questo";
+				mes "servizio. Per favore vai a imparare";
+				mes "la abilità Peco Peco Ride per prima.";
 				close;
 			}
 			else if(checkriding()) {
-				mes "[Peco Peco Breeder]";
-				mes "You're already";
-				mes "mounted on a";
+				mes "[Allevatore di Peco Peco]";
+				mes "Sei già";
+				mes "montato su un";
 				mes "Peco Peco.";
 				close;
 			}
 			else if(ismounting()) {
-				mes "[Peco Peco Breeder]";
-				mes "Please remove your cash mount.";
+				mes "[Allevatore di Peco Peco]";
+				mes "Rimuovi il tuo deposito contante.";
 				close;
 			}
 			set Zeny, Zeny-.@price;
 			setriding;
 			close;
 		case 2:
-			mes "[Peco Peco Breeder]";
-			mes "I see.";
-			mes "Well then,";
-			mes "have a good day.";
+			mes "[Allevatore di Peco Peco]";
+			mes "Capisco";
+			mes "Bene allora,";
+			mes "ti auguro una buona giornata.";
 			close;
 		}
 	} else {
-		mes "I'm sorry, but these";
-		mes "Peco Pecos are only";
-		mes "available for Knights";
-		mes "and Lord Knights.";
+		mes "Mi dispiace, ma questi";
+		mes "I pecos sono solo";
+		mes "disponibile per i Cavalieri";
+		mes "e Cavalieri del Signore.";
 		close;
 	}
 }
@@ -97,58 +97,58 @@ prontera,232,318,3	script	Peco Peco Breeder#cru	105,{
 	if(Upper==1) set .@price,3500; //Armored Peco
 	if(Upper==2) set .@price,3500; //Baby Peco
 
-	mes "[Peco Peco Breeder]";
+	mes "[Allevatore di Peco Peco]";
 	if (BaseJob == Job_Crusader && Class < Job_Rune_Knight) {
-		if(Upper != 1 ) mes "Welcome, Crusader.";
-		else mes "Welcome, Paladin.";
-		mes "We have a special";
-		mes "Peco Peco prepared";
-		mes "for you. To rent one";
-		mes "will cost "+.@price+" zeny.";
+		if(Upper != 1 ) mes "Benvenuto, Crociato.";
+		else mes "Benvenuto, Paladino.";
+		mes "Abbiamo un speciale";
+		mes "Peco Peco preparato";
+		mes "per te. Noleggiarne uno";
+		mes "costare "+.@price+" zeny.";
 		next;
-		switch(select("Rent a PecoPeco:Quit")) {
+		switch(select("Noleggiare un PecoPeco:Smetti")) {
 		case 1:
 			if (Zeny < .@price) {
-				mes "[Peco Peco Breeder]";
-				mes "You do not";
-				mes "have enough zeny.";
-				mes "If you would like";
-				mes "a Peco Peco please";
-				mes "bring "+.@price+" zeny...";
+				mes "[Allevatore di Peco Peco]";
+				mes "Non fai";
+				mes "a abbastanza zeny.";
+				mes "Se desideri";
+				mes "un Peco Peco per favore";
+				mes "portare "+.@price+" zeny...";
 				close;
 			}
 			else if(getskilllv("KN_RIDING") == 0) {
-				mes "[Peco Peco Breeder]";
-				mes "You must first learn";
-				mes "to ride a PecoPeco before";
-				mes "I can rent one to you.";
+				mes "[Allevatore di Peco Peco]";
+				mes "Devi prima imparare";
+				mes "andare su un PecoPeco prima";
+				mes "Posso noglierne uno a te.";
 				close;
 			}
 			else if(checkriding()) {
-				mes "[Peco Peco Breeder]";
-				mes "You are already";
-				mes "mounted on a Peco Peco.";
+				mes "[Allevatore di Peco Peco]";
+				mes "Sei già";
+				mes "montato su un Peco Peco.";
 				close;
 			}
 			else if(ismounting()) {
-				mes "[Peco Peco Breeder]";
-				mes "Please remove your cash mount.";
+				mes "[Allevatore di Peco Peco]";
+				mes "Rimuovi il tuo deposito contante.";
 				close;
 			}
 			set Zeny, Zeny-.@price;
 			setriding;
 			close;
 		case 2:
-			mes "[Peco Peco Breeder]";
-			mes "See you around.";
+			mes "[Allevatore di Peco Peco]";
+			mes "A presto.";
 			close;
 		}
 	} else {
-		mes "What can I do for you?";
-		mes "Please be aware that";
-		mes "this Peco Peco rental";
-		mes "service is strictly for";
-		mes "Crusaders and Paladins.";
+		mes "Cosa posso fare per te?";
+		mes "Si prega di notare che";
+		mes "questo noleggio Peco Peco";
+		mes "servizio è strettamente per";
+		mes "Crociati e Paladini.";
 		close;
 	}
 }
@@ -160,73 +160,73 @@ hu_in01,381,304,5	script	Falcon Breeder#hnt	105,{
 	if(Upper==1) set .@price,2500; //Scarf Falcon
 	if(Upper==2) set .@price,2500; //Baby Falcon
 
-	mes "[Falcon Breeder]";
+	mes "[Allevatore di Falchi]";
 	if (BaseJob == Job_Hunter) {
 		if (checkwug()) {
 			mes "Um...";
-			mes "You can't rent a Falcon";
-			mes "until you dismiss your warg first!";
+			mes "Non puoi affittare un Falco";
+			mes "finché non smentisci il tuo warg per primo!";
 			close;
 		}
-		mes "Do you need a Falcon?";
-		mes "You can rent your own";
-		mes "trusty bird of prey for a";
-		mes "fee of just "+.@price+" zeny~";
+		mes "Hai bisogno di un Falco?";
+		mes "Puoi affittare il tuo";
+		mes "affidabile uccello predatore per un";
+		mes "tassa di solo "+.@price+" zeny~";
 		next;
-		switch(select("Rent Falcon:Cancel")) {
+		switch(select("Noleggiare Falco:Annulla")) {
 		case 1:
 			if (checkwug()) {
-				mes "[Falcon Breeder]";
+				mes "[Allevatore di Falchi]";
 				mes "Um...";
-				mes "You can't rent a Falcon";
-				mes "until you dismiss your warg first!";
+				mes "Non puoi affittare un Falco";
+				mes "finché non smentisci il tuo warg per primo!";
 				close;
 			}
 			if (Zeny < .@price) {
-				mes "[Falcon Breeder]";
-				mes "What is this?";
-				mes "You don't have";
-				mes "enough zeny?!";
-				mes "You better start";
-				mes "hunting money";
-				mes "instead of monsters~";
+				mes "[Allevatore di Falchi]";
+				mes "Cos'è questo?";
+				mes "Non hai";
+				mes "abbastanza zeny?!";
+				mes "Meglio che tu inizi";
+				mes "cacciare soldi";
+				mes "invece dei mostri~";
 				close;
 			}
 			else if(getskilllv("HT_FALCON") == 0) {
-				mes "[Falcon Breeder]";
-				mes "Gosh~";
-				mes "Go learn how to";
-				mes "manage a Falcon";
-				mes "first! I can't rent one";
-				mes "to you if you can't";
-				mes "handle it, you know.";
+				mes "[Allevatore di Falchi]";
+				mes "Oh mio Dio~";
+				mes "Vai a imparare come";
+				mes "gestire un Falco";
+				mes "per prima cosa! Non posso noleggiarne uno";
+				mes "a te se non puoi";
+				mes "gestiscilo, sai.";
 				close;
 			}
 			else if(checkfalcon()) {
-				mes "[Falcon Breeder]";
+				mes "[Allevatore di Falchi]";
 				mes "Um...";
-				mes "You already have";
-				mes "a Falcon. It's right";
-				mes "there, can't you see it?";
+				mes "Hai già";
+				mes "un falco. È giusto";
+				mes "lì, non lo vedi?";
 				close;
 			}
 			set Zeny, Zeny-.@price;
 			setfalcon;
 			close;
 		case 2:
-			mes "[Falcon Breeder]";
-			mes "W-wait, where're";
-			mes "you goin'? These";
-			mes "Falcons are top notch,";
-			mes "I guarantee it! C'mon, yo~";
+			mes "[Allevatore di Falchi]";
+			mes "Aspetta, dove sono";
+			mes "Vai? Questi";
+			mes "I falchi sono di prim'ordine,";
+			mes "Lo garantisco! Dai, yo~";
 			close;
 		}
 	} else {
-		mes "Young fool!";
-		mes "Falcons can only";
-		mes "be used by Hunters";
-		mes "and Snipers, capish?";
-		mes "...Heh heh, jealous?";
+		mes "Giovane sciocco!";
+		mes "I falchi possono solo";
+		mes "essere usato da Cacciatori";
+		mes "e i cecchini, capito?";
+		mes "Heh heh, geloso?";
 		close;
 	}
 }

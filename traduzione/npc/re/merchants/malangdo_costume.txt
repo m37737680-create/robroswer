@@ -36,33 +36,33 @@
 // Costume exchange
 mal_in01,20,124,5	script	Designer Heidam#eventhat	4_CAT_SAILOR5,{
 	if (checkweight(1301,1) == 0) {
-		mes "- Please stop here!! -";
-		mes "- You have carried too much items, -";
-		mes "- Therefore unable receive any item again, -";
-		mes "- Please reduce your weight, -";
-		mes "- And come back again later! -";
+		mes "Smetti qui!";
+		mes "Hai portato troppi oggetti,";
+		mes "- Pertanto non è possibile ricevere più articoli, -";
+		mes "Per favore, riduci il tuo peso,";
+		mes "E torna qui più tardi!";
 		close;
 	}
 	disable_items;
 	mes "[Designer Heidam]";
-	mes "I am Designer Heidam, who has all kinds of cool costumes in the World.";
-	mes "If you have any Kitcoins with you, come look for Designer Heidam!";
+	mes "Sono il designer Heidam, che ha tutti i tipi di costumi fantastici nel Mondo.";
+	mes "Se avete dei Kitcoin con voi, venite a cercare Designer Heidam!";
 	next;
-	if (select( "Exchange costume for random enchant box", "Continue conversation" ) == 2) {
+	if (select( "Scambiare costume per scatola di incantesimi casuale", "Continua conversazione" ) == 2) {
 		mes "[Designer Heidam]";
-		mes "Though I look out of shape right now, I used to be a well known fashion model and designer!";
+		mes "Anche se ora non sono in forma, un tempo ero una nota modella e stilista!";
 		next;
 		mes "[Designer Heidam]";
-		mes "Don't pity me! I am well aware of my looks, but I like who I am inside.";
+		mes "Non pietirmi! Sono ben consapevole del mio aspetto, ma mi piace chi sono dentro.";
 		close;
 	}
 	mes "[" + strcharinfo(0) + "]";
-	mes "This item is useless to me! Do you have anything else?";
+	mes "Questo articolo è inutile per me! Avete qualcos'altro?";
 	next;
 	mes "[Designer Heidam]";
-	mes "Oh, then I can exchange it for a box of costume enchantment items.";
+	mes "Allora posso scambiarlo con una scatola di oggetti di incantesimo da costume.";
 	next;
-	mes "- Rummaging -";
+	mes "Rummare";
 	next;
 	// ===================================================================
 	// =================== Costume Enchant Stone Box 4 ===================
@@ -441,36 +441,36 @@ mal_in01,20,124,5	script	Designer Heidam#eventhat	4_CAT_SAILOR5,{
 				if (countitem(.@id) < 1)
 					continue;
 				mes "[Designer Heidam]";
-				mes "I see that you have a ^3131FF" + getitemname(.@id) + "^000000. Do you want to exchange this for a costume enchantment box?";
+				mes "Vedo che hai un ^3131FF" + getitemname(.@id) + "^000000. Vuoi scambiare questo con una scatola di incantesimi da costume?";
 				next;
-				switch( select( "Exchange", "Look for something else", "Stop Exchanging" ) ) {
+				switch( select( "Scambio", "Cerca qualcos'altro", "Smettere di scambiare" ) ) {
 				case 1:
 					mes "[Designer Heidam]";
 					if (countitem(.@id) < 1)
-						mes "Oh~ Something suddenly disappeared...";
+						mes "Oh~ Qualcosa è improvvisamente scomparso...";
 					else {
-						mes "Exchange Completed.";
+						mes "Scambio completato.";
 						delitem .@id, 1;
 						getitem .@box_list[.@i], 1;
 					}
-					mes "Let me check you for another item to exchange...";
+					mes "Lasciami controllare per un altro articolo da scambiare...";
 					next;
 					break;
 				case 2:
 					break;
 				case 3:
 					mes "[Designer Heidam]";
-					mes "Meow? Where are you going?";
+					mes "Miao? Dove stai andando?";
 					close;
 				}
 			}
 		}
 		mes "[Designer Heidam]";
-		mes "Guess that is all.";
+		mes "Credo che sia tutto.";
 		next;
-		if (select( "Look more", "Quit" ) == 2) {
+		if (select( "Guarda di più", "Smetti" ) == 2) {
 			mes "[Designer Heidam]";
-			mes "Bye~";
+			mes "Ciao~";
 			close;
 		}
 	}
@@ -482,29 +482,29 @@ malangdo,115,154,3	script	Fashion Stone#stone	4_BULLETIN_BOARD2,{ end; }
 mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 	disable_items;
 	mes "[Aver De Dosh]";
-	mes "Welcome to Fashion Stone!!";
+	mes "Benvenuti a Fashion Stone!!";
 	next;
 	mes "[Aver De Dosh]";
-	mes "We take various costume items.";
+	mes "Prendiamo vari articoli per costumi.";
 	next;
 	mes "[Aver De Dosh]";
-	mes "If you want cool styling for your costume, please come to me 'Aver De Dosh'!";
-	mes "Don't forget to bring ^ff0000your own costume and costume stones^000000~";
+	mes "Se vuoi un'ottima messa in scena per il tuo costume, vieni da me 'Aver De Dosh'!";
+	mes "Non dimenticare di portare il tuo costume e le pietre per costumi^ff0000your own costume and costume stones^000000~";
 	next;
-	if (select( "Apply enchant.", "End Conversation." ) == 2) {
+	if (select( "Applica incantesimo.", "Fine Conversazione." ) == 2) {
 		mes "[Aver De Dosh]";
-		mes "Please check our other upgrading services~";
+		mes "Controlla i nostri altri servizi di aggiornamento~";
 		close;
 	}
 	if (checkweight(1119,3) == 0) {
 		mes "[Aver De Dosh]";
 		mes "Kiaaaaach!!!";
-		mes "I hate bulging bags!";
-		mes "No matter how cool your costume looks, that fat bag of yours is a fashion terror you know!";
+		mes "Odio le borse che spuntano!";
+		mes "Non importa quanto bello sembri il tuo costume, quel sacco di grasso che hai è un terrore della moda, lo sai!";
 		next;
 		mes "[Aver De Dosh]";
-		mes "It seems you have too many items on you.";
-		mes "Come back after clearing some inventory space.";
+		mes "Sembra che tu abbia troppi oggetti addosso.";
+		mes "Torna dopo aver liberato spazio di archiviazione.";
 		close;
 	}
 	.@eq_top = getequipid(EQI_COSTUME_HEAD_TOP);
@@ -513,8 +513,8 @@ mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 
 	if (.@eq_top == -1 && .@eq_mid == -1 && .@eq_low == -1) {
 		mes "[Aver De Dosh]";
-		mes "You must wear the costume you want to enchant.";
-		mes "Then, I will be able to help you out.";
+		mes "Devi indossare il costume che vuoi incantare.";
+		mes "Allora sarò in grado di aiutarti.";
 		close;
 	}
 	if (.@eq_top > -1) {
@@ -811,8 +811,8 @@ mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 			break;
 		default:
 			mes "[Aver De Dosh]";
-			mes "Well...";
-			mes "This costume is currently not available for an upgrade.";
+			mes "Beh...";
+			mes "Questo costume non è attualmente disponibile per un aggiornamento.";
 			close;
 		}
 		break;
@@ -905,8 +905,8 @@ mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 			break;
 		default:
 			mes "[Aver De Dosh]";
-			mes "Well...";
-			mes "This costume is currently not available for an upgrade.";
+			mes "Beh...";
+			mes "Questo costume non è attualmente disponibile per un aggiornamento.";
 			close;
 		}
 		break;
@@ -1029,14 +1029,14 @@ mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 			break;
 		default:
 			mes "[Aver De Dosh]";
-			mes "Well...";
-			mes "This costume is currently not available for an upgrade.";
+			mes "Beh...";
+			mes "Questo costume non è attualmente disponibile per un aggiornamento.";
 			close;
 		}
 		break;
 
 	default:
-		mes "An unknown error has occurred.";
+		mes "Si è verificato un errore sconosciuto.";
 		close;
 	}
 
@@ -1045,13 +1045,13 @@ mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 	setarray .@card[0], getequipcardid(.@part, 0), getequipcardid(.@part, 1), getequipcardid(.@part, 2), getequipcardid(.@part, 3);
 
 	mes "[Aver De Dosh]";
-	mes "Wow~ This ^0000FF" + getitemname(.@equip_id) + "^000000!!! looks great on you!!";
-	mes "What kind of stone do you want to use for the upgrade?";
+	mes "Wow~ Questo ^0000FF" + getitemname(.@equip_id) + "^000000!!! ti sta benissimo!!";
+	mes "Che tipo di pietra vuoi usare per l'aggiornamento?";
 	next;
 	if (.@part == EQI_COSTUME_HEAD_TOP)
-		.@slot = select( "Upper", "Middle", "Lower", "Cancel" ) - 1;	// the slot enchanted changes according to the location
+		.@slot = select( "Superiore", "Centrale", "Più basso", "Annulla" ) - 1;	// the slot enchanted changes according to the location
 	else if (.@part == EQI_COSTUME_HEAD_MID)
-		.@slot = select( "", "Middle", "Lower", "Cancel" ) - 1;
+		.@slot = select( "", "Centrale", "Più basso", "Annulla" ) - 1;
 	else if (.@part == EQI_COSTUME_HEAD_LOW)
 		.@slot = 2;
 
@@ -1059,7 +1059,7 @@ mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 	case 0:
 		if (!(.@location & EQP_COSTUME_HEAD_TOP)) {
 			mes "[Aver De Dosh]";
-			mes "The costume can't be enhanced at this location.";	// custom
+			mes "Il costume non può essere potenziato in questa posizione.";	// custom
 			close;
 		}
 		setarray .@stone_id[0],
@@ -1117,7 +1117,7 @@ mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 	case 1:
 		if (!(.@location & EQP_COSTUME_HEAD_MID)) {
 			mes "[Aver De Dosh]";
-			mes "The costume can't be enhanced at this location.";	// custom
+			mes "Il costume non può essere potenziato in questa posizione.";	// custom
 			close;
 		}
 		setarray .@stone_id[0],
@@ -1179,7 +1179,7 @@ mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 	case 2:
 		if (!(.@location & EQP_COSTUME_HEAD_LOW)) {
 			mes "[Aver De Dosh]";
-			mes "The costume can't be enhanced at this location.";	// custom
+			mes "Il costume non può essere potenziato in questa posizione.";	// custom
 			close;
 		}
 		setarray .@stone_id[0],
@@ -1243,7 +1243,7 @@ mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 		break;
 	default:
 		mes "[Aver De Dosh]";
-		mes "Please check our other upgrading services~";
+		mes "Controlla i nostri altri servizi di aggiornamento~";
 		close;
 	}
 	.@size = getarraysize(.@stone_id);
@@ -1273,18 +1273,18 @@ mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 
 	if (getequipid(.@part) < 0 || countitem(.@stone) < 1) {
 		mes "[Aver De Dosh]";
-		mes "Hmm? You are lacking components.";
-		mes "You must have both, the costume and an enchant stone for this upgrade.";
+		mes "Hmm? Ti mancano i componenti.";
+		mes "Devi avere entrambi, il costume e una pietra incantata per questo aggiornamento.";
 		close;
 	}
-	mes "^FF0000   !!! Caution !!!^000000";
-	mes "^ff0000This upgrade can fail.^000000";
-	mes "^ff0000If the item already has an enchant, it will be reset and only the costume will be returned.^000000";
+	mes "^FF0000   !!! Attenzione !!!^000000";
+	mes "^ff0000Questo aggiornamento può fallire.^000000";
+	mes "^ff0000Se l'oggetto ha già un incantesimo, verrà resettato e verrà restituito solo il costume.^000000";
 	mes "^FF0000Are you sure about upgrading this item?^000000";
 	next;
-	if (select( "Yes.", "No." ) == 2) {
+	if (select( "Sì.", "No." ) == 2) {
 		mes "[Aver De Dosh]";
-		mes "Please check our other upgrading services~";
+		mes "Controlla i nostri altri servizi di aggiornamento~";
 		close;
 	}
 	delitem .@stone, 1;
@@ -1296,15 +1296,15 @@ mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 	delequip .@part;
 	if (rand(1,100) < 51) {
 		mes "[Aver De Dosh]";
-		mes "Wow... Elegance!!";
-		mes "This is perfect... Wow!";
+		mes "Wow... Eleganza!!";
+		mes "Questo è perfetto... Wow!";
 		.@card[.@slot] = .@enchant;
 	}
 	else {
 		mes "[Aver De Dosh]";
-		mes "History is known for failure...";
-		mes "Just like the history of fashion...";
-		mes "Sorry...to disappoint you..~ LoL.";
+		mes "La storia è nota per i fallimenti...";
+		mes "Proprio come la storia della moda...";
+		mes "Scusa...per deluderti..~ LoL.";
 		.@card[.@slot] = 0;
 	}
 	getitem2 .@equip_id,1,1,.@equip_refine,0,.@card[0],.@card[1],.@card[2],.@card[3];
@@ -1315,33 +1315,33 @@ mal_in01,22,113,3	script	Aver De Dosh#cos_ect	4_WHITETIGER,{
 mal_in01,20,107,3	script	Lace La Zard#cos_ect	4_FROG,{
 	disable_items;
 	mes "[Lace La Zard]";
-	mes "Welcome to Fashion Stone!!";
-	mes "My name is Lace La Zard who will make your 'Power Shoulder' dream come true.";
+	mes "Benvenuti a Fashion Stone!!";
+	mes "Mi chiamo Lace La Zard e realizzerò il tuo sogno del 'Power Shoulder'.";
 	next;
 	mes "[Lace La Zard]";
-	mes "Bring your ^ff0000Costume Garment^000000 and ^ff0000Garment Stone^000000, I will complete the perfect upgrade for you.!";
-	mes "I found this formula while working on my own humble body upgrading!";
+	mes "Porta il tuo ^ff0000Abito Garmento^000000 e la ^ff0000Pietra Garmento^000000, completerò l'upgrade perfetto per te.!";
+	mes "Ho trovato questa formula lavorando sul mio umile potenziamento corporeo!";
 	next;
-	if (select( "Apply enchant.", "End Conversation." ) == 2) {
+	if (select( "Applica incantesimo.", "Fine Conversazione." ) == 2) {
 		mes "[Lace La Zard]";
-		mes "Yes? Do you want to keep looking?";
+		mes "Sì? Vuoi continuare a guardare?";
 		close;
 	}
 	if (checkweight(1119,3) == 0) {
 		mes "[Lace La Zard]";
-		mes "Well... Your heavy shoulder doesn't seem capable for an upgrade...!";
-		mes "Don't be so cruel to your shoulder!";
+		mes "Beh... La tua spalla pesante non sembra capace di un aggiornamento...!";
+		mes "Non essere così crudele con la tua spalla!";
 		next;
-		mes "It seems you have too many items on you.";
-		mes "Come back after clearing some inventory space.";
+		mes "Sembra che tu abbia troppi oggetti addosso.";
+		mes "Torna dopo aver liberato spazio di archiviazione.";
 		close;
 	}
 	.@part = EQI_COSTUME_GARMENT;
 	.@equip_id = getequipid(.@part);
 	if (.@equip_id == -1) {
 		mes "[Lace La Zard]";
-		mes "Put the garment on your shoulder.";
-		mes "I need to have a look at it before I can tell if it's worth to be upgraded..";
+		mes "Metti il capo sulla tua spalla.";
+		mes "Devo dargli un'occhiata prima di poter dire se vale la pena aggiornarlo.";
 		close;
 	}
 
@@ -1366,7 +1366,7 @@ mal_in01,20,107,3	script	Lace La Zard#cos_ect	4_FROG,{
 		break;
 	default:
 		mes "[Lace La Zard]";
-		mes "I need to have a look at it to check for upgrading posibility..";// custom
+		mes "Devo dargli un'occhiata per verificare la possibilità di aggiornamento.";// custom
 		close;
 	}
 
@@ -1374,8 +1374,8 @@ mal_in01,20,107,3	script	Lace La Zard#cos_ect	4_FROG,{
 	setarray .@card[0], getequipcardid(.@part, 0), getequipcardid(.@part, 1), getequipcardid(.@part, 2), getequipcardid(.@part, 3);
 
 	mes "[Lace La Zard]";
-	mes "Wow a ^0000FF" + getitemname(.@equip_id) + "^000000!!! You got some taste right there, don't you?";
-	mes "Great!! I'm fully ready for this upgrade!!";
+	mes "Wow un ^0000FF" + getitemname(.@equip_id) + "^000000!!! Hai davvero buon gusto, non è vero?";
+	mes "Ottimo!! Sono completamente pronto per questo aggiornamento!!";
 	next;
 	setarray .@data$[0],
 		6908, 4807, "ASPD +1",	// ASPDStone_Robe	Atk_Speed1
@@ -1419,31 +1419,31 @@ mal_in01,20,107,3	script	Lace La Zard#cos_ect	4_FROG,{
 	.@size = getarraysize(.@data$);
 	for ( .@i = 0; .@i < .@size; .@i += 3 ) {
 		.@id = atoi(.@data$[.@i]);
-		.@menu$ += sprintf( "%d. %s (%d) left:", (.@j+1), getitemname(.@id), countitem(.@id) );
+		.@menu$ += sprintf( "%d. %s (%d) rimasti:", (.@j+1), getitemname(.@id), countitem(.@id) );
 		.@j++;
 	}
-	.@menu$ += "End Conversation.";
+	.@menu$ += "Fine Conversazione.";
 	.@s = (select(.@menu$) - 1) * 3;
 	if (.@s == .@size) {
 		mes "[Lace La Zard]";
-		mes "Yes? Do you want to keep looking?";
+		mes "Sì? Vuoi continuare a guardare?";
 		close;
 	}
 	.@id = atoi(.@data$[.@s]);
 	.@enchant = atoi(.@data$[.@s+1]);
 	if (getequipid(.@part) < 0 || countitem(.@id) < 1) {
 		mes "[Lace La Zard]";
-		mes "You must have both, the costume and an enchant stone for this upgrade.";
+		mes "Devi avere entrambi, il costume e una pietra incantata per questo aggiornamento.";
 		close;
 	}
-	mes "^FF0000   !!! Caution !!!^000000";
-	mes "^ff0000This upgrade can fail.^000000";
-	mes "^ff0000If the item already has an enchant, it will be reset and only the " + .@data$[.@s+2] + " will be returned.^000000";
+	mes "^FF0000   !!! Attenzione !!!^000000";
+	mes "^ff0000Questo aggiornamento può fallire.^000000";
+	mes "^ff0000Se l'oggetto ha già un incantesimo, verrà resettato e solo il " + .@data$[.@s+2] + " sarà restituito.^000000";
 	mes "^ff0000Are you sure about upgrading this item?^000000";
 	next;
-	if (select( "Yes.", "No." ) == 2) {
+	if (select( "Sì.", "No." ) == 2) {
 		mes "[Lace La Zard]";
-		mes "Yes? Do you want to keep looking?";
+		mes "Sì? Vuoi continuare a guardare?";
 		close;
 	}
 
@@ -1455,14 +1455,14 @@ mal_in01,20,107,3	script	Lace La Zard#cos_ect	4_FROG,{
 	delequip .@part;
 	if (rand(100) < 50) {
 		mes "[Lace La Zard]";
-		mes "Beautiful!!";
-		mes "Did I really made this myself?!!!";
+		mes "Bellissimo!";
+		mes "L'ho davvero fatto io?!!!";
 		.@card[0] = .@enchant;
 	}
 	else {
 		mes "[Lace La Zard]";
 		mes "Oh no!";
-		mes "Crash!!!!! I cannot show this failure to the world!!!";
+		mes "Crash!!!!! Non posso mostrare questo fallimento al mondo!!!";
 		.@card[0] = 0;
 	}
 	getitem2 .@equip_id,1,1,.@equip_refine,0,.@card[0],.@card[1],.@card[2],.@card[3];

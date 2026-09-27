@@ -26,68 +26,68 @@ function	script	F_Okolnir	{
 	set .@GID, GetCastleData(strnpcinfo(4),1);
 	if (getcharid(2) == .@GID) {
 		if (getd("$siz_"+.@sub$+"_on") == 0) {
-			mes "[Guide]";
-			mes "This castle has a hidden secret.";
-			mes "That is the ^4d4dff'Okolnir'^000000.";
+			mes "[Guida]";
+			mes "Questo castello ha un segreto nascosto.";
+			mes "È il ^4d4dff'Okolnir'^000000.";
 			next;
-			switch(select("About Okolnir.:Go to Okolnir.:Cancel.")) {
+			switch(select("Informazioni su Okolnir.:Vai a Okolnir.:Annulla.")) {
 			case 1:
-				mes "[Guide]";
-				mes "Okolnir is a kind of virtual realm...";
-				mes "I don't know how Okolnir exists, but I guess only Valkyrie knows.";
+				mes "[Guida]";
+				mes "Okolnir è una specie di regno virtuale...";
+				mes "Non so come esista Okolnir, ma immagino che solo Valkyrie lo sappia.";
 				next;
-				mes "[Guide]";
-				mes "As you know this is a place to test the adventurers made by Valkyrie...";
-				mes "...you know the qualifications to enter Okolnir.";
+				mes "[Guida]";
+				mes "Come sai questo è un posto per testare gli avventurieri creati da Valkyrie...";
+				mes "sapete le qualifiche per entrare a Okolnir.";
 				next;
-				select("Qualifications?");
-				mes "[Guide]";
-				mes "Yes, Valkyrie definitely prefers strong adventurers.";
-				mes "Only the qualified can enter Okolnir and Valhalla.";
+				select("Qualifiche?");
+				mes "[Guida]";
+				mes "Sì, la Valchiria preferisce decisamente avventurieri forti.";
+				mes "Solo i qualificati possono entrare a Okolnir e Valhalla.";
 				next;
-				mes "[Guide]";
-				mes "It only opens when everyone comes together to work it out.";
-				mes "The key is in the castle.";
+				mes "[Guida]";
+				mes "Si apre solo quando tutti si riuniscono per risolverlo.";
+				mes "La chiave è nel castello.";
 				next;
-				mes "[Guide]";
-				mes "If a castle's ^4d4dffeconomy is over 65 and defense also over 30^000000, this will be acceptable to access Okolnir.";
+				mes "[Guida]";
+				mes "Se l'economia del castello ^4d4dff è superiore a 65 e la difesa anche superiore a 30^000000, questo sarà accettabile per accedere a Okolnir.";
 				next;
-				mes "[Guide]";
-				mes "And, if you pass all of the tests given by Valkyrie in Okolnir!";
-				mes "You will also receive a mysterious gift.";
+				mes "[Guida]";
+				mes "E, se superi tutti i test dati da Valkyrie in Okolnir!";
+				mes "Riceverai anche un misterioso regalo.";
 				next;
-				mes "[Guide]";
-				mes "Would you like to try to enter here?";
+				mes "[Guida]";
+				mes "Vorresti provare a entrare qui?";
 				close;
 			case 2:
 				set .@Defence,GetCastleData(strnpcinfo(4),3);
 				set .@Economy,GetCastleData(strnpcinfo(4),2);
 				if ((.@Economy > 64) && (.@Defence > 29)) {
-					mes "[Guide]";
-					mes "Great! Economy and Defense are OK.";
-					mes "You can enter Okolnir now....";
-					mes "Do you want to go there?";
+					mes "[Guida]";
+					mes "Ottimo! Economia e Difesa vanno bene.";
+					mes "Puoi entrare a Okolnir ora....";
+					mes "Vuoi andare lì?";
 					next;
-					switch(select("Sure let's go there.:No.")) {
+					switch(select("Certo, ci andiamo.:No.")) {
 					case 1:
 						if (countitem(7839)) delitem 7839,countitem(7839); //Crystal_Key
-						mes "[Guide]";
+						mes "[Guida]";
 						mes "Ok......";
-						mes "Please follow me...";
+						mes "Seguimi...";
 						close2;
 						warp "que_q"+.@sub$,346,32;
 						end;
 					case 2:
-						mes "[Guide]";
-						mes "You can try this anytime in the future...";
-						mes "If you are ready to protect this castle.";
+						mes "[Guida]";
+						mes "Puoi provare questo in qualsiasi momento futuro...";
+						mes "Se sei pronto a proteggere questo castello.";
 						close;
 					}
 				}
 				else {
-					mes "[Guide]";
-					mes "You are not qualified yet.";
-					mes "Please develop your castle more...";
+					mes "[Guida]";
+					mes "Non sei ancora qualificato.";
+					mes "Sviluppa di più il tuo castello...";
 					close;
 				}
 			case 3:
@@ -95,46 +95,46 @@ function	script	F_Okolnir	{
 			}
 		}
 		else if (getd("$siz_"+.@sub$+"_on") == 1) {
-			mes "[Guide]";
+			mes "[Guida]";
 			mes "... OK...";
-			mes "Good luck.";
+			mes "Buona fortuna.";
 			next;
-			switch(select("Enter now.:No.")) {
+			switch(select("Entra ora.:No.")) {
 			case 1:
 				if (countitem(7839) > 0) {
 					delitem 7839,countitem(7839); //Crystal_Key
 				}
-				mes "[Guide]";
-				mes "Hope you get everything you want...";
+				mes "[Guida]";
+				mes "Spero che tu ottenga tutto ciò che desideri...";
 				close2;
 				warp "que_q"+.@sub$,346,32;
 				end;
 			case 2:
-				mes "[Guide]";
-				mes "Really?";
-				mes "Sorry to hear that.";
+				mes "[Guida]";
+				mes "Davvero?";
+				mes "Mi dispiace sentirlo.";
 				close;
 			}
 		}
 		else if (getd("$siz_"+.@sub$+"_on") == 2) {
-			mes "[Guide]";
-			mes "Building Okolnir needs quite a long time.";
-			mes "....even though it's only virtual...";
+			mes "[Guida]";
+			mes "Costruire Okolnir richiede molto tempo.";
+			mes "....anche se è solo virtuale...";
 			next;
-			mes "[Guide]";
-			mes "It takes about 12 - 13 hours to create the virtual realm.";
+			mes "[Guida]";
+			mes "Ci vogliono circa 12-13 ore per creare il regno virtuale.";
 			close;
 		}
 		else {
-			mes "[Guide]";
-			mes "You'll have to wait.";
+			mes "[Guida]";
+			mes "Dovrai aspettare.";
 			close;
 		}
 	}
 	else {
-		mes "[Guide]";
-		mes "... I've never seen you before.";
-		mes "You are strangers here. You'd better get out of here right now.";
+		mes "[Guida]";
+		mes "Non ti ho mai visto prima.";
+		mes "Siete sconosciuti qui. È meglio che vi allontaniate da qui subito.";
 		close;
 	}
 	end;
@@ -175,10 +175,10 @@ que_qsch05,345,23,0	warp	Gate02#gq_sch05	1,1,schg_cas05,369,306
 	if (getcharid(2) == .@GID) {
 		cutin "wish_maiden31",1;
 		if (is_guild_leader() == true) {
-			mes "[Wish Maiden]";
-			mes "I am... Wish maiden.";
-			mes "Mourning in this virtual realm, Okolnir.";
-			mes "On behalf of the humanbeings who defeated God here.";
+			mes "Donzella del Desiderio";
+			mes "Io sono... Fata dei desideri.";
+			mes "Il lutto in questo regno virtuale, Okolnir.";
+			mes "A nome degli esseri umani che hanno sconfitto Dio qui.";
 			next;
 			if (compare(.@sub$,"aru")) {
 				setarray .@n, 7835,1,7836,1,7837,1,7838,1,2513,1,7291,10,7293,10,7063,100,985,20;
@@ -191,46 +191,46 @@ que_qsch05,345,23,0	warp	Gate02#gq_sch05	1,1,schg_cas05,369,306
 			}
 			if (.@check >= 9) {
 				cutin "wish_maiden11",1;
-				mes "[Wish Maiden]";
-				mes "Are you ready to endure the trials to get the Goddess' glory?";
+				mes "Donzella del Desiderio";
+				mes "Sei pronto ad affrontare le prove per ottenere la gloria della Dea?";
 				next;
-				switch(select("Yes, I am:Sorry, I'll try later")) {
+				switch(select("Sì, lo sono:Scusa, ci riproverò più tardi")) {
 				case 1:
 					cutin "wish_maiden12",1;
-					mes "[Wish Maiden]";
-					mes "I will test whether or not you deserve the Goddess shine...";
-					mes "Isn't it simple?";
+					mes "Donzella del Desiderio";
+					mes "Testerò se meriti lo splendore della Dea...";
+					mes "Non è semplice?";
 					next;
-					mes "[Wish Maiden]";
-					mes "Okolnir is a virtual place.";
-					mes "There is no room for error there.";
-					mes "^ff0000You only have one hour.^000000";
+					mes "Donzella del Desiderio";
+					mes "Okolnir è un luogo virtuale.";
+					mes "Non c'è spazio per l'errore lì.";
+					mes "^ff0000Hai solo un'ora.^000000";
 					next;
 					cutin "wish_maiden31",1;
-					mes "[Wish Maiden]";
-					mes "If you have not finished in that time, Okolnir will be destroyed, and I will go to rest.";
-					mes "You will have to wait again...";
+					mes "Donzella del Desiderio";
+					mes "Se non avrai finito in quel tempo, Okolnir sarà distrutto e io andrò a riposare.";
+					mes "Dovrai aspettare di nuovo...";
 					next;
-					mes "[Wish Maiden]";
-					mes "Are you ready to go through?";
-					mes "^4d4dffYou need to have 16 to 20 members present^000000.";
+					mes "Donzella del Desiderio";
+					mes "Sei pronto a passare?";
+					mes "^4d4dffDevi avere presenti dai 16 ai 20 membri^000000.";
 					next;
 					cutin "wish_maiden11",1;
-					mes "[Wish Maiden]";
-					mes "I will open the gate of Okolnir if your members are ready.";
+					mes "Donzella del Desiderio";
+					mes "Aprirò il cancello di Okolnir se i tuoi membri sono pronti.";
 					next;
-					switch(select("We are ready.:We need more time.")) {
+					switch(select("Siamo pronti.:Ci serve più tempo.")) {
 					case 1:
 						set .@saram,getmapusers("que_q"+.@sub$);
 						if (((.@saram > 15) && (.@saram < 21))) {
 							cutin "wish_maiden12",1;
-							mes "[Wish Maiden]";
-							mes "Now I will open the gate of Okolnir where I am.";
-							mes "I will wait for you on the top of Okolnir...";
+							mes "Donzella del Desiderio";
+							mes "Ora aprirò il cancello di Okolnir dove sono.";
+							mes "Ti aspetterò sulla cima di Okolnir...";
 							next;
-							mes "[Wish Maiden]";
-							mes "I hope that you can complete all of the trials before the virtual Okolnir is destroyed...";
-							mes "Good luck.";
+							mes "Donzella del Desiderio";
+							mes "Spero che tu possa completare tutti i tentativi prima che l'Okolnir virtuale venga distrutto...";
+							mes "Buona fortuna.";
 							mapannounce "que_q"+.@sub$,"Wish Maiden: The gate of Okolnir is open! Don't forget you only have one hour.",bc_map,"0x00ff00";
 							close2;
 							setd "$@gqse_"+.@sub$+"_pcc",.@saram;
@@ -238,105 +238,105 @@ que_qsch05,345,23,0	warp	Gate02#gq_sch05	1,1,schg_cas05,369,306
 							donpcevent "#okolnir_"+.@sub$+"::OnEnable";
 							disablenpc "Wish Maiden#gq_"+.@sub$;
 							cutin "wish_maiden11",255;
-							announce "["+ strcharinfo(0) +"], of the guild ["+ GetGuildName(.@GID) +"] has opened the gates to the realm of Okolnir.",bc_all,"0x70dbdb";
+							announce ""["+ strcharinfo(0) +"], of the guild ["+ GetGuildName(.@GID) +"] has opened the gates to the realm of Okolnir.",bc_all,"0x70dbdb";
 							end;
 						}
 						else {
 							cutin "wish_maiden13",1;
-							mes "[Wish Maiden]";
-							mes "You need to have 16 to 20 members present to open the gate of Okolnir.";
-							mes "Come back when you are ready.";
+							mes "Donzella del Desiderio";
+							mes "È necessario avere tra i 16 e i 20 membri presenti per aprire il cancello di Okolnir.";
+							mes "Torna quando sei pronto.";
 							close2;
 						}
 						break;
 					case 2:
 						cutin "wish_maiden13",1;
-						mes "[Wish Maiden]";
-						mes "Don't hesitate to try.";
-						mes "You should catch the chance when it comes to you.";
-						mes "Just gather your fellow members.";
+						mes "Donzella del Desiderio";
+						mes "Non esitare a provare.";
+						mes "Dovresti cogliere l'occasione quando arriva a te.";
+						mes "Raccogli i tuoi compagni membri.";
 						close2;
 					}
 					break;
 				case 2:
 					cutin "wish_maiden32",1;
-					mes "[Wish Maiden]";
-					mes "... Are you afraid of";
-					mes "the trials facing you?";
+					mes "Donzella del Desiderio";
+					mes "Hai paura di";
+					mes "le prove che ti attendono?";
 					mes "....";
 					next;
 					cutin "wish_maiden13",1;
-					mes "[Wish Maiden]";
-					mes "Do you think that you can defeat the Goddess shine easily?";
-					mes "I feel disappointed by all of you.";
-					mes "Just go away...";
+					mes "Donzella del Desiderio";
+					mes "Pensi che tu possa sconfiggere facilmente la Dea shine?";
+					mes "Mi sento deluso da tutti voi.";
+					mes "Vattene via...";
 					close2;
 				}
 			}
 			else {
 				cutin "wish_maiden11",1;
-				mes "[Wish Maiden]";
-				mes "Do you wish to enter?";
-				mes "Only those prepared may enter here.";
-				mes "You must bring several items to enter Okolnir.";
+				mes "Donzella del Desiderio";
+				mes "Vuoi entrare?";
+				mes "Solo coloro che sono preparati possono entrare qui.";
+				mes "Devi portare diversi oggetti per entrare a Okolnir.";
 				next;
-				mes "[Wish Maiden]";
+				mes "Donzella del Desiderio";
 				if (compare(.@sub$,"aru")) {
-					mes "Dusk Glow";
-					mes "Dawn Essence";
-					mes "Cold Moonlight";
-					mes "Hazy Starlight.";
+					mes "Bagliore crepuscolare";
+					mes "Essenza dell'Alba";
+					mes "Luna di falce fredda";
+					mes "Luce stellare nebbiosa.";
 					next;
-					mes "[Wish Maiden]";
-					mes "Please bring those four things, 10 Agate, 10 Rose Quartz, and 20 Elunium,";
-					mes "a Heavenly Maiden's Robe, as well as 100 Soft feathers.";
+					mes "Donzella del Desiderio";
+					mes "Per favore porta quelle quattro cose, 10 Agata, 10 Quarzo Rosa e 20 Elunio,";
+					mes "un Velo di Dea Celeste, così come 100 Piume Morbide.";
 				} else {
-					mes "Goddess Tear";
-					mes "Valkyrie's Token";
-					mes "Brynhild Armor Piece";
-					mes "Hero Remains";
-					mes "Valkyrie Armor";
-					mes "Andvari's Ring.";
+					mes "Lacrima della Dea";
+					mes "Il gettone della Valkiria";
+					mes "Pezzo d'Armatura di Brynhild";
+					mes "Eroe Rimane";
+					mes "Armatura di Valchiria";
+					mes "L'Anello di Andvari.";
 					next;
-					mes "[Wish Maiden]";
-					mes "You must bring those six things, 10 Gold, and 20 Elunium.";
-					mes "Many Valhala's Flowers are also required as an offering.";				
+					mes "Donzella del Desiderio";
+					mes "Devi portare quelle sei cose, 10 Oro e 20 Elunio.";
+					mes "Molti fiori di Valhalla sono anche richiesti come offerta.";				
 				}
 				next;
-				mes "[Wish Maiden]";
-				mes "Once all of those are prepared, the gate will open.";
+				mes "Donzella del Desiderio";
+				mes "Una volta che tutti quelli sono preparati, il cancello si aprirà.";
 				next;
-				mes "[Wish Maiden]";
+				mes "Donzella del Desiderio";
 				mes ".... ";
-				mes "...........The Goddess shines brightly down on you, you should be stronger to deserve it...";
+				mes "...........La Dea splende intensamente su di te, dovresti essere più forte per meritarlo...";
 				next;
-				mes "[Wish Maiden]";
-				mes "Remember...";
-				mes "You need to collect many soft feathers.";
-				mes "I hope that your dreams come true.";
+				mes "Donzella del Desiderio";
+				mes "Ricordare...";
+				mes "Devi raccogliere molte piume morbide.";
+				mes "Spero che i tuoi sogni si avverino.";
 				next;
-				mes "[Wish Maiden]";
-				mes "I will answer all your requests if you bring these to me.";
+				mes "Donzella del Desiderio";
+				mes "Risponderò a tutte le tue richieste se tu mi porti queste.";
 				close2;
 			}
 		}
 		else {
 			cutin "wish_maiden31",1;
-			mes "[Wish Maiden]";
-			mes "I am... Wish maiden.";
-			mes "Mourning in this virtual realm, Okolnir.";
-			mes "On behalf of the humanbeings who defeated God here.";
+			mes "Donzella del Desiderio";
+			mes "Io sono... Fata dei desideri.";
+			mes "Il lutto in questo regno virtuale, Okolnir.";
+			mes "A nome degli esseri umani che hanno sconfitto Dio qui.";
 			next;
-			mes "[Wish Maiden]";
-			mes "Bring me the one who brought you to this place.";
-			mes ".. Deliver him to my will.";
+			mes "Donzella del Desiderio";
+			mes "Portami colui che ti ha portato qui.";
+			mes "Consegnamelo alla mia volontà.";
 			close2;
 		}
 	}
 	else {
 		cutin "wish_maiden13",1;
-		mes "[Wish Maiden]";
-		mes "...You are not qualified.";
+		mes "Donzella del Desiderio";
+		mes "Non sei qualificato.";
 		close2;
 		percentheal -100,0;
 		cutin "wish_maiden11",255;
@@ -414,7 +414,7 @@ OnTouch_:
 		end;
 	}
 	else {
-		mes "There are too many people, you can't enter.";
+		mes "Ci sono troppe persone, non puoi entrare.";
 		close;
 	}
 	
@@ -522,7 +522,7 @@ OnReset:
 OnMyMobDead:
 	set .@sub$,callfunc("F_Okolnir");
 	if (mobcount("que_q"+.@sub$,"#gq_miromob2_"+.@sub$+"::OnMyMobDead") == 0) {
-		mapannounce "que_qaru05","The Mystic garden exit is now open.",bc_map,"0x00ff00";
+		mapannounce "que_qaru05",""L'uscita del giardino mistico è ora aperta.",bc_map,"0x00ff00";
 		setcell "que_q"+.@sub$,58,302,63,302,cell_walkable,1;
 		setcell "que_q"+.@sub$,58,302,63,302,cell_shootable,1;
 		donpcevent "#Maze_Manager_"+.@sub$+"::OnDisable";
@@ -940,13 +940,13 @@ que_qsch05,2,3,0	duplicate(#miro_yf_main)	#miro_yf_sch05	844
 OnTouch_:
 	set .@sub$,callfunc("F_Okolnir");
 	if (countitem(7839)) {
-		mes "The Warp Gate responds to the Crystal Key.";
+		mes "Il Portale di Warp risponde alla Chiave Cristallo.";
 		delitem 7839,1; //Crystal_Key
 		close2;
 		warp "que_q"+.@sub$,114,158;
 		end;
 	}
-	mes "You need the Crystal Key to activate the Warp Gate.";
+	mes "Hai bisogno della Chiave di Cristallo per attivare il Portale Warp.";
 	close;
 }
 que_qaru01,132,172,0	duplicate(windpath01_main)	windpath01_aru01	45,1,1
@@ -2160,29 +2160,29 @@ que_qsch05,251,255,3	duplicate(Wish Maiden#main_boss)	Wish Maiden#sch05_boss	193
 			}
 			if (.@check >= 9) {
 				cutin "wish_maiden12",1;
-				mes "[Wish Maiden]";
-				mes "As I declared, I will give the Goddess' shine to you.";
-				mes "You have the requirements to carry it...";
+				mes "Donzella del Desiderio";
+				mes "Come ho dichiarato, ti darò lo splendore della Dea.";
+				mes "Hai i requisiti per portarlo...";
 				next;
-				mes "[Wish Maiden]";
-				mes "You will be granted the power of the great Valkyrie...";
+				mes "Donzella del Desiderio";
+				mes "Ti verrà concesso il potere della grande Valchiria...";
 				next;
-				mes "[Wish Maiden]";
-				mes "I will give you some things for fun.";
-				mes "All of you enjoy them together...";
+				mes "Donzella del Desiderio";
+				mes "Ti darò alcune cose per divertimento.";
+				mes "Tutti voi li godete insieme...";
 				next;
-				mes "[Wish Maiden]";
-				mes "Go to Rachel and Juno to meet the Ravies sisters.";
+				mes "Donzella del Desiderio";
+				mes "Vai da Rachel e Juno per incontrare le sorelle Ravie.";
 				next;
 				cutin "wish_maiden32",1;
-				mes "[Wish Maiden]";
-				mes "I will open the gate for you to come back here.";
-				mes "...Okolnir won't last forever...";
+				mes "Donzella del Desiderio";
+				mes "Ti aprirò il cancello affinché tu possa tornare qui.";
+				mes "Okolnir non durerà per sempre...";
 				for (set .@i, 0; .@i < getarraysize(.@n); set .@i, .@i + 2)
 					delitem .@n[.@i],.@n[.@i+1];
 				getitem .@rwd,1;
 				getitem 7840,1; //Valkyrie_Gift
-				announce "["+ strcharinfo(0) +"], of guild ["+ GetGuildName(.@GID) +"] has brought a "+getitemname(.@rwd)+" into this world.",bc_all,"0x70dbdb";
+				announce ""["+ strcharinfo(0) +"], of guild ["+ GetGuildName(.@GID) +"] has brought a "+getitemname(.@rwd)+" into this world.",bc_all,"0x70dbdb";
 				close2;
 				cutin "wish_maiden11",255;
 				disablenpc "Wish Maiden#"+.@sub$+"_gift";
@@ -2191,28 +2191,28 @@ que_qsch05,251,255,3	duplicate(Wish Maiden#main_boss)	Wish Maiden#sch05_boss	193
 			}
 			else {
 				cutin "wish_maiden13",1;
-				mes "[Wish Maiden]";
-				mes "As I declared, you are worthy of holding the "+getitemname(.@rwd)+".";
-				mes "However, you do not have the requirements on you...";
+				mes "Donzella del Desiderio";
+				mes "Come ho dichiarato, sei degno di tenere il "+getitemname(.@rwd)+".";
+				mes "Tuttavia, tu non hai i requisiti su di te...";
 				next;
-				mes "[Wish Maiden]";
-				mes "...Did you forget something?";
+				mes "Donzella del Desiderio";
+				mes "Hai dimenticato qualcosa?";
 				close2;
 			}
 		}
 		else {
 			cutin "wish_maiden12",1;
-			mes "[Wish Maiden]";
-			mes "All of you worked together as a team...";
-			mes "Humans are strong when they are united, but are easily swayed by lust.";
+			mes "Donzella del Desiderio";
+			mes "Tutti voi avete lavorato insieme come una squadra...";
+			mes "Gli umani sono forti quando sono uniti, ma sono facilmente influenzati dalla lussuria.";
 			next;
-			mes "[Wish Maiden]";
-			mes "Humans are imperfect, so their chief god is there for them when they need help.";
+			mes "Donzella del Desiderio";
+			mes "Gli umani sono imperfetti, quindi il loro dio principale è lì per loro quando hanno bisogno di aiuto.";
 			mes "....";
 			next;
-			mes "[Wish Maiden]";
-			mes "Always be real.";
-			mes "Do not regret your actions...";
+			mes "Donzella del Desiderio";
+			mes "Sii sempre reale.";
+			mes "Non pentirti delle tue azioni...";
 			close2;
 		}
 	}

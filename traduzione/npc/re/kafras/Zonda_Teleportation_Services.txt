@@ -8,12 +8,12 @@
 
 -	script	ZondaTeleportationServices	HIDDEN_NPC,{
 	cutin "zonda_do01", 2;
-	mes "[Zonda Employee]";
-	mes "Welcome.";
-	mes "Our team is always working to exceed your expectations regarding quality of service.";
-	mes "Please choose your destination.";
+	mes "[Dipendente Zonda]";
+	mes "Benvenuto.";
+	mes "Il nostro team lavora sempre per superare le vostre aspettative riguardo alla qualità del servizio.";
+	mes "Scegli la tua destinazione.";
 	next;
-	switch( select( "North Bifrost", "Eclage", "Splendide", "Midgard Expedition Camp", "Manuk", "Outskirts of Kamidal Mountain", "Cancel.") ) {
+	switch( select( "Bifrone Nord", "Eclage", "Splendidi", "Campo dell'escursione di Midgard", "Manuk", "Esternità del Monte Kamidal", "Annulla.") ) {
 	case 1:
 		callsub( S_Zone, "North Bifrost", 17000,850, 7213 ); // Teleport value not confirmed
 		warp "bif_fild02",160,230; // Unverified Coordinates
@@ -39,9 +39,9 @@
 		warp "dic_fild01",188,187;
 		end;
 	case 7:
-		mes "[Zonda Employee]";
-		mes "We are always striving to ensure the best services for our customers.";
-		mes "Thank you for using our services.";
+		mes "[Dipendente Zonda]";
+		mes "Siamo sempre impegnati a garantire i migliori servizi per i nostri clienti.";
+		mes "Grazie per aver utilizzato i nostri servizi.";
 		close3;
 	}
 
@@ -51,15 +51,15 @@ S_Zone:
 	.@quest_req = getarg(3);
 	
 	if (isbegin_quest(.@quest_req) == 0) {
-		mes "[Zonda Employee]";
+		mes "[Dipendente Zonda]";
 		//mes getarg(0);
-		mes "You must complete the access mission to teleport to " + getarg(0) + " before using our Teleportation services.";
+		mes "Devi completare la missione di accesso per teletrasportarti a " + getarg(0) + " prima di utilizzare i nostri servizi di Teletrasporto.";
 		close3;
 	}
-	mes "[Zonda Employee]";
+	mes "[Dipendente Zonda]";
 	mes getarg(0) + " is available for ^ff0000" + .@zeny_req + " Zenys^000000 or ^ff0000" + .@item_req + " Malang Sp Can^000000.";
 	next;
-	switch( select( .@zeny_req + " Zeny", .@item_req + " Malang Sp Can", "Cancel" ) ) {
+	switch( select( .@zeny_req + " Zeny", .@item_req + " Malang Sp Can", "Annulla" ) ) {
 	case 1:
 		if (Zeny < .@zeny_req)
 			break;
@@ -71,13 +71,13 @@ S_Zone:
 		delitem 12636,.@item_req; // Malang_Sp_Can
 		return;
 	case 3:
-		mes "[Zonda Employee]";
-		mes "Can you tell me about other areas of service?";
+		mes "[Dipendente Zonda]";
+		mes "Mi puoi parlare di altre aree di servizio?";
 		close3;
 	}
-	mes "[Zonda Employee]";
-	mes "Sir! You do not have enough value that we are asking for.";
-	mes "Please check back again.";
+	mes "[Dipendente Zonda]";
+	mes "Signore! Lei non ha abbastanza valore di quello che stiamo chiedendo.";
+	mes "Per favore ricontrolla di nuovo.";
 	close3;
 }
 

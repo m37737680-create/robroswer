@@ -20,53 +20,53 @@
 itemmall,29,71,3	script	Devil Enchant Master#prq	63,{
 	disable_items;
 	if (checkweight(1201,1) == 0) {
-		mes "You are carrying too many items, please reduce it and come back again!";
+		mes "Stai portando troppi oggetti, per favore riducili e torna più tardi!";
 		close;
 	}
 	if (MaxWeight - Weight < 10000) {
-		mes "You are over the weight limit, please reduce it and come back again!";
+		mes "Hai superato il limite di peso, per favore riducilo e riprova!";
 		close;
 	}
-	mes "[Devil Enchant Master]";
-	mes "Yes?";
-	mes "You are looking for me?";
+	mes "Maestro Incantatore del Diavolo";
+	mes "Sì?";
+	mes "Mi stai cercando?";
 	next;
-	switch(select("This is the first time seeing you!:I heard that you are the best!:Please initialize the enchant.")) {
+	switch(select("È la prima volta che ti vedo!:Ho sentito che sei il migliore!:Inizializza l'incantesimo.")) {
 	case 1:
-		mes "[Devil Enchant Master]";
-		mes "Ha ha ha~ Of course, I am not the kind of person that simply deals with people.";
+		mes "Maestro Incantatore del Diavolo";
+		mes "Ah ah ah~ Certo che non sono il tipo di persona che si occupa semplicemente delle persone.";
 		next;
-		mes "[Devil Enchant Master]";
-		mes "Including you! Even if you offer me plenty of money, I will not simply enchant for you!!";
+		mes "Maestro Incantatore del Diavolo";
+		mes "Incluso te! Anche se mi offri un sacco di soldi, non incanterò semplicemente per te!!";
 		next;
-		mes "[Devil Enchant Master]";
-		mes "Have you seen my title? Very few people have this title for a reason!";
+		mes "Maestro Incantatore del Diavolo";
+		mes "Hai visto il mio titolo? Moltissime persone non hanno questo titolo per un motivo!";
 		next;
-		mes "[Devil Enchant Master]";
-		mes "I will only enchant if you bring an ^0000ffEnchant Book^000000 along!";
+		mes "Maestro Incantatore del Diavolo";
+		mes "Incantareò solo se porti con te un ^0000ffLibro di Incantesimi^000000!";
 		next;
-		mes "[Devil Enchant Master]";
-		mes "Else, I will not enchant for you....";
+		mes "Maestro Incantatore del Diavolo";
+		mes "Altrimenti, non ti incanterò....";
 		close;
 	case 2:
 		if (!countitem(6484)) {
-			mes "[Devil Enchant Master]";
-			mes "Are you listening to me? I will only do for you if you bring the Enchant Book!";
+			mes "Maestro Incantatore del Diavolo";
+			mes "Mi stai ascoltando? Farò solo per te se porti il Libro Incantato!";
 			close;
 		}
 		set .@select,1;
 		break;
 	case 3:
-		mes "[Devil Enchant Master]";
+		mes "Maestro Incantatore del Diavolo";
 		if (Zeny < 100000) {
-			mes "Initializing will cost 100,000 zeny. It seems you do not have enough zeny...";
+			mes "L'inizializzazione costerà 100.000 zeni. Sembra che non abbia abbastanza zeni...";
 			close;
 		}
-		mes "Initializing will cost 100,000 zeny and confirming whether the weapon is enchanted!";
+		mes "Inizializzare costerà 100.000 zeni e confermare se l'arma è incantata!";
 		next;
-		if (select("Let me think about it.:Initialize it now!") == 1) {
-			mes "[Devil Enchant Master]";
-			mes "Come back after you have confirmed!";
+		if (select("Lascia che ci penso.:Inizializzalo ora!") == 1) {
+			mes "Maestro Incantatore del Diavolo";
+			mes "Torna indietro dopo aver confermato!";
 			close;
 		}
 		set .@select,2;
@@ -74,9 +74,9 @@ itemmall,29,71,3	script	Devil Enchant Master#prq	63,{
 	}
 	set .@part, EQI_HAND_R;
 
-	mes "[Devil Enchant Master]";
+	mes "Maestro Incantatore del Diavolo";
 	if (!getequipisequiped(.@part)) {
-		mes "Are you trying to remove the enchanted equipment?";
+		mes "Stai cercando di rimuovere l'equipaggiamento incantato?";
 		close;
 	}
 	setarray .@equip_card[0], getequipcardid(.@part,0), getequipcardid(.@part,1), getequipcardid(.@part,2), getequipcardid(.@part,3);
@@ -88,21 +88,21 @@ itemmall,29,71,3	script	Devil Enchant Master#prq	63,{
 	.@equip_refine = getequiprefinerycnt(.@part);
 	set .@item$, "|1292|1394|1491|1585|2015|13071|13115|16019|18112|21000|";
 	if (!compare(.@item$,"|"+.@equip_id+"|")) {
-		mes "I don't want to touch your equipment now!";
+		mes "Non voglio toccare la tua attrezzatura adesso!";
 		close;
 	}
 
 	if (.@select == 1) {
 		if (!countitem(6484)) {
-			mes "Are you listening to me? I will only do for you if you bring the Enchant Book!";
+			mes "Mi stai ascoltando? Farò solo per te se porti il Libro Incantato!";
 			close;
 		}
-		mes "Which type of effect do you want to enchant?";
+		mes "Che tipo di effetto vuoi incantare?";
 		next;
-		switch(select("Let me think about it.:Physical Series:Magical Series")) {
+		switch(select("Lascia che ci penso.:Serie Fisica:Serie Magica")) {
 		case 1:
-			mes "[Devil Enchant Master]";
-			mes "Come back again after you change your mind!";
+			mes "Maestro Incantatore del Diavolo";
+			mes "Torna pure quando cambierai idea!";
 			close;
 		case 2:
 			set .@enc_type,1;
@@ -111,21 +111,21 @@ itemmall,29,71,3	script	Devil Enchant Master#prq	63,{
 			set .@enc_type,2;
 			break;
 		}
-		mes "[Devil Enchant Master]";
+		mes "Maestro Incantatore del Diavolo";
 		if (.@equip_card[3]) {
-			mes "This equipment has been enchanted! You need to initialize first before you want to enchant it again.";
+			mes "Questa attrezzatura è stata incantata! Devi inizializzarla prima di volerla incantare di nuovo.";
 			close;
 		}
-		mes "The enchant process might fail, and ^ff0000it will reduce partial refine level^000000, but the slotted card and weapon will not be broken! Are you sure you want to continue?";
+		mes "Il processo di incantesimo potrebbe fallire e ^ff0000ridurrà il livello di raffinazione parziale^000000, ma la carta e l'arma inserite non verranno rotte! Sei sicuro di voler continuare?";
 		next;
-		if (select("Next time!:Start now!") == 1) {
-			mes "[Devil Enchant Master]";
-			mes "Come back again after you have decided!";
+		if (select("La prossima volta!:Inizia ora!") == 1) {
+			mes "Maestro Incantatore del Diavolo";
+			mes "Torna quando avrai deciso!";
 			close;
 		}
 		if (.@equip_card[3]) {
-			mes "[Devil Enchant Master]";
-			mes "It seems there's a problem, let me take a look.";
+			mes "Maestro Incantatore del Diavolo";
+			mes "Sembra che ci sia un problema, lascio dare un'occhiata.";
 			close;
 		}
 
@@ -206,27 +206,27 @@ itemmall,29,71,3	script	Devil Enchant Master#prq	63,{
 			else if (.@i < 1124)  set .@enchant,4806; //Matk3
 			else set .@enchant,0;
 		} else {
-			mes "[Devil Enchant Master]";
-			mes "Hmm! This item is having a problem, please check it again!";
+			mes "Maestro Incantatore del Diavolo";
+			mes "Mmh! Questo articolo ha un problema, per favore controllalo di nuovo!";
 			close;
 		}
-		mes "[Devil Enchant Master]";
+		mes "Maestro Incantatore del Diavolo";
 		if (.@equip_card[3]) {
-			mes "This item has been enchanted!";
+			mes "Questo oggetto è stato incantato!";
 			close;
 		}
 		if (!countitem(6484)) {
-			mes "Are you listening to me? I will only do for you if you bring the Enchant Book!";
+			mes "Mi stai ascoltando? Farò solo per te se porti il Libro Incantato!";
 			close;
 		}
 		if (.@enchant == 0) {
 			specialeffect EF_SHIELDCHARGE;
-			mes "Oh! Unbelievable!! It failed!! Please come again!";
+			mes "Oh! Incredibile!! Ha fallito!! Per favore torna!";
 			set .@lost_refine, rand(0,.@equip_refine);
 			set .@equip_refine, .@equip_refine - .@lost_refine;
 		} else {
 			specialeffect EF_REPAIRWEAPON;
-			mes "The slot ^9900004^000000 has been enchanted!";
+			mes "La fessura ^9900004^000000 è stata incantata!";
 		}
 		delitem 6484,1; //Enchant_Book
 
@@ -242,25 +242,25 @@ itemmall,29,71,3	script	Devil Enchant Master#prq	63,{
 
 		if (.@lost_refine) {
 			next;
-			mes "[Devil Enchant Master]";
-			mes "The failure has reduced the refine by "+callfunc("F_InsertPlural",.@lost_refine,"level")+"! Don't be depressed!";
+			mes "Maestro Incantatore del Diavolo";
+			mes "Il fallimento ha ridotto il raffinare di "+callfunc("F_InserisciPlurale",.@lost_refine,"livello")+"Non essere depresso!";
 		}
 		close;
 	} else if (.@select == 2) {
 		if (Zeny < 100000) {
-			mes "You need to bring some money to initialize!!";
+			mes "Devi portare dei soldi per inizializzare!!";
 			close;
 		}
 		if (getiteminfo(.@equip_card[3], ITEMINFO_SUBTYPE) != CARD_ENCHANT) {
-			mes "This item is not enchanted!";
+			mes "Questo oggetto non è incantato!";
 			close;
 		}
 		if (!getequipisequiped(.@part)) {
-			mes "Are you unequipping now?";
+			mes "Stai disarmando ora?";
 			close;
 		}
 		specialeffect EF_REPAIRWEAPON;
-		mes "I initialized the enchant effects.";
+		mes "Ho inizializzato gli effetti di incantesimo.";
 		set Zeny, Zeny - 100000;
 
 		// anti-hack
@@ -275,7 +275,7 @@ itemmall,29,71,3	script	Devil Enchant Master#prq	63,{
 
 		close;
 	} else {
-		mes "It seems you have chosen the wrong job??";
+		mes "Sembra che tu abbia scelto il lavoro sbagliato??";
 		close;
 	}
 }

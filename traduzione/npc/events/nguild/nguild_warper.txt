@@ -49,18 +49,18 @@ prontera,146,163,6	script	Novice Castles	729,{
 	          getgdskilllv(getcharid(2),10013) +
 	          getgdskilllv(getcharid(2),10014) > 9)
 	          ) {
-		mes "I see... your guild has Emergency Call mastered.";
-		mes "You cannot enter the Novice Castle area.";
+		mes "Capisco... la tua gilda ha padroneggiato Chiamata di Emergenza.";
+		mes "Non puoi entrare nell'area del Castello dei Principi.";
 		emotion ET_SCRATCH;
 		emotion ET_KEK, playerattached();
 	} else {
-		mes "I'm a new usher of Novice Castles.";
+		mes "Sono un nuovo usciere di Novice Castles.";
 		next;
 		mes "[Cita]";
 		if ((eaclass()&(EAJL_2|EAJL_UPPER)) || BaseLevel>=60) {
-			mes "I'm sorry, you can't enter the sacred Novice Castles place.";
+			mes "Mi dispiace, non puoi entrare nel sacro luogo dei Castelli Novizi.";
 			emotion ET_SORRY;
-		} else if (select("Warp me to Novice Castles","Cancel") == 1) {
+		} else if (select("Teletrasportami a Novice Castles","Annulla") == 1) {
 			// remove several unallowed buffs
 			sc_end SC_ASSUMPTIO;
 			sc_end SC_IMPOSITIO;
@@ -84,13 +84,13 @@ prontera,146,163,6	script	Novice Castles	729,{
 
 n_castle,102,107,5	script	Cita	729,{
 	mes "[Cita]";
-	mes "Hello, "+ strcharinfo(0) +". Can I help you?";
+	mes "Ciao, "+ strcharinfo(0) +"Posso aiutarla?";
 	next;
-	if (select("Warp me to Prontera!","Cancel") == 1) {
+	if (select("Teletrasportami a Prontera!","Annulla") == 1) {
 		warp "prontera",155,177+rand(5);
 	} else {
 		mes "[Cita]";
-		mes "Ok.";
+		mes "Ok";
 	}
 	close;
 }

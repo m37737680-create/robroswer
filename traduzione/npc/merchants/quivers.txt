@@ -26,31 +26,31 @@
 
 payon_in01,5,134,5	script	Inventor Jaax	89,{
 	if (checkweight(1201,1) == 0 || MaxWeight - Weight < 2000) {
-		mes "[Inventor Jaax]";
-		mes "Hey, you're carrying";
-		mes "way too much stuff. Why don't you stash it away in Kafra Storage? We can talk after you do that, right?";
+		mes "[Inventore Jaax]";
+		mes "Ehi, stai portando";
+		mes "troppo roba. Perché non lo nascondi in Kafra Storage? Possiamo parlare dopo che l'hai fatto, giusto?";
 		close;
 	}
-	mes "[Inventor Jaax]";
-	mes "My name is Jaax.";
-	mes "Without ego, I can";
-	mes "say that I am perhaps the";
+	mes "[Inventore Jaax]";
+	mes "Mi chiamo Jaax.";
+	mes "Senza ego, posso";
+	mes "che sono forse il/la";
 	mes "^663300greatest inventor of our time^000000.";
 	next;
-	mes "[Inventor Jaax]";
-	mes "This time, I've";
-	mes "created something";
-	mes "truly extraordinary. I call them... ^663300Magic Quivers^000000 !! This will be remembered in history as an";
-	mes "arrow revolution!";
+	mes "[Inventore Jaax]";
+	mes "Questa volta, ho";
+	mes "ho creato qualcosa";
+	mes "veramente straordinario. Li chiamo... ^663300Frecoviali Magici^000000 !! Questo sarà ricordato nella storia come un";
+	mes "rivoluzione freccia!";
 	emotion ET_BEST;
 	next;
-	mes "[Inventor Jaax]";
-	mes "I've studied magic and quivers for years, working night and day until I finally figured how to condense arrows with magic! With magic quivers, you'll be carrying more arrows, but with less weight!";
+	mes "[Inventore Jaax]";
+	mes "Ho studiato magia e quiver per anni, lavorando giorno e notte finché non ho finalmente capito come condensare le frecce con la magia! Con i quiver magici, porterai più frecce, ma con meno peso!";
 	next;
-	mes "[Inventor Jaax]";
-	mes "Would you like to try using one of my arrow quivers? I have no doubt that someone like you can appreciate my genius!";
+	mes "[Inventore Jaax]";
+	mes "Ti piacerebbe provare uno dei miei sacche di frecce? Non ho dubbi che qualcuno come te possa apprezzare il mio genio!";
 	next;
-	switch(select("Quiver:Iron Arrow Quiver:Steel Arrow Quiver:Oridecon Arrow Quiver:Fire Arrow Quiver:Silver Arrow Quiver:Wind Arrow Quiver:Stone Arrow Quiver:Crystal Arrow Quiver:Shadow Arrow Quiver:Immaterial Arrow Quiver:Rusty Arrow Quiver")) {
+	switch(select("Fascio:Fascia di Frecce d'Acciaio:Fasce di frecce d'acciaio:Fanteria Oridecon Freccia-Custodia:Fanteria di frecce Fire Arrow:Fantereria Freccia d'Argento:Fasce di frecce a punta di vento:Fasce di frecce di pietra:Fasceviere di Freccia Cristallo:Fasce di Frecce Ombra:Fantereria di Frecce Immateriale:Fantereria di frecce arrugginite")) {
 	case 1: callsub S_BuyQuiver,1750,500,500,12004;
 	case 2: callsub S_BuyQuiver,1770,500,500,12005;
 	case 3: callsub S_BuyQuiver,1753,500,500,12006;
@@ -76,100 +76,100 @@ S_BuyQuiver:
 	.@zeny_req = getarg(2);
 
 	if (countitem(.@item_id) >= .@amount) {
-		mes "[Inventor Jaax]";
-		mes "Excellent!";
-		mes "Are you carrying any Arrows with you? I'll provide you with a quiver that can carry "+ .@amount +" of your "+ getitemname(.@item_id) +"s for only ^FF3131"+ .@zeny_req +" Zeny^000000.";
+		mes "[Inventore Jaax]";
+		mes "Eccellente!";
+		mes "Porti con te delle Frecce? Ti fornirò un sacchetto che può contenere "+ .@amount +" di tuo "+ getitemname(.@item_id) +"per solo ^FF3131"+ .@zeny_req +" Zeny^000000.";
 		next;
-		switch(select("Store as many Arrows in quivers as possible:Purchase 1 quiver:Cancel")) {
+		switch(select("Conservare tante Frecce negli archi quanto possibile:Acquista 1 quaderno:Annulla")) {
 		case 1:
 			.@arrows = countitem(.@item_id);
 			set .@quiver,.@arrows / .@amount;
 			set .@arrows_used,.@quiver * .@amount;
 			.@arrow_zeny01 = .@quiver * .@zeny_req;
-			mes "Number of";
-			mes "Arrows: ^3131FF"+.@arrows+" ^000000";
-			mes "Maximum Number";
-			mes "of Purchasable";
-			mes "Quivers: ^3131FF"+.@quiver+" ^000000";
-			mes "Zeny required: ^3131FF"+.@arrow_zeny01+" Zeny^000000";
+			mes "Numero di";
+			mes "Frecce: ^3131FF"+.@arrows+" ^000000";
+			mes "Numero Massimo";
+			mes "di Acquisto";
+			mes "Quiver: ^3131FF"+.@quiver+" ^000000";
+			mes "Zeny richiesto: ^3131FF"+.@arrow_zeny01+" Zeny^000000";
 			next;
-			mes "[Inventor Jaax]";
-			mes "Would you like to";
-			mes "buy as many Quivers";
-			mes "as you can for the Arrows";
-			mes "you are currently carrying?";
+			mes "[Inventore Jaax]";
+			mes "Vorresti";
+			mes "comprare tanti Fionardi";
+			mes "come puoi per le Frecce";
+			mes "stai portando attualmente?";
 			next;
-			if (select("Yes:Cancel") == 1) {
+			if (select("Sì:Annulla") == 1) {
 				if (.@arrow_zeny01 < Zeny) {
-					mes "[Inventor Jaax]";
-					mes "There you go!";
-					mes "Just remember, ^FF0000you won't be able to use the Quiver when your carried weight is 90% of your maximum weight limit^000000.";
+					mes "[Inventore Jaax]";
+					mes "Eccolo/a!";
+					mes "Ricorda solo che ^FF0000non potrai usare il Quiver quando il tuo peso trasportato è il 90% del tuo limite massimo di peso^000000.";
 					set Zeny, Zeny-.@arrow_zeny01;
 					delitem .@item_id,.@arrows_used;// Arrow
 					getitem getarg(3),.@quiver; //Quiver
 					next;
-					mes "[Inventor Jaax]";
-					mes "So...";
-					mes "Just keep track";
-					mes "of how much you're";
-					mes "carrying from time";
-					mes "to time and you should";
-					mes "be alright.";
+					mes "[Inventore Jaax]";
+					mes "Quindi...";
+					mes "Solo tieni traccia";
+					mes "di quanto sei";
+					mes "portare dal tempo";
+					mes "a tempo e tu dovresti";
+					mes "stai bene.";
 					close;
 				}
 				else {
-					mes "[Inventor Jaax]";
-					mes "I'm sorry, but you don't have enough Zeny. I can't just give these away after working years";
-					mes "to develop this revolutionary technology!";
+					mes "[Inventore Jaax]";
+					mes "Mi dispiace, ma non hai abbastanza Zeny. Non posso semplicemente regalare queste cose dopo anni di lavoro";
+					mes "sviluppare questa tecnologia rivoluzionaria!";
 					close;
 				}
 			}
-			mes "[Inventor Jaax]";
-			mes "You changed your mind?";
-			mes "When the glory of owning";
-			mes "a quiver is so close?";
+			mes "[Inventore Jaax]";
+			mes "Hai cambiato idea?";
+			mes "Quando la gloria di possedere";
+			mes "un quaderno è così vicino?";
 			close;
 		case 2:
 			if (Zeny > .@zeny_req) {
-				mes "[Inventor Jaax]";
-				mes "There you go!";
-				mes "Just remember, ^FF0000you won't be able to use the Quiver when your carried weight is 90% of your maximum weight limit^000000.";
+				mes "[Inventore Jaax]";
+				mes "Eccolo/a!";
+				mes "Ricorda solo che ^FF0000non potrai usare il Quiver quando il tuo peso trasportato è il 90% del tuo limite massimo di peso^000000.";
 				Zeny = Zeny -.@zeny_req;
 				delitem .@item_id,.@amount;// Arrow
 				getitem getarg(3),1; //Quiver
 				next;
-				mes "[Inventor Jaax]";
-				mes "So...";
-				mes "Just keep track";
-				mes "of how much you're";
-				mes "carrying from time";
-				mes "to time and you should";
-				mes "be alright.";
+				mes "[Inventore Jaax]";
+				mes "Quindi...";
+				mes "Solo tieni traccia";
+				mes "di quanto sei";
+				mes "portare dal tempo";
+				mes "a tempo e tu dovresti";
+				mes "stai bene.";
 				close;
 			}
 			else {
-				mes "[Inventor Jaax]";
-				mes "You don't even";
-				mes "have "+ .@zeny_req +" Zeny?";
-				mes "I'm so sorry. I had no";
-				mes "idea that you were so...";
+				mes "[Inventore Jaax]";
+				mes "Non nemmeno";
+				mes "avere "+ .@zeny_req +" Zeny?";
+				mes "Mi dispiace tanto. Non avevo";
+				mes "l'idea che tu fossi così...";
 				mes "^333333Destitute^000000.";
 				close;
 			}
 		case 3:
-			mes "[Inventor Jaax]";
-			mes "What...?";
-			mes "Do you not see that this invention can forever change the way Arrows are carried?! The future is now!";
+			mes "[Inventore Jaax]";
+			mes "Cos'è...?";
+			mes "Non vedi che questo invento può cambiare per sempre il modo in cui vengono trasportate le Frecce?! Il futuro è adesso!";
 			close;
 		}
 	}
 	else {
-		mes "[Inventor Jaax]";
-		mes "You can carry a maximum of "+ .@amount +" Arrows within this quiver. It was made using my secret method,";
-		mes "so the total weight of the Arrows and Quiver is less than carrying the Arrows alone.";
+		mes "[Inventore Jaax]";
+		mes "Puoi portare un massimo di "+ .@amount +" Frecce all'interno di questo quiver. È stato fatto usando il mio metodo segreto,";
+		mes "quindi il peso totale delle Frecce e del Porta-frecce è inferiore a quello di portare solo le Frecce.";
 		next;
-		mes "[Inventor Jaax]";
-		mes "It's a miracle of science! One that you can experience for yourself if you bring me at least "+ .@amount +" Arrows and "+ .@zeny_req +" Zeny for each Quiver.";
+		mes "[Inventore Jaax]";
+		mes "È un miracolo della scienza! Uno che puoi sperimentare per te stesso se mi porti almeno "+ .@amount +" Frecce e "+ .@zeny_req +" Zenny per ogni Fialora.";
 		close;
 	}
 }

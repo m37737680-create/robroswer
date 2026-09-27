@@ -22,114 +22,114 @@ mal_dun01,151,235,5	script	Starfish	551,{
 	set .@md_name$,"Octopus Cave";
 
 	if (!.@party_id) {
-		mes "[Starfish]";
-		mes "You alone is powerless, hehe!";
-		mes "Better get someone to help you out.";
-		mes "Make a party, and come back later.";
+		mes "Ricciore marino";
+		mes "Tu da solo sei impotente, hehe!";
+		mes "Meglio farsi aiutare da qualcuno.";
+		mes "Fai una festa e torna più tardi.";
 		close;
 	}
 	if (is_party_leader() == false) {
-		mes "[Starfish]";
-		mes "Where is your leader, hehe.";
-		mes "I don't talk to some random people.";
-		mes "Bring your boss to me.";
+		mes "Ricciore marino";
+		mes "Dov'è il tuo capo, hehe.";
+		mes "Non parlo con persone a caso.";
+		mes "Portami il tuo capo.";
 		close;
 	}
-	mes "[Starfish]";
-	mes "I am guarding here, hehe!";
-	mes "It is just roughly blocked for now.";
-	mes "But someday this cave must be sealed forever, hehe!";
+	mes "Ricciore marino";
+	mes "Sto vegliando qui, hehe!";
+	mes "È solo approssimativamente bloccato per ora.";
+	mes "Ma un giorno questa grotta dovrà essere sigillata per sempre, hehe!";
 	next;
 	while(1) {
-		switch(select("Ask what's going on.:Ask to open the gate.:Go to other location.")) {
+		switch(select("Cosa sta succedendo?:Chiedere di aprire il cancello.:Vai ad un'altra località.")) {
 		case 1:
-			mes "[Starfish]";
-			mes "Lately, our Starfish lady is";
-			mes "suffering with some issues, ooh ooh.";
-			mes "Something bad happen in this";
-			mes "peaceful place, hehe!";
+			mes "Ricciore marino";
+			mes "Di recente, la nostra signora stellata è";
+			mes "soffrendo di alcuni problemi, ooh ooh.";
+			mes "Qualcosa di brutto è successo qui";
+			mes "luogo pacifico, hehe!";
 			next;
-			mes "[Starfish]";
-			mes "Weird looking limbs came out";
-			mes "from the hole there,";
-			mes "tried to kidnap our lady Starfish.";
-			mes "Ooh Ooh.";
+			mes "Ricciore marino";
+			mes "Arti strane sono uscite";
+			mes "da il buco lì,";
+			mes "ha provato a rapire la nostra signora Stella Marina.";
+			mes "Oh Oh.";
 			next;
-			mes "[Starfish]";
-			mes "It seems those limbs belong to";
-			mes "that ugly octopus.";
-			mes "That monster should be taken care of,";
-			mes "but it's hard for ourselves only to make it happen, hehe.";
+			mes "Ricciore marino";
+			mes "Sembra che quelle appendici appartengano a";
+			mes "quell'orrore polpo.";
+			mes "Quel mostro dovrebbe essere eliminato,";
+			mes "ma è difficile per noi stessi farlo accadere, hehe.";
 			next;
-			mes "[Starfish]";
-			mes "I want to find someone special,";
-			mes "and ask to punish this ugly octopus.";
-			mes "I hope this octopus won't ever";
-			mes "harass our lady, hehe.";
+			mes "Ricciore marino";
+			mes "Voglio trovare qualcuno di speciale,";
+			mes "e chiedere di punire questo brutto polpo.";
+			mes "Spero che questo polpo non";
+			mes "molestare nostra signora, hehe.";
 			next;
-			mes "[Starfish]";
-			mes "Go catch that octopus and stick it to this pick.";
-			mes "If you bring back the pick, I will";
-			mes "open this gate for a while.";
-			mes "You should challenge if you are interested, hehe.";
+			mes "Ricciore marino";
+			mes "Vai a prendere quell'polpo e attaccalo a questo spiedino.";
+			mes "Se mi riporti il pennarello, io";
+			mes "apri questo cancello per un po'.";
+			mes "Dovresti sfidare se sei interessato, hehe.";
 			next;
 			break;
 		case 2:
 			set .@playtime, checkquest(4197,PLAYTIME);
 			if (.@playtime == 0 || .@playtime == 1) {
-				mes "[Starfish]";
-				mes "Octopus is not around now, hehe.";
-				mes "Please come back later.";
+				mes "Ricciore marino";
+				mes "Polpo non è qui ora, hehe.";
+				mes "Ritorna più tardi.";
 				close;
 			}
 			if (.@playtime == 2) erasequest 4197;
 			if (rentalcountitem(6442)) {
 				if (instance_create(.@md_name$) < 0) {
-					mes "[Starfish]";
-					mes "Party name is... "+getpartyname(.@party_id)+".";
-					mes "Party leader is... "+strcharinfo(0)+".";
-					mes "^0000ff"+.@md_name$+"^000000, I cannot open now, hehe.";
-					mes "Now is not the time, please wait.";
+					mes "Ricciore marino";
+					mes "Il nome della festa è... "+getpartyname(.@party_id)+".";
+					mes "Il capo del partito è... "+strcharinfo(0)+".";
+					mes "^0000ff"+.@md_name$+"^000000, non posso aprire ora, hehe.";
+					mes "Ora non è il momento, per favore aspetta.";
 					close;
 				}
-				mes "[Starfish]";
-				mes "I will open the gate for a while to ^0000ff"+.@md_name$+"^000000.";
-				mes "Please catch that pervert octopus,";
-				mes "and come back with it sticked to the pick, hehe.";
+				mes "Ricciore marino";
+				mes "Aprirò il cancello per un po' per ^0000ff"+.@md_name$+"^000000.";
+				mes "Cattura quell'octopode perverso,";
+				mes "e torna con esso attaccato al gancio, hehe.";
 				close;
 			}
-			mes "[Starfish]";
-			mes "Prepare a pick first,";
-			mes "so you can thread that octopus";
-			mes "with that pick.";
-			mes "Then, I will let you in for a while, hehe.";
+			mes "Ricciore marino";
+			mes "Prepara un primo,";
+			mes "quindi puoi fare quel filo con l'polpo";
+			mes "con quel colpo.";
+			mes "Allora, ti farò entrare per un po', hehe.";
 			close;
 		case 3:
-			mes "[Starfish]";
-			mes "This is not a good location, check someplace else.";
+			mes "Ricciore marino";
+			mes "Questo non è un buon posto, controlla qualcos'altro.";
 			close;
 		}
 	}
 }
 
 mal_dun01,153,237,5	script	Weird Entrance	844,{
-	mes "There is a strange entrance";
-	mes "blocked roughly with some boards.";
+	mes "C'è un ingresso strano";
+	mes "bloccato approssimativamente con alcuni pannelli.";
 	next;
-	switch(select("Go in.:Stop.")) {
+	switch(select("Entra.:Fermati")) {
 	case 1:
 		if (rentalcountitem(6442)) {
 			switch(instance_enter("Octopus Cave")) {
 			case IE_OTHER:
-				mes "[Starfish]";
-				mes "Ah, now is not the time...";
-				mes "Would you come back later? Hehe.";
+				mes "Ricciore marino";
+				mes "Ah, ora non è il momento...";
+				mes "Torni più tardi? Hehe.";
 				close;
 			case IE_NOINSTANCE:
 			case IE_NOMEMBER:
-				mes "[Starfish]";
-				mes "There is a secret with that entrance.";
-				mes "So, please be careful with it, will ya? Hehe.";
+				mes "Ricciore marino";
+				mes "C'è un segreto con quell'ingresso.";
+				mes "Quindi, per favore fai attenzione con quello, va'? Hehe.";
 				close;
 			case IE_OK:
 				mapannounce "mal_dun01", getpartyname(getcharid(1))+" party's "+strcharinfo(0)+" member started to hunt the Octopus!",bc_map,"0x00ff99";
@@ -137,22 +137,22 @@ mal_dun01,153,237,5	script	Weird Entrance	844,{
 				//warp instance_mapname("1@cash"),199,99;
 				close;
 			default:
-				mes "[Starfish]";
-				mes "Shhh... Weird aura is";
-				mes "coming from that entrance.";
-				mes "Big trouble is waiting, if you go in now.";
+				mes "Ricciore marino";
+				mes "Shh... Aura strana è";
+				mes "proveniente da quell'ingresso.";
+				mes "Grandi problemi ti aspettano, se entri ora.";
 				close;
 			}
 		}
-		mes "[Starfish]";
-		mes "You should definitely prepare";
-		mes "hunting stick if you want to";
-		mes "punish the Octopus.";
-		mes "Or I will not let you in! Hehe.";
+		mes "Ricciore marino";
+		mes "Dovresti assolutamente prepararti";
+		mes "bastone da caccia se vuoi";
+		mes "punire l'Octopus.";
+		mes "O non ti farò entrare! Hehe.";
 		close;
 	case 2:
-		mes "[Starfish]";
-		mes "Yes Yes, you better quit.";
+		mes "Ricciore marino";
+		mes "Sì sì, meglio che tu smetta.";
 		close;
 	}
 }
@@ -667,9 +667,9 @@ OnInstanceInit:
 	disablenpc();
 	end;
 OnTouch:
-	mes "Do you want to go out from the octopus dungeon?";
+	mes "Vuoi uscire dalla prigione dell'polpo?";
 	next;
-	if(select("No!:Yes!") == 2)
+	if(select("No!:Sì!") == 2)
 		warp "mal_dun01",153,233;
 	close;
 }

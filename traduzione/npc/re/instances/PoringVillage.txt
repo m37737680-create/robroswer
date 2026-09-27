@@ -9,50 +9,50 @@
 
 // Enchant
 prt_fild05,174,238,7	script	Veggie Enchanter#0	4_F_02,2,2,{
-	mes "[Veggie Enchanter]";
-	mes "50 Jellopies and 20,000 zeny are all you need to get special effect on your green onion or carrot!";
+	mes "Incantatore Vegetale";
+	mes "Celiopi e 20.000 zeny sono tutto ciò di cui hai bisogno per ottenere un effetto speciale sul tuo cipollotto o carota!";
 	next;
-	mes "[Veggie Enchanter]";
-	mes "Enchant and reset have ^ff000030% of failure.^000000 Invest in your veggie and luck!";
+	mes "Incantatore Vegetale";
+	mes "Incantare e resettare hanno un fallimento del ^ff000030%.^000000 Investi nel tuo ortaggio e nella fortuna!";
 	next;
-	switch( select( "How much do I need to enchant?", "Enchant to Poring Village Veggie", "Reset Poring Village Veggie" ) ) {
+	switch( select( "Quanto devo incantare?", "Incantare il Villaggio di Poring Veggie", "Resetta Poring Village Veggie" ) ) {
 	case 1:
-		mes "[Veggie Enchanter]";
-		mes "As I heard, you can get Poring Village Green Onion or Carrot if you go west a bit more from here.";
+		mes "Incantatore Vegetale";
+		mes "Come ho sentito, si possono ottenere Cipolle Verdi o Carote di Poring Village se ci si sposta un po' più a ovest da qui.";
 		next;
-		mes "[Veggie Enchanter]";
-		mes "I do enchant to the fresh vegetable.";
+		mes "Incantatore Vegetale";
+		mes "Io incanto le verdure fresche.";
 		next;
-		mes "[Veggie Enchanter]";
-		mes "Enchant or Reset requires 20,000z and 50 Jellopy! It's not bad, is it?";
+		mes "Incantatore Vegetale";
+		mes "Incantare o Resettare richiede 20.000z e 50 Jellopy! Non è male, vero?";
 		next;
-		mes "[Veggie Enchanter]";
-		mes "Well... As you know, it's a vegetable any way. So sometimes it can be broken.";
+		mes "Incantatore Vegetale";
+		mes "Beh... Come sai, è comunque una verdura. Quindi a volte può rompersi.";
 		close;
 	case 2:
 		.@equip_id = getequipid(EQI_HEAD_LOW);
 
 		switch( .@equip_id ) {
 		case -1:
-			mes "[Veggie Enchanter]";
-			mes "Please put on the equipment you'd like to enchant first.";
+			mes "Incantatore Vegetale";
+			mes "Per favore, indossa prima l'equipaggiamento che desideri incantare.";
 			close;
 		case 19238:	// PoringTownOnion
 		case 19239:	// PoringTownCarrot
 			break;
 		default:
-			mes "[Veggie Enchanter]";
-			mes "This is not a vegetable!?";
+			mes "Incantatore Vegetale";
+			mes "Non è un ortaggio!?";
 			close;
 		}
 		if (getequipcardid(EQI_HEAD_LOW,3) > 0) {
-			mes "[Veggie Enchanter]";
-			mes "This vegetable cannot be enchanted anymore.";
+			mes "Incantatore Vegetale";
+			mes "Questo ortaggio non può più essere incantato.";
 			close;
 		}
 		if (countitem(909) < 50 || Zeny < 20000) {
-			mes "[Veggie Enchanter]";
-			mes "This enchant requires 50 Jellopy and 20,000z..... But... you don't have them.";
+			mes "Incantatore Vegetale";
+			mes "Questo incantesimo richiede 50 Jellopy e 20.000z..... Ma... non li hai.";
 			close;
 		}
 		delequip EQI_HEAD_LOW;
@@ -76,13 +76,13 @@ prt_fild05,174,238,7	script	Veggie Enchanter#0	4_F_02,2,2,{
 			else if (.@r < 5356) .@card = 4993;	// SPdrain1
 
 			getitem2 .@equip_id,1,1,0,0,0,0,0,.@card;
-			mes "[Veggie Enchanter]";
-			mes "Tada! Enchant is done! Check your vegetable.";
+			mes "Incantatore Vegetale";
+			mes "Tada! Incanto è finito! Controlla il tuo ortaggio.";
 			specialeffect2 EF_REPAIRWEAPON;
 			close;
 		}
-		mes "[Veggie Enchanter]";
-		mes "It must have been a rotten vegetable. It's a shame that I can't stand this level of power...";
+		mes "Incantatore Vegetale";
+		mes "Deve essere stato un ortaggio marcio. È un peccato che non sopporti questo livello di potere...";
 		specialeffect2 EF_LORD;
 		close;
 	case 3:
@@ -90,25 +90,25 @@ prt_fild05,174,238,7	script	Veggie Enchanter#0	4_F_02,2,2,{
 
 		switch( .@equip_id ) {
 		case -1:
-			mes "[Veggie Enchanter]";
-			mes "Please put on the equipment you'd like to enchant first.";
+			mes "Incantatore Vegetale";
+			mes "Per favore, indossa prima l'equipaggiamento che desideri incantare.";
 			close;
 		case 19238:	// PoringTownOnion
 		case 19239:	// PoringTownCarrot
 			break;
 		default:
-			mes "[Veggie Enchanter]";
-			mes "This is not a vegetable!?";
+			mes "Incantatore Vegetale";
+			mes "Non è un ortaggio!?";
 			close;
 		}
 		if (getequipcardid(EQI_HEAD_LOW,3) == 0) {
-			mes "[Veggie Enchanter]";
-			mes "This is a vegetable that has never been fortified...";
+			mes "Incantatore Vegetale";
+			mes "Questo è un vegetale che non è mai stato fortificato...";
 			close;
 		}
 		if (countitem(909) < 50 || Zeny < 20000) {
-			mes "[Veggie Enchanter]";
-			mes "This enchant requires 50 Jellopy and 20,000z..... But... you don't have them.";
+			mes "Incantatore Vegetale";
+			mes "Questo incantesimo richiede 50 Jellopy e 20.000z..... Ma... non li hai.";
 			close;
 		}
 		delequip EQI_HEAD_LOW;
@@ -117,20 +117,20 @@ prt_fild05,174,238,7	script	Veggie Enchanter#0	4_F_02,2,2,{
 
 		if (rand(100) < 70) {
 			getitem .@equip_id,1;
-			mes "[Veggie Enchanter]";
-			mes "The item is complete! Check it out.";
+			mes "Incantatore Vegetale";
+			mes "L'articolo è completo! Dai un'occhiata.";
 			specialeffect2 EF_REPAIRWEAPON;
 			close;
 		}
-		mes "[Veggie Enchanter]";
-		mes "It must have been a rotten vegetable. It's a shame that I can't stand this level of power...";
+		mes "Incantatore Vegetale";
+		mes "Deve essere stato un ortaggio marcio. È un peccato che non sopporti questo livello di potere...";
 		specialeffect2 EF_LORD;
 		close;
 	}
 	end;
 
 OnTouch:
-	npctalk "Veggie Enchanter: Make your green onion or carrot stronger!", "", bc_self;
+	npctalk "Veggie Enchanter: Rendi più forte la tua cipollina o carota!", "", bc_self;
 	end;
 }
 
@@ -139,50 +139,50 @@ OnTouch:
 prt_fild05,145,235,5	script	Emily#0	4_GEFFEN_03,4,4,{
 	if (BaseLevel < 30) {
 		mes "[Emily]";
-		mes "Wow~ You look like a novice. I do want to adventure with you someday when you grow up!";
+		mes "Wow~ Sembri un novizio. Voglio avventurarmi con te un giorno quando sarai cresciuto!";
 		close;
 	}
 	if (BaseLevel > 60) {
 		mes "[Emily]";
-		mes "Oh, now you are stronger than me. How did you grow so fast?";
+		mes "Oh, ora sei più forte di me. Come sei cresciuto così velocemente?";
 		next;
 		mes "[Emily]";
-		mes "I should find another adventurer who is similar with my level. It's been nice knowing you.";
+		mes "Dovrei trovare un altro avventuriero che sia simile al mio livello. È stato bello conoscerti.";
 		close;
 	}
 	if (isbegin_quest(12416) == 0) {
 		mes "[Emily]";
-		mes "My name is Emily. I was waiting for someone who will go on adventures with me!";
+		mes "Mi chiamo Emily. Stavo aspettando qualcuno che andrà con me in avventure!";
 		next;
-		select("Who said I will adventure with you?");
+		select("Chi ha detto che avventurerò con te?");
 		mes "[Emily]";
-		mes "Well, come one. Don't be stern. Listen, you can decide after listening to my story. Of course, I can give you a proper reward.";
+		mes "Dai, su. Non essere severo. Senti, puoi decidere dopo aver ascoltato la mia storia. Certo che posso darti un adeguato premio.";
 		next;
-		if (select( "Proper Reward?", "I'm not interested." ) == 2) {
+		if (select( "Ricompensa adeguata?", "Non sono interessato." ) == 2) {
 			mes "[Emily]";
-			mes "How square! It's much better to be together!";
+			mes "Che quadrato! È molto meglio stare insieme!";
 			close;
 		}
 		mes "[Emily]";
-		mes "Yes! Proper Reward.";
+		mes "Sì! Ricompensa adeguata.";
 		next;
 		mes "[Emily]";
-		mes "It seems this Poring Village can be defeated by beginners just like us. It's just a wild guess though...";
+		mes "Sembra che questo Villaggio di Poring possa essere sconfitto da principianti come noi. È solo un tiro al buio, però...";
 		next;
 		mes "[Emily]";
-		mes "Well, actually I cannot give you the reward officially through adventurer association. But we can separate the income after hunting.";
+		mes "Beh, in realtà non posso darti il premio ufficialmente attraverso l'associazione avventurieri. Ma possiamo separare il reddito dopo la caccia.";
 		next;
-		select("But 50-50 sounds fair to me.");
+		select("Ma il cinquanta-cinquanta mi sembra giusto.");
 		mes "[Emily]";
-		mes "No way. 70-30. And I'm 70 of course.";
+		mes "Non è possibile. 70-30. E io sono 70 ovviamente.";
 		next;
-		select("It's gotta be 50-50 or it's no good");
+		select("Deve essere cinquanta-cinquanta o non va bene");
 		mes "[Emily]";
-		mes "How about 60-40!!";
+		mes "Che ne dici di 60-40!!";
 		next;
 		select("50-50 ...");
 		mes "[Emily]";
-		mes "This drives me crazy. OK, 50-50. Let's go with this.";
+		mes "Questo mi fa impazzire. Ok, a metà e mezzo. Andiamo con questo.";
 		setquest 12416;	// Contract with Emily
 		completequest 12416;
 		close;
@@ -192,43 +192,43 @@ prt_fild05,145,235,5	script	Emily#0	4_GEFFEN_03,4,4,{
 		break;
 	case 0:
 	case 1:
-		mes "^ff0000Any processing of monsters such as monster taming inside the dungeon will not be considered a normal progress. Please note that.^000000";
+		mes "^ff0000Qualsiasi elaborazione di mostri, come l'addomesticamento dei mostri all'interno della dungeon, non sarà considerata un normale progresso. Si prega di notare che.^000000";
 		next;
-		mes "^ff0000In beginner mode, the player transforms into a monster. Please note that the existing transformation effect disappears when entering and proceeding.^000000";
-		next;
-		mes "[Emily]";
-		mes "So, are you ready?";
+		mes "^ff0000In modalità principiante, il giocatore si trasforma in un mostro. Si prega di notare che l'effetto di trasformazione esistente scompare all'ingresso e durante il proseguimento.^000000";
 		next;
 		mes "[Emily]";
-		mes "You look very tired.";
+		mes "Allora, sei pronto?";
 		next;
 		mes "[Emily]";
-		mes "Why don't you come back after a while? Take a break for now.";
+		mes "Sembri molto stanco/a.";
+		next;
+		mes "[Emily]";
+		mes "Perché non torni dopo un po'? Prenditi una pausa per ora.";
 		close;
 	case 2:
-		mes "^ff0000Any processing of monsters such as monster taming inside the dungeon will not be considered a normal progress. Please note that.^000000";
+		mes "^ff0000Qualsiasi elaborazione di mostri, come l'addomesticamento dei mostri all'interno della dungeon, non sarà considerata un normale progresso. Si prega di notare che.^000000";
 		next;
-		mes "^ff0000In beginner mode, the player transforms into a monster. Please note that the existing transformation effect disappears when entering and proceeding. ^000000";
+		mes "^ff0000In modalità principiante, il giocatore si trasforma in un mostro. Si prega di notare che l'effetto di trasformazione esistente scompare quando si entra e si procede. ^000000";
 		next;
 		mes "[Emily]";
-		mes "So, are you ready?";
+		mes "Allora, sei pronto?";
 		next;
 		mes "^0000ffAll Traces of the Poring Village quest were removed. Now, talk to Emily again to enter^000000";
 		erasequest 12417;
 		close;
 	}
-	mes "^ff0000Any processing of monsters such as monster taming inside the dungeon will not be considered a normal progress. Please note that.^000000";
+	mes "^ff0000Qualsiasi elaborazione di mostri, come l'addomesticamento dei mostri all'interno della dungeon, non sarà considerata un normale progresso. Si prega di notare che.^000000";
 	next;
-	mes "^ff0000In beginner mode, the player transforms into a monster. Please note that the existing transformation effect disappears when entering and proceeding.^000000";
+	mes "^ff0000In modalità principiante, il giocatore si trasforma in un mostro. Si prega di notare che l'effetto di trasformazione esistente scompare all'ingresso e durante il proseguimento.^000000";
 	next;
 	mes "[Emily]";
-	mes "So, are you ready?";
+	mes "Allora, sei pronto?";
 	if (isbegin_quest(12418) == 0)
 		setquest 12418;	// First Visit to Poring Village
 	next;
 	if (getcharid(1) < 1) {
 		mes "[Emily]";
-		mes "Hmm you should create a party first to start this grand adventure.";
+		mes "Mmh, dovresti creare un gruppo prima per iniziare questa grande avventura.";
 		close;
 	}
 	.@md_name$ = "Poring Village";
@@ -238,24 +238,24 @@ prt_fild05,145,235,5	script	Emily#0	4_GEFFEN_03,4,4,{
 	if (instance_live_info(ILI_NAME, instance_id(IM_PARTY)) == .@md_name$)
 		.@menu$[1] = "Enter the dungeon";
 
-	switch( select( .@menu$[0], .@menu$[1], "Cancel" ) ) {
+	switch( select( .@menu$[0], .@menu$[1], "Annulla" ) ) {
 	case 1:
 		mes "[Emily]";
-		mes "Now I'm looking for the entrance, please talk to me again after it's totally open.";
+		mes "Ora sto cercando l'ingresso, per favore parlami di nuovo dopo che sarà completamente aperto.";
 		instance_create(.@md_name$);
 		close;
 	case 2:
 		switch( instance_enter(.@md_name$) ) {
 		case IE_OTHER:
-			mes "An unknown error occurred.";
+			mes "Si è verificato un errore sconosciuto.";
 			close;
 		case IE_NOINSTANCE:
-			mes "^ff0000Time's crack is not created yet.^000000";
+			mes "^ff0000La crepa del tempo non è ancora stata creata.^000000";
 			close;
 		case IE_NOMEMBER:
 			end;
 		case IE_OK:
-			mapannounce "prt_fild05", "Party member " + strcharinfo(0) + " of the party " + getpartyname(getcharid(0)) + " enters " + .@md_name$ + ".", bc_map,0xFF9900;
+			mapannounce "prt_fild05", ""Membro del partito " + strcharinfo(0) + " of the party " + getpartyname(getcharid(0)) + " enters " + .@md_name$ + ".", bc_map,0xFF9900;
 			setquest 12417;	// Overcoming fatigue
 			// warp "1@begi",100,22;
 			end;
@@ -297,13 +297,13 @@ OnInstanceInit:
 
 1@begi,106,30,5	script	#start_wp1_1	4_GEFFEN_03,{
 	mes "[Emily]";
-	mes "Let's go forward.";
+	mes "Andiamo avanti.";
 	close;
 
 OnStart:
-	npctalk "Emily: So.. is this Poring Village?";
+	npctalk "Emily: Allora... è questo Poring Village?";
 	sleep 2000;
-	npctalk "Emily: OK. Let's go!";
+	npctalk "Emily: Ok. Andiamo!";
 	sleep 2000;
 	disablenpc();
 	donpcevent instance_npcname("#start_wp1_2") + "::OnStart";
@@ -313,21 +313,21 @@ OnStart:
 
 1@begi,140,37,5	script	#start_wp1_2	4_GEFFEN_03,{
 	mes "[Emily]";
-	mes "I'm going to start slowly now...";
+	mes "Sto iniziando lentamente ora...";
 	close;
 
 OnStart:
 	enablenpc();
 	sleep 1000;
-	npctalk "Emily: Hmmm. It seems they made barriers not to let us go easily.";
+	npctalk "Emily: Hmmm. Sembra che abbiano costruito barriere per non farci andare via facilmente.";
 	sleep 3000;
-	npctalk "Emily: I'm quite sure Poring gathered a lot of treasure somewhere.";
+	npctalk "Emily: Sono abbastanza sicura che Poring abbia accumulato molto tesoro da qualche parte.";
 	sleep 4000;
 	mapannounce 'map_begi$, "???: I can hear a human's voice. Make them welcome, everybody.", bc_map, 0xFFFF00;
 	sleep 4000;
-	npctalk "Emily: What is it saying?";
+	npctalk "Cosa dice?";
 	sleep 3000;
-	npctalk "Emily: It sounds someone is rushing here... ";
+	npctalk "Emily: Sembra che stia arrivando qualcuno di corsa... ";
 	sleep 2500;
 	mapannounce 'map_begi$, "???: Don't let them run! Take all valuable items from them!", bc_map, 0xFFFF00;
 	sleep 2500;
@@ -336,7 +336,7 @@ OnStart:
 	// disablenpc();
 	hideonnpc();	// hideonnpc instead of disablenpc (official) to display text on rAthena
 	sleep 1000;
-	npctalk "Emily: Oooops. Can't you hide? Well..... Cheer up!";
+	npctalk "Emily: Ops. Non riesci a nasconderti? Beh..... Forza!";
 	// disablenpc instance_npcname("#poring_wl18");
 	hideonnpc instance_npcname("#poring_wl18");
 	specialeffect EF_LORD,AREA, instance_npcname("#poring_wl18");
@@ -665,11 +665,11 @@ OnTouch:
 
 1@begi,199,186,5	script	#gift	4_GEFFEN_03,{
 	mes "[Emily]";
-	mes "You can have all of the items you find in this dungeon. I already have some.";
+	mes "Puoi avere tutti gli oggetti che trovi in questa dungeon. Io ne ho già alcuni.";
 	next;
 	if (isbegin_quest(12418) == 1) {
 		mes "[Emily]";
-		mes "Ah, I found some items. Let me give you one of them. Just to celebrate your first visit!";
+		mes "Ah, ho trovato degli oggetti. Lasciami darne uno. Solo per festeggiare la tua prima visita!";
 		next;
 		if (rand(100) < 50)
 			getitem 19238,1;	// PoringTownOnion
@@ -678,7 +678,7 @@ OnTouch:
 		completequest 12418;
 	}
 	mes "[Emily]";
-	mes "I don't need this novice box. You can take it. Now, let's go out side!";
+	mes "Non ho bisogno di questa scatola per principianti. Puoi portartela via. Ora, usciamo fuori!";
 	close2;
 	getitem 23302,1;	// PoringsPreciousBox
 	warp "prt_fild05",149,238;

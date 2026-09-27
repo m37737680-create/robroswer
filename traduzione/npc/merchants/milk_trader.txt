@@ -21,54 +21,54 @@
 
 prontera,73,140,0	script	Milk Vendor	86,{
 	if (checkweight(1201,1) == 0) {
-		mes "^3355FFJust a minute!";
-		mes "I can't offer any of my";
-		mes "services to you because";
-		mes "you're carrying too much";
-		mes "stuff. Put your extra items in";
-		mes "Kafra Storage and come again~";
+		mes "^3355FFUn momento!";
+		mes "Non posso offrire nessuno dei miei";
+		mes "servizi a te perché";
+		mes "porti troppo peso";
+		mes "cose. Metti i tuoi articoli extra in";
+		mes "Stoccaggio Kafra e ancora~";
 		close;
 	}
-	mes "[Milk Vendor]";
-	mes "Hey, hey...";
-	mes "If you bring me";
-	mes "1 Empty Bottle and";
-	mes "15 Zeny, I'll exchange";
-	mes "them for 1 Milk. How";
-	mes "does that sound?";
+	mes "Venditore di latte";
+	mes "Ehi, ehi...";
+	mes "Se mi porti";
+	mes "Una bottiglia vuota e";
+	mes "15 Zeny, scambierò";
+	mes "per 1 Latte. Come";
+	mes "suona così?";
 	next;
-	if (select("Exchange all empty bottles.:Cancel") == 1) {
+	if (select("Scambiare tutte le bottiglie vuote.:Annulla") == 1) {
 		if (countitem(713) <= 0) {
-			mes "[Milk Vendor]";
-			mes "Hey...";
-			mes "You don't have";
-			mes "any Empty Bottles.";
-			mes "I can't really give you";
-			mes "this milk any other";
-			mes "way, you know...";
+			mes "Venditore di latte";
+			mes "Ehi...";
+			mes "Non hai";
+			mes "Quali bottiglie vuote.";
+			mes "Non posso davvero darti";
+			mes "questo latte qualcos'altro";
+			mes "sai, sai...";
 			close;
 		}
 		set .@bottles,countitem(713);
 		set .@total_weight,.@bottles * 50;
 		set .@total_cost,.@bottles * 15;
 		if (Zeny < .@Total_cost) {
-			mes "[Milk Vendor]";
-			mes "Oh, whoa~!";
-			mes "You don't have enough";
-			mes "zeny to exchange all";
-			mes "these Empty Bottles for";
-			mes "Milk. You need to have";
-			mes "at least " + .@total_cost + " zeny.";
+			mes "Venditore di latte";
+			mes "Oh, wow!";
+			mes "Non hai abbastanza";
+			mes "scambiare tutti";
+			mes "queste bottiglie vuote per";
+			mes "Latte. Devi avere";
+			mes "almeno " + .@total_cost + " zeny.";
 			close;
 		}
 		if (MaxWeight - Weight < .@total_weight) {
-			mes "[Milk Vendor]";
-			mes "Hmm...";
-			mes "Would you make";
-			mes "a little more room";
-			mes "in your inventory";
-			mes "before I give you";
-			mes "all of this milk?";
+			mes "Venditore di latte";
+			mes "Mmm...";
+			mes "Vorresti fare";
+			mes "un po' più di spazio";
+			mes "nel tuo inventario";
+			mes "prima che ti dia";
+			mes "tutto questo latte?";
 			close;
 		}
 		set Zeny, Zeny-.@total_cost;

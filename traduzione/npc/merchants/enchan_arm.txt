@@ -19,23 +19,23 @@
 
 prontera,165,60,2	script	Apprentice Craftsman	73,{
 	disable_items;
-	mes "[Apprentice Craftsman]";
+	mes "Artigiano apprendista";
 	if (Zeny >= 400000) {
-		mes "I've been studying ways to enhance an armor to maximize its capability.";
+		mes "Ho studiato modi per potenziare un'armatura al fine di massimizzarne le capacità.";
 		next;
-		mes "[Apprentice Craftsman]";
-		mes "Enchanting is an awesome skill that infuses a mysterious status powers into the armor's hidden socket.";
+		mes "Artigiano apprendista";
+		mes "Incantare è un'abilità fantastica che infonde poteri di stato misteriosi nella fessura nascosta dell'armatura.";
 		next;
-		mes "[Apprentice Craftsman]";
-		mes "However, you have to keep in mind that if there are two armors of the same kind in your possession, the Enchantment will be applied in the order they are placed in your inventory.";
+		mes "Artigiano apprendista";
+		mes "Tuttavia, devi tenere a mente che se hai due armature dello stesso tipo in tuo possesso, l'Incantesimo verrà applicato nell'ordine in cui vengono posizionate nel tuo inventario.";
 		next;
-		mes "[Apprentice Craftsman]";
-		mes "In that case, the Enchantment may be applied to an item which you didn't mean to Enchant. So just bring ^5555ffONE Armor^000000 you want enchanted to be safe...";
+		mes "Artigiano apprendista";
+		mes "In quel caso, l'Incantesimo può essere applicato a un oggetto che non intendevi incantare. Quindi porta semplicemente ^5555ffUN Armatura^000000 che vuoi incantata per sicurezza...";
 		next;
-		mes "[Apprentice Craftsman]";
-		mes "I'm not responsible for what would happen if you have more than one of the same kind in your inventory.";
+		mes "Artigiano apprendista";
+		mes "Non sono responsabile di quello che succederebbe se ne avessi più di uno dello stesso tipo nel tuo inventario.";
 		next;
-		switch(select("Non Slotted Armor.:Slotted Armor.:High Grade Armor.:Maybe next time.")) {
+		switch(select("Armatura Non a Slot.:Armatura a fessure.:Armatura di Alto Livello.:Forse la prossima volta.")) {
 		case 1:
 			setarray .@Items[0],2307,2309,2314,2316,2321,2325,2327,2328,2330,2332,2334,2335,2341,2344,2346,2348,2350,2337,2386,2394,2395,2396;
 			set .@j,50;
@@ -50,8 +50,8 @@ prontera,165,60,2	script	Apprentice Craftsman	73,{
 			set .@j,60;
 			break;
 		case 4:
-			mes "[Apprentice Craftsman]";
-			mes "Please come back when you have any interest in enchanting your armor.";
+			mes "Artigiano apprendista";
+			mes "Torna quando avrai interesse ad incantare la tua armatura.";
 			close;
 		}
 		set .@menu$,"";
@@ -60,38 +60,38 @@ prontera,165,60,2	script	Apprentice Craftsman	73,{
 		callsub S_EnchantArmor, .@Items[select(.@menu$)-1], .@j;
 		end;
 	}
-	mes "I am in charge of Enchanting Armors. Simply put, I've been studying ways to power-up armor.";
+	mes "Sono responsabile delle Armature Incantate. In parole semplici, ho studiato modi per potenziare le armature.";
 	next;
-	mes "[Apprentice Craftsman]";
-	mes "If by any chance, you would want to enchant your armor, bring me 400,000 zeny and the armor you want to enchant and you are all set to go.";
+	mes "Artigiano apprendista";
+	mes "Se per caso volessi incantare la tua armatura, portami 400.000 zeny e l'armatura che vuoi incantare e sei pronto a partire.";
 	close;
 
 S_EnchantArmor:
 	set .@itemid,getarg(0);
 	set .@failrate,getarg(1);
-	mes "[Apprentice Craftsman]";
+	mes "Artigiano apprendista";
 	if (countitem(.@itemid) == 1) {
-		mes "Socket enchant will cost you 400,000 zeny. And there will be a random option enchanted. Of course, there is a chance of breaking your armor.";
+		mes "Incantare il socket ti costerà 400.000 zeny. E ci sarà un'opzione incantata casuale. Ovviamente, c'è la possibilità che si rompa la tua armatura.";
 		next;
-		mes "[Apprentice Craftsman]";
-		mes "First and most importantly.";
+		mes "Artigiano apprendista";
+		mes "Prima e cosa più importante.";
 		mes "^ff5555Existing Refine Level of the Armor";
-		mes "and Cards will be GONE.^000000";
-		mes "Do you still want to try an Enchant?";
+		mes "e le Carte saranno SPARITE.^000000";
+		mes "Vuoi ancora provare un Incantesimo?";
 		next;
-		if(select("Hmm... Let me think it over.:Go ahead.") == 1) {
-			mes "[Apprentice Craftsman]";
-			mes "Well, I can't blame you. Safety first, eh?";
-			mes "Now you have a nice day.";
+		if(select("Mmm... Lasciami pensarci.:Procedi.") == 1) {
+			mes "Artigiano apprendista";
+			mes "Beh, non posso biasimarti. La sicurezza prima di tutto, eh?";
+			mes "Ti auguro una buona giornata.";
 			close;
 		}
-		mes "[Apprentice Craftsman]";
-		mes "Quite of an adventurer huh? Well, shall we?";
+		mes "Artigiano apprendista";
+		mes "Un vero avventuriero eh? Ebbene, che ne dici?";
 		close2;
 		specialeffect2 EF_MAPPILLAR;
 		if (Zeny < 400000) {
-			mes "[Apprentice Craftsman]";
-			mes "Sorry, but you don't have enough zeny.";
+			mes "Artigiano apprendista";
+			mes "Scusa, ma non hai abbastanza zeni.";
 			close;
 		}
 		progressbar "ffff00",7;
@@ -136,16 +136,16 @@ S_EnchantArmor:
 			case 36: set .@addpart,4750;break;
 			default:
 				specialeffect2 EF_PHARMACY_FAIL;
-				mes "[Apprentice Craftsman]";
-				mes "Well that's too bad.";
-				mes "The requested equipment has failed to enchant.";
+				mes "Artigiano apprendista";
+				mes "Beh, che peccato.";
+				mes "L'attrezzatura richiesta non è riuscita a incantare.";
 				close;
 		}
 		getitem2 .@itemid, 1, 1, 0, 0, 0, 0, 0, .@addpart;
 	}
 	else {
-		mes "Hmm? There's nothing to be enchanted!";
-		mes "Please come back with just ONE equipment to be enchanted.";
+		mes "Hmm? Non c'è niente da incantare!";
+		mes "Ti prego di tornare con un solo equipaggiamento da incantare.";
 		close;
 	}
 }

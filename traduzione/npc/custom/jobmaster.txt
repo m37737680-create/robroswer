@@ -24,7 +24,7 @@ function	Require_Level	{
 	if (BaseLevel < getarg(0) || JobLevel < getarg(1)) {
 		.@blvl = getarg(0) - BaseLevel;
 		.@jlvl = getarg(1) - JobLevel;
-		mes "Level requirement:";
+		mes "Requisito di livello:";
 		mes ((getarg(0)>1)? 
 			"^bb0000"+getarg(0)+"^000000 (^bb0000Base^000000) / ":"")+"^00bb00"+
 			getarg(1)+"^000000 (^00bb00Job^000000)";
@@ -120,7 +120,7 @@ function	Check_Riding	{
 }
 function	Check_SkillPoints	{
 	if (.SkillPointCheck && SkillPoint) {
-		mes "Please use all your skill points before proceeding.";
+		mes "Usa tutti i tuoi punti abilità prima di procedere.";
 		close;
 	}
 	return;
@@ -256,7 +256,7 @@ function	Job_Options	{
 					Job_Options(.@job_opt, Job_Baby_Summoner);
 				break;
 			default:
-				mes "An error has occurred.";
+				mes "Si è verificato un errore.";
 				close;
 		}
 	} else if( Is_First_Cls(.@eac) || 				// First Class
@@ -297,7 +297,7 @@ function	Job_Menu	{
 	while(true) {
 		.@opt_cnt =  getarraysize(getarg(0));
 		if( .@opt_cnt <= 0 ) {
-			mes "No more jobs are available.";
+			mes "Non ci sono più posti disponibili.";
 			close;
 		}
 
@@ -305,7 +305,7 @@ function	Job_Menu	{
 		if (.@opt_cnt > 1) {
 			// Multiple job classes given. Select one and save it to .@class
 			// After that confirm .@class
-			mes "Select a job.";
+			mes "Scegli un lavoro.";
 			.@menu$ = "";
 			for (.@i = 0; .@i < .@opt_cnt; .@i++) {
 				if( getelementofarray(getarg(0), .@i) == Job_Novice_High)
@@ -314,7 +314,7 @@ function	Job_Menu	{
 					.@jobname$ = jobname(getelementofarray(getarg(0), .@i));
 				.@menu$ = .@menu$ + " ~ " + .@jobname$ + ":";
 			}
-			.@menu$ = .@menu$+" ~ ^777777Cancel^000000";
+			.@menu$ = .@menu$+" ~ ^777777Annulla^000000";
 			.@selected = select(.@menu$) - 1;
 			if( .@selected < 0 || .@selected >= .@opt_cnt )
 				close;
@@ -347,7 +347,7 @@ function	Job_Change	{
 	.@to_cls = getarg(0);
 	next;
 	mes .NPCName$;
-	mes "You are now " + callfunc("F_InsertArticle", jobname(.@to_cls)) + "!";
+	mes "Sei ora " + callfunc("F_InserimentoArticolo", jobname(.@to_cls)) + "!";
 	if (.@to_cls == Job_Novice_High && .LastJob)
 		lastJob = Class; // Saves the lastJob for rebirth
 	jobchange .@to_cls;
@@ -374,10 +374,10 @@ function	Confirm_Change	{
 	.@class = getarg(0, -1);
 	.@back = getarg(1, false);
 	if( .@class < 0 || eaclass(.@class) == -1 ) {
-		mes "Unknown Class Error.";
+		mes "Errore di classe sconosciuta.";
 		close;
 	}
-	mes "Do you want to change into ^0055FF"+jobname(.@class)+"^000000 class?";
+	mes "Vuoi cambiare in ^0055FF"+jobname(.@class)+"^000000 classe?";
 	.@job_option$ = " ~ Change into ^0055FF"+jobname(.@class)+"^000000 class";
 	if( .@class == Job_Novice_High)
 		.@job_option$ = " ~ ^0055FFRebirth^000000";

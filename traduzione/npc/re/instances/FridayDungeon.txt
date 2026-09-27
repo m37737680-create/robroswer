@@ -10,24 +10,24 @@
 
 gef_tower,57,170,3	script	Marry Jay	4_F_JOB_BLACKSMITH,{
 	if (BaseLevel < 130) {
-		mes "[Marry Jay]";
-		mes "Your base level is too low, come back when you hit level 130.";
+		mes "Sposare Jay";
+		mes "Il tuo livello di base è troppo basso, torna quando raggiungerai il livello 130.";
 		close;
 	}
-	mes "^ff0000If you do any monster processing, such as monster taming within the dungeon, it won't count towards your progress. Please take note.^000000";
+	mes "^ff0000Se esegui qualsiasi elaborazione di mostri, come il domare i mostri all'interno della dungeon, non contribuirà al tuo progresso. Si prega di prendere nota.^000000";
 	next;
 	.@day = gettime(DT_DAYOFWEEK);
 	if (.@day != FRIDAY) {
-		mes "[Marry Jay]";
-		mes "Oh, a curious onlooker? I'm Marry Jay, the person in charge of Fridays among the days of the week.";
+		mes "Sposare Jay";
+		mes "Oh, un curioso spettatore? Sono Marry Jay, la persona responsabile dei venerdì tra i giorni della settimana.";
 		next;
-		select( "When is the opening time?" );
-		mes "[Marry Jay]";
-		mes "The dungeon will be open during:";
-		mes "^0000FFFriday 00:00 ~ Friday 23:59^000000";
+		select( "A che ora apre?" );
+		mes "Sposare Jay";
+		mes "La dungeon sarà aperta durante:";
+		mes "^0000FFVenerdì 00:00 ~ Venerdì 23:59^000000";
 		next;
-		mes "[Marry Jay]";
-		mes "I hope to see you when Friday arrives~";
+		mes "Sposare Jay";
+		mes "Spero di vederti quando arriva venerdì~";
 		close;
 	}
 	.@md_name$ = "Friday Dungeon";
@@ -37,64 +37,64 @@ gef_tower,57,170,3	script	Marry Jay	4_F_JOB_BLACKSMITH,{
 		break;
 	case 0:
 	case 1:
-		mes "[Marry Jay]";
-		mes "Sorry, but the entry period to the " + .@md_name$ + " has expired.";
-		mes "Take a rest while waiting for the dungeon to be available again.";
+		mes "Sposare Jay";
+		mes "Scusa, ma il periodo di ingresso al " + .@md_name$ + " scaduto.";
+		mes "Riposati mentre aspetti che il dungeon sia disponibile di nuovo.";
 		close;
 	case 2:
 		erasequest 12379;
-		mes "[Marry Jay]";
-		mes "The cooldown has expired.";
-		mes "You may re-enter the Memorial Dungeon.";
+		mes "Sposare Jay";
+		mes "Il tempo di ricarica è scaduto.";
+		mes "Puoi rientrare nel Dungeon commemorativo.";
 		close;
 	}
-	mes "[Marry Jay]";
-	mes "You came just in time.";
-	mes "The memorial dungeon is just ready to be opened.";
-	mes "Would you like to enter now?";
+	mes "Sposare Jay";
+	mes "Sei arrivato giusto in tempo.";
+	mes "La dungeon commemorativa è quasi pronta per essere aperta.";
+	mes "Vuoi entrare ora?";
 	next;
 
 	if (is_party_leader() == true)
-		.@menu$ = "Prepare Friday Memorial";
+		.@menu$ = "Preparare il memoriale di venerdì";
 
-	switch( select( .@menu$, "Enter Friday Memorial", "Cancel" ) ) {
+	switch( select( .@menu$, "Entra Venerdì Commemorazione", "Annulla" ) ) {
 	case 1:
 		instance_create(.@md_name$);
-		mes "[Marry Jay]";
-		mes "The Memorial Dungeon has been created.";
-		mes "You may now enter.";
+		mes "Sposare Jay";
+		mes "La Prigione Commemorativa è stata creata.";
+		mes "Puoi entrare ora.";
 		close;
 	case 2:
 		switch( instance_enter(.@md_name$) ) {
 		case IE_NOMEMBER:
 			if (is_party_leader() == true)
 				end;
-			mes "Only party members can enter this Memorial dungeon.";
+			mes "Solo i membri del partito possono entrare in questa tomba commemorativa.";
 			close;
 		case IE_NOINSTANCE:
 			if (is_party_leader() == true) {
-				mes "There is no Memorial Dungeon registered.";
+				mes "Non è registrata alcuna Prigione Commemorativa.";
 				close;
 			}
-			mes "The Friday Memorial Dungeon does not exist.";
-			mes "Your party leader has not yet created the Memorial dungeon.";
+			mes "La Dungeon commemorativa del venerdì non esiste.";
+			mes "Il tuo capo partito non ha ancora creato il dungeon commemorativo.";
 			close;
 		case IE_OTHER:
-			mes "An unknown error occurred.";
+			mes "Si è verificato un errore sconosciuto.";
 			close;
 		case IE_OK:
-			mes "[Marry Jay]";
-			mes "Off you go!";
-			mapannounce "gef_tower", "" + strcharinfo(0) + " of the party, " + getpartyname( getcharid(1) ) + ", is entering the " + .@md_name$ + ".", bc_map, 0xFF99;
+			mes "Sposare Jay";
+			mes "Via te!";
+			mapannounce "gef_tower", """ + strcharinfo(0) + " of the party, " + getpartyname( getcharid(1) ) + ", is entering the " + .@md_name$ + ".", bc_map, 0xFF99;
 			if (isbegin_quest(12379) < 1)
 				setquest 12379;
 			end;
 		}
 		end;
 	case 3:
-		mes "[Marry Jay]";
-		mes "You have not prepared?";
-		mes "Can't really help it I guess";
+		mes "Sposare Jay";
+		mes "Non ti sei preparato?";
+		mes "Non posso fare nulla a riguardo credo";
 		close;
 	}
 	end;
@@ -106,11 +106,11 @@ gef_tower,57,170,3	script	Marry Jay	4_F_JOB_BLACKSMITH,{
 1@md_gef,110,129,6	script	Marry Jay#0_1	4_F_JOB_BLACKSMITH,{
 	if (is_party_leader() == false)
 		end;
-	mes "[Marry Jay]";
-	mes "Before we start setting up the environment here, we'll give you the chance to choose an appropriate difficulty level.";
-	mes "I could make my own choice, but each person handles it differently based on their abilities.";
+	mes "Sposare Jay";
+	mes "Prima di iniziare a configurare l'ambiente qui, ti daremo la possibilità di scegliere un livello di difficoltà appropriato.";
+	mes "Potrei fare la mia scelta, ma ogni persona lo gestisce diversamente in base alle proprie abilità.";
 	next;
-	switch( select( "Cancel", "LV130 ~ 199", "LV200 + " ) ) {
+	switch( select( "Annulla", "LV130 ~ 199", "LV200 + " ) ) {
 	case 1:
 		close;
 	case 2:
@@ -120,8 +120,8 @@ gef_tower,57,170,3	script	Marry Jay	4_F_JOB_BLACKSMITH,{
 		break;
 	case 3:
 		if (BaseLevel < 200) {
-			mes "[Marry Jay]";
-			mes "You can't choose this difficulty, because your base level is below 200.";
+			mes "Sposare Jay";
+			mes "Non puoi scegliere questa difficoltà perché il tuo livello base è inferiore a 200.";
 			close;
 		}
 		'hard = 1;
@@ -129,14 +129,14 @@ gef_tower,57,170,3	script	Marry Jay	4_F_JOB_BLACKSMITH,{
 		break;
 	}
 	if (BaseLevel < 'mob[0]) {
-		mes "[Marry Jay]";
-		mes "Your base level is too low to select this, you need to be level " + 'mob[0] + " or above.";
+		mes "Sposare Jay";
+		mes "Il tuo livello di base è troppo basso per selezionare questo, devi essere al livello " + 'mob[0] + " o sopra.";
 		close;
 	}
 	close2;
 	npctalk "Now, this place is about to become a hunting ground. I'll get out and close the front door.";
 	sleep 4000;
-	npctalk "Good Luck~";
+	npctalk "Buona fortuna~";
 	sleep 3000;
 	if ('step == 0) {
 		'step = 1;
@@ -193,42 +193,42 @@ OnInstanceInit:
 
 
 1@md_gef,110,129,6	script(DISABLED)	Mary Juj#0_2	4_F_JOB_BLACKSMITH,{
-	npctalk "Hello";
+	npctalk "Ciao";
 	end;
 }
 
 1@md_gef,183,222,5	script(DISABLED)	The Stranger#cadaver	4_TOWER_11,{
-	mes "It is a stranger's corpse.";
-	mes "Perhaps he died while wandering in this place on the search for treasure.";
+	mes "È il cadavere di uno sconosciuto.";
+	mes "Forse è morto mentre vagava in questo luogo alla ricerca di un tesoro.";
 	next;
-	if (select( "Calm down", "Investigate the body" ) == 1) {
-		mes "You respect the dead and decided to leave the body alone.";
+	if (select( "Calmati", "Indagare il corpo" ) == 1) {
+		mes "Rispetti i morti e hai deciso di lasciare il corpo indisturbato.";
 		close;
 	}
-	mes "Looking at a hastily scribbled note in his pocket, perhaps the adventurer's name was Walter.";
+	mes "Guardando un biglietto scritto di fretta nella sua tasca, forse il nome dell'avventuriero era Walter.";
 	next;
-	mes "[Adventurer's Log]";
-	mes "My name is Walter. For the adventurers who will visit this place in the future, I'm leaving this so that you don't make the same mistake again.";
+	mes "Diario dell'Avventuriero";
+	mes "Mi chiamo Walter. Per gli avventurieri che visiteranno questo luogo in futuro, lascio questo affinché non fate lo stesso errore di nuovo.";
 	next;
-	mes "[Adventurer's Log]";
-	mes "On the first day, I curiously put my hand on the slab of a strange Sculpture nearby.";
-	mes "...and I awokened something that I should not have.";
+	mes "Diario dell'Avventuriero";
+	mes "Il primo giorno, ho curioso appoggiato la mano sulla lastra di una strana scultura nelle vicinanze.";
+	mes "e ho risvegliato qualcosa che non avrei dovuto.";
 	next;
-	mes "[Adventurer's Log]";
-	mes "Right now the revived ancient king is wandering in front of me.";
-	mes "Perhaps he has no memories of his previous life.";
-	mes "One thing is certain, he will kill me.";
+	mes "Diario dell'Avventuriero";
+	mes "Attualmente il re antico risorto sta vagando di fronte a me.";
+	mes "Forse non ha ricordi della sua vita precedente.";
+	mes "Una cosa è certa, mi ucciderà.";
 	next;
-	mes "[Adventurer's Log]";
-	mes "To the adventurers who will visit this place in the future, I hope you do not make the same mistake as me.";
-	mes "If you do see a suspicious slab, do not show any interest and pass by it.";
+	mes "Diario dell'Avventuriero";
+	mes "Agli avventurieri che visiteranno questo luogo in futuro, spero che non fate lo stesso errore che ho fatto io.";
+	mes "Se vedi una lastra sospetta, non mostrare alcun interesse e passa oltre.";
 	next;
-	mes "[Adventurer's Log]";
-	mes "Again, never touch the slab. Whatever temptation you may have.";
+	mes "Diario dell'Avventuriero";
+	mes "Ancora, non toccare la lastra. Qualunque tentazione tu possa avere.";
 	if ('freestones != 0)
 		close;
 	next;
-	mes "Several craft stones fall from his body. They were probably collected while exploring this place.";
+	mes "Diverse pietre artigianali cadono dal suo corpo. Probabilmente erano state raccolte esplorando questo luogo.";
 	close2;
 	if ('freestones == 0) {
 		'freestones = 1;
@@ -244,32 +244,32 @@ OnInstanceInit:
 
 1@md_gef,199,73,0	script(DISABLED)	Bizzare Sculpture#boss	CLEAR_NPC,{
 	if ('count < 100) {
-		mes "It is a strange sculpture with a lot of dust piled up. I don't see anything suspicious.";
+		mes "È una scultura strana con un sacco di polvere accumulata. Non vedo nulla di sospetto.";
 		close;
 	}
 	if ('boss_actv >= 1) {
-		mes "Craft Stones have been melted by a powerful force into the sockets.";
-		mes "Seems like the sockets can't be used for a while.";
+		mes "Le Pietre Intagliate sono state fuse da una forza potente nei socket.";
+		mes "Sembra che le prese non possano essere usate per un po'.";
 		close;
 	}
-	mes "At some point, the accumulated dust scatters, and 10 hollow holes are visible on the slab under the sculpture.";
+	mes "A un certo punto, la polvere accumulata si disperde e sono visibili 10 fori vuoti sulla lastra sotto la scultura.";
 	next;
-	mes "Each of the 10 hollow sockets seem to perfectly fit a craft stone.";
+	mes "Ognuna delle 10 prese vuote sembra adattarsi perfettamente a una pietra artigianale.";
 	next;
-	if (select( "Ignore", "Try inserting craft stones" ) == 1)
+	if (select( "Ignora", "Prova a inserire pietre artigianali" ) == 1)
 		end;
 	if (countitem(25235) < 10) {
-		mes "Craft Stones have been melted by a powerful force into the sockets.";
-		mes "Seems like the sockets can't be used for a while.";
+		mes "Le Pietre Intagliate sono state fuse da una forza potente nei socket.";
+		mes "Sembra che le prese non possano essere usate per un po'.";
 		close;
 	}
-	mes "When you insert a craft stone into a hole, it emits a bright light and melts.";
+	mes "Quando inserisci una pietra artigianale in un foro, emette una luce brillante e si scioglie.";
 	next;
 	delitem 25235,10;
 	specialeffect EF_ANGELUS;
 
 	if (rand(1,10) == 10) {
-		mes "Something seems to have changed in the air around me.";
+		mes "Qualcosa sembra essere cambiato nell'aria intorno a me.";
 		instance_announce 0, "Lord of the Dead: Who Awakened Me? I will meet you in person and ask you why.", bc_map, "0xFFFF00";
 		if ('boss_actv == 0) {
 			'boss_actv = 1;
@@ -277,7 +277,7 @@ OnInstanceInit:
 		}
 	}
 	else {
-		mes "But nothing else happened.";
+		mes "Ma non è successo altro.";
 		close2;
 		if ('boss_actv == 0) {
 			disablenpc();	// Disable NPC for 5 minutes when MVP didn't spawn.
@@ -348,49 +348,49 @@ gef_tower,57,167,3	script	Amateur Collector#pa0829	1_F_01,{
 	function F_enchant;
 
 	if (checkweight(1201,1) == 0) {
-		mes "You have too many kinds of objects. Clear your inventory.";
+		mes "Hai troppi tipi di oggetti. Svuota il tuo inventario.";
 		close;
 	}
 	if (MaxWeight - Weight < 10000) {
-		mes "Can't continue because you have too many heavy objects. Reduce your total weight by clearing your inventory.";
+		mes "Non puoi continuare perché hai troppi oggetti pesanti. Riduci il tuo peso totale svuotando l'inventario.";
 		close;
 	}
-	mes "[Amateur Collector]";
-	mes "If you bring me a " + mesitemlink(25235, false) + ", I can enchant a wonderful effect on your accessory!";
+	mes "Collezionista amatoriale";
+	mes "Se mi porti un/una " + mesitemlink(25235, false) + ", posso incantare un meraviglioso effetto sul tuo accessorio!";
 	next;
-	switch( select( "What can you do with the Crafting Stone?", "Accessory Enchantment", "Reset Enchant" ) ) {
+	switch( select( "Cosa puoi fare con la Pietra da Artigianato?", "Incantesimo Accessorio", "Resetta Incantesimo" ) ) {
 	case 1:
-		mes "[Amateur Collector]";
-		mes "I trade expensive stones from the dungeon in exchange for my craftsmanship. I'm still a beginner, but my skills are passable.";
-		mes "Please take care of me.";
+		mes "Collezionista amatoriale";
+		mes "Scambio pietre costose dalla prigione con la mia arte. Sono ancora un principiante, ma le mie abilità sono passabili.";
+		mes "Prenditi cura di me.";
 		next;
-		if (select( "I've heard this before.", "I'm listening." ) == 1) {
-			mes "[Amateur Collector]";
-			mes "Is that so?";
+		if (select( "L'ho sentito prima.", "Sto ascoltando." ) == 1) {
+			mes "Collezionista amatoriale";
+			mes "È così?";
 			close;
 		}
-		mes "[Amateur Collector]";
-		mes "By using the Craft Stone, I can enchant one of your accessories with abilities.";
+		mes "Collezionista amatoriale";
+		mes "Usando la Pietra Artigiana, posso incantare uno dei tuoi accessori con abilità.";
 		next;
-		mes "[Amateur Collector]";
-		mes "I need 10 x " + mesitemlink(25235, false) + " and 100,000 Zeny.";
-		mes "There is no failure in the enchantment process.";
+		mes "Collezionista amatoriale";
+		mes "ho bisogno di 10 x " + mesitemlink(25235, false) + " e 100.000 Zeny.";
+		mes "Non c'è fallimento nel processo di incantesimo.";
 		next;
-		mes "[Amateur Collector]";
-		mes "However ^0000FFif the accessory has a random option, the random option will be removed after enchantment.^000000";
+		mes "Collezionista amatoriale";
+		mes "Tuttavia ^0000FFse l'accessorio ha un'opzione casuale, l'opzione casuale verrà rimossa dopo l'incantesimo.^000000";
 		next;
-		select( "Anything else?" );
-		mes "[Amateur Collector]";
-		mes "Cards slotted to the accessory will remain after the enchantement.";
+		select( "Qualcos'altro?" );
+		mes "Collezionista amatoriale";
+		mes "Le carte inserite all'accessorio rimarranno dopo l'incantesimo.";
 		next;
-		mes "[Amateur Collector]";
-		mes "A reset is possible, but I can't say that I'm experienced.";
-		mes "My success rate is:";
-		mes "Royal Ring: 80%";
-		mes "Other Accessory: 20%";
+		mes "Collezionista amatoriale";
+		mes "Un reset è possibile, ma non posso dire di essere esperto.";
+		mes "Il mio tasso di successo è:";
+		mes "Anello Reale: 80%";
+		mes "Altro Accessorio: 20%";
 		next;
-		mes "[Amateur Collector]";
-		mes "^0000FFIf the accessory has a random option, the random option will be removed after initialization.^000000";
+		mes "Collezionista amatoriale";
+		mes "^0000FFSe l'accessorio ha un'opzione casuale, l'opzione casuale verrà rimossa dopo l'inizializzazione.^000000";
 		close;
 	case 2:
 		.@type = 1;
@@ -409,8 +409,8 @@ gef_tower,57,167,3	script	Amateur Collector#pa0829	1_F_01,{
 	
 	switch( .@equip_id ) {
 	case 0:
-		mes "[Amateur Collector]";
-		mes "Please equip your accessory.";
+		mes "Collezionista amatoriale";
+		mes "Equipare il tuo accessorio.";
 		close;
 	case 28483:
 	case 2601:
@@ -536,8 +536,8 @@ gef_tower,57,167,3	script	Amateur Collector#pa0829	1_F_01,{
 	case 2956:
 		break;
 	default:
-		mes "[Amateur Collector]";
-		mes "I cannot " + .@type_name$ + " this " + mesitemlink(.@equip_id, false) + " accessory.";
+		mes "Collezionista amatoriale";
+		mes "Non posso " + .@type_name$ + " questo " + mesitemlink(.@equip_id, false) + " accessorio.";
 		close;
 	}
 
@@ -545,16 +545,16 @@ gef_tower,57,167,3	script	Amateur Collector#pa0829	1_F_01,{
 		switch( .@equip_id ) {
 		case 28483:	//Royal Ring Enchantment
 			if (.@equip_card[2] != 0) {
-				mes "[Amateur Collector]";
-				mes "The " + mesitemlink(.@equip_id, false) + " already has maximum enchantment.";
-				mes "I cannot work on this any further.";
+				mes "Collezionista amatoriale";
+				mes "Il " + mesitemlink(.@equip_id, false) + " già ha l'incantesimo massimo.";
+				mes "Non posso lavorare su questo oltre.";
 				close;
 			}
 			.@pos = .@equip_card[3] != 0 ? 2 : 3;
-			mes "[Amateur Collector]";
-			mes "Please select an enchantment type~";
+			mes "Collezionista amatoriale";
+			mes "Seleziona un tipo di incantesimo~";
 			next;
-			switch( select( "Physical", "Magical", "Ranged" ) ) {
+			switch( select( "Fisico", "Magico", "A distanza" ) ) {
 			case 1:
 				if (.@pos == 2)
 					.@equip_card[2] = F_enchant(2);
@@ -575,21 +575,21 @@ gef_tower,57,167,3	script	Amateur Collector#pa0829	1_F_01,{
 				break;
 			}
 			if (.@pos == 2) {
-				mes "[Amateur Collector]";
-				mes "Are you sure to enhance the " + mesitemlink(.@equip_id, false) + "?";
+				mes "Collezionista amatoriale";
+				mes "Sei sicuro di migliorare il " + mesitemlink(.@equip_id, false) + "?";
 				mes "^0000FFThere is a no chance of failure^000000.";
 				next;
-				if (select( "Yes, please proceed", "Cancel" ) == 2)
+				if (select( "Sì, per favore procedi", "Annulla" ) == 2)
 					end;
 			}
 			if (countitem(25235) < 10) {
-				mes "[Amateur Collector]";
-				mes "Please bring me 10 x " + mesitemlink(25235, false) + ".";
+				mes "Collezionista amatoriale";
+				mes "Per favore portami 10 x " + mesitemlink(25235, false) + ".";
 				close;
 			}
 			if (Zeny < 100000) {
-				mes "[Amateur Collector]";
-				mes "I need 100,000 zeny!";
+				mes "Collezionista amatoriale";
+				mes "Ho bisogno di 100.000 zeny!";
 				close;
 			}
 			delitem 25235,10; //Catalyst
@@ -601,32 +601,32 @@ gef_tower,57,167,3	script	Amateur Collector#pa0829	1_F_01,{
 
 			delequip .@slot;
 			specialeffect2 EF_REPAIRWEAPON;
-			mes "[Amateur Collector]";
-			mes "The " + mesitemlink(.@equip_id, false) + " has been enchanted!!";
+			mes "Collezionista amatoriale";
+			mes "Il " + mesitemlink(.@equip_id, false) + " è stato incantato!!";
 			getitem2 .@equip_id,1,1,0,0,.@equip_card[0],.@equip_card[1],.@equip_card[2],.@equip_card[3];
 			close;
 
 		default:	// Normal Accessory Enchantment
 			if (.@equip_card[3] != 0) {
-				mes "[Amateur Collector]";
-				mes "The " + mesitemlink(.@equip_id, false) + " already has an enchant.";
-				mes "I cannot work on this any further.";
+				mes "Collezionista amatoriale";
+				mes "Il " + mesitemlink(.@equip_id, false) + " ha già un incantesimo.";
+				mes "Non posso lavorare su questo oltre.";
 				close;
 			}
-			mes "[Amateur Collector]";
-			mes "Are you sure you want to enhance the " + mesitemlink(.@equip_id, false) + "?";
+			mes "Collezionista amatoriale";
+			mes "Sei sicuro di voler migliorare il " + mesitemlink(.@equip_id, false) + "?";
 			mes "^0000FFThere is a no chance of failure^000000.";
 			next;
-			if (select( "Yes, please proceed", "Cancel") == 2)
+			if (select( "Sì, per favore procedi", "Annulla") == 2)
 				end;
 			if (countitem(25235) < 10) {
-				mes "[Amateur Collector]";
-				mes "Please bring me 10 x " + mesitemlink(25235, false) + ".";
+				mes "Collezionista amatoriale";
+				mes "Per favore portami 10 x " + mesitemlink(25235, false) + ".";
 				close;
 			}
 			if (Zeny < 100000) {
-				mes "[Amateur Collector]";
-				mes "I need 100,000 zeny!";
+				mes "Collezionista amatoriale";
+				mes "Ho bisogno di 100.000 zeny!";
 				close;
 			}
 			delitem 25235,10; //Catalyst
@@ -639,8 +639,8 @@ gef_tower,57,167,3	script	Amateur Collector#pa0829	1_F_01,{
 			delequip .@slot;
 			.@enchant = F_enchant(1);
 			specialeffect2 EF_REPAIRWEAPON;
-			mes "[Amateur Collector]";
-			mes "The " + mesitemlink(.@equip_id, false) + " has been enchanted with " + mesitemlink(.@enchant, false) + ".";
+			mes "Collezionista amatoriale";
+			mes "Il " + mesitemlink(.@equip_id, false) + " è stato incantato con " + mesitemlink(.@enchant, false) + ".";
 			getitem2 .@equip_id,1,1,0,0,.@equip_card[0],.@equip_card[1],.@equip_card[2],.@enchant;
 			close;
 		}
@@ -655,25 +655,25 @@ gef_tower,57,167,3	script	Amateur Collector#pa0829	1_F_01,{
 			.@success = 20;	// success normal
 		}
 		if (.@equip_card[.@pos] == 0) {
-			mes "[Amateur Collector]";
-			mes "The " + mesitemlink(.@equip_id, false) + " is not at its maximum enchantment.";
-			mes "I cannot reset this accessory.";
+			mes "Collezionista amatoriale";
+			mes "Il " + mesitemlink(.@equip_id, false) + " non è al suo massimo incantesimo.";
+			mes "Non posso resettare questo accessorio.";
 			close;
 		}
-		mes "[Amateur Collector]";
-		mes "All enchanted effects will be removed from the " + mesitemlink(.@equip_id, false) + "?";
-		mes "^FF0000There is a " + .@success + "% chance of success. The accessory will be destroyed if the reset fails!^000000";
+		mes "Collezionista amatoriale";
+		mes "Tutti gli effetti incantati verranno rimossi da " + mesitemlink(.@equip_id, false) + "?";
+		mes "^FF0000There is a " + .@success + "percentuale di successo. L'accessorio verrà distrutto se il reset fallisce!^000000";
 		next;
-		if (select( "I'll be back later", "Please proceed") == 1)
+		if (select( "Tornerò più tardi", "Procedi") == 1)
 			end;
 		if (countitem(25235) < 10) {
-			mes "[Amateur Collector]";
-			mes "Please bring me 10 x " + mesitemlink(25235, false) + "";
+			mes "Collezionista amatoriale";
+			mes "Per favore portami 10 x " + mesitemlink(25235, false) + "";
 			close;
 		}
 		if (Zeny < 100000) {
-			mes "[Amateur Collector]";
-			mes "I need 100,000 zeny!";
+			mes "Collezionista amatoriale";
+			mes "Ho bisogno di 100.000 zeny!";
 			close;
 		}
 		delitem 25235,10; //Catalyst
@@ -686,15 +686,15 @@ gef_tower,57,167,3	script	Amateur Collector#pa0829	1_F_01,{
 		delequip .@slot;
 		if (rand(100) > .@success) {
 			specialeffect2 EF_SUI_EXPLOSION;
-			mes "[Amateur Collector]";
-			mes "Darn it...";
-			mes "I have failed and the accessory has been destroyed. I'm so sorry.";
+			mes "Collezionista amatoriale";
+			mes "Accidenti...";
+			mes "Ho fallito e l'accessorio è stato distrutto. Mi dispiace tanto.";
 			close;
 		}
 		specialeffect2 EF_REPAIRWEAPON;
-		mes "[Amateur Collector]";
-		mes "I have succeeded.";
-		mes "The " + mesitemlink(.@equip_id, false) + " has been initialized.";
+		mes "Collezionista amatoriale";
+		mes "Ho avuto successo.";
+		mes "Il " + mesitemlink(.@equip_id, false) + " è stato inizializzato.";
 		getitem2 .@equip_id,1,1,0,0,.@equip_card[0],.@equip_card[1],0,0;
 		close;
 	}

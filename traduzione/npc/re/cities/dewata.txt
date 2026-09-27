@@ -20,58 +20,58 @@
 // Dewata Transportation :: dewata_trans
 //============================================================
 alberta,212,202,4	script	Dewata Sailor#alberta	536,{
-	mes "[Dewata Sailor]";
-	mes "Do you want to visit ^8B4513Dewata Island^000000?";
-	mes "With its dazzling waves and charming vistas it's a great place to relax.";
+	mes "[Marinaia Dewata]";
+	mes "Vuoi visitare l'isola di ^8B4513Dewata^000000?";
+	mes "Con le sue onde abbaglianti e i suoi scorci incantevoli è un ottimo posto per rilassarsi.";
 	if (VIP_SCRIPT) {
 		set .@cost, vip_status(VIP_STATUS_ACTIVE)?1000:10000;
-		mes "The transit fee is 10,000 Zeny and 1,000 for VIP.";
+		mes "La tariffa di transito è di 10.000 Zeny e 1.000 per i VIP.";
 	} else {
 		set .@cost,10000;
-		mes "The transit fee is 10,000 Zeny.";
+		mes "La tariffa di transito è di 10.000 Zeny.";
 	}
 	next;
-	switch(select("Yes!:No.")) {
+	switch(select("Sì!:No.")) {
 	case 1:
 		if (Zeny >= .@cost) {
-			mes "[Dewata Sailor]";
-			mes "^8B4513Dewata^000000 is a beautiful and peaceful island country.";
-			mes "Have a nice trip~";
+			mes "[Marinaia Dewata]";
+			mes "^8B4513Dewata^000000 è un bellissimo e pacifico paese insulare.";
+			mes "Buon viaggio~";
 			close2;
 			set Zeny, Zeny - .@cost;
 			warp "dewata",232,53;
 			end;
 		} else {
-			mes "[Dewata Sailor]";
-			mes "You don't have the dough, kid.";
-			mes "Come back when you have a bigger wallet.";
+			mes "[Marinaia Dewata]";
+			mes "Non hai i soldi, ragazzo.";
+			mes "Torna quando avrai un portafoglio più grande.";
 			close;
 		}
 	case 2:
-		mes "[Dewata Sailor]";
-		mes "Let me know";
-		mes "when you're ready to travel~";
+		mes "[Marinaia Dewata]";
+		mes "Fammi sapere";
+		mes "quando sei pronto a viaggiare~";
 		close;
 	}
 }
 
 dewata,229,49,6	script	Alberta Sailor#dewata	536,{
-	mes "[Alberta Sailor]";
-	mes "Do you want to go back to Alberta?";
+	mes "Alberta Marinaro";
+	mes "Vuoi tornare in Alberta?";
 	next;
-	switch(select("Yes.:No.")) {
+	switch(select("Sì.:No.")) {
 	case 1:
-		mes "[Alberta Sailor]";
-		mes "I hope you had a lot of fun on";
-		mes "your trip to ^8B4513Dewata^000000 Island.";
-		mes "Please come again!";
+		mes "Alberta Marinaro";
+		mes "Spero ti sei divertito molto a";
+		mes "il tuo viaggio a ^8B4513Dewata^000000 Isola.";
+		mes "Torna ancora!";
 		close2;
 		warp "alberta",192,215;
 		end;
 	case 2:
-		mes "[Alberta Sailor]";
-		mes "Have some more fun before you go.";
-		mes "^8B4513Dewata^000000 Island still has more to offer.";
+		mes "Alberta Marinaro";
+		mes "Divertiti ancora prima di andare.";
+		mes "^8B4513Dewata^000000 L'isola ha ancora molto da offrire.";
 		close;
 	}
 }
@@ -79,135 +79,135 @@ dewata,229,49,6	script	Alberta Sailor#dewata	536,{
 // Generic Dewata NPCs :: dewata_npc
 //============================================================ 
 dewata,221,237,5	script	Young Man#dew-1	536,{
-	mes "[Fruit Fancier]";
-	mes "What's wrong with your faaaaaace? You must really be clueless!";
+	mes "[Artigiano di Frutta]";
+	mes "Cosa c'è di sbagliato nel tuo facc___a? Devi essere davvero ignorante!";
 	next;
-	mes "[Fruit Fancier]";
-	mes "Let me drop some knowledge on ya.";
+	mes "[Artigiano di Frutta]";
+	mes "Lasciarmi buttare un po' di conoscenza su di te.";
 	next;
-	mes "[Fruit Fancier]";
-	mes "I may be a youngling, but no one knows more than I do about ^777700Palm fruit^000000. All right! What do you want to know?";
+	mes "[Artigiano di Frutta]";
+	mes "Potrei essere un giovane, ma nessuno sa più di me riguardo a ^777700Palma frutto^000000. Va bene! Cosa vuoi sapere?";
 	next;
-	switch(select("About the shell...:About the pulp...:About the palm kernel...:No thanks.")) {
+	switch(select("Riguardo alla shell...:Riguardo la polpa...:Riguardo al nocciolo di palma...:No grazie.")) {
 	case 1:
-		mes "[Fruit Fancier]";
-		mes "So you want to know about Palm fruit's pulp? Let me explain.";
+		mes "[Artigiano di Frutta]";
+		mes "Quindi vuoi sapere del polpa di frutto del palma? Lasciami spiegare.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "Normally Palm fruit shell is used for making oil. Palm Oil is a useful ingredient for many dishes.";
+		mes "[Artigiano di Frutta]";
+		mes "Normalmente la buccia del frutto del palma viene usata per fare olio. L'olio di palma è un ingrediente utile per molti piatti.";
 		next;
-		mes "[Fruit Fancier]";
+		mes "[Artigiano di Frutta]";
 		if (dew_drink > 0)
-			mes "Hmm... Have you met Memo already? Then it should be easy for you to understand.";
+			mes "Mmh... Hai già conosciuto Memo? Allora dovrebbe essere facile per te capire.";
 		else
-			mes "If you want to know how to use Palm Oil, go find Memo on the north side of Dewata island. Everyday, he makes traditional drinks with Palm Oil.";
+			mes "Se vuoi sapere come usare l'olio di palma, vai a trovare Memo sul lato nord dell'isola di Dewata. Ogni giorno, lui prepara bevande tradizionali con olio di palma.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "Anyways, we refer to the oil that comes from the Palm fruit as Palm oil or Coconut oil, which is well known for it's quality.";
+		mes "[Artigiano di Frutta]";
+		mes "In ogni caso, ci riferiamo all'olio che proviene dal frutto del palma come olio di palma o olio di cocco, noto per la sua qualità.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "The leftovers from oil production gets dried, and used for fuel in cooking or heating.";
+		mes "[Artigiano di Frutta]";
+		mes "I residui della produzione di petrolio vengono essiccati e utilizzati come combustibile per cucinare o riscaldare.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "It burns well and has a good smell, can't get better than that.";
+		mes "[Artigiano di Frutta]";
+		mes "Brucia bene e ha un buon profumo, non si può superare.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "Ok!! That is all about the pulp, it takes too long to explain all those useful effects for Palm fruit shells.";
+		mes "[Artigiano di Frutta]";
+		mes "Va bene!! Questo è tutto sul polpa, ci vuole troppo tempo per spiegare tutti quegli utili effetti delle bucce di frutto del palma.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "It's not like this is the extent of my knowledge. Don't get me wrong!";
+		mes "[Artigiano di Frutta]";
+		mes "Non è che questo sia l'estensione della mia conoscenza. Non fraintendermi!";
 		close;
 	case 2:
-		mes "[Fruit Fancier]";
-		mes "So you want to know about the Palm interior? Let me explain.";
+		mes "[Artigiano di Frutta]";
+		mes "Quindi vuoi sapere dell'interno del Palma? Lasciami spiegare.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "Palm tree fruit has 2 layers of pulp. Outside is very rough, and the inside is smooth...";
+		mes "[Artigiano di Frutta]";
+		mes "Il frutto della palma ha due strati di polpa. All'esterno è molto ruvido e all'interno è liscio...";
 		next;
-		mes "[Fruit Fancier]";
-		mes "Hmm... Yes! the pulp of Palm tree fruit is a little bit harder than a walnut shell, must be the water it contains inside.";
+		mes "[Artigiano di Frutta]";
+		mes "Mmm... Sì! la polpa del frutto di palma è un po' più dura di un guscio di noce, deve essere l'acqua che contiene dentro.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "Inside of the shell, there's about 300cc water which is useful in quenching people's thirst since Dewata island has very hot weather.";
+		mes "[Artigiano di Frutta]";
+		mes "All'interno della conchiglia c'è circa 300cc d'acqua che è utile per placare la sete delle persone dato che l'isola di Dewata ha un clima molto caldo.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "And it's not like we just throw it away once we drink the water inside!!";
+		mes "[Artigiano di Frutta]";
+		mes "E non è che lo buttiamo via appena beviamo l'acqua dentro!!";
 		next;
-		mes "[Fruit Fancier]";
-		mes "We also can make a quality canteen out of it! Like I said, it has really thick outer shell enough and can act as a water bottle.";
+		mes "[Artigiano di Frutta]";
+		mes "Anche possiamo farne una mensa di qualità! Come ho detto, ha un guscio esterno davvero spesso e può fungere da borraccia.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "It is also great to make charcoal. Charcoal made out of palm fruit is well known for long lasting and quality fire,";
+		mes "[Artigiano di Frutta]";
+		mes "È anche ottimo fare il carbone. Il carbone fatto con frutto di palma è ben noto per un fuoco duraturo e di qualità,";
 		next;
-		mes "[Fruit Fancier]";
-		mes "People love to cook seafoods and chicken with Palm fruit charcoal..";
+		mes "[Artigiano di Frutta]";
+		mes "La gente ama cucinare frutti di mare e pollo con carbone di frutto di palma.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "It has the extra bonus of being burning with a pleasant palm smell";
+		mes "[Artigiano di Frutta]";
+		mes "Ha il bonus extra di profumare piacevolmente di palma bruciata";
 		next;
-		mes "[Fruit Fancier]";
-		mes "Ok!! That is all for pulp information, it takes too long to explain all those useful effects.";
+		mes "[Artigiano di Frutta]";
+		mes "Va bene! Questo è tutto per le informazioni su pulp, ci vuole troppo tempo per spiegare tutti quegli effetti utili.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "It's not like this is all I know. Don't get me wrong!";
+		mes "[Artigiano di Frutta]";
+		mes "Non è che questo sia tutto quello che so. Non fraintendermi!";
 		close;
 	case 3:
-		mes "[Fruit Fancier]";
-		mes "So, you want to know about tender kernel inside? Let me explain for you";
+		mes "[Artigiano di Frutta]";
+		mes "Quindi, vuoi sapere del nucleo di tendenza all'interno? Lasciami spiegarti";
 		next;
-		mes "[Fruit Fancier]";
-		mes "The kernel inside of the hard pulp is used as a natural digestive.";
+		mes "[Artigiano di Frutta]";
+		mes "Il nucleo all'interno della polpa dura è usato come digestivo naturale.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "Not much to say about the kernel inside..";
+		mes "[Artigiano di Frutta]";
+		mes "Non c'è molto da dire sul kernel interno..";
 		next;
-		mes "[Fruit Fancier]";
-		mes "but we do make sure to use every part of the palm fruit.";
+		mes "[Artigiano di Frutta]";
+		mes "ma ci assicuriamo di usare ogni parte del frutto del palma.";
 		next;
-		mes "[Fruit Fancier]";
-		mes "Wouldn't you agree?";
+		mes "[Artigiano di Frutta]";
+		mes "Non sei d'accordo?";
 		close;
 	case 4:
-		mes "[Fruit Fancier]";
-		mes "Arrgg! You have no interest in the world!";
+		mes "[Artigiano di Frutta]";
+		mes "Argh! Non ti interessa il mondo!";
 		close;
 	}
 }
 
 dewata,114,243,6	script	Lazy Young Man#dew	536,1,1,{
 	if (checkweight(1201,1) == 0 || MaxWeight - Weight < 500) {
-		mes "[Lazy Young Man]";
-		mes "Why are you carrying so much? Isn't it heavy?";
+		mes "Giovane pigro";
+		mes "Perché porti così tanto? Non è pesante?";
 		close;
 	}
 	if (countitem(11534)) {
-		mes "[Lazy Young Man]";
-		mes "Wewt~!! Isn't that Palm Juice?";
-		mes "Can you give me that? I just woke";
-		mes "up, and my throat is parched!";
+		mes "Giovane pigro";
+		mes "Wewt~!! Non è Succo di Palma?";
+		mes "Puoi darmi quello? Mi sono appena svegliato/a";
+		mes "su, e ho la gola secca!";
 		next;
-		switch(select("Give:Do not give")) {
+		switch(select("Dare:Non dare")) {
 		case 1:
-			mes "[Lazy Young Man]";
-			mes "Really? For me?? I'll give you this in return... Thanks... Hehe~";
+			mes "Giovane pigro";
+			mes "Davvero? Per me?? Ti darò questo in cambio... Grazie... Hehe~";
 			delitem 11534,1; //Coco_Juice
 			getgroupitem(IG_GiftBox);
 			close;
 		case 2:
-			mes "[Lazy Young Man]";
-			mes "So be it~ Ok...";
+			mes "Giovane pigro";
+			mes "Così sia~ Ok...";
 			close;
 		}
 	}
-	mes "[Lazy Young Man]";
-	mes "Ah~ Thristy~ Anyone have some Palm";
-	mes "juice for me?~";
+	mes "Giovane pigro";
+	mes "Ah~ Assetato~ Qualcuno ha qualche Palma";
+	mes "succo per me?~";
 	close;
 OnTouch:
 	if (countitem(11534) == 0) {
-		mes "[Lazy Young Man]";
-		mes "Arrgg~ I'm thirsty~~ so thirsty~~";
-		mes "Give me Palm juice... Palm Juuiice~~";
+		mes "Giovane pigro";
+		mes "Arghh~ Ho sete~~ così tanta sete~~";
+		mes "Dammi succo di palma... Succo di palma~~";
 		emotion ET_FRET;
 		next;
 		emotion ET_FRET;
@@ -222,275 +222,275 @@ OnTouch:
 
 dewata,159,81,4	script	Tourist#dew-1	881,{
 	mes "[Nasolo]";
-	mes "Wow~ Pure ocean, a warm beach...";
-	mes "Perfect for a date with a girlfriend...";
+	mes "Wow~ Oceano puro, una spiaggia calda...";
+	mes "Perfetto per un appuntamento con una fidanzata...";
 	next;
 	mes "[Nasolo]";
-	mes "If only I had one...";
+	mes "Se solo avessi uno...";
 	emotion ET_CRY;
 	next;
 	mes "[Nasolo]";
-	mes "I wonder when my princess will come...";
+	mes "Mi chiedo quando arriverà la mia principessa...";
 	emotion ET_OHNO;
 	close;
 }
 
 dewata,146,109,5	script	Restauranteur#dew	886,{
 	if (checkweight(11532,1) == 0 || checkweight(11533,1) == 0 || MaxWeight - Weight < 500) {
-		mes "[Restauranteur]";
-		mes "You came to taste my dish? It is always good to eat with an empty stomach.";
+		mes "Ristoratore";
+		mes "Sei venuto a assaggiare il mio piatto? È sempre buono mangiare con lo stomaco vuoto.";
 		close;
 	}
-	mes "[Restauranteur]";
-	mes "Welcome to the island of Dewata.";
-	mes "I hope you behave like a noble";
-	mes "traveler, unlike some of these";
-	mes "teenage punks...";
+	mes "Ristoratore";
+	mes "Benvenuti sull'isola di Dewata.";
+	mes "Spero che tu ti comporti come un nobile";
+	mes "viaggiatore, a differenza di alcuni di questi";
+	mes "ragazzini punk";
 	next;
-	switch(select("About Dewata dishes:Today's menu?:I'm okay.")) {
+	switch(select("Informazioni sui piatti Dewata:Il menù di oggi?:Sto bene.")) {
 	case 1:
-		mes "[Restauranteur]";
-		mes "Need info about our foods? Well... I don't have much to talk about, but feel free to listen if you want.";
+		mes "Ristoratore";
+		mes "Vuoi informazioni sui nostri alimenti? Beh... non ho molto di cui parlare, ma sentiti libero di ascoltare se vuoi.";
 		next;
-		mes "[Restauranteur]";
-		mes "So much to cover, let me begin.";
+		mes "Ristoratore";
+		mes "Così tanto da coprire, lasciatemi iniziare.";
 		next;
-		mes "[Restauranteur]";
-		mes "First, Dewata dishes have special names based on each cooking recipe,";
+		mes "Ristoratore";
+		mes "Innanzitutto, i piatti di Dewata hanno nomi speciali basati su ogni ricetta di cottura,";
 		next;
-		mes "[Restauranteur]";
-		mes "If dish name has 'Goreng' in it, then it is either stir or deep fried food.";
+		mes "Ristoratore";
+		mes "Se il nome del piatto contiene 'Goreng', allora è cibo saltato o fritto.";
 		next;
-		mes "[Restauranteur]";
-		mes "If it is a type of 'Bakar', then it is a grilled food.";
+		mes "Ristoratore";
+		mes "Se è un tipo di 'Bakar', allora è un cibo grigliato.";
 		next;
-		mes "[Restauranteur]";
-		mes "And if it's 'Satay', then you are eating a skewered dish.";
+		mes "Ristoratore";
+		mes "E se è 'Satay', allora stai mangiando un piatto infilzato su uno spiedo.";
 		next;
-		mes "[Restauranteur]";
-		mes "Second, we have dishes named after basic ingredients,";
+		mes "Ristoratore";
+		mes "Secondo, abbiamo piatti chiamati con ingredienti di base,";
 		next;
-		mes "[Restauranteur]";
-		mes "In Dewata island, we call rice as Nasi, noodle as Mie, bread as Roti, chicken as Ayam, fish as Ikan, and corn as Jagung.";
+		mes "Ristoratore";
+		mes "S sull'isola di Dewata, chiamiamo il riso Nasi, i noodles Mie, il pane Roti, il pollo Ayam, il pesce Ikan e il mais Jagung.";
 		next;
-		mes "[Restauranteur]";
-		mes "So, if rice is fried we call it 'Nasi Goreng', and fried noodle is 'Mie Goreng'.";
+		mes "Ristoratore";
+		mes "Quindi, se il riso è fritto lo chiamiamo 'Nasi Goreng', e i noodles fritti sono 'Mie Goreng'.";
 		next;
-		mes "[Restauranteur]";
-		mes "Well... This is enough to enjoy our foods in Dewata!! If you are hungry, we have our special set menu for only ^0000FF5000^000000 Zeny.";
+		mes "Ristoratore";
+		mes "Beh... Questo è abbastanza per goderci i nostri cibi a Dewata!! Se avete fame, abbiamo il nostro set menu speciale solo per ^0000FF5000^000000 Zeny.";
 		close;
 	case 2:
-		mes "[Restauranteur]";
-		mes "We have 2 items 'Nasi Goreng' and 'Satay'. Which one do you want?";
+		mes "Ristoratore";
+		mes "Abbiamo due articoli 'Nasi Goreng' e 'Satay'. Quale vuoi?";
 		next;
-		switch(select("Nasi Goreng:Satay")) {
+		switch(select("Riso fritto:Satay")) {
 		case 1:
-			mes "[Restauranteur]";
-			mes "This is Nasi Goreng fried with my special sauce plus egg fry on the top. It only costs ^0000FF5000^000000 Zeny.";
+			mes "Ristoratore";
+			mes "Questo è Nasi Goreng fritto con la mia salsa speciale più uovo fritto sopra. Costa solo ^0000FF5000^000000 Zeny.";
 			set .@food,11532;
 			break;
 		case 2:
-			mes "[Restauranteur]";
-			mes "This is the Satay, a slice of meat skewered and grilled over Palm fruit charcoal. It costs only ^0000FF5000^000000 Zeny.";
+			mes "Ristoratore";
+			mes "Questo è il Satay, una fetta di carne infilzata e grigliata su carbone di frutto del palma. Costa solo ^0000FF5000^000000 Zeny.";
 			set .@food,11533;
 			break;
 		}
 		next;
-		switch(select("Taste:Walk away")) {
+		switch(select("Gusto:Allontanati")) {
 		case 1:
 			if (Zeny < 5000) {
-				mes "[Restauranteur]";
-				mes "Where's the money kid? Sheesh! No free food here! Ok?";
+				mes "Ristoratore";
+				mes "Dov'è i soldi ragazzo? Che palle! Niente cibo gratis qui! Va bene?";
 				close;
 			}
-			mes "[Restauranteur]";
-			mes "Here's your "+getitemname(.@food)+", you won't regret it!";
+			mes "Ristoratore";
+			mes "Ecco il tuo "+getitemname(.@food)+"non te ne pentirai!";
 			set Zeny, Zeny - 5000;
 			getitem .@food,1;
 			close;
 		case 2:
-			mes "[Restauranteur]";
-			mes "It's a shame you won't taste this great dish...";
+			mes "Ristoratore";
+			mes "È un peccato che tu non assaggerai questo ottimo piatto...";
 			close;
 		}
 	case 3:
-		mes "[Restauranteur]";
-		mes "Are you serious? This is not even funny.";
+		mes "Ristoratore";
+		mes "Sei serio? Questo non è nemmeno divertente.";
 		close;
 	}
 }
 
 dewata,147,107,6	script	Gourmet#dew	85,{
 	mes "[Gourmet]";
-	mes "Oh... it's like a party in my";
-	mes "mouth... and everyone's invited!";
+	mes "Oh... è come una festa nel mio";
+	mes "bocca... e tutti sono invitati!";
 	emotion ET_CRY;
 	next;
 	mes "[Gourmet]";
-	mes "Master~ One more please~";
+	mes "Maestro~ Ancora uno per favore~";
 	emotion ET_BEST;
 	emotion ET_OK, getnpcid(0, "Restauranteur#dew");
 	next;
 	mes "[Gourmet]";
-	mes "You must try this! The Food here is succulent~";
+	mes "Devi provarlo! Il cibo qui è succulento~";
 	close;
 }
 
 dewata,154,107,4	script	Sightseer#dew	86,{
-	mes "[Tourist]";
+	mes "Turista";
 	mes "Wow...";
-	mes "How many has he already eaten?";
+	mes "Quanti ne ha già mangiato?";
 	emotion ET_SCRATCH;
 	next;
-	mes "[Tourist]";
-	mes "He must be big eater, not the gourmet...";
+	mes "Turista";
+	mes "Deve essere un grande mangiatore, non lo gourmet...";
 	next;
-	mes "[Tourist]";
-	mes "Have you been to Prontera yet? I think I've seen him somewhere..";
+	mes "Turista";
+	mes "Sei stato a Prontera? Penso di averlo visto da qualche parte...";
 	close;
 }
 
 dewata,95,203,6	script	Travel Guide#dew	536,{
-	mes "[Guide]";
-	mes "This temple behind me is called Borobudur.";
-	mes "Borobudur temple was built in the 9th century";
-	mes "to venerate the Great Buddha, an ancient religious figure.";
+	mes "[Guida]";
+	mes "Questo tempio dietro di me si chiama Borobudur.";
+	mes "Il tempio di Borobudur fu costruito nel IX secolo";
+	mes "venerare il Grande Buddha, una figura religiosa antica.";
 	emotion ET_PROFUSELY_SWEAT;
 	next;
-	mes "[Guide]";
-	mes "This temple is made with 6 square platforms and 3 round platforms, and 2672 hand carved relief panels as well as 504 statue of various Buddhas.";
+	mes "[Guida]";
+	mes "Questo tempio è fatto con 6 piattaforme quadrate e 3 piattaforme rotonde, e 2672 pannelli a rilievo intagliati a mano oltre a 504 statue di vari Buddha.";
 	emotion ET_PROFUSELY_SWEAT;
 	next;
-	mes "[Guide]";
-	mes "The central stupa, or shrine is located at the center of high platform, which is surrounded by 72 more statues.";
+	mes "[Guida]";
+	mes "Lo stupa centrale, o santuario è situato al centro di una piattaforma elevata, che è circondata da altre 72 statue.";
 	emotion ET_PROFUSELY_SWEAT;
 	next;
-	mes "[Guide]";
-	mes "Even in modern times Borobudur temple is a pilgrimage site for many monks worshiping the Buddha. It's also a major tourist attraction, as you can imagine.";
+	mes "[Guida]";
+	mes "Anche nei tempi moderni il tempio di Borobudur è un luogo di pellegrinaggio per molti monaci che adorano il Buddha. È anche una grande attrazione turistica, come puoi immaginare.";
 	emotion ET_PROFUSELY_SWEAT;
 	next;
-	mes "[Guide]";
-	mes "That is all I have on Borobudur temple, are there any questions?";
-	mes "If not, we can move to the next spot.";
+	mes "[Guida]";
+	mes "Questo è tutto quello che ho sul tempio di Borobudur, ci sono domande?";
+	mes "Altrimenti, possiamo passare al prossimo punto.";
 	close;
 }
 
 dewata,97,207,4	script	Tourist#dew1	803,{
-	mes "[Tourist]";
-	mes "Oh, dag-nabbit... I've gone and";
-	mes "picked the wrong tour guide...";
+	mes "Turista";
+	mes "Oh, dannazione... ho fatto e";
+	mes "ho scelto la guida turistica sbagliata...";
 	next;
-	mes "[Tourist]";
-	mes "This hombre is a real snooze...";
-	mes "Why make it longer..";
+	mes "Turista";
+	mes "Questo uomo è un vero sonno...";
+	mes "Perché renderlo più lungo..";
 	emotion ET_CONFUSE;
 	next;
-	mes "[Tourist]";
-	mes "I need to change my travel agent...";
+	mes "Turista";
+	mes "Devo cambiare agente di viaggio...";
 	emotion ET_OHNO;
 	close;
 }
 
 dewata,100,206,4	script	Tourist#dew2	59,{
-	mes "[Tourist]";
-	mes "Hey, let's go there! Hurry up,";
-	mes "while the tour guide is explaining~";
+	mes "Turista";
+	mes "Ehi, ci andiamo! Sbrigati,";
+	mes "mentre la guida turistica sta spiegando~";
 	next;
-	mes "[Tourist]";
-	mes "Come on... It doesn't sound like";
-	mes "he's going to stop talking anytime soon.";
+	mes "Turista";
+	mes "Dai... Non sembra che";
+	mes "sta per smettere di parlare presto.";
 	close;
 }
 
 dewata,101,206,4	script	Tourist#dew3	90,{
-	mes "[Tourist]";
-	mes "Aren't we going to get lost without the guide?";
+	mes "Turista";
+	mes "Non ci perderemo senza la guida?";
 	next;
-	mes "[Tourist]";
-	mes "We got lost already last time...";
+	mes "Turista";
+	mes "Ci siamo persi già l'ultima volta...";
 	close;
 }
 
 dewata,99,203,4	script	Tourist#dew4	755,{
-	mes "[Tourist]";
-	mes "Oh~ This is very interesting. A";
-	mes "temple that worships the Buddha...";
+	mes "Turista";
+	mes "Oh~ Questo è molto interessante. Un";
+	mes "tempio che venera il Buddha";
 	emotion ET_OK;
 	next;
-	mes "[Tourist]";
-	mes "But I don't really get all the";
-	mes "symbology here.";
+	mes "Turista";
+	mes "Ma non capisco davvero tutti i";
+	mes "simbologia qui.";
 	next;
-	mes "[Tourist]";
-	mes "So beautiful... I wonder who built";
-	mes "this place?";
+	mes "Turista";
+	mes "Così bello... Mi chiedo chi abbia costruito";
+	mes "questo posto?";
 	close;
 }
 
 dewata,67,186,8	script	Monk#dew1	834,{
-	mes "[Monk]";
-	mes "I am a monk, content to spend my days in religious study.";
+	mes "[Monaco]";
+	mes "Sono un monaco, contento di passare i miei giorni nello studio religioso.";
 	next;
-	mes "[Monk]";
-	mes "I've just returned from a pilgrimage to Borobudur temple with my fellow monks...";
+	mes "[Monaco]";
+	mes "Sono appena tornato da un pellegrinaggio al tempio di Borobudur con i miei confratelli monaci...";
 	next;
-	mes "[Monk]";
-	mes "Borobudur temple has many pilgrims visiting, since it is one of few temples left for worshipping the Great Buddha.";
+	mes "[Monaco]";
+	mes "Il tempio di Borobudur è visitato da molti pellegrini, poiché è uno dei pochi templi rimasti per adorare il Grande Buddha.";
 	close;
 }
 
 dewata,65,188,8	script	Monk#dew2	834,{
-	mes "[Monk]";
-	mes "Borobudur temple is one of few temples left for worshiping the Great Buddha.";
+	mes "[Monaco]";
+	mes "Il tempio di Borobudur è uno dei pochi templi rimasti per adorare il Grande Buddha.";
 	next;
-	mes "[Monk]";
-	mes "I don't understand why there are only few temples left that follow our ways...";
+	mes "[Monaco]";
+	mes "Non capisco perché rimangano pochi templi che seguono i nostri modi...";
 	close;
 }
 
 dewata,63,190,8	script	Monk#dew3	834,{
-	mes "[Monk]";
-	mes "Are you a Tourist? You can make an offering and a wish to one of the shrines.";
+	mes "[Monaco]";
+	mes "Sei un turista? Puoi fare un'offerta e un desiderio a uno degli altari.";
 	next;
-	mes "[Monk]";
-	mes "Our great Buddha may grant your wish..";
+	mes "[Monaco]";
+	mes "Che il nostro grande Buddha conceda il tuo desiderio..";
 	close;
 }
 
 dewata,62,192,8	script	Monk#dew4	834,{
-	mes "[Monk]";
-	mes "Our great Buddha is the king of souls and the leader of all good Gods.";
+	mes "[Monaco]";
+	mes "Il nostro grande Buddha è il re delle anime e il capo di tutti i buoni Dei.";
 	next;
-	mes "[Monk]";
-	mes "The Dewata tribes believes in Buddha, the strange thing is they all describe Buddha as different creatures.";
+	mes "[Monaco]";
+	mes "Le tribù Dewata credono in Buddha, la cosa strana è che tutte lo descrivono come creature diverse.";
 	next;
-	mes "[Monk]";
-	mes "I'm not really sure about the reason for that. Maybe because there are many different tribes in Dewata with different characteristics.";
+	mes "[Monaco]";
+	mes "Non sono molto sicuro del motivo per cui. Forse perché ci sono molte tribù diverse a Dewata con caratteristiche differenti.";
 	close;
 }
 
 dewata,89,191,6	script	Small Shrine#dew1	844,{
-	mes "There is a small shrine here. There are many people making wishes.";
+	mes "C'è un piccolo santuario qui. Ci sono molte persone che fanno voti.";
 	next;
-	switch(select("Make a donation.:Make a wish.:Walk away.")) {
+	switch(select("Fai una donazione.:Fai un desiderio.:Allontanati.")) {
 	case 1:
-		mes "Donation case says:";
+		mes "Il caso di donazione dice:";
 		mes "^FF00001,000 ~ 100,000 Zeny^000000";
-		mes "How much do you want to donate?";
+		mes "Quanto vuoi donare?";
 		next;
 		input .@input,0,100000;
 		if (.@input < 1000) {
-			mes "- Cancelled. -";
+			mes "Cancellato.";
 			close;
 		} else if (.@input <= 50000)
 			set .@good_luck, rand(1,10000);
 		else
 			set .@good_luck, rand(1,5000);
 		if (.@input > Zeny) {
-			mes "- Not enough Zeny. -";
+			mes "Non abbastanza Zeny.";
 			close;
 		}
-		mes "What is your wish?";
+		mes "Qual è il tuo desiderio?";
 		next;
 		input(.@wish$);
 
@@ -515,7 +515,7 @@ dewata,89,191,6	script	Small Shrine#dew1	844,{
 			}
 		}
 
-		mes "You make a wish for ^0000FF" + .@wish$ + "^000000 to the small shrine.";
+		mes "Fai un desiderio per ^0000FF" + .@wish$ + "^000000 to the small shrine.";
 		next;
 		callsub L_Wish;
 		set Zeny, Zeny - .@input;
@@ -533,37 +533,37 @@ dewata,89,191,6	script	Small Shrine#dew1	844,{
 			consumeitem 12068; //Luk_Dish03
 		else if (.@stat & 64) {
 			specialeffect2 EF_ANGEL;
-			mes "- A celestial entity gives you a blessing. -";
+			mes "Un'entità celeste ti dona una benedizione.";
 			next;
 		} else if (.@stat & 128) {
-			mes "- The shrine envelops you in a loving aura. -";
+			mes "Il santuario ti avvolge in un'aura amorevole.";
 			if ((Sex == SEX_FEMALE && compare(.@wish$,.@wishes$[26])) || (Sex == SEX_MALE && compare(.@wish$,.@wishes$[27])))
 				specialeffect2 EF_LIGHTSPHERE;
 			next;
 		}
-		mes "It feels like this wish could come true.";
+		mes "Sembra che questo desiderio possa diventare realtà.";
 		close;
 	case 2:
-		mes "What is your wish?";
+		mes "Qual è il tuo desiderio?";
 		next;
 		input .@wish$;
-		mes "You have made your wish for ^0000FF" + .@wish$ + "^000000 to the small shrine.";
+		mes "Hai fatto il tuo desiderio per ^0000FF" + .@wish$ + "^000000 to the small shrine.";
 		next;
 		callsub L_Wish;
-		mes "It feels like this wish could come true.";
+		mes "Sembra che questo desiderio possa diventare realtà.";
 		close;
 	case 3:
 		close;
 	}
 
 L_Wish:
-	mes "Mysterious energy comes out from the shrine.";
+	mes "Un'energia misteriosa esce dal santuario.";
 	specialeffect EF_FLASHER,AREA,"Small Shrine#dew1";
 	specialeffect EF_FLASHER,AREA,"Small Shrine#dew2";
 	specialeffect EF_FLASHER,AREA,"Small Shrine#dew3";
 	specialeffect EF_FLASHER,AREA,"Small Shrine#dew4";
 	next;
-	mes "You have received the shrine's blessing.";
+	mes "Hai ricevuto la benedizione del santuario.";
 	specialeffect2 EF_BLESSING;
 	next;
 	return;
@@ -573,222 +573,222 @@ dewata,68,212,6	duplicate(Small Shrine#dew1)	Small Shrine#dew3	844
 dewata,68,191,6	duplicate(Small Shrine#dew1)	Small Shrine#dew4	844
 
 dewata,75,122,6	script	Monk#dewt1	834,{
-	mes "[Monk]";
-	mes "You are a stranger here. What brings here to this quiet place?";
+	mes "[Monaco]";
+	mes "Sei uno sconosciuto qui. Cosa ti porta in questo luogo tranquillo?";
 	next;
-	switch(select("I'm sightseeing.:No reason.")) {
+	switch(select("Sto facendo turismo.:Nessun motivo.")) {
 	case 1:
-		mes "[Monk]";
-		mes "Oh, you are a tourist. This is the '^0000FFPagoda^000000' worshiping the great Buddha. Please be respectful of the monks praying here.";
+		mes "[Monaco]";
+		mes "Sei un turista. Questa è la ^0000FFPagoda^000000 che venera il grande Buddha. Ti prego di essere rispettoso dei monaci che pregano qui.";
 		close;
 	case 2:
-		mes "[Monk]";
-		mes "Good day to you...";
+		mes "[Monaco]";
+		mes "Buona giornata a te...";
 		close;
 	}
 }
 
 dewata,69,101,6	script	Monk#dewt2	834,{
-	mes "[Monk]";
-	mes "We have a pagoda for the worship of Buddhas. Each temple has one of these towers, though not many people come here besides other monks.";
+	mes "[Monaco]";
+	mes "Abbiamo una pagoda per l'adorazione dei Buddha. Ogni tempio ha una di queste torri, anche se non vengono qui molte persone oltre ad altri monaci.";
 	next;
-	switch(select("I see...:Explain about Buddhas:Ah, okay.")) {
+	switch(select("Capisco...:Spiegare i Buddha:Ah, ok.")) {
 	case 1:
-		mes "[Monk]";
-		mes "You must feel the compassion of our Buddha!";
+		mes "[Monaco]";
+		mes "Devi sentire la compassione del nostro Buddha!";
 		close;
 	case 2:
-		mes "[Monk]";
-		mes "Buddha is our God from Dewata myth, he is the king of souls and also the leader of good Gods.";
+		mes "[Monaco]";
+		mes "Buddha è il nostro Dio del mito dei Dewata, è il re delle anime e anche il capo degli dei buoni.";
 		next;
-		mes "[Monk]";
-		mes "Buddha is the guardian of souls whom often described in traditional dance as fighting against the magician Rangda.";
+		mes "[Monaco]";
+		mes "Buddha è il guardiano delle anime che viene spesso descritto nella danza tradizionale mentre combatte contro il mago Rangda.";
 		next;
-		mes "[Monk]";
-		mes "In Dewata we belive there are many deities protecting each island and tribal locale,";
+		mes "[Monaco]";
+		mes "A Dewata crediamo che ci siano molte divinità che proteggono ogni isola e luogo tribale,";
 		next;
-		mes "[Monk]";
-		mes "so we do have different manifestations of the Buddha, usually described as a bear, tiger, dragon, snake, or lion";
+		mes "[Monaco]";
+		mes "quindi abbiamo diverse manifestazioni del Buddha, solitamente descritte come un orso, un tigre, un drago, un serpente o un leone";
 		next;
-		mes "[Monk]";
-		mes "Great Lion is one of famous Buddhas worshipped in Dewata.";
+		mes "[Monaco]";
+		mes "Il Grande Leone è uno dei Buddha famosi venerati a Dewata.";
 		next;
-		mes "[Monk]";
-		mes "Hope this was good explanation for you. Let me know if you have anything else you want to know.";
+		mes "[Monaco]";
+		mes "Spero che questa sia stata una buona spiegazione per te. Fammi sapere se c'è qualcos'altro che vuoi sapere.";
 		close;
 	case 3:
-		mes "[Monk]";
-		mes "Good day to you...";
+		mes "[Monaco]";
+		mes "Buona giornata a te...";
 		close;
 	}
 }
 
 dewata,71,79,6	script	Monk#dewt3	834,{
-	mes "[Monk]";
-	mes "This tower is built on the edge of coastal cliff. You can pray with a cool ocean breeze in your hair.";
+	mes "[Monaco]";
+	mes "Questa torre è costruita sul bordo di una scogliera costiera. Puoi pregare con una fresca brezza oceanica nei capelli.";
 	next;
-	mes "[Monk]";
-	mes "Come, you should feel the compassion of our Buddha in this pleasant weather.";
+	mes "[Monaco]";
+	mes "Vieni, dovresti sentire la compassione del nostro Buddha in questo piacevole tempo.";
 	close;
 }
 
 dewata,211,272,4	script	Lodge Owner#dew	534,2,3,{
 OnTouch:
-	mes "[Lodge Owner]";
-	mes "These days, we have many honeymooners visiting here.";
+	mes "Proprietario della locanda";
+	mes "Questi giorni abbiamo molti neo-sposi che visitano qui.";
 	next;
-	mes "[Lodge Owner]";
-	mes "It must be the beautiful scenery, right?";
+	mes "Proprietario della locanda";
+	mes "Deve essere il bellissimo paesaggio, vero?";
 	next;
-	mes "[Lodge Owner]";
-	mes "I'm happy with my business. Hope all we have a lot more visitors like that.";
+	mes "Proprietario della locanda";
+	mes "Sono felice del mio business. Spero che tutti abbiamo molti più visitatori come quello.";
 	next;
-	mes "[Lodge Owner]";
-	mes "Ah! You should bring your lover to Dewata on your honeymoon.";
-	mes "I'll give you a good price-";
+	mes "Proprietario della locanda";
+	mes "Ah! Dovresti portare il tuo amante a Dewata per la luna di miele.";
+	mes "Ti darò un buon prezzo";
 	close;
 }
 
 dewata,245,244,4	script	Lodge Employee#dew	536,2,3,{
 OnTouch:
-	mes "[Lodge employee]";
-	mes "Argg~ This is really ticking me off!";
+	mes "Dipendente della locanda";
+	mes "Argh~ Questo mi sta davvero facendo impazzire!";
 	emotion ET_FRET;
 	next;
-	mes "[Lodge employee]";
-	mes "How come more and more couples come here?";
+	mes "Dipendente della locanda";
+	mes "Come mai sempre più coppie vengono qui?";
 	next;
-	mes "[Lodge employee]";
-	mes "And why do they have act so lovey-dovey? What's up with that?";
+	mes "Dipendente della locanda";
+	mes "E perché si comportano così affettuosi? Cos'è che succede?";
 	next;
-	mes "[Lodge employee]";
-	mes "C'mon, show some respect to the people who work here...";
+	mes "Dipendente della locanda";
+	mes "Dai, mostra un po' di rispetto alle persone che lavorano qui...";
 	close;
 }
 
 dewata,233,263,8	script	Sweet Married Couple#1	828,2,3,{
 OnTouch:
-	mes "[Sweet Husband]";
-	mes "You are the most beautiful thing in the world baby~";
+	mes "Marito Dolce";
+	mes "Sei la cosa più bella del mondo, tesoro~";
 	emotion ET_CHUP;
 	next;
-	mes "[Sweet Wife]";
-	mes "Really? I'm that beautiful? I love you, honey~";
+	mes "Sposa dolce";
+	mes "Davvero? Sono così bella? Ti amo, tesoro~";
 	emotion ET_CHUPCHUP, getnpcid(0, "Sweet Married Couple#2");
 	next;
-	mes "[Sweet Married Couple]";
-	mes "Hahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahaha";
+	mes "[Coppia sposa dolce]";
+	mes "Ahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahaha";
 	mes "Hohohohohohohohohohohohohohohohohohohohohohohohohohohohohohohohohohohoho";
 	emotion ET_SMILE;
 	emotion ET_SMILE, getnpcid(0, "Sweet Married Couple#2");
 	next;
-	mes "Come on now, I'm growing tired of this. Let's go.";
+	mes "Dai ora, mi sto stancando di questo. Andiamo.";
 	close;
 }
 
 dewata,234,263,8	script	Sweet Married Couple#2	727,2,3,{
 OnTouch:
-	mes "[Sweet Wife]";
-	mes "Baby~ You know what flower that is~?";
+	mes "Sposa dolce";
+	mes "Amore~ Sai che fiore è questo~?";
 	emotion ET_QUESTION;
 	next;
-	mes "[Sweet Husband]";
-	mes "Hmm? I don't know. But it's really pretty.";
+	mes "Marito Dolce";
+	mes "Mh? Non lo so. Ma è davvero bello/a.";
 	next;
-	mes "[Sweet Wife]";
-	mes "Baby~ Who's prettier, me or the flower?";
+	mes "Sposa dolce";
+	mes "Amore~ Chi è più bella, io o il fiore?";
 	emotion ET_QUESTION;
 	next;
-	mes "[Sweet Husband]";
-	mes "No matter how pretty the flower is, you are always more beautiful~";
+	mes "Marito Dolce";
+	mes "Non importa quanto bello sia il fiore, tu sei sempre più bella~";
 	emotion ET_CHUP, getnpcid(0, "Sweet Married Couple#1");
 	next;
-	mes "[Sweet Wife]";
-	mes "Really? I'm that pretty? I love you, sweetie~";
+	mes "Sposa dolce";
+	mes "Davvero? Sono così carina? Ti amo, tesoro~";
 	emotion ET_CHUPCHUP;
 	next;
-	mes "[Sweet Married Couple]";
-	mes "Hahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahaha";
+	mes "[Coppia sposa dolce]";
+	mes "Ahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahahaha";
 	mes "Hohohohohohohohohohohohohohohohohohohohohohohohohohohohohohohohohohohoho";
 	emotion ET_SMILE, getnpcid(0, "Sweet Married Couple#1");
 	emotion ET_SMILE;
 	next;
-	mes "Come on now, this bores me. Let's move on.";
+	mes "Dai ora, questo mi annoia. Passiamo oltre.";
 	close;
 }
 
 dewata,279,213,4	script	Tourist#dew-2	887,2,3,{
 OnTouch:
-	mes "[Reclining Tourist]";
-	mes "Wow~ This is really comfy~";
+	mes "Turista sdraiato";
+	mes "Wow~ Questo è davvero comodo~";
 	next;
-	mes "[Reclining Tourist]";
-	mes "I'm having a great time just relaxing.";
+	mes "Turista sdraiato";
+	mes "Mi sto divertendo un sacco solo rilassandomi.";
 	next;
-	mes "[Reclining Tourist]";
-	mes "You should lie down here too.";
-	mes "Once you do, you'll never want to get up.";
+	mes "Turista sdraiato";
+	mes "Anche tu dovresti sdraiarti qui.";
+	mes "Una volta che lo farai, non vorrai più alzarti.";
 	next;
-	mes "[Reclining Tourist]";
-	mes "That's why I haven't moved in a whole week! Hahahaha~";
+	mes "Turista sdraiato";
+	mes "È per questo che non mi sono mossa per un'intera settimana! Hahahaha~";
 	emotion ET_SMILE;
 	close;
 }
 
 dewata,269,208,4	script	Little Kid in Town#dew	538,2,3,{
 OnTouch:
-	mes "[Kid]";
-	mes "Hey "+((Sex == SEX_MALE)?"bro":"sis")+", look at that man!";
+	mes "[Bambino]";
+	mes "Ciao "+((Sex == SEX_MALE)?"fratello":"sorella")+"Guarda quell'uomo!";
 	next;
-	mes "[Kid]";
-	mes "He's been lying there for a week doin' nothin'...";
+	mes "[Bambino]";
+	mes "È sdraiato lì da una settimana a non fare niente...";
 	next;
-	mes "[Kid]";
-	mes "Who IS that man?";
+	mes "[Bambino]";
+	mes "Chi è quell'uomo?";
 	emotion ET_QUESTION;
 	next;
-	mes "[Kid]";
-	mes "I don't want to be a lazybones like him when I grow up.";
+	mes "[Bambino]";
+	mes "Non voglio essere un pigro come lui quando sarò grande.";
 	close;
 }
 
 dewata,227,129,4	script	Sarr#dew	538,2,3,{
 OnTouch:
 	mes "[Sarr]";
-	mes "They're hiding so I should seek.";
-	mes "I'll find them for sure!-";
+	mes "Stanno nascondendosi quindi dovrei cercare.";
+	mes "Li troverò sicuramente!";
 	next;
 	mes "[Sarr]";
-	mes "One~";
+	mes "Uno~";
 	next;
 	mes "[Sarr]";
-	mes "Two~ Three~";
+	mes "Due~ Tre~";
 	next;
 	mes "[Sarr]";
-	mes "Four~ Five~ Six~";
+	mes "Quattro~ Cinque~ Sei~";
 	next;
 	mes "[Sarr]";
 	mes "... ... ... ...";
 	next;
 	mes "[Sarr]";
-	mes "Ninty nine~ One hundred!!! Now I'm coming~";
+	mes "Novantanove~ Cento!!! Adesso arrivo~";
 	close;
 }
 
 dewata,239,140,4	script	Siyak#dew	539,2,3,{
 OnTouch:
 	mes "[Siyak]";
-	mes "Hey come on, move over~ He's gonna find me~~";
+	mes "Ehi dai, spostati~ Mi troverà~~";
 	next;
 	mes "[Sarr]";
-	mes "I found Siyak!! Come out, come out!!";
+	mes "Ho trovato Siyak!! Esci, esci!!";
 	emotion ET_KIK, getnpcid(0, "Sarr#dew");
 	emotion ET_HUK;
 	emotion ET_KIK, getnpcid(0, "Sipo#dew");
 	emotion ET_HUK, playerattached();
 	next;
 	mes "[Siyak]";
-	mes "Arrgg!! This is all your fault~!!";
+	mes "Argh!! È tutta colpa tua~!!";
 	emotion ET_FRET;
 	close;
 }
@@ -796,31 +796,31 @@ OnTouch:
 dewata,193,145,4	script	Sipo#dew	538,2,3,{
 OnTouch:
 	mes "[Sipo]";
-	mes "Sarr won't find me here, right?";
+	mes "Sarr non mi troverà qui, vero?";
 	next;
 	mes "[Sarr]";
-	mes "I found Siyak!! Come out come out!!";
+	mes "Ho trovato Siyak!! Esci esci!!";
 	emotion ET_KIK, getnpcid(0, "Sarr#dew");
 	emotion ET_HUK, getnpcid(0, "Siyak#dew");
 	emotion ET_KIK;
 	emotion ET_HUK, playerattached();
 	next;
 	mes "[Sipo]";
-	mes "Hehe~ Now Siyak is IT~ I'll just keep hiding in here.";
+	mes "Ehi~ Ora Siyak è IT~ Io continuerò semplicemente a nascondermi qui.";
 	close;
 }
 
 dewata,228,177,4	script	Majya#dew	538,2,3,{
 OnTouch:
 	mes "[Majya]";
-	mes "I was playing hide-and-seek with my friends...";
+	mes "Stavo giocando a nascondino con i miei amici...";
 	next;
 	mes "[Majya]";
-	mes "I've been just standing here, and they haven't found me for 3 hours...";
+	mes "Sono rimasto qui a stare, e non mi hanno trovato da 3 ore...";
 	emotion ET_SCRATCH;
 	next;
 	mes "[Majya]";
-	mes "What should I do? Come out? I don't want to be IT...";
+	mes "Cosa dovrei fare? Uscire? Non voglio essere IT...";
 	close;
 }
 
@@ -832,14 +832,14 @@ OnTouch:
 	emotion ET_PROFUSELY_SWEAT;
 	next;
 	mes "["+strcharinfo(0)+"]";
-	mes "Hey, kid...";
+	mes "Ehi, ragazzino...";
 	next;
 	mes "[Ukki]";
 	mes "WaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaaWaa~";
 	emotion ET_CRY;
 	next;
 	mes "[Ukki]";
-	mes "Mama~ Papa~ Where are youuu~ Waa~";
+	mes "Mamma~ Papà~ Dove sieteuu~ Waa~";
 	emotion ET_CRY;
 	emotion ET_PROFUSELY_SWEAT;
 	next;
@@ -851,14 +851,14 @@ OnTouch:
 
 dewata,249,87,4	script	Mum#dew	101,2,3,{
 OnTouch:
-	mes "[Mum]";
-	mes "Ukki~ Ukki~ Where did she go?";
+	mes "[Mamma]";
+	mes "Ukki~ Ukki~ Dove è andata?";
 	emotion ET_KEK;
 	next;
-	mes "[Mum]";
-	mes "I can't take my eyes of her for a second...";
+	mes "[Mamma]";
+	mes "Non riesco a staccare gli occhi da lei per un secondo...";
 	next;
-	mes "[Mum]";
+	mes "[Mamma]";
 	mes "Ukki~";
 	emotion ET_KEK;
 	close;
@@ -867,309 +867,309 @@ OnTouch:
 dewata,251,85,6	script	Poppa#dew	97,2,3,{
 OnTouch:
 	mes "[Poppa]";
-	mes "Honey, is Ukki lost again?";
+	mes "Amore, è di nuovo smarrito Ukki?";
 	emotion ET_QUESTION;
 	next;
 	mes "[Poppa]";
-	mes "Arrgg... I can't go anywhere with her... How many times already?";
+	mes "Argh... Non posso andare da nessuna parte con lei... Quante volte già?";
 	emotion ET_PROFUSELY_SWEAT;
 	next;
-	mes "[Daddy]";
-	mes "She's gotten lost in Luoyang, Amatsu, Moscovia, Brasilis, Kunlun,";
-	mes "and in Ayothaya...";
+	mes "Papà";
+	mes "Si è persa a Luoyang, Amatsu, Moscovia, Brasilis, Kunlun,";
+	mes "e ad Ayutthaya...";
 	emotion ET_PROFUSELY_SWEAT;
 	next;
-	mes "[Daddy]";
-	mes "What!! It's already been 7 times including this time in Dewata... 7 times!!!!!!";
+	mes "Papà";
+	mes "Cos'è!! Sono già passate 7 volte incluso questo momento a Dewata... 7 volte!!!!!!";
 	emotion ET_OTL;
 	close;
 }
 
 dewata,278,281,4	script	Happily Married Grandpa	534,{
-	mes "[Happily Married Grandpa]";
-	mes "Today, I should ask my lady to";
-	mes "cook me some ^006400fried rice^000000.";
+	mes "Nonno felicemente sposato";
+	mes "Oggi dovrei chiedere alla mia signora di";
+	mes "preparami del riso fritto ^006400fried rice^000000.";
 	next;
-	mes "[Happily Married Grandpa]";
+	mes "Nonno felicemente sposato";
 	mes "My wife's ^006400fried rice^000000 is";
-	mes "always very special!";
+	mes "sempre molto speciale!";
 	next;
-	mes "[Happily Married Grandpa]";
-	mes "It makes me love her even more.";
-	mes "You can't imagine the wonderful flavor!";
+	mes "Nonno felicemente sposato";
+	mes "Mi fa amare ancora di più lei.";
+	mes "Non puoi immaginare il sapore meraviglioso!";
 	emotion ET_THROB;
 	close;
 }
 
 dewata,280,277,4	script	Happily Married Grandma	535,{
-	mes "[Happily Married Grandma]";
-	mes "In my younger days,";
-	mes "there were many gentleman callers";
-	mes "who wanted to court me.";
+	mes "Nonna felicemente sposata";
+	mes "Nei miei giorni più giovani,";
+	mes "c'erano molti signori visitatori";
+	mes "chi voleva corteggiarmi.";
 	emotion ET_PROFUSELY_SWEAT;
 	next;
-	mes "[Happily Married Grandma]";
-	mes "Yet, I met just the right guy,";
-	mes "and got married.";
-	mes "I asked what he likes best";
-	mes "about me, he said it was";
-	mes "my homemade ^006400fried rice^000000";
+	mes "Nonna felicemente sposata";
+	mes "Tuttavia, ho incontrato proprio l'uomo giusto,";
+	mes "e si sposò.";
+	mes "Chiesi cosa gli piace di più";
+	mes "su di me, ha detto che era";
+	mes "il mio riso fritto fatto in casa ^006400riso fritto^000000";
 	next;
-	mes "[Happily Married Grandma]";
-	mes "And since then, he only asks me";
-	mes "to make ^006400fried rice^000000 for dinner.";
-	mes "Over 40 years of marriage";
-	mes "and he still doesn't get tired ot it.";
+	mes "Nonna felicemente sposata";
+	mes "E da allora, lui mi chiede solo";
+	mes "fare riso fritto^006400fried rice^000000 per cena.";
+	mes "Oltre 40 anni di matrimonio";
+	mes "e lui ancora non si stanca di questo.";
 	next;
-	mes "[Happily Married Grandma]";
-	mes "I always think it was lucky";
-	mes "to be growing old with a guy";
-	mes "who loves what I cook.";
+	mes "Nonna felicemente sposata";
+	mes "Ho sempre pensato che fosse fortuna";
+	mes "invecchiare con un ragazzo";
+	mes "chi ama quello che cucino.";
 	emotion ET_THROB;
 	close;
 }
 
 dewata,165,103,6	script	Adventurer Semangat#dew	534,{
-	mes "[Adventurer Semangat]";
-	mes "I also traveled around the World";
-	mes "When I was young like you.";
-	mes "^FF0000Monkey, Cuttlefish^000000";
-	mes "^FF0000Eagle, and Snake^000000,";
-	mes "all were good friends I met";
-	mes "during my travels.";
+	mes "[Avventuriero Semangat]";
+	mes "Ho anche viaggiato per il mondo";
+	mes "Quando ero giovane come te.";
+	mes "^FF0000Scimmia, Sepiola^000000";
+	mes "^FF0000Aquila, e Serpente^000000,";
+	mes "erano tutti buoni amici che ho incontrato";
+	mes "durante i miei viaggi.";
 	next;
-	mes "[Adventurer Semangat]";
-	mes "I still have passion for adventure and traveling.";
-	mes "But, I can't just leave";
-	mes "my beloved wife and";
-	mes "grandchildren behind...";
+	mes "[Avventuriero Semangat]";
+	mes "Ancora ho passione per l'avventura e i viaggi.";
+	mes "Ma non posso semplicemente andare via";
+	mes "mia amata moglie e";
+	mes "nipoti dietro...";
 	next;
-	mes "[Adventurer Semangat]";
-	mes "You will also have something";
-	mes "or someone that is as precious";
-	mes "in your heart someday.";
+	mes "[Avventuriero Semangat]";
+	mes "Avrai anche qualcosa";
+	mes "o qualcuno che è prezioso quanto";
+	mes "nel tuo cuore un giorno.";
 	close;
 }
 
 dewata,139,114,6	script	Semangat's Wife#dew	535,{
-	mes "[Semangat's Wife]";
-	mes "Where's that old man";
-	mes "gone off to again?";
-	mes "Have you seen my husband around?";
+	mes "La moglie di Semangat";
+	mes "Dov'è quell'anziano";
+	mes "partito di nuovo?";
+	mes "Hai visto mio marito intorno?";
 	next;
-	switch(select("I think I saw him there..:No I haven't..")) {
+	switch(select("Penso di averlo visto lì..:No non ho..")) {
 	case 1:
-		mes "[Semangat's Wife]";
-		mes "He ran away when";
-		mes "I was looking for him.";
-		mes "Should be somewhere, telling tall tales";
-		mes "to some travelers, like always.";
+		mes "La moglie di Semangat";
+		mes "È scappato quando";
+		mes "Lo stavo cercando.";
+		mes "Dovrebbe essere da qualche parte, a raccontare favole";
+		mes "ad alcuni viaggiatori, come sempre.";
 		next;
-		mes "[Semangat's Wife]";
-		mes "I apologize";
-		mes "on behalf of my husband.";
-		mes "Please don't believe his foolish stories";
-		mes "saying he met with ^FF0000Monkeys and Snakes^000000, or";
-		mes "that he fought alongside a ^FF0000Cuttlefish^000000.";
+		mes "La moglie di Semangat";
+		mes "Mi scuso";
+		mes "a nome di mio marito.";
+		mes "Non credere alle sue storie sciocche";
+		mes "dicendo che ha incontrato con ^FF0000Monkeys and Snakes^000000, o";
+		mes "che combatté al fianco di un ^FF0000Cuttlefish^000000.";
 		next;
-		mes "[Semangat's Wife]";
-		mes "He has been living here";
-		mes "for entire life.";
-		mes "Yet, always find some travelers,";
-		mes "and who will listen to his made-up tales.";
+		mes "La moglie di Semangat";
+		mes "Ha vissuto qui";
+		mes "per tutta la vita.";
+		mes "Tuttavia, trova sempre alcuni viaggiatori,";
+		mes "e chi ascolterà i suoi racconti inventati.";
 		close;
 	case 2:
-		mes "[Semangat's Wife]";
-		mes "Oh. Please let me know";
-		mes "if you ever see him around.";
+		mes "La moglie di Semangat";
+		mes "Oh. Per favore fammi sapere";
+		mes "se lo vedi per caso";
 		close;
 	}
 }
 
 dewata,181,88,6	script	Young Man#dew-2	536,{
-	mes "[Young Man]";
-	mes "Isn't ^8B4513Dewata^000000 beach";
-	mes "really beautiful?";
-	mes "The children always play";
-	mes "at this beach. It really";
-	mes "reminds me of my youth.";
+	mes "Giovane uomo";
+	mes "Non è la spiaggia ^8B4513Dewata^000000?";
+	mes "davvero bello?";
+	mes "I bambini giocano sempre";
+	mes "su questa spiaggia. È davvero";
+	mes "mi ricorda la mia giovinezza.";
 	next;
-	mes "[Young Man]";
-	mes "At the evening, you can see";
-	mes "fireworks from the beach.";
-	mes "With ocean breeze, the crashing waves,";
-	mes "and fireworks lighting the sky,";
-	mes "the nighttime is a time of beauty here!";
+	mes "Giovane uomo";
+	mes "La sera, puoi vedere";
+	mes "fuochi d'artificio dalla spiaggia.";
+	mes "Con la brezza dell'oceano, le onde che si infrangono,";
+	mes "e fuochi d'artificio che illuminano il cielo,";
+	mes "la notte è un tempo di bellezza qui!";
 	close;
 }
 
 dewata,179,204,4	script	Young Lady#dew	537,{
-	mes "[Young Lady]";
-	mes "When you are outside of the town,";
-	mes "and meet ^FF0000Tiger, Monkey, or pig^000000,";
-	mes "make sure to avoid them.";
+	mes "[Giovane signora]";
+	mes "Quando sei fuori città,";
+	mes "e incontra ^FF0000Tigre, Scimmia o maiale^000000,";
+	mes "assicurati di evitarli.";
 	next;
-	select("What do you mean?");
-	mes "[Young Lady]";
-	mes "I haven't seen yet,";
-	mes "but legend says there's a";
-	mes "cruel monster named ^FF0000Leak^000000";
-	mes "which can transform into an animal";
-	mes "and hypnotize people into killing.";
+	select("Cosa intendi?");
+	mes "[Giovane signora]";
+	mes "Non l'ho ancora visto,";
+	mes "ma la leggenda dice che c'è un";
+	mes "mostro crudele chiamato ^FF0000Leak^000000";
+	mes "che può trasformarsi in un animale";
+	mes "e ipnotizzare le persone a uccidere.";
 	next;
-	mes "[Young Lady]";
-	mes "You know the dangers of this world.";
-	mes "It's never hurts to be careful";
-	mes "even if it's just an urban legend.";
+	mes "[Giovane signora]";
+	mes "Conosci i pericoli di questo mondo.";
+	mes "Non fa mai male stare attenti";
+	mes "anche se è solo una leggenda urbana.";
 	//emotion ET_SCRATCH; //TODO
 	close;
 }
 
 dewata,280,236,4	script	Settler#dew	726,{
-	mes "[Settler]";
-	mes "I'm not really from ^8B4513Dewata^000000.";
-	mes "But while traveling,";
-	mes "I found this place...";
-	mes "And made my decision";
-	mes "to live in this beautiful town.";
+	mes "Colono";
+	mes "Non sono davvero di ^8B4513Dewata^000000.";
+	mes "Ma mentre si viaggia,";
+	mes "Ho trovato questo posto...";
+	mes "E ho preso la mia decisione";
+	mes "vivere in questa bellissima città.";
 	next;
-	mes "[Settler]";
-	mes "I've been happy to live here";
-	mes "and to find and experience";
-	mes "all these beautiful sights.";
-	mes "It's a dream come true.";
+	mes "Colono";
+	mes "Sono stato felice di vivere qui";
+	mes "e per trovare ed esperienze";
+	mes "tutti questi bei panorami.";
+	mes "È un sogno che si avvera.";
 	next;
-	mes "[Settler]";
-	mes "Would you ever think of";
-	mes "settling here too?";
+	mes "Colono";
+	mes "Penseresti mai di";
+	mes "Anche qui a sistemarsi?";
 	close;
 }
 
 dewata,204,230,6	script	Dieting Lady#dew	537,{
 	if (countitem(11533) == 0) {
-		mes "[Dieting Lady]";
-		mes "Ah~ I'm starving!!";
-		mes "I should be on a diet now.";
-		mes "Why am I still hungry?";
+		mes "Donna a dieta";
+		mes "Ah~ Ho fame!!";
+		mes "Dovrei fare la dieta ora.";
+		mes "Perché ho ancora fame?";
 		next;
-		mes "[Dieting Lady]";
-		mes "Don't talk to me too much!!";
-		mes "I want to try that grilled ^006400Satay^000000";
-		mes "so much~!!!!!";
+		mes "Donna a dieta";
+		mes "Non parlarmi troppo!";
+		mes "Vorrei provare quel Satay grigliato ^006400Satay^000000";
+		mes "tantissimo~!!!!!";
 		close;
 	}
-	mes "[Dieting Lady]";
-	mes "Is that mouth-watering";
-	mes "^006400Satay^000000 for me?";
+	mes "Donna a dieta";
+	mes "È succulento";
+	mes "^006400Satay^000000 per me?";
 	next;
-	switch(select("Yes, want a taste?:No, it's for me!")) {
+	switch(select("Sì, vuoi assaggiare?:No, è per me!")) {
 	case 1:
 		delitem 11533,1; //Satay
-		mes "[Dieting Lady]";
-		mes "Thanks so much!";
-		mes "I've been so hungry~!!";
-		mes "This smell of this ^006400Satay^000000";
-		mes "is so good~!";
+		mes "Donna a dieta";
+		mes "Grazie mille!";
+		mes "Ho avuto tanta fame~!!";
+		mes "Questo odore di questo ^006400Satay^000000";
+		mes "è così buono~!";
 		next;
 		getitem 11533,1; //Satay
-		mes "[Dieting Lady]";
-		mes "Ah... gotta come back to my senses,";
-		mes "too much of a good thing is bad...";
-		mes "I should stick with my diet.";
-		mes "Sorry, I'll give it back to you.";
+		mes "Donna a dieta";
+		mes "Ah... devo ritrovare la testa,";
+		mes "troppo di una buona cosa è cattivo...";
+		mes "Dovrei continuare con la mia dieta.";
+		mes "Scusa, te lo restituisco.";
 		emotion ET_CRY;
 		close;
 	case 2:
-		mes "[Dieting Lady]";
-		mes "Arrgg.. You are so greedy!";
-		mes "Since you don't want to share.";
-		mes "Anyway, I shouldn't cheat on my diet";
-		mes "even for something that looks and smells so good...";
+		mes "Donna a dieta";
+		mes "Argh... Sei così avido!";
+		mes "Poiché non vuoi condividere.";
+		mes "Comunque, non dovrei imbrogliare con la mia dieta";
+		mes "anche per qualcosa che sembra e sa così bene...";
 		emotion ET_HNG;
 		close;
 	}
 }
 
 dewata,117,156,6	script	Dreaming Kid#dew	538,{
-	mes "[Dreaming Kid]";
-	mes "My granny says";
-	mes "There was once a bird named ^FF0000Garuda^000000";
-	mes "who flew above this town.";
-	mes "Afterwards we had some great harvests";
-	mes "and were able to live happily.";
+	mes "Bambino sognatore";
+	mes "Mia nonna dice";
+	mes "C'era una volta un uccello chiamato ^FF0000Garuda^000000";
+	mes "chi volò sopra questa città.";
+	mes "Dopo abbiamo avuto dei grandi raccolti";
+	mes "e poter vivere felici.";
 	next;
-	mes "[Dreaming Kid]";
-	mes "I want to see that bird";
-	mes "flying above our town again!";
-	mes "Then my mom, dad";
-	mes "granny, and grandpa";
-	mes "can be happy like the old times.";
-	mes "What do you think?";
+	mes "Bambino sognatore";
+	mes "Voglio vedere quell'uccello";
+	mes "volando sopra la nostra città di nuovo!";
+	mes "Poi mia mamma, papà";
+	mes "nonna e nonno";
+	mes "potere essere felici come ai vecchi tempi.";
+	mes "Cosa ne pensi?";
 	close;
 }
 
 dewata,144,216,4	script	Energetic Kid#dew	538,{
-	mes "[Energetic Kid]";
-	mes "My parents used to tell me...";
+	mes "Bambino energico";
+	mes "I miei genitori mi dicevano...";
 	next;
 	mes "- ^006400Son,^000000 -";
 	mes "- ^006400You should study hard.^000000 -";
 	mes "- ^006400Be happy.^000000 -";
 	mes "- ^006400Live a slow^000000 -";
-	mes "- ^006400and safe life.^000000 -";
+	mes "- ^006400e una vita sicura.^000000 -";
 	mes "- ^006400The mountain over yonder^000000 -";
-	mes "- ^006400will always be there for you.^000000 -";
+	mes "- ^006400sarà sempre lì per te.^000000 -";
 	next;
-	mes "[Energetic Kid]";
-	mes "Isn't it a great philosophy?";
-	mes "I want to live that way";
-	mes "and become a great person,";
-	mes "and help all of the people in our town";
-	mes "live happily ever after!";
+	mes "Bambino energico";
+	mes "Non è una grande filosofia?";
+	mes "Voglio vivere così";
+	mes "e diventare una persona grande,";
+	mes "e aiutare tutte le persone della nostra città";
+	mes "vivi felice per sempre!";
 	close;
 }
 
 dewata,127,248,6	script	Wishing Kid#dew	539,{
-	mes "[Kid wishing to be an adult]";
-	mes "My family has been brewing";
-	mes "traditional Dewata wine for ages.";
-	mes "I want to drink it myself,";
-	mes "but my dad says I'm too young.";
-	mes "He said I can drink it";
-	mes "only after I sleep for over ^FF0000100 days^000000.";
+	mes "Bambino che desidera essere un adulto";
+	mes "La mia famiglia ha fatto fermentare";
+	mes "vino tradizionale Dewata da secoli.";
+	mes "Voglio berlo io stesso,";
+	mes "ma mio padre dice che sono troppo giovane.";
+	mes "Ha detto che posso berlo";
+	mes "solo dopo che ho dormito per oltre ^FF0000100 giorni^000000.";
 	next;
-	mes "[Kid wishing to be an adult]";
-	mes "All grown-ups love to drink";
-	mes "my dad's wine.";
-	mes "I want to try some so bad.";
-	mes "But, what should I do...?";
-	mes "I've forgotten how many ^FF0000nights^000000";
-	mes "I've already slept... boo hoo!";
+	mes "Bambino che desidera essere un adulto";
+	mes "Tutti gli adulti amano bere";
+	mes "il vino di mio padre.";
+	mes "Voglio provarne così tanto.";
+	mes "Ma cosa devo fare...?";
+	mes "Ho dimenticato quanti giorni ^FF0000notti^000000";
+	mes "Ho già dormito... booooh!";
 	emotion ET_CRY;
 	close;
 }
 
 dew_fild01,101,259,6	script	Jaty Tribe Gatekeeper	541,{
-	mes "[Jaty Tribe Gatekeeper]";
-	mes "Welcome to ^FF0000Jaty^000000 town.";
-	mes "Our tribe reveres strength and bravery.";
-	mes "We wish you a safe and restful time here.";
+	mes "[Custode del Clan Jaty]";
+	mes "Benvenuti nella città di ^FF0000Jaty^000000.";
+	mes "La nostra tribù venera la forza e il coraggio.";
+	mes "Ti auguriamo un tempo sicuro e riposante qui.";
 	close;
 }
 
 dew_fild01,106,306,4	script	R. Jaty Tribe Warrior	541,{
-	mes "[Reserved Jaty Warrior]";
-	mes "I want to be the very best";
-	mes "like no one ever was.";
+	mes "[Riservato Guerriero di Jaty]";
+	mes "Voglio essere il migliore";
+	mes "come se nessuno fosse mai stato.";
 	next;
-	mes "[Reserved Jaty Warrior]";
-	mes "I'm learning hunting skills";
-	mes "these days. And I'm getting";
-	mes "better and better";
-	mes "every day!";
+	mes "[Riservato Guerriero di Jaty]";
+	mes "Sto imparando le abilità di caccia";
+	mes "ultimamente. E sto prendendo";
+	mes "migliore e migliore";
+	mes "ogni giorno!";
 	next;
-	mes "[Reserved Jaty Warrior]";
-	mes "I won't stop until";
-	mes "I become a true warrior!";
+	mes "[Riservato Guerriero di Jaty]";
+	mes "Non smetterò finché";
+	mes "Divengo un vero guerriero!";
 	close;
 }

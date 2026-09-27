@@ -8,30 +8,30 @@
 //============================================================
 
 prontera,137,125,4	script	Cash Sales Guide#prontera::cashmall_warper	4_M_HUMAN_02,{
-	mes "[Guide]";
-	mes "Hello~";
-	mes "This guide wants to be the one to take you to a special place.";
-	mes "What kind of place is that?";
+	mes "[Guida]";
+	mes "Ciao~";
+	mes "Questa guida vuole essere quella che ti porta in un luogo speciale.";
+	mes "Che tipo di posto è quello?";
 	next;
-	mes "[Guide]";
-	mes "It's a place full of mysterious items to collect and sell.";
-	mes "To buy stuff there you need special money.";
+	mes "[Guida]";
+	mes "È un posto pieno di oggetti misteriosi da collezionare e vendere.";
+	mes "Per comprare cose lì hai bisogno di soldi speciali.";
 	next;
-	mes "[Guide]";
-	mes "So, are you ready to go there?";
+	mes "[Guida]";
+	mes "Allora, sei pronto ad andarci?";
 	next;
-	if (select( "Yes", "No" ) == 2) {
-		mes "[Guide]";
-		mes "Okay~";
-		mes "But don't get frustrated.";
-		mes "There's always more chances~";
+	if (select( "Sì", "No" ) == 2) {
+		mes "[Guida]";
+		mes "Ok~";
+		mes "Ma non ti scoraggiare.";
+		mes "C'è sempre più possibilità~";
 		close;
 	}
-	mes "[Guide]";
-	mes "Yeah~ You're really ready.";
-	mes "Well then, get some good stuff~";
-	mes "Oops, I forgot. When you come out be sure to come back here.";
-	mes "Rember this~";
+	mes "[Guida]";
+	mes "Sì~ Sei davvero pronta.";
+	mes "Allora, prendi qualcosa di buono~";
+	mes "Ops, ho dimenticato. Quando esci, assicurati di tornare qui.";
+	mes "Ricorda questo~";
 	close2;
 	setarray .@maparray$[0], "prontera", "morocc", "moc_ruins", "geffen", "payon", "lighthalzen", "rachel";
 	.@return = inarray(.@maparray$[0], strcharinfo(3));
@@ -52,23 +52,23 @@ lighthalzen,206,144,4	duplicate(cashmall_warper)	Cash Sales Guide#lighthalzen	4_
 rachel,128,144,4	duplicate(cashmall_warper)	Cash Sales Guide#rachel	4_M_HUMAN_02
 
 itemmall,21,45,4	script	Exit Guide#cashmall_exit	4_M_HUMAN_02,{
-	mes "[Guide]";
-	mes "Have you had a good time?";
-	mes "Thank you very much for using our item mall.";
-	mes "We will continue to bring you valuable items.";
+	mes "[Guida]";
+	mes "Ti sei divertito/a?";
+	mes "Grazie mille per aver utilizzato il nostro item mall.";
+	mes "Continueremo a portarvi articoli di valore.";
 	next;
-	mes "[Guide]";
-	mes "Would you like to return from where you came from?";
+	mes "[Guida]";
+	mes "Vorresti tornare da dove sei venuto/a?";
 	next;
-	if (select( "Yes", "No" ) == 2) {
-		mes "[Guide]";
-		mes "There are still more things to see.";
-		mes "Have a good time.";
+	if (select( "Sì", "No" ) == 2) {
+		mes "[Guida]";
+		mes "Ci sono ancora più cose da vedere.";
+		mes "Divertiti.";
 		close;
 	}
-	mes "[Guide]";
-	mes "Thank you for coming.";
-	mes "I'll send you back from where you came from.";
+	mes "[Guida]";
+	mes "Grazie per essere venuto/a.";
+	mes "Ti riporterò da dove sei venuto.";
 	close2;
 	switch(cashmall_return) {
 		default:
@@ -107,74 +107,74 @@ itemmall,21,45,4	script	Exit Guide#cashmall_exit	4_M_HUMAN_02,{
 }
 
 itemmall,41,53,3	script	Cat Hand Salesman Macaroon#cashmall	4_M_MERCAT1,{
-	mes "[Macaroon]";
-	mes "Welcome!";
-	mes "Today doesn't come every day!";
-	mes "Things to see today~ Voila!";
-	mes "You can only exchange with " + mesitemlink( 1000274 ) + "!";
-	mes "Feel free to choose!";
+	mes "Macaron";
+	mes "Benvenuto!";
+	mes "Oggi non arriva ogni giorno!";
+	mes "Cose da vedere oggi~ Voilà!";
+	mes "Puoi scambiare solo con " + mesitemlink( 1000274 ) + "!";
+	mes "Sentiti libero di scegliere!";
 	next;
-	switch( select( "3-1st Job Group Skill Shadow", "3-2nd Job Group Skill Shadow", "Extended Job Group Skill Shadow", "General Shadow by Occupation", "Shadow Cube", "Smelting, Modification, Useful Items", "Drop Box", "Spellbook" ) ){
+	switch( select( "3-Ombra di Competenze del Primo Gruppo Professionale", "3-Secondo Gruppo Professionale Ombra di Competenze", "Gruppo di Competenze Esteso Ombrare", "Generale Ombra per Occupazione", "Cubo Ombra", "Fusione, Modifica, Oggetti Utili", "Scatola di deposito", "Libro di incantesimi" ) ){
 		case 1:
-			mes "[Macaroon]";
-			mes "^FF00663-1st Job Group Skill Shadow^000000 you say!";
-			mes "Here they are!";
+			mes "Macaron";
+			mes "^FF0066Ombra di Abilità del Primo Gruppo Lavorativo 3^000000 dici tu!";
+			mes "Eccoli!";
 			close2;
 			callshop "CachuaCoupon01";
 			end;
 
 		case 2:
-			mes "[Macaroon]";
-			mes "^FF00663-2nd Job Group Skill Shadow^000000 you say!";
-			mes "Here they are!";
+			mes "Macaron";
+			mes "^FF0066Ombra di competenze del 2° Gruppo Professionale^000000 dici tu!";
+			mes "Eccoli!";
 			close2;
 			callshop "CachuaCoupon02";
 			end;
 
 		case 3:
-			mes "[Macaroon]";
-			mes "^FF0066Extended Job Group Skill Shadow^000000 you say!";
-			mes "Here they are!";
+			mes "Macaron";
+			mes "^FF0066Ombra di Competenze del Gruppo Professionale Esteso^000000 dici tu!";
+			mes "Eccoli!";
 			close2;
 			callshop "CachuaCoupon03";
 			end;
 
 		case 4:
-			mes "[Macaroon]";
-			mes "^FF0066General Shadow by Occupation^000000 you say!";
-			mes "Here they are!";
+			mes "Macaron";
+			mes "^FF0066Ombra Generale per Professione^000000 lo dici tu!";
+			mes "Eccoli!";
 			close2;
 			callshop "CachuaCoupon04";
 			end;
 
 		case 5:
-			mes "[Macaroon]";
-			mes "^FF0066Shadow Cube^000000 you say!";
-			mes "Here they are!";
+			mes "Macaron";
+			mes "^FF0066Cubo Ombra^000000 lo dici tu!";
+			mes "Eccoli!";
 			close2;
 			callshop "CachuaCoupon05";
 			end;
 
 		case 6:
-			mes "[Macaroon]";
-			mes "^FF0066Smelting, Modification, Useful Items^000000 you say!";
-			mes "Here they are!";
+			mes "Macaron";
+			mes "^FF0066Fusione, Modificazione, Oggetti Utili^000000 lo dici tu!";
+			mes "Eccoli!";
 			close2;
 			callshop "CachuaCoupon06";
 			end;
 
 		case 7:
-			mes "[Macaroon]";
-			mes "^FF0066Drop Box^000000 you say!";
-			mes "Here they are!";
+			mes "Macaron";
+			mes "^FF0066Scatola Drop^000000 lo dici tu!";
+			mes "Eccoli!";
 			close2;
 			callshop "CachuaCoupon07";
 			end;
 
 		case 8:
-			mes "[Macaroon]";
-			mes "^FF0066Spellbook^000000 you say!";
-			mes "Here they are!";
+			mes "Macaron";
+			mes "^FF0066Libro di incantesimi^000000 lo dici tu!";
+			mes "Eccoli!";
 			close2;
 			callshop "CachuaCoupon08";
 			end;
@@ -186,34 +186,34 @@ itemmall,24,77,4	script	Blacksmith Basta#pr	4_M_DWARF,{
 		end;
 	}
 
-	mes "[Blacksmith Basta]";
-	mes "I have taken over the work of Mighty Hammer, Brock and the Shadow Blacksmith. I will be busy from now on.";
+	mes "[Fabbro Basta]";
+	mes "Ho preso in carico il lavoro di Mighty Hammer, Brock e lo Shadow Blacksmith. Sarò impegnato da ora in poi.";
 	close2;
 	refineui();
 	end;
 }
 
 itemmall,27,77,4	script	Mighty Hammer#im	4_M_DWARF,{
-	mes "[Blacksmith Mighty Hammer]";
-	mes "If it is about refining, ask Basta. I am retired.";
+	mes "[Martello Potente del Fabbro]";
+	mes "Se si tratta di affinare, chiedi a Basta. Sono in pensione.";
 	close;
 }
 
 itemmall,24,74,5	script	Blacksmith Brock#im	4_M_HUMAN_01,{
-	mes "[Blacksmith Brock]";
-	mes "I am retired now. If it is about refining, make a request to Basta over there.";
+	mes "[Fabbro Brock]";
+	mes "Sono ritirato ora. Se si tratta di affinare, fai una richiesta a Basta laggiù.";
 	close;
 }
 
 itemmall,19,74,5	script	Stylist#cash	91,{
 	if( getbattleflag( "feature.stylist" ) ){
 		mes "[Jeremy]";
-		mes "Hello cutie~";
-		mes "I would like you to call me Head Stylist Jeremy.";
+		mes "Ciao tesoro~";
+		mes "Vorrei che mi chiamassi Head Stylist Jeremy.";
 		next;
-		if( select( "Change style:End conversation" ) == 2 ){
+		if( select( "Cambia stile:Termina conversazione" ) == 2 ){
 			mes "[Jeremy]";
-			mes "My shop is always open, so please come back anytime.";
+			mes "Il mio negozio è sempre aperto, quindi sentiti libero di tornare quando vuoi.";
 			close;
 		}
 		close2;
@@ -221,93 +221,93 @@ itemmall,19,74,5	script	Stylist#cash	91,{
 		end;
 	}
 
-	mes "[Stylist]";
-	mes "Hey, I'm Kaniki.";
-	mes "I'm here to start a new";
-	mes "trend by introducing my";
-	mes "special new hairstyles!";
-	mes "Give me a ^FF0000New Style Coupon^000000,";
-	mes "and I'll change your hair~";
+	mes "[Stylista]";
+	mes "Ciao, sono Kaniki.";
+	mes "Sono qui per iniziare un nuovo";
+	mes "tendenza introducendo il mio";
+	mes "nuovi e speciali acconciature!";
+	mes "Dammi un coupon ^FF0000Nu Style Coupon^000000,";
+	mes "e ti cambierò i capelli~";
 	next;
 	if (Sex == SEX_MALE) {
 		mes "[Kaniki]";
-		mes "I have two special";
-		mes "hairstyles for men, the";
-		mes "Emergency Heal Perm";
-		mes "and the Aura Blade Cut.";
-		mes "and aura blade cut.";
+		mes "Ho due speciali";
+		mes "acconciature per uomini, il";
+		mes "Perm di Guarigione d'Emergenza";
+		mes "e la Taglio Lama Aura.";
+		mes "e taglio di lama aura.";
 		next;
 		cutin "hair_m_24.bmp",4;
 		mes "[Kaniki]";
-		mes "This is the Emergency";
-		mes "Heal Perm. It's a brand";
-		mes "new style I invented recently.";
-		mes "What do you think? Cool, huh?";
+		mes "Questo è l'Emergenza";
+		mes "Guarisci Perm. È un marchio";
+		mes "nuovo stile che ho inventato di recente.";
+		mes "Cosa ne pensi? Figo, vero?";
 		next;
 		cutin "",255;
 		cutin "hair_m_25.bmp",4;
 		mes "[Kaniki]";
-		mes "Now this is the Aura";
-		mes "Blade Cut. You haven't";
-		mes "seen anything like it";
-		mes "before, haven't you?";
+		mes "Ora questa è l'Aura";
+		mes "Taglio di lama. Tu non hai";
+		mes "visto qualcosa di simile";
+		mes "prima, non hai?";
 		next;
 		cutin "",255;
 	}else{
 		mes "[Kaniki]";
-		mes "I have two new hairstyles for";
-		mes "women, the Assumptio Perm";
-		mes "and the Soul Changer Cut.";
-		mes "Do you want to see how";
-		mes "these styles look?";
+		mes "Ho due nuovi acconciature per";
+		mes "donne, l'Assunzione Perm";
+		mes "e il Taglio del Cambiatore d'Anime.";
+		mes "Vuoi vedere come";
+		mes "questi stili sembrano?";
 		next;
 		cutin "hair_f_24.bmp",4;
 		mes "[Kaniki]";
-		mes "This is the Assumptio";
-		mes "Perm. It'd really good";
-		mes "on you, wouldn't it?";
+		mes "Questa è l'Assunzione";
+		mes "Molto bene. Sarebbe davvero buono";
+		mes "su di te, non è vero?";
 		next;
 		cutin "",255;
 		cutin "hair_f_25.bmp",4;
 		mes "[Kaniki]";
-		mes "Next is the Soul";
-		mes "Changer Cut. What do";
-		mes "you think? Isn't it nice?";
+		mes "Il prossimo è l'anima";
+		mes "Cambiare Taglio. Cosa fare";
+		mes "tu pensi? Non è bello?";
 		next;
 		cutin "",255;
 	}
 	mes "[Kaniki]";
-	mes "Have you decided";
-	mes "if you'd like me to";
-	mes "change your hairstyle?";
+	mes "Hai deciso";
+	mes "se vuoi che io";
+	mes "cambiare l'acconciatura?";
 	next;
-	if (select( "Change Hairstyle", "Don't Change" ) == 2) {
+	if (select( "Cambiare acconciatura", "Non Cambiare" ) == 2) {
 		mes "[Kaniki]";
-		mes "Really? Oh, that's too bad.";
-		mes "Well, if you ever change your";
-		mes "mind about updating your";
-		mes "hairstyle, come back";
-		mes "and let me know, okay?";
+		mes "Davvero? Oh, che peccato.";
+		mes "Beh, se mai cambierai il tuo";
+		mes "Mente riguardo ad aggiornare il tuo";
+		mes "acconciatura, tornare indietro";
+		mes "e fammi sapere, ok?";
 		close;
 	}
 	if (countitem(7622) < 1) {
 		mes "[Kaniki]";
-		mes "I'm sorry, but I can";
-		mes "only provide my hairstyling";
-		mes "service if you bring a New";
-		mes "Style Coupon. Please come";
-		mes "back to me after you manage to";
-		mes "get one of those coupons, okay?";
+		mes "Mi dispiace, ma posso";
+		mes "solo il mio acconciamento";
+		mes "servizio se porti un Nuovo";
+		mes "Coupon di stile. Per favore vieni";
+		mes "ritornare da me dopo che riuscirai a";
+		mes "prendi uno di quei coupon, ok?";
 		close;
 	}
 	mes "[Kaniki]";
-	mes "Great, you brought";
-	mes "a New Style Coupon!";
-	mes "Alright, which hairstyle";
-	mes "did you want to have?";
+	mes "Ottimo, hai portato";
+	mes "Un nuovo coupon stile!";
+	mes "Quale acconciatura";
+	mes "volevi avere?";
 	next;
 	if (Sex == SEX_MALE) {
-		if(select("Emergency Heal Perm", "Aura Blade Cut") == 1) {
+		if(select("Perm di Guarigione d'Emergenza", "Taglio Lama Aura") == 1) {
 			delitem 7622,1;	// New_Style_Coupon
 			setlook 1,24;
 		}else{
@@ -315,7 +315,7 @@ itemmall,19,74,5	script	Stylist#cash	91,{
 			setlook 1,25;
 		}
 	}else{
-		if(select("Assumptio Perm", "Soul Changer Cut") == 1) {
+		if(select("Assunzione Perm", "Cambio di anima Taglio") == 1) {
 			delitem 7622,1;	// New_Style_Coupon
 			setlook 1,24;
 		}else{
@@ -324,60 +324,60 @@ itemmall,19,74,5	script	Stylist#cash	91,{
 		}
 	}
 	mes "[Kaniki]";
-	mes "There--! It's done!";
-	mes "How do you like your";
-	mes "new hair? Well, I hope";
-	mes "to see you again. Take care!";
+	mes "Eccolo--! È fatto!";
+	mes "Come ti piace il tuo";
+	mes "nuovi capelli? Beh, spero di sì";
+	mes "rivederti. Prenditi cura di te!";
 	close;
 }
 
 itemmall,41,55,3	script	Cat Hand Salesman Tunkarom	4_M_MERCAT1,{
 	mes "[Tunkarom]";
-	mes "Welcome!";
-	mes "If you have a special coupon, we'll exchange it for the product you want!";
-	mes "These are the exchangeable coupons:";
+	mes "Benvenuto!";
+	mes "Se hai un buono speciale, lo scambieremo con il prodotto che desideri!";
+	mes "Questi sono i coupon intercambiabili:";
 	mes mesitemicon(1001583) + " " + mesitemicon(1001581) + " " + mesitemicon(1001584) + " " + mesitemicon(1001588) + " " + mesitemicon(1001809) + " " + mesitemicon(1001810);
 	next;
-	switch( select( "Exchange Good and Evil Boots", "Exchange Good and Evil Crown", "Exchange Good Weapons", "Exchange Evil Weapons", "Exchange Wrath Weapons", "Exchange Wrath Crown", "Cancel" ) ) {
+	switch( select( "Scambiare stivali del Bene e del Male", "Scambiare la Corona del Bene e del Male", "Scambiare armi buone", "Scambiare armi malvagie", "Scambiare le Armi della Rabbia", "Scambiare la Corona della Rabbia", "Annulla" ) ) {
 	case 1:
 		mes "[Tunkarom]";
-		mes "This is an exchange of Good and Evil Boots. What a good choice~!";
+		mes "Questo è uno scambio di Stivali del Bene e dello Stivale del Male. Che ottima scelta~!";
 		close2;
 		callshop( "barter_mall_coupon_1" );
 		end;
 	case 2:
 		mes "[Tunkarom]";
-		mes "This is an exchange of Good and Evil Crown. What a great choice~!";
+		mes "Questo è uno scambio di Corona del Bene e del Male. Che ottima scelta~!";
 		close2;
 		callshop( "barter_mall_coupon_2" );
 		end;
 	case 3:
 		mes "[Tunkarom]";
-		mes "This is an exchange of Good Weapons. What a great choice~!";
+		mes "Questo è uno scambio di Armi Buone. Che ottima scelta~!";
 		close2;
 		callshop( "barter_mall_coupon_3" );
 		end;
 	case 4:
 		mes "[Tunkarom]";
-		mes "This is an exchange of Evil Weapons. What a great choice~!";
+		mes "Questo è uno scambio di Armi Malvagie. Che ottima scelta~!";
 		close2;
 		callshop( "barter_mall_coupon_4" );
 		end;
 	case 5:
 		mes "[Tunkarom]";
-		mes "This is an exchange of Wrath Weapons. What a great choice~!";
+		mes "Questo è uno scambio di Armi della Rabbia. Che ottima scelta~!";
 		close2;
 		callshop( "barter_mall_coupon_5" );
 		end;
 	case 6:
 		mes "[Tunkarom]";
-		mes "This is an exchange of Wrath Crowns. What a great choice~!";
+		mes "Questo è uno scambio di Corone della Rabbia. Che ottima scelta~!";
 		close2;
 		callshop( "barter_mall_coupon_6" );
 		end;
 	case 7:
 		mes "[Tunkarom]";
-		mes "Can't find what you're looking for? Come back next time.";
+		mes "Non trovi quello che cerchi? Riprova la prossima volta.";
 		close;
 	}
 }

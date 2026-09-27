@@ -17,48 +17,48 @@
 // Main NPC :: craft_book_alche_skill_npc
 //============================================================
 alde_alche,31,186,3	script	Craft Book Merchant#alde	883,{
-	mes "[Craft Book Merchant]";
-	mes "Welcome.";
-	mes "I'm here to sell";
-	mes "^0000FFspecial craft books^000000 for Geneticists.";
+	mes "Mercante di Libri Artigianali";
+	mes "Benvenuto.";
+	mes "Sono qui per vendere";
+	mes "^0000FFlibri di artigianato speciali^000000 per i genetisti.";
 	next;
-	mes "[Craft Book Merchant]";
-	mes "Geneticists have some skills";
-	mes "that require craft books to activate.";
+	mes "Mercante di Libri Artigianali";
+	mes "Gli genetisti hanno alcune abilità";
+	mes "che richiedono libri artigianali per attivare.";
 	next;
-	mes "[Craft Book Merchant]";
-	mes "The more craft books you have,";
-	mes "the more skills you can use.";
+	mes "Mercante di Libri Artigianali";
+	mes "Più libri di artigianato hai,";
+	mes "più competenze puoi usare.";
 	next;
-	mes "[Craft Book Merchant]";
-	mes "Please understand that";
-	mes "I specialize in the sale of these special books and";
+	mes "Mercante di Libri Artigianali";
+	mes "Per favore capisci che";
+	mes "Mi specializzo nella vendita di questi libri speciali e";
 	mes "I ^FF0000don't sell other items^000000.";
 	next;
-	mes "[Craft Book Merchant]";
-	mes "Would you like to take a look at my craft books?";
+	mes "Mercante di Libri Artigianali";
+	mes "Ti piacerebbe dare un'occhiata ai miei libri artigianali?";
 	next;
-	if(select("Sure.:No.") == 2) {
-		mes "[Craft Book Merchant]";
-		mes "Thank you for visiting my shop.";
-		mes "Please be safe on your travels.";
+	if(select("Certo.:No.") == 2) {
+		mes "Mercante di Libri Artigianali";
+		mes "Grazie per aver visitato il mio negozio.";
+		mes "Stai attento nei tuoi viaggi.";
 		close;
 	}
 	if (checkweight(1201,1) == 0) {
-		mes "[Craft Book Merchant]";
-		mes "I'm sorry, but your inventory is almost full.";
-		mes "Please empty your inventory first.";
+		mes "Mercante di Libri Artigianali";
+		mes "Mi dispiace, ma il tuo inventario è quasi pieno.";
+		mes "Svuota prima il tuo inventario.";
 		close;
 	}
 	if (MaxWeight - Weight < 2500) {
-		mes "[Craft Book Merchant]";
-		mes "Please empty your inventory first.";
+		mes "Mercante di Libri Artigianali";
+		mes "Svuota prima il tuo inventario.";
 		close;
 	}
-	mes "[Craft Book Merchant]";
-	mes "Okay then, here's the list of available craft books.";
+	mes "Mercante di Libri Artigianali";
+	mes "Allora, ecco l'elenco dei libri artigianali disponibili.";
 	next;
-	switch(select("[Apple Bomb Craft Book] 100,000 zeny:[Pineapple Bomb Craft Book] 100,000 zeny:[Coconut Bomb Craft Book] 100,000 zeny:[Melon Bomb Craft Book] 100,000 zeny:[Banana Bomb Craft Book] 100,000 zeny:[Plant Gene Cultivation Method] 100,000 zeny:[Superior Potion Craft Manual] 100,000 zeny:[Mix Cooking Book] 100,000 zeny:[Health Improvement Research Book] 100,000 zeny:[Vigor Drink Recipe] 100,000 zeny:Close")){
+	switch(select("[Libro di Creazione Bombe Apple] 100.000 zeni:[Libro di artigianato Bomba Ananas] 100.000 zeni:Libro di artigianato 'Coconut Bomb' 100.000 zeni:Libro di Creazione Bomba Melone] 100.000 zeny:[Libro di Creazione Banana Bomba] 100.000 zeni:[Metodo di Coltivazione Geni Pianta] 100.000 zeny:[Manuale Superiore di Creazione Pozioni] 100.000 zeny:[Libro di Cucina Misto] 100.000 zeny:[Libro di Ricerca per il Miglioramento della Salute] 100.000 zeny:Ricetta Bevanda Vigor 100.000 zeny:Chiudi")){
 	case 1: set .@item,6279; break;
 	case 2: set .@item,6280; break;
 	case 3: set .@item,6281; break;
@@ -70,52 +70,52 @@ alde_alche,31,186,3	script	Craft Book Merchant#alde	883,{
 	case 9: set .@item,11023; break;
 	case 10: set .@item,11024; break;
 	case 11:
-		mes "[Craft Book Merchant]";
-		mes "Thank you for your patronage.";
-		mes "Please come again.";
+		mes "Mercante di Libri Artigianali";
+		mes "Grazie per la vostra fiducia.";
+		mes "Per favore torna.";
 		close;
 	}
-	mes "[Craft Book Merchant]";
-	mes "^0000FF["+getitemname(.@item)+"] costs";
-	mes "100,000 zeny.";
-	mes "How many would you like to purchase?";
+	mes "Mercante di Libri Artigianali";
+	mes "^0000FF["+getitemname(.@item)+"costi";
+	mes "100.000 zeni.";
+	mes "Quanti vorresti acquistare?";
 	next;
 	input .@amount;
 	if (.@amount == 0) {
-		mes "[Craft Book Merchant]";
-		mes "Would you like to see some different books?";
+		mes "Mercante di Libri Artigianali";
+		mes "Ti piacerebbe vedere dei libri diversi?";
 		close;
 	}
 	if (.@amount < 1 || .@amount > 99 ){
-		mes "[Craft Book Merchant]";
-		mes "You cannot purchase more than 100 at a time.";
+		mes "Mercante di Libri Artigianali";
+		mes "Non è possibile acquistare più di 100 alla volta.";
 		close;
 	}
-	mes "[Craft Book Merchant]";
-	mes "You've entered "+.@amount+"x ^0000FF["+getitemname(.@item)+"]^000000 to be purchased.";
-	mes "Would you like to continue?";
+	mes "Mercante di Libri Artigianali";
+	mes "Hai inserito "+.@amount+"x ^0000FF["+getitemname(.@item)+"]^000000 da acquistare.";
+	mes "Vuoi continuare?";
 	next;
-	if (select("Yes:No") == 1) {
+	if (select("Sì:No") == 1) {
 		set .@total, .@amount * 100000;
 		if (Zeny < .@total) {
-			mes "[Craft Book Merchant]";
-			mes "I'm sorry, but you don't have enough money.";
+			mes "Mercante di Libri Artigianali";
+			mes "Mi dispiace, ma non hai abbastanza soldi.";
 			close;
 		}
 		if (checkweight(.@item,.@amount) == 0){
-			mes "[Craft Book Merchant]";
-			mes "It doesn't seem like you can carry everything.";
-			mes "Please check the space in your inventory.";
+			mes "Mercante di Libri Artigianali";
+			mes "Non sembra che tu possa portare tutto.";
+			mes "Controlla lo spazio nel tuo inventario.";
 			close;
 		}
-		mes "[Craft Book Merchant]";
-		mes "Thank you for your patronage.";
+		mes "Mercante di Libri Artigianali";
+		mes "Grazie per la vostra fiducia.";
 		set Zeny,Zeny - .@total;
 		getitem .@item,.@amount;
 		close;
 	}
-	mes "[Craft Book Merchant]";
-	mes "Please take your time";
-	mes "before you make your decision.";
+	mes "Mercante di Libri Artigianali";
+	mes "Prenditi il tuo tempo";
+	mes "prima che tu prenda la tua decisione.";
 	close;
 }

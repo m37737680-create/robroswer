@@ -36,10 +36,10 @@ prt_in,253,168,4	script	Alora	862,{
 	setarray .@hg_7[1], 2256, 5217;
 
 	mes "[Alora]";
-	mes "Hello, I can change your headgear's color if you bring me a Mysterious Dyestuff.";
+	mes "Ciao, posso cambiare il colore del tuo copricapo se mi porti un Tintore Misterioso.";
 	next;
 	mes "[Alora]";
-	mes "Do you have a headgear that you would like to dye?";
+	mes "Hai un copricapo che vorresti tingere?";
 	next;
 	for(set .@i,1; .@i < getarraysize(.@hgn$); set .@i,.@i+1) {
 		if(.@i == 1)    set .@menu$, .@hgn$[.@i];
@@ -49,12 +49,12 @@ prt_in,253,168,4	script	Alora	862,{
 	set .@t, select(.@menu$);
 	if(.@t == getarraysize(.@hgn$)) {
 		mes "[Alora]";
-		mes "Have a good journey adventurer!";
-		mes "If you ever are curious to try a new color on your Kafra headgear or the ones you found on your adventures please come to me!";
+		mes "Buon viaggio avventuriero!";
+		mes "Se vi è mai curiosità di provare un nuovo colore per il vostro copricapo Kafra o quelli che avete trovato durante le vostre avventure, venite da me!";
 		close;
 	}
 	mes "[Alora]";
-	mes "Okay, what color do you want to change it to?";
+	mes "Quale colore vuoi che lo cambi?";
 	next;
 	for(set .@i,1; .@i < getarraysize(getd(".@hg_"+.@t+"")); set .@i,.@i+1) {
 		if(.@i == 1 && .@t != 5)
@@ -70,22 +70,22 @@ prt_in,253,168,4	script	Alora	862,{
 	set .@c, select(.@menu$);
 	if(.@c == getarraysize(getd(".@hg_"+.@t+""))) {
 		mes "[Alora]";
-		mes "Oh, okay no problem!";
+		mes "Oh, va bene nessun problema!";
 		close;
 	}
 	set .@dyHG, getd(".@hg_"+.@t+"["+.@c+"]");
 	mes "[Alora]";
-	mes "Oh I'm so excited aren't you?";
-	mes "And just to be sure, what color is the "+ .@hgn$[.@t] +" you want me to use?";
+	mes "Oh sono così emozionato non lo sei?";
+	mes "E solo per essere sicuri, di che colore è il "+ .@hgn$[.@t] +" vuoi che usi?";
 	next;
 	mes "[Alora]";
-	mes "Please understand that I'm going to use the ^FF00001st "+ .@hgn$[.@t] +" of that color in your inventory!^000000";
+	mes "Ti prego di capire che userò il ^FF00001° "+ .@hgn$[.@t] +" di quel colore nel tuo inventario!^000000";
 	next;
 	mes "[Alora]";
-	mes "Any upgrades and cards will be dissolved by the mysterious dye, so be sure you are ok with having a ^0000FF+0 "+ getitemname(.@dyHG) +" without any cards.^000000";
+	mes "Qualsiasi aggiornamento e carta verrà dissolto dal misterioso colorante, quindi assicurati di essere ok con avere un ^0000FF+0 "+ getitemname(.@dyHG) +" senza nessuna carta.^000000";
 	next;
 	mes "["+ strcharinfo(0) +"]";
-	mes "Ok, thanks for the warning, I think I'll give you my";
+	mes "Ok, grazie dell'avvertimento, penso che ti darò il mio";
 	next;
 	set .@menu$, "Nevermind";
 	for(set .@i,1; .@i < getarraysize(getd(".@hg_"+.@t+"")); set .@i,.@i+1) {
@@ -95,23 +95,23 @@ prt_in,253,168,4	script	Alora	862,{
 	set .@mine, select(.@menu$) - 1;
 	if(!.@mine) {
 		mes "[Alora]";
-		mes "It's best to be very sure, have a safe journey.";
+		mes "È meglio essere molto sicuri, buon viaggio.";
 		close;
 	}
 	set .@myHG, getd(".@hg_"+.@t+"["+.@mine+"]");
 	if(.@dyHG == .@myHG) {
 		mes "[Alora]";
-		mes "Woah what happened?";
+		mes "Wow cosa è successo?";
 		close;
 	}
 	if(!countitem(.@dyeID) || !countitem(.@myHG)) {
 		mes "[Alora]";
-		mes "Oh my, you seem to be missing something.";
+		mes "Oh mio Dio, sembra che ti manchi qualcosa.";
 		close;
 	}
 	mes "[Alora]";
-	mes "Looks great doesn't it?!";
-	mes "I hope you'll come back to dye more pretty headgears!";
+	mes "Sembra ottimo, non è vero?!";
+	mes "Spero che tornerai a tingere più bei copricapi!";
 	delitem .@dyeID,1; // Dyestuff
 	delitem .@myHG,1;  // Your headgear
 	getitem .@dyHG,1;  // Dyed headgear

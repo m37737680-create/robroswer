@@ -13,82 +13,82 @@
 // Templates
 -	script	#GldDungeonReward	-1,{
 	if (checkweight(1304,3) == 0) {
-		mes "You have too many items to proceed with the quest.";
-		mes "Please lighten your load and try again.";
+		mes "Hai troppi oggetti per procedere con la missione.";
+		mes "Alleggerisci il tuo carico e riprova.";
 		close;
 	}
 
-	mes "It's a machine that exchanges Commemorative Siege Guild Coins for special items.";
-	mes "Select the desired item and insert as many coins as necessary.";
+	mes "È una macchina che scambia Monete di Gilda del Sacco Commemorativo con oggetti speciali.";
+	mes "Seleziona l'articolo desiderato e inserisci così tante monete quante necessario.";
 	next;
 	while(1) {
-		switch(select("View exchangeable items","Trade for Investment Certificates","Trade for Good Medicines","Trade for Gifts","Kvasir's Ring","Leave")) {
+		switch(select("Visualizza oggetti scambiabili","Scambio per Certificati di Investimento","Scambiare per buoni medicinali","Scambio di Regali","L'Anello di Kvasir","Lasciare")) {
 			case 1:
-				mes "[ClickClick MeowMeow-GX]";
-				mes "Thank you for choosing ClickClick MeowMeow!";
-				mes "Here is a list of items you can purchase with Commemorative Siege Guild Coins.";
+				mes "[Cliccabile CiaoCiao-GX]";
+				mes "Grazie per aver scelto ClickClick MeowMeow!";
+				mes "Ecco un elenco di articoli che puoi acquistare con le Monete del Gilda Assedio Commemorativo.";
 				next;
-				mes "= Blood of Frost Giant =";
-				mes "New medicine developed by the joint effort of Alchemy Union of 3 countries. Gives the user supernatural powers for a short period of time.";
+				mes "Sangue di Gigante di Ghiaccio";
+				mes "Nuovo medicinale sviluppato dallo sforzo congiunto di Alchemy Union di 3 paesi. Concede all'utente poteri soprannaturali per un breve periodo di tempo.";
 				mes "^4d4dffDrains 3000 HP, but increases physical and magical damage to the user's counterpart players by 100% for 10 seconds.";
-				mes "Required Level: 80 or higher^000000";
+				mes "Livello richiesto: 80 o superiore^000000";
 				next;
-				mes "= Core of Golem =";
-				mes "New medicine developed by the joint effort of Alchemy Union of 3 countries. Gives the user supernatural powers for a short period of time.";
-				mes "^4d4dffDrains 300 SP, but decreases the damage taken from the user's counterpart players by 50% for 10 seconds.";
-				mes "Required Level: 80 or higher^000000";
+				mes "Nucleo di Golem";
+				mes "Nuovo medicinale sviluppato dallo sforzo congiunto di Alchemy Union di 3 paesi. Concede all'utente poteri soprannaturali per un breve periodo di tempo.";
+				mes "^4d4dffScarica 300 SP, ma diminuisce il danno ricevuto dai giocatori avversari dell'utente del 50% per 10 secondi.";
+				mes "Livello richiesto: 80 o superiore^000000";
 				next;
 				setarray .@status$, "Stun", "Petrify", "Frozen", "Sleep", "Curse", "Silence", "Blind";
 				.@size = getarraysize(.@status$);
 				for(.@i = 0; .@i < .@size; ++.@i) {
-					mes "= Fairy's Tear (" + .@status$[.@i] + ") =";
-					mes "A potion developed by Vicent, a pharmaceutical genius. Gives the user supernatural powers for a short period of time.";
-					mes "^4d4dffDrains 3000 HP, but allows the user to become immune to " + (.@i == 1 ? "Petrification" : .@status$[.@i]) + " status for 10 seconds.^000000";
+					mes "Lacrima di Fata (" + .@status$[.@i] + ") =";
+					mes "Una pozione sviluppata da Vicent, un genio farmaceutico. Conferisce all'utente poteri soprannaturali per un breve periodo di tempo.";
+					mes "^4d4dffDrains 3000 HP, but allows the user to become immune to " + (.@i == 1 ? "Petrificazione" : .@status$[.@i]) + " stato per 10 secondi.^000000";
 					next;
 				}
-				mes "= Feather Beret[1] =";
-				mes "A comfortable, sky blue-colored hat decorated with feathers.";
-				mes "^4d4dffMDEF + 1, Decreases the damage taken from the user's counterpart players by 10%.";
-				mes "Card Slot [1], available to all job classes except for Novices.";
+				mes "= Berretto da pagliaccio[1] =";
+				mes "Un cappello confortevole di colore azzurro cielo decorato con piume.";
+				mes "^4d4dffMDEF + 1, Riduce il danno ricevuto dagli avversari dell'utente del 10%.";
+				mes "Slot scheda [1], disponibile per tutte le classi di lavoro tranne i Principianti.";
 				next;
-				mes "= Feather Beret Costume =";
-				mes "A comfortable, sky blue-colored hat decorated with feathers.";
+				mes "Costume con berretto di piume";
+				mes "Un cappello confortevole di colore azzurro cielo decorato con piume.";
 				mes "^4d4dffCostume Equipment, available to all job classes.^000000";
 				next;
-				mes "This is the end of the list.";
+				mes "Questo è la fine dell'elenco.";
 				break;
 
 			case 2:
-				mes "[ClickClick MeowMeow-GX]";
-				mes "We exchange the ^4d4dff1Investment Certificate^000000 of Cat's Paw Merchant Group for ^4d4dff10Commemorative Coins!^000000";
-				mes "Do you want to exchange?";
+				mes "[Cliccabile CiaoCiao-GX]";
+				mes "Scambiamo il Certificato di Investimento ^4d4dff1Cat's Paw Merchant Group^000000 per ^4d4dff10Monete Commemorative!^000000";
+				mes "Vuoi scambiare?";
 				next;
-				switch(select("Yes.","View other items.")) {
+				switch(select("Sì.","Visualizza altri elementi.")) {
 					case 1:
-						mes "[ClickClick MeowMeow-GX]";
+						mes "[Cliccabile CiaoCiao-GX]";
 						if (countitem(6615) > 9) {
-							mes "Thank you for using our service, meow!";
+							mes "Grazie per aver utilizzato il nostro servizio, miao!";
 							delitem 6615,10; // Siege_Guild_Coin
 							getitem 6489,1; // Cats_Invest_Certif
 						} else {
-							mes "You don't have enough coins for Investment Certificates.";
-							mes "1 Investment Certificate is worth 10 coins.";
+							mes "Non hai abbastanza monete per Certificati di Investimento.";
+							mes "Un Certificato di Investimento vale 10 monete.";
 						}
 						break;
 
 					case 2:
-						mes "[ClickClick MeowMeow-GX]";
-						mes "You've decided to view other items.";
+						mes "[Cliccabile CiaoCiao-GX]";
+						mes "Hai deciso di visualizzare altri articoli.";
 						break;
 				}
 				break;
 
 			case 3:
-				mes "[ClickClick MeowMeow-GX]";
-				mes "You have selected a list of good medicines!";
-				mes "All items listed below are worth ^4d4dff300 coins each^000000, meow!";
+				mes "[Cliccabile CiaoCiao-GX]";
+				mes "Hai selezionato un elenco di buoni medicinali!";
+				mes "Tutti gli articoli elencati di seguito valgono ^4d4dff300 monete ciascuno^000000, miao!";
 				next;
-				switch(select("Blood of Frost Giants", "Core of Golem", "Fairy's Tear (Stun)", "Fairy's Tear (Frozen)", "Fairy's Tear (Sleep)", "Fairy's Tear (Curse)", "Fairy's Tear (Petrify)", "Fairy's Tear (Silence)", "Fairy's Tear (Blind)", "View other items.")) {
+				switch(select("Sangue di Giganti di Ghiaccio", "Cuore di Golem", "Lacrima di Fata (Stordimento)", "Lacrima di Fata (Congelato)", "Lacrima di Fata (Sonno)", "Lacrima di Fata (Maledizione)", "Lacrima di Fata (Petrificare)", "Lacrima di Fata (Silenzio)", "Lacrima di Fata (Cecità)", "Visualizza altri elementi.")) {
 					case 1:
 						callsub S_PurchaseMedicine, "Blood of Frost Giant", 12874;
 						break;
@@ -117,17 +117,17 @@
 						callsub S_PurchaseMedicine, "Fairy's Tear(Blind)", 12882;
 						break;
 					case 10:
-						mes "You've decided to view other items.";
+						mes "Hai deciso di visualizzare altri articoli.";
 						break;
 				}
 				break;
 
 			case 4:
-				mes "[ClickClick MeowMeow-GX]";
-				mes "You have selected a list of good gifts!";
-				mes "The price for each item is listed separately, meow!";
+				mes "[Cliccabile CiaoCiao-GX]";
+				mes "Hai selezionato un elenco di bei regali!";
+				mes "Il prezzo per ogni articolo è elencato separatamente, miao!";
 				next;
-				switch(select("Old Card Album -500 Coins", "Old Purple Box -300 Coins", "Old Blue Box -100 Coins", "Jewelry Box -500 Coins", "Wrapped Mask -500 Coins", "Feather Beret","Leave")) {
+				switch(select("Album di vecine carte -500 Monete", "Scatola Viola Vecchia -300 Monete", "Scatola Blu Vecchia -100 Monete", "Scatola Gioielli -500 Monete", "Maschera Avvolta -500 Monete", "Berretto a piume","Lasciare")) {
 					case 1:
 						callsub S_PurchaseGift, "Old Card Album", 616, 500;
 						break;
@@ -144,110 +144,110 @@
 						callsub S_PurchaseGift, "Wrapped Mask", 12107, 500;
 						break;
 					case 6:
-						mes "[ClickClick MeowMeow-GX]";
-						mes "You have selected a nice beret decorated with feathers!";
-						mes "We have Feather Berets and Feather Beret Costumes to which you can install cards, meow!";
+						mes "[Cliccabile CiaoCiao-GX]";
+						mes "Hai scelto un bel berretto decorato con piume!";
+						mes "Abbiamo berretti di piume e costumi da berretto di piume a cui puoi installare carte, miao!";
 						next;
-						switch(select("Feather Beret[1] -1500 Coins","Feather Beret Costume -800 Coins","Purchase a Beret","View other items.")) {
+						switch(select("Fascinatore Berretto[1] -1500 Coin","Costume Cappello a Piume -800 Coin","Acquistare un berretto","Visualizza altri elementi.")) {
 							case 1:
-								mes "[ClickClick MeowMeow-GX]";
-								mes "It's a feather beret to which you can install cards!";
-								mes "It is worth 1500 Commemorative Coins. Do you want to purchase it?";
+								mes "[Cliccabile CiaoCiao-GX]";
+								mes "È un berretto di piume su cui puoi installare carte!";
+								mes "Vale 1500 Monete Commemorative. Vuoi acquistarlo?";
 								next;
-								switch(select("Yes!","No!")) {
+								switch(select("Sì!","No!")) {
 									case 1:
-										mes "[ClickClick MeowMeow-GX]";
+										mes "[Cliccabile CiaoCiao-GX]";
 										if (countitem(6615) > 1499) {
-											mes "Thank you for using our service, meow!";
+											mes "Grazie per aver utilizzato il nostro servizio, miao!";
 											delitem 6615,1500; // Siege_Guild_Coin
 											getitem 18755,1; // Feather_Beret_
 										} else {
-											mes "You need 1500 Commemorative Coins in order to purchase the selected item.";
-											mes "You've decided to view other items.";
+											mes "Ti servono 1500 Monete Commemorative per acquistare l'articolo selezionato.";
+											mes "Hai deciso di visualizzare altri articoli.";
 										}
 										break;
 
 									case 2:
-										mes "[ClickClick MeowMeow-GX]";
-										mes "You've decided to view other items.";
+										mes "[Cliccabile CiaoCiao-GX]";
+										mes "Hai deciso di visualizzare altri articoli.";
 										break;
 								}
 								break;
 
 							case 2:
-								mes "[ClickClick MeowMeow-GX]";
-								mes "It's a feather beret costume!";
-								mes "It is worth 800 Commemorative Coins. Do you want to purchase it?";
+								mes "[Cliccabile CiaoCiao-GX]";
+								mes "È un costume con il berretto di piume!";
+								mes "Vale 800 Monete Commemorative. Vuoi acquistarlo?";
 								next;
-								switch(select("Yes!","No!")) {
+								switch(select("Sì!","No!")) {
 									case 1:
-										mes "[ClickClick MeowMeow-GX]";
+										mes "[Cliccabile CiaoCiao-GX]";
 										if (countitem(6615) > 799) {
-											mes "Thank you for using our service, meow!";
+											mes "Grazie per aver utilizzato il nostro servizio, miao!";
 											delitem 6615,800; // Siege_Guild_Coin
 											getitem 19585,1; // C_Feather_Beret
 										} else {
-											mes "You need 800 Commemorative Coins in order to purchase the selected item.";
-											mes "You've decided to view other items.";
+											mes "Ti servono 800 Monete Commemorative per acquistare l'articolo selezionato.";
+											mes "Hai deciso di visualizzare altri articoli.";
 										}
 										break;
 
 									case 2:
-										mes "[ClickClick MeowMeow-GX]";
-										mes "You've decided to view other items.";
+										mes "[Cliccabile CiaoCiao-GX]";
+										mes "Hai deciso di visualizzare altri articoli.";
 										break;
 								}
 								break;
 
 							case 3:
-								mes "[ClickClick MeowMeow-GX]";
-								mes "The preparations for changing the color of feather beret costumes are under way.";
-								mes "Please come back later!";
-								mes "Let me show you other items!";
+								mes "[Cliccabile CiaoCiao-GX]";
+								mes "Le preparazioni per cambiare il colore dei costumi di berretto piumato sono in corso.";
+								mes "Torna più tardi!";
+								mes "Lasciami mostrarti altri articoli!";
 								break;
 
 							case 4:
-								mes "[ClickClick MeowMeow-GX]";
-								mes "You've decided to view other items.";
+								mes "[Cliccabile CiaoCiao-GX]";
+								mes "Hai deciso di visualizzare altri articoli.";
 								break;
 						}
 						break;
 
 					case 7:
-						mes "[ClickClick MeowMeow-GX]";
-						mes "Do not use the exchange machine.";
+						mes "[Cliccabile CiaoCiao-GX]";
+						mes "Non usare la macchina di cambio.";
 						break;
 				}
 				break;
 
 			case 5:
-				mes "[ClickClick MeowMeow-GX]";
-				mes "This is the category of Kvasir's Rings.";
-				mes "You can view the description for each ring and purchase one here.";
+				mes "[Cliccabile CiaoCiao-GX]";
+				mes "Questa è la categoria degli Anelli di Kvasir.";
+				mes "Puoi visualizzare la descrizione di ogni anello e comprarne uno qui.";
 				next;
-				switch(select("Trade for Kvasir's Ring (Blue)", "Trade for Kvasir's Ring (Red)", "Trade for Kvasir's Ring (Green)", "Trade for Kvasir's Ring (Brown)", "Leave")) {
+				switch(select("Scambiare per l'Anello di Kvasir (Blu)", "Scambiare per l'Anello di Kvasir (Rosso)", "Scambiare per l'Anello di Kvasir (Verde)", "Scambiare per l'Anello di Kvasir (Marrone)", "Lasciare")) {
 					case 1:
-						mes "= Kvasir's Ring (Blue) =";
-						mes "A ring that is rumored to be filled with the power of Kvasir, a sage god. ";
-						mes "^4d4dffMSP + 30. 'Snow Flip' 1Lv available^000000";
-						mes "Accessory. Available to all job classes. Required Level: 1";
+						mes "= L'Anello di Kvasir (Blu) =";
+						mes "Un anello che si vocifera sia pieno del potere di Kvasir, un dio saggio. ";
+						mes "^4d4dffMSP + 30. 'Snow Flip' 1Liv disponibile^000000";
+						mes "Accessorio. Disponibile a tutte le classi di lavoro. Livello richiesto: 1";
 						next;
-						mes "[ClickClick MeowMeow-GX]";
-						mes "Kvasir's Ring (Blue) can be purchased with ^4d4dff20Blood of Frost Giant and 20 Core of Golem^000000";
+						mes "[Cliccabile CiaoCiao-GX]";
+						mes "Anello di Kvasir (Blu) può essere acquistato con ^4d4dff20Sangue del Gigante di Ghiaccio e 20 Nucleo di Golem^000000";
 						mes "or ^4d4dff1Kvasir's Ring in different color and 10 Commemorative Coins!^000000";
-						mes "Do you want to purchase it?";
+						mes "Vuoi acquistarlo?";
 						next;
-						switch(select("Pay with Blood and Core","Pay with Kvasir's Ring (Red)","Pay with Kvasir's Ring (Green)","Pay with Kvasir's Ring (Brown)","Leave")) {
+						switch(select("Paga con Sangue e Nucleo","Paga con l'Anello di Kvasir (Rosso)","Paga con l'Anello di Kvasir (Verde)","Paga con l'Anello di Kvasir (Marrone)","Lasciare")) {
 							case 1:
-								mes "[ClickClick MeowMeow-GX]";
+								mes "[Cliccabile CiaoCiao-GX]";
 								if ((countitem(12874) > 19) & (countitem(12875) > 19)) {
-									mes "Kvasir's Ring (Blue) has been purchased.";
+									mes "L'Anello di Kvasir (Blu) è stato acquistato.";
 									delitem 12874,20; // Frost_Giant_Blood
 									delitem 12875,20; // Golem_Stone
 									getitem 2951,1; // Kvasir_Ring_Blue
 								} else {
-									mes "Looks like Kvasir's Ring (Blue) can be purchased with ^4d4dff20Blood of Frost Giant and 20 Core of Golem.^000000";
-									mes "You don't have enough items to complete the purchase. View other items.";
+									mes "Sembra che l'Anello di Kvasir (Blu) possa essere acquistato con ^4d4dff20Sangue di Gigante di Ghiaccio e 20 Nucleo di Golem.^000000";
+									mes "Non hai abbastanza articoli per completare l'acquisto. Visualizza altri articoli.";
 								}
 								break;
 
@@ -264,23 +264,23 @@
 								break;
 
 							case 5:
-								mes "[ClickClick MeowMeow-GX]";
-								mes "You've decided to view other items.";
+								mes "[Cliccabile CiaoCiao-GX]";
+								mes "Hai deciso di visualizzare altri articoli.";
 								break;
 						}
 					break;
 
 					case 2:
-						mes "= Kvasir's Ring (Red) =";
-						mes "A ring that is rumored to be filled with the power of Kvasir, a sage god. ";
-						mes "^4d4dffMSP + 30. 'Peony Mamy' 1Lv available^000000";
-						mes "Accessory. Available to all job classes. Required Level: 1";
+						mes "= L'Anello di Kvasir (Rosso) =";
+						mes "Un anello che si vocifera sia pieno del potere di Kvasir, un dio saggio. ";
+						mes "^4d4dffMSP + 30. 'Peony Mamy' 1Liv disponibile^000000";
+						mes "Accessorio. Disponibile a tutte le classi di lavoro. Livello richiesto: 1";
 						next;
-						mes "[ClickClick MeowMeow-GX]";
-						mes "Kvasir's Ring (Red) can be purchased with ^4d4dff1Kvasir's Ring and 10 Commemorative Coins.^000000";
-						mes "Which of the followings do you want to trade for Kvasir's Ring (Red)?";
+						mes "[Cliccabile CiaoCiao-GX]";
+						mes "L'Anello di Kvasir (Rosso) può essere acquistato con ^4d4dff1Anello di Kvasir e 10 Monete Commemorative.^000000";
+						mes "Quale dei seguenti desideri scambiare per l'Anello di Kvasir (Rosso)?";
 						next;
-						switch(select("Kvasir's Ring (Blue)","Kvasir's Ring (Green)","Kvasir's Ring (Brown)","Leave")) {
+						switch(select("L'Anello di Kvasir (Blu)","L'Anello di Kvasir (Verde)","L'anello di Kvasir (Marrone)","Lasciare")) {
 							case 1:
 								callsub S_Kvasir, "Kvasir's Ring (Blue)", 2951, "Kvasir's Ring (Red)", 2952;
 								break;
@@ -294,23 +294,23 @@
 								break;
 
 							case 4:
-								mes "[ClickClick MeowMeow-GX]";
-								mes "You've decided to view other items.";
+								mes "[Cliccabile CiaoCiao-GX]";
+								mes "Hai deciso di visualizzare altri articoli.";
 								break;
 						}
 						break;
 
 					case 3:
-						mes "= Kvasir's Ring (Green) =";
-						mes "A ring that is rumored to be filled with the power of Kvasir, a sage god. ";
-						mes "^4d4dffMSP + 100. 'Sada Ear' 1Lv available^000000";
-						mes "Accessory. Available to all job classes. Required Level: 1";
+						mes "= L'Anello di Kvasir (Verde) =";
+						mes "Un anello che si vocifera sia pieno del potere di Kvasir, un dio saggio. ";
+						mes "^4d4dffMSP + 100. 'Sada Ear' 1Lv disponibile^000000";
+						mes "Accessorio. Disponibile a tutte le classi di lavoro. Livello richiesto: 1";
 						next;
-						mes "[ClickClick MeowMeow-GX]";
-						mes "Kvasir's Ring (Green) can be purchased with ^4d4dff1Kvasir's Ring and 10 Commemorative Coins.^000000";
-						mes "Which of the followings do you want to trade for Kvasir's Ring (Red)?";
+						mes "[Cliccabile CiaoCiao-GX]";
+						mes "L'Anello di Kvasir (Verde) può essere acquistato con ^4d4dff1Anello di Kvasir e 10 Monete Commemorative.^000000";
+						mes "Quale dei seguenti desideri scambiare per l'Anello di Kvasir (Rosso)?";
 						next;
-						switch(select("Kvasir's Ring (Blue)","Kvasir's Ring (Red)","Kvasir's Ring (Brown)","Leave")) {
+						switch(select("L'Anello di Kvasir (Blu)","L'Anello di Kvasir (Rosso)","L'anello di Kvasir (Marrone)","Lasciare")) {
 							case 1:
 								callsub S_Kvasir, "Kvasir's Ring (Blue)", 2951, "Kvasir's Ring (Green)", 2953;
 								break;
@@ -324,23 +324,23 @@
 								break;
 
 							case 4:
-								mes "[ClickClick MeowMeow-GX]";
-								mes "You've decided to view other items.";
+								mes "[Cliccabile CiaoCiao-GX]";
+								mes "Hai deciso di visualizzare altri articoli.";
 								break;
 						}
 						break;
 
 					case 4:
-						mes "= Kvasir Ring Brown =";
-						mes "A ring that is rumored to be filled with the power of Kvasir, a sage god. ";
-						mes "^4d4dffMSP + 100. 'Dust of Galaxy' 1Lv available^000000";
-						mes "Accessory. Available to all job classes. Required Level: 1";
+						mes "Kvasir Anello Marrone";
+						mes "Un anello che si vocifera sia pieno del potere di Kvasir, un dio saggio. ";
+						mes "^4d4dffMSP + 100. 'Polvere di Galassia' 1Liv disponibile^000000";
+						mes "Accessorio. Disponibile a tutte le classi di lavoro. Livello richiesto: 1";
 						next;
-						mes "[ClickClick MeowMeow-GX]";
-						mes "Kvasir's Ring (Brown) can be purchased with ^4d4dff1Kvasir's Ring and 10 Commemorative Coins.^000000";
-						mes "Which of the followings do you want to trade for Kvasir's Ring (Red)?";
+						mes "[Cliccabile CiaoCiao-GX]";
+						mes "L'Anello di Kvasir (Marrone) può essere acquistato con ^4d4dff1Anello di Kvasir e 10 Monete Commemorative.^000000";
+						mes "Quale dei seguenti desideri scambiare per l'Anello di Kvasir (Rosso)?";
 						next;
-						switch(select("Kvasir's Ring (Blue)","Kvasir's Ring (Red)","Kvasir's Ring (Green)","Leave")) {
+						switch(select("L'Anello di Kvasir (Blu)","L'Anello di Kvasir (Rosso)","L'Anello di Kvasir (Verde)","Lasciare")) {
 							case 1:
 								callsub S_Kvasir, "Kvasir's Ring (Blue)", 2951, "Kvasir's Ring (Brown)", 2954;
 								break;
@@ -354,46 +354,46 @@
 								break;
 
 							case 4:
-								mes "[ClickClick MeowMeow-GX]";
-								mes "You've decided to view other items.";
+								mes "[Cliccabile CiaoCiao-GX]";
+								mes "Hai deciso di visualizzare altri articoli.";
 								break;
 						}
 						break;
 
 					case 5:
-						mes "[ClickClick MeowMeow-GX]";
-						mes "You've decided to view other items.";
+						mes "[Cliccabile CiaoCiao-GX]";
+						mes "Hai deciso di visualizzare altri articoli.";
 						break;
 				}
 				break;
 
 			case 6:
-				mes "[ClickClick MeowMeow-GX]";
-				mes "Do not use the exchange machine.";
+				mes "[Cliccabile CiaoCiao-GX]";
+				mes "Non usare la macchina di cambio.";
 				break;
 		}
 	}
 	close;
 
 S_PurchaseMedicine:
-	mes "[ClickClick MeowMeow-GX]";
-	mes "You're purchasing 1 " + getarg(0) + ", meow!";
-	mes "Are you sure?";
+	mes "[Cliccabile CiaoCiao-GX]";
+	mes "Stai acquistando 1 " + getarg(0) + ", miao!";
+	mes "Sei sicuro?";
 	next;
-	switch(select("Yes!","No!")) {
+	switch(select("Sì!","No!")) {
 		case 1:
-			mes "[ClickClick MeowMeow-GX]";
+			mes "[Cliccabile CiaoCiao-GX]";
 			if (countitem(6615) > 299) {
-				mes "Thank you for using our service, meow!";
+				mes "Grazie per aver utilizzato il nostro servizio, miao!";
 				delitem 6615,300; // Siege_Guild_Coin
 				getitem getarg(1),1;
 			} else
-				mes "One good medicine is worth 300 commemorative coins that you've raked and scraped...";
+				mes "Un buon medicinale vale 300 monete commemorative che hai raccolto e spazzolato...";
 			break;
 
 		case 2:
-			mes "[ClickClick MeowMeow-GX]";
-			mes "You've decided to view other items.";
+			mes "[Cliccabile CiaoCiao-GX]";
+			mes "Hai deciso di visualizzare altri articoli.";
 			break;
 	}
 	return;
@@ -401,26 +401,26 @@ S_PurchaseMedicine:
 S_PurchaseGift:
 	.@itemid = getarg(1);
 	.@price = getarg(2);
-	mes "[ClickClick MeowMeow-GX]";
-	mes "You're purchasing 1 " + getarg(0) + ", meow!";
-	mes "Are you sure?";
+	mes "[Cliccabile CiaoCiao-GX]";
+	mes "Stai acquistando 1 " + getarg(0) + ", miao!";
+	mes "Sei sicuro?";
 	next;
-	switch(select("Yes!","No!")) {
+	switch(select("Sì!","No!")) {
 		case 1:
-			mes "[ClickClick MeowMeow-GX]";
+			mes "[Cliccabile CiaoCiao-GX]";
 			if (countitem(6615) >= .@price) {
-				mes "Thank you for using our service, meow!";
+				mes "Grazie per aver utilizzato il nostro servizio, miao!";
 				delitem 6615,.@price; // Siege_Guild_Coin
 				getitem .@itemid,1;
 			} else {
-				mes "You need " + .@price + " Commemorative Coins in order to purchase the selected item.";
-				mes "You've decided to view other items.";
+				mes "Hai bisogno di " + .@price + " Monete commemorative per l'acquisto dell'articolo selezionato.";
+				mes "Hai deciso di visualizzare altri articoli.";
 			}
 			break;
 
 		case 2:
-			mes "[ClickClick MeowMeow-GX]";
-			mes "You've decided to view other items.";
+			mes "[Cliccabile CiaoCiao-GX]";
+			mes "Hai deciso di visualizzare altri articoli.";
 			break;
 	}
 	return;
@@ -431,18 +431,18 @@ S_Kvasir:
 	.@toid = getarg(3);
 	.@toname$ = getarg(4);
 	
-	mes "[ClickClick MeowMeow-GX]";
+	mes "[Cliccabile CiaoCiao-GX]";
 	// One of Kvasir's Rings and 10 Siege_Guild_Coin
 	if( countitem( .@fromid ) > 0 && countitem( 6615 ) > 9 ){
-		mes "You have " + .@fromname$ + ".";
-		mes "Do you want to trade this in for " + .@toname$ + "?";
+		mes "Hai " + .@fromname$ + ".";
+		mes "Vuoi scambiare questo per " + .@toname$ + "?";
 		next;
-		mes "[ClickClick MeowMeow-GX]";
-		switch( select( "Yes!:Leave" ) ){
+		mes "[Cliccabile CiaoCiao-GX]";
+		switch( select( "Sì!:Lasciare" ) ){
 			case 1:
 				// Recheck the items once more
 				if( countitem( .@fromid ) > 0 && countitem( 6615 ) > 9 ){
-					mes "You have traded " + .@fromname$ + " for " + .@toname$ + ".";
+					mes "Hai scambiato " + .@fromname$ + " per " + .@toname$ + ".";
 					delitem .@fromid, 1;
 					delitem 6615, 10; // Siege_Guild_Coin
 					getitem .@toid, 1;
@@ -450,11 +450,11 @@ S_Kvasir:
 				}
 				break;
 			case 2:
-				mes "You've decided to view other items.";
+				mes "Hai deciso di visualizzare altri articoli.";
 				return;
 		}
 	}
-	mes "You need 1 " + .@fromname$ + " and 10 Commemorative Coins in order to complete the purchase.";
+	mes "Hai bisogno di 1 " + .@fromname$ + " e 10 Monete Commemorative per completare l'acquisto.";
 	return;
 }
 

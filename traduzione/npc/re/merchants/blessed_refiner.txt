@@ -16,56 +16,56 @@
 //============================================================
 -	script	::BlacksmithDister	-1,{
 	disable_items;
-	mes "[Blacksmith Dister]";
-	mes "In this highly competitive society, we must be different in order to survive!";
-	mes "I only refine equipment at the +6 ~ 12 levels.";
+	mes "[Fabbro Dister]";
+	mes "In questa società altamente competitiva, dobbiamo essere diversi per sopravvivere!";
+	mes "Raffino l'equipaggiamento solo ai livelli da +6 a +12.";
 	next;
-	mes "[Blacksmith Dister]";
-	mes "I will need ^ff9999Blessed Oridecon^000000 for weapons, and ^ff9999Blessed Elunium^000000 for armors.";
-	mes "Failed refines ^FF0000will not break or reduce the refine level^000000.";
+	mes "[Fabbro Dister]";
+	mes "Avrò bisogno di ^ff9999Blessed Oridecon^000000 per le armi e di ^ff9999Blessed Elunium^000000 per gli armature.";
+	mes "I raffinamenti falliti ^FF0000non romperanno né ridurranno il livello di raffinamento^000000.";
 	next;
-	mes "[Blacksmith Dister]";
-	mes "How about it? Do you want to refine?";
+	mes "[Fabbro Dister]";
+	mes "Che ne dici? Vuoi affinare?";
 	next;
 	setarray .@indices[1], EQI_HEAD_TOP, EQI_ARMOR, EQI_HAND_L, EQI_HAND_R, EQI_GARMENT, EQI_SHOES, EQI_ACC_L, EQI_ACC_R, EQI_HEAD_MID, EQI_HEAD_LOW;
 	for(set .@i,1; .@i<=10; set .@i,.@i+1)
 		set .@menu$, .@menu$ + ( getequipisequiped(.@indices[.@i]) ? getequipname(.@indices[.@i]) : F_getpositionname(.@indices[.@i]) +"-[Unequipped]" ) +":";
 	set .@part, .@indices[ select(.@menu$) ];
 	if (!getequipisequiped(.@part)) {
-		mes "[Blacksmith Dister]";
+		mes "[Fabbro Dister]";
 		switch(.@part) {
 		case EQI_HEAD_TOP:
-			mes "I'm a blacksmith, not a hairstylist.";
+			mes "Sono un fabbro, non uno stilista di capelli.";
 			break;
 		case EQI_ARMOR:
-			mes "With my hammer, I will make you a star of the sky.";
+			mes "Con il mio martello, ti farò una stella del cielo.";
 			break;
 		case EQI_HAND_L:
 		case EQI_HAND_R:
-			mes "Making artificial hands is not my specialty.";
+			mes "Fare mani artificiali non è la mia specialità.";
 			break;
 		case EQI_GARMENT:
-			mes "Bring out the item so I can refine it!";
+			mes "Tira fuori l'articolo così posso rifinarlo!";
 			break;
 		case EQI_SHOES:
-			mes "Where is this weird smell coming from?";
+			mes "Da dove viene questo odore strano?";
 			break;
 		case EQI_ACC_L:
 		case EQI_ACC_R:
-			mes "Where is the accessory?";
+			mes "Dov'è l'accessorio?";
 			break;
 		case EQI_HEAD_MID:
-			mes "What do you want me to refine?";
+			mes "Cosa vuoi che io migliori?";
 			break;
 		case EQI_HEAD_LOW:
-			mes "Huh? What do you want me to do?";
+			mes "Eh? Cosa vuoi che faccia?";
 			break;
 		}
 		close;
 	}
 	if (!getequipisenableref(.@part)) {
-		mes "[Blacksmith Dister]";
-		mes "This item cannot be refined.";
+		mes "[Fabbro Dister]";
+		mes "Questo oggetto non può essere raffinato.";
 		close;
 	}
 	.@equip_id = getequipid(.@part);
@@ -74,8 +74,8 @@
 	setarray .@card[0], getequipcardid(.@part,0), getequipcardid(.@part,1), getequipcardid(.@part,2), getequipcardid(.@part,3);
 
 	if (.@equip_refine < 6 || .@equip_refine > 12) {
-		mes "[Blacksmith Dister]";
-		mes "This equipment has refined to "+.@equip_refine+". I only handle items with refine levels from +6 to +12!";
+		mes "[Fabbro Dister]";
+		mes "Questo equipaggiamento si è raffinato per "+.@equip_refine+"Io gestisco solo oggetti con livelli di raffinazione da +6 a +12!";
 		close;
 	}
 	if( .@itemtype == IT_ARMOR ){
@@ -121,32 +121,32 @@
 		close;
 	}
 	set .@ore$,"^ff9999Blessed "+.@type$+" Ore^000000";
-	mes "[Blacksmith Dister]";
-	mes "This "+.@type$+" has been refined to "+.@equip_refine+". To refine it, I need "+.@ore$+" and a "+callfunc("F_InsertComma",.@price)+" zeny refining fee.";
-	mes "Do you want to proceed?";
+	mes "[Fabbro Dister]";
+	mes "Questo "+.@type$+" è stato raffinato per "+.@equip_refine+"Per perfezionarlo, ho bisogno "+.@ore$+" e un "+callfunc("F_InserisciVirgola",.@price)+" commissione di raffinazione zeny.";
+	mes "Vuoi procedere?";
 	next;
-	if(select("Yes:No") == 2) {
-		mes "[Blacksmith Dister]";
-		mes "I am busy, don't joke with me!";
+	if(select("Sì:No") == 2) {
+		mes "[Fabbro Dister]";
+		mes "Sono impegnato/a, non scherzare con me!";
 		close;
 	}
 	if (getequippercentrefinery(.@part) < 100) {
-		mes "[Blacksmith Dister]";
-		mes "This "+.@type$+" has been refined many times. Although it will not disappear upon failure, the "+.@ore$+" will disappear!";
+		mes "[Fabbro Dister]";
+		mes "Questo "+.@type$+" è stato raffinato molte volte. Sebbene non scomparirà in caso di fallimento, il "+.@ore$+" scomparirà!";
 		next;
-		mes "[Blacksmith Dister]";
-		mes "Of course, the refining fee will not be returned! Do you want to continue?";
+		mes "[Fabbro Dister]";
+		mes "Certo, la commissione di raffinazione non verrà restituita! Vuoi continuare?";
 		next;
-		if(select("Yes:No") == 2) {
-			mes "[Blacksmith Dister]";
-			mes "Good. I'd be sad if it failed, too.";
+		if(select("Sì:No") == 2) {
+			mes "[Fabbro Dister]";
+			mes "Bene. Sarei triste se anche questo fallisse.";
 			close;
 		}
 	}
 	if (countitem(.@material) == 0 || Zeny < .@price) {
-		mes "[Blacksmith Dister]";
-		mes "Materials insufficient.";
-		mes "To refine a level "+.@equip_lv+" "+.@type$+", I need "+.@ore$+" and a "+callfunc("F_InsertComma",.@price)+" zeny refining fee.";
+		mes "[Fabbro Dister]";
+		mes "Materiali insufficienti.";
+		mes "Rifinire un livello "+.@equip_lv+" "+.@type$+", ho bisogno di "+.@ore$+" e un "+callfunc("F_InserisciVirgola",.@price)+" commissione di raffinazione zeny.";
 		close;
 	}
 	delitem .@material,1;
@@ -156,31 +156,31 @@
 	if (callfunc("F_IsEquipIDHack", .@part, .@equip_id) || callfunc("F_IsEquipCardHack", .@part, .@card[0], .@card[1], .@card[2], .@card[3]) || callfunc("F_IsEquipRefineHack", .@part, .@equip_refine))
 		close;
 
-	mes "[Blacksmith Dister]";
+	mes "[Fabbro Dister]";
 	mes "Tac! Tac! Tac!";
 	if (getequippercentrefinery(.@part, true) > rand(100)) {
 		specialeffect EF_BLESSING;
 		successrefitem .@part;
 		next;
-		mes "[Blacksmith Dister]";
-		mes "Hahahahahaha!!!";
+		mes "[Fabbro Dister]";
+		mes "Ahahahahahaha!!!";
 		next;
-		mes "[Blacksmith Dister]";
-		mes "Refine was a huge success~ Hahaha!";
+		mes "[Fabbro Dister]";
+		mes "Refine è stato un grande successo~ Hahaha!";
 		close;
 	}
 	specialeffect EF_CURSEATTACK;
 	specialeffect2 EF_SUI_EXPLOSION;
 	next;
 	emotion (!rand(5))?ET_ANGER:ET_HUK;
-	mes "[Blacksmith Dister]";
-	mes "Oh my goodness!!!!";
+	mes "[Fabbro Dister]";
+	mes "Oh mio Dio!!!!";
 	next;
-	mes "[Blacksmith Dister]";
-	mes "Oh! Although it was blessed by "+.@ore$+" to retain the equipment...";
+	mes "[Fabbro Dister]";
+	mes "Oh! Sebbene fosse benedetto da "+.@ore$+" per trattenere l'attrezzatura...";
 	next;
-	mes "[Blacksmith Dister]";
-	mes "My mood is worse when I fail!!";
+	mes "[Fabbro Dister]";
+	mes "Il mio umore è peggiore quando fallisco!!";
 	close;
 }
 prt_in,52,56,3	duplicate(BlacksmithDister)	Blacksmith Dister#prt	826

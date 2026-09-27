@@ -18,90 +18,90 @@
 //============================================================
 
 alberta,88,193,5	script	Sunglasses Trader	73,{
-	mes "[Sunglasses Trader]";
+	mes "[Trader di Occhiali da Sole]";
 	if(SG_QUEST1 == 1) {
-		mes "There is nothing more I can tell you.";
+		mes "Non c'è nient'altro che posso dirti.";
 		next;
-		mes "[Sunglasses Trader]";
-		mes "Go see Maseph. She is somewhere north of Morocc.";
+		mes "[Trader di Occhiali da Sole]";
+		mes "Vai a vedere Maseph. È da qualche parte a nord di Morocc.";
 		close; }
-	mes "Hello. What can I do for you?";
+	mes "Ciao. Cosa posso fare per te?";
 	next;
-	if(select("I heard that you can make ^0000FFSlotted Sunglasses^000000.:Nothing, sorry to bother you.")==2) {
-		mes "[Sunglasses Trader]";
-		mes "Come back to me than you are ready.";
+	if(select("Ho sentito che puoi fare occhiali da sole a incastri ^0000FFSlotted Sunglasses^000000.:Niente, scusa se ti disturbo.")==2) {
+		mes "[Trader di Occhiali da Sole]";
+		mes "Torna da me quando sarai pronto.";
 		close; }
-	mes "[Sunglasses Trader]";
-	mes "I do not make them, but I can tell you where to find the person who does. For a small fee...";
+	mes "[Trader di Occhiali da Sole]";
+	mes "Non li faccio io, ma posso dirti dove trovare la persona che lo fa. Per una piccola tariffa...";
 	next;
-	if(select("How much?:No way, I will find her myself!")==2) {
-		mes "[Sunglasses Trader]";
-		mes "Suit yourself, the Maker will not make you ^0000FFSlotted Sunglasses^000000 unless she knows that you are coming.";
-		mes "Only I can tell her you are coming.";
+	if(select("Quanto?:Non ci credo, la troverò da sola!")==2) {
+		mes "[Trader di Occhiali da Sole]";
+		mes "A te stesso, il Creatore non ti farà ^0000FFOcchiali da sole a fessure^000000 a meno che lei non sappia che verrai.";
+		mes "Solo io posso dirle che vieni.";
 		next;
-		mes "[Sunglasses Trader]";
-		mes "Come back to me when you have given up. Hahaha...";
+		mes "[Trader di Occhiali da Sole]";
+		mes "Torna da me quando ti sarai arreso. Hahaha...";
 		close; }
-	mes "[Sunglasses Trader]";
-	mes "In order for me to tell you information on ^0000FFSlotted Sunglasses^000000 you need to get me:";
-	mes " - ^0000881 Carat Diamond^000000";
-	mes " - ^00008850 Feathers^000000";
+	mes "[Trader di Occhiali da Sole]";
+	mes "Per poterti fornire informazioni su ^0000FFOcchiali da sole a incastro^000000, hai bisogno di:";
+	mes " - ^0000881 Diamante al carato^000000";
+	mes " - ^00008850 Piume^000000";
 	mes " - ^000088100000z^000000";
 	next;
-	if(select("Alright, here.:That's too much!")==2) {
-		mes "[Sunglasses Trader]";
-		mes "Suit yourself.";
+	if(select("Eccolo:Troppo!")==2) {
+		mes "[Trader di Occhiali da Sole]";
+		mes "A te la scelta.";
 		close; }
-	mes "[Sunglasses Trader]";
+	mes "[Trader di Occhiali da Sole]";
 	if (countitem(730) < 1 || countitem(949) < 50 || Zeny < 100000) {
-		mes "You're missing something. Come back when you've gathered all the materials.";
+		mes "Ti manca qualcosa. Torna quando avrai raccolto tutti i materiali.";
 		close; }
 	delitem 730,1;
 	delitem 949,50;
 	set Zeny, Zeny-100000;
 	set SG_QUEST1,1;
-	mes "[Sunglasses Trader]";
-	mes "Great. Now, listen carefully.";
+	mes "[Trader di Occhiali da Sole]";
+	mes "Perfetto. Ora, ascolta attentamente.";
 	next;
-	mes "[Sunglasses Trader]";
-	mes "Look for someone named Maseph somewhere north of Morocc.";
-	mes "I will send her a message to let her know that you are coming.";
+	mes "[Trader di Occhiali da Sole]";
+	mes "Cerca qualcuno di nome Maseph da qualche parte a nord di Morocc.";
+	mes "Le invierò un messaggio per farle sapere che vieni.";
 	close;
 }
 
 moc_fild07,334,186,5	script	Maseph	702,{
 	mes "[Maseph]";
 	if(SG_QUEST1 != 1) {
-		mes "Lovely day, isn't it ?";
+		mes "Che bel giorno, non è vero?";
 		close; }
-	mes "Hello there.";
-	mes "You came for the ^000088Slotted Sunglasses^000000, right?";
+	mes "Ciao";
+	mes "Sei venuto per gli occhiali da sole a incastro ^000088Slotted Sunglasses^000000, giusto?";
 	next;
-	if(select("Yes:No, sorry to bother you.")==2) {
+	if(select("Sì:No, scusa di disturbarti.")==2) {
 		mes "[Maseph]";
-		mes "Off you go, then.";
+		mes "Via te, allora.";
 		close; }
 	mes "[Maseph]";
-	mes "To make one, I will need one pair of ^000088Sunglasses^000000 and 400000z.";
+	mes "Per farne uno, avrò bisogno di un paio di ^000088Occhiali da sole^000000 e 400000z.";
 	next;
-	if(select("Here you go.:No, thanks.")==2) {
+	if(select("Eccolo/a.:No, grazie.")==2) {
 		mes "[Maseph]";
-		mes "As you wish.";
+		mes "Come desideri.";
 		close; }
 	mes "[Maseph]";
 	if (countitem(2201) < 1) {
-		mes "I need one pair of ^000088Sunglasses^000000. Come back to me when you have one.";
+		mes "Ho bisogno di un paio di ^000088Occhiali da sole^000000. Rientrami quando ne hai uno.";
 		close; }
 	if (Zeny < 400000) {
-		mes "You do not have enough Zeny. Come back to me when you do.";
+		mes "Non hai abbastanza Zeny. Torna da me quando ne avrai.";
 		close; }
 	delitem 2201,1;
 	set Zeny, Zeny-400000;
-	mes "Thank you. I will get on it right away...";
+	mes "Grazie. Ci lavorerò subito...";
 	next;
 	mes "[Maseph]";
-	mes "Here you go, my friend.";
-	mes "Enjoy your ^000088Slotted Sunglasses^000000.";
+	mes "Eccoti, amico mio.";
+	mes "Goditi i tuoi occhiali da sole a fessure ^000088Slotted Sunglasses^000000.";
 	getitem 2202,1;
 	set SG_QUEST1,0;
 	close;

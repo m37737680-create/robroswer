@@ -21,13 +21,13 @@
 que_ng,72,29,3	script	Kunai Merchant Kashin	83,{
 	if(BaseClass == Job_Ninja) {
 		mes "[Kashin]";
-		mes "I am Kashin, distributor";
-		mes "of Kunai for Ninjas. Take";
-		mes "a look around and let me";
-		mes "know if you're interested";
-		mes "in any of my wares.";
+		mes "Sono Kashin, distributore";
+		mes "di Kunai per Ninja. Prendi";
+		mes "un'occhiata e lasciami";
+		mes "sai se sei interessato";
+		mes "in qualsiasi mio articolo.";
 		next;
-		switch(select("10 Fell Poison Kunai:10 Icicle Kunai:10 High Wind Kunai:10 Black Earth Kunai:10 Heat Wave Kunai:Cancel")) {
+		switch(select("Kunai Veleno di 10 Stelle:10 Kunai a ghiacciolo:Kunai al vento forte 10:10 Kunai di Terra Nera:Kunai Onda di Calore 10:Annulla")) {
 		case 1: callfunc "Kunai_Trade",13250,20,7524,1,13259; break;
 		case 2: callfunc "Kunai_Trade",13251,8,7522,2,13255; break;
 		case 3: callfunc "Kunai_Trade",13252,4,7523,2,13257; break;
@@ -35,20 +35,20 @@ que_ng,72,29,3	script	Kunai Merchant Kashin	83,{
 		case 5: callfunc "Kunai_Trade",13254,1,7521,2,13258; break;
 		case 6:
 			mes "[Kashin]";
-			mes "Well then, thank you";
-			mes "for visiting my shop.";
-			mes "Please come to me when";
-			mes "you need to buy some";
-			mes "Kunais. Goodbye for now~";
+			mes "Bene allora, grazie";
+			mes "per visitare il mio negozio.";
+			mes "Per favore vieni da me quando";
+			mes "devi comprare alcuni";
+			mes "Ciao. Ci vediamo per ora~";
 			close;
 		}
 	}
 	mes "[Kashin]";
-	mes "I am Kashin, distributor";
-	mes "of Kunai for Ninjas. If you";
-	mes "have any friends that are";
-	mes "Ninjas, then you might";
-	mes "want to tell them about me.";
+	mes "Sono Kashin, distributore";
+	mes "di Kunai per Ninja. Se tu";
+	mes "hai amici che sono";
+	mes "Ninja, poi potresti";
+	mes "voglio parlarvi di me.";
 	close;
 }
 
@@ -58,49 +58,49 @@ function	script	Kunai_Trade	{
 	.@item_id = getarg(4);
 
 	mes "[Kashin]";
-	mes "You can exchange";
+	mes "Puoi scambiare";
 	mes .@req_amount[0] +" "+ getitemname(.@item_req[0]) +" and";
 	mes .@req_amount[1] +" "+ getitemname(.@item_req[1]) +" for every";
-	mes "set of 10 "+ getitemname(.@item_id) +".";
+	mes "set di 10 "+ getitemname(.@item_id) +".";
 	next;
 	mes "[Kashin]";
-	mes "I can only give you a maximum of 500 sets of Kunais at a time.";
-	mes "If you want to cancel the trade, then please enter ''0.'' How many";
-	mes "Kunai sets would you like?";
+	mes "Posso darti un massimo di 500 set di Kunai alla volta.";
+	mes "Se vuoi annullare l'operazione, inserisci '0.'. Quanti";
+	mes "Set di kunai che vorresti?";
 	next;
 	input .@amount;
 	if(.@amount < 1 || .@amount > 500) {
 		mes "[Kashin]";
-		mes "Eh? I'm sorry, but";
-		mes "I can't give you that";
-		mes "many Kunai sets. Please";
-		mes "enter a value less than 500.";
+		mes "Eh? Mi dispiace, ma";
+		mes "Non posso darti quello";
+		mes "molti set di kunai. Per favore";
+		mes "inserisci un valore inferiore a 500.";
 		close;
 	}
 	if (countitem(.@item_req[0]) < .@amount*.@req_amount[0] || countitem(.@item_req[1]) < .@amount*.@req_amount[1]) {
 		mes "[Kashin]";
-		mes "Hmm, you don't have";
-		mes "enough items for this";
-		mes "Kunai exchange. Please";
-		mes "check your items again.";
+		mes "Mmh, tu non hai";
+		mes "abbastanza articoli per questo";
+		mes "Scambio di kunai. Per favore";
+		mes "ricontrolla i tuoi oggetti";
 		close;
  	}
 	if (checkweight(.@item_id, .@amount*10) == 0) {
 		mes "[Kashin]";
-		mes "Hmm, it seems like your";
-		mes "Inventory doesn't have";
-		mes "enough space to store";
-		mes "more items. You better";
-		mes "free up some space first.";
+		mes "Mmm, sembra che il tuo";
+		mes "Inventario non ha";
+		mes "abbastanza spazio per memorizzare";
+		mes "altri elementi. Meglio";
+		mes "libera un po' di spazio prima.";
 		close;
 	}
 	mes "[Kashin]";
-	mes "Great, everything is in";
-	mes "order, so let's go ahead";
-	mes "and complete this trade.";
-	mes "I'm sure that you'll be";
-	mes "quite satisfied with";
-	mes "these Kunais.";
+	mes "Ottimo, è tutto";
+	mes "ordine, quindi procediamo";
+	mes "e completa questa transazione.";
+	mes "Sono sicuro che sarai";
+	mes "piuttosto soddisfatto di";
+	mes "questi kunai.";
 	delitem .@item_req[0],.@req_amount[0]*.@amount;
 	delitem .@item_req[1],.@req_amount[1]*.@amount;
 	getitem .@item_id,10*.@amount;

@@ -5,17 +5,17 @@
 //============================================================
 
 malangdo,218,101,3	script	Malangdo Guide#Malangdo	4_CAT_SAILOR3,{
-	mes "[Malangdo Guide]";
-	mes "Nice to meet you, welcome to ^8C4210Malangdo^000000. The island of cat paw!";
-	mes "Need some guidance?";
+	mes "Guida a Malangdo";
+	mes "Piacere di conoscerti, benvenuto a ^8C4210Malangdo^000000. L'isola della zampa di gatto!";
+	mes "Hai bisogno di qualche guida?";
 	F_Navi("[Malangdo Guide]");
 	while(1) {
 		next;
-		switch(select("[ Major Facilities ]:[ Trader & Assistant ]:Clear Mini-Map:Cancel")) {
+		switch(select("[ Strutture Principali ]:[ Trader & Assistente ]:Cancella mini-mappa:Annulla")) {
 		case 1:
 			set .@loop,1;
 			while (.@loop) {
-				switch(select("[ Cat Gamers Director ]:[ Special Vending Machine ]:[ Coin Exchanger ]:[ Starry Coral ]:Previous Menu")) {
+				switch(select("[ Direttore Cat Gamers ]:[ Macchina Automatica Speciale ]:Cambiatore di monete:Corallo Stellare:Menu Precedente")) {
 				case 1:
 					callsub L_Mark, F_Navi("Cat Gamers Director","malangdo,119,137","FF0000");
 					viewpoint 1,119,137,0,0xFF0000;
@@ -45,7 +45,7 @@ malangdo,218,101,3	script	Malangdo Guide#Malangdo	4_CAT_SAILOR3,{
 		case 2:
 			set .@loop,1;
 			while (.@loop) {
-				switch(select("[ Chief Thomas ]:[ Stinky Merchant ]:[ Wandering Merchant ]:[ Inn Owner ]:[ Storekeeper ]:[ Tool Dealer ]:[ Portali ]:[ Clink ]:[ Holink ]:[ Roving Merchant ]:Previous Menu")) {
+				switch(select("[ Capo Thomas ]:[ Mercante puzzolente ]:Mercante Errante:[ Proprietario dell'alloggio ]:[ Magazziniere ]:[ Rivenditore di attrezzi ]:[ Portali ]:[ Clic ]:[ Holink ]:Mercante Itinerante:Menu Precedente")) {
 				case 1:
 					callsub L_Mark, F_Navi("Chief Thomas","malangdo,164,163","0A9696");
 					viewpoint 1,164,163,4,0x0A9696;
@@ -103,9 +103,9 @@ malangdo,218,101,3	script	Malangdo Guide#Malangdo	4_CAT_SAILOR3,{
 			}
 			break;
 		case 3:
-			mes "[Malangdo Guide]";
-			mes "I will remove all marks from your Mini-Map.";
-			mes "Need more help?";
+			mes "Guida a Malangdo";
+			mes "Rimuoverò tutti i segni dalla tua Mini-Mappa.";
+			mes "Hai bisogno di altro aiuto?";
 			viewpoint 2,1,1,0,0xFFFFFF;
 			viewpoint 2,1,1,1,0xFFFFFF;
 			viewpoint 2,1,1,2,0xFFFFFF;
@@ -122,14 +122,14 @@ malangdo,218,101,3	script	Malangdo Guide#Malangdo	4_CAT_SAILOR3,{
 			viewpoint 2,1,1,13,0xFFFFFF;
 			break;
 		case 4:
-			mes "[Malangdo Guide]";
-			mes "I wish you a pleasant trip.";
+			mes "Guida a Malangdo";
+			mes "Ti auguro un piacevole viaggio.";
 			close;
 		}
 	}
 L_Mark:
-	mes "[Malangdo Guide]";
-	mes "I will show you the location of the " + getarg(0);
-	mes "Do you need other information?";
+	mes "Guida a Malangdo";
+	mes "Ti mostrerò la posizione di " + getarg(0);
+	mes "Hai bisogno di altre informazioni?";
 	return;
 }

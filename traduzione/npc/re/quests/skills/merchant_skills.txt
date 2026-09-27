@@ -11,72 +11,72 @@ alberta,47,37,5	script	Cart Remodel Expert	4_M_REPAIR,{
 	.@max_skill_lvl = 1;
 	if (cart_remodel == 0) {
 		mes "[Jason]";
-		mes "The original pushcart is beautiful!";
+		mes "Il carretto originale è bellissimo!";
 		next;
 		mes "[Jason]";
-		mes "The solid grey color pushcart.";
+		mes "Il carrello grigio solido.";
 		next;
 		mes "[Jason]";
-		mes "I can remodel it into new cute designs.";
+		mes "Posso rimodellarlo in nuovi e carini design.";
 		next;
-		switch( select( "What is Pushcart Decoration?", "Learn Pushcart Decoration", "End Dialog" ) ) {
+		switch( select( "Cos'è la decorazione di carretti?", "Imparare a decorare i carretti", "Fine dialogo" ) ) {
 		case 1:
 			mes "[Jason]";
-			mes "I would like to completely remodel the poor pushcart.";
+			mes "Vorrei ristrutturare completamente il povero carretto.";
 			next;
 			mes "[Jason]";
-			mes "A little remodel isn't enough, don't you agree?";
+			mes "Un piccolo rifacimento non basta, non sei d'accordo?";
 			next;
 			mes "[Jason]";
-			mes "Therefore I have invented some new designs.";
+			mes "Quindi ho inventato alcuni nuovi design.";
 			next;
 			mes "[Jason]";
-			mes "It is cute and refreshing!";
+			mes "È carino e rinfrescante!";
 			close;
 		case 2:
 			if (BaseClass != Job_Merchant) {
 				mes "[Jason]";
-				mes "Why do you want learn Pushcart Decoration? Don't disturb me!";
+				mes "Perché vuoi imparare la decorazione di carretti? Non disturbarmi!";
 				close;
 			}
 			if (countitem(6606) == 0) {
 				mes "[Jason]";
-				mes "It is difficult to learn the Pushcart Decoration.";
+				mes "È difficile imparare la Decorazione del Carretto.";
 				next;
 				mes "[Jason]";
-				mes "I will teach you if you bring the ^3131FFCute Cart Remodel Coupon^000000 to me.";
+				mes "Ti insegnerò se mi porti il ^3131FFCute Cart Remodel Coupon^000000.";
 				close;
 			}
 			mes "[Jason]";
-			mes "You have brought the Cute Cart Remodel Coupon. Are you sure you want to learn Pushcart Decoration?";
+			mes "Hai portato il buono per la ristrutturazione del Cute Cart. Sei sicuro di voler imparare a decorare un carrello spingibile?";
 			next;
-			if (select("YES", "NO") == 2) {
+			if (select("SÌ", "NO") == 2) {
 				mes "[Jason]";
-				mes "Come again after you have changed your mind!";
+				mes "Come ancora dopo che hai cambiato idea!";
 				close;
 			}
 			mes "[Jason]";
-			mes "Alright! Follow me.";
+			mes "Va bene! Seguimi.";
 			next;
 			mes "[Jason]";
-			mes "This design";
-			mes "needs to catch the pushcart...";
+			mes "Questo design";
+			mes "deve afferrare il carretto...";
 			next;
 			mes "[Jason]";
-			mes "This design";
-			mes "needs to catch the pushcart.";
-			mes "Then add this....";
+			mes "Questo design";
+			mes "deve afferrare il carretto.";
+			mes "Poi aggiungi questo....";
 			mes "...";
 			next;
 			mes "[Jason]";
-			mes "You are a genius! You have learned it!";
+			mes "Sei un genio! L'hai imparato!";
 			next;
 			mes "[Jason]";
-			mes "Now is your turn to do it.";
-			mes "Press Alt+S to change your pushcart!";
+			mes "Ora è il tuo turno di farlo.";
+			mes "Premi Alt+S per cambiare il tuo carretto!";
 			next;
 			mes "[Jason]";
-			mes "This is the new cute design pushcart. You are one of our family now...!";
+			mes "Questo è il nuovo carretto carino. Ora fai parte della nostra famiglia...!";
 			delitem 6606,1;	// P_Cart_C
 			cart_remodel = 1;
 			skill "MC_CARTDECORATE",1,SKILL_PERM;
@@ -86,67 +86,67 @@ alberta,47,37,5	script	Cart Remodel Expert	4_M_REPAIR,{
 		}
 	}
 	mes "[Jason]";
-	mes "Have you decorated the pushcart?";
+	mes "Hai decorato il carretto?";
 	next;
-	switch( select( "Is there more to learn?", "I forgot how to decorate my pushcart" ) ) {
+	switch( select( "C'è altro da imparare?", "Ho dimenticato come decorare il mio carretto" ) ) {
 	case 1:
 		if (cart_remodel == .@max_skill_lvl) {
 			mes "[Jason]";
-			mes "No. I am still exploring new designs. I will teach you once I have learned it.";
+			mes "No. Sto ancora esplorando nuovi design. Ti insegnerò quando l'avrò imparato.";
 			close;
 		}
 		mes "[Jason]";
-		mes "I have something to teach, do you want to learn?";
+		mes "Ho qualcosa da insegnare, vuoi imparare?";
 		next;
 		mes "[Jason]";
-		mes "I need a ^3131FFCute Cart Remodel Coupon^000000.";
+		mes "Ho bisogno di un coupon per il rimodellamento del carrello 'Cute Cart' ^3131FFCute Cart Remodel Coupon^000000.";
 		next;
-		if (select("I want to learn", "No") == 2) {
+		if (select("Voglio imparare", "No") == 2) {
 			mes "[Jason]";
-			mes "You can come back anytime.";
+			mes "Puoi tornare quando vuoi.";
 			close;
 		}
 		if (countitem(6606) < 0) {
 			mes "[Jason]";
-			mes "You don't have any Cute Cart Remodel Coupon?";
+			mes "Non hai nessun coupon per il rimodellamento di Cute Cart?";
 			close;
 		}
 		mes "[Jason]";
-		mes "Ok, let's begin!";
+		mes "Ok, cominciamo!";
 		next;
 		mes "[Jason]";
-		mes "Doing it like this is better.";
-		mes "Do that like this as well...";
+		mes "Farlo così è meglio.";
+		mes "Fallo anche così...";
 		next;
 		mes "[Jason]";
 		mes "....";
-		mes "Let's do it!";
+		mes "Facciamolo!";
 		next;
 		mes "[Jason]";
-		mes "I have taught you the skill, you can try it now.";
+		mes "Ti ho insegnato la capacità, puoi provarla ora.";
 		delitem 6606,1;	// P_Cart_C
 		cart_remodel++;
 		skill "MC_CARTDECORATE", cart_remodel ,SKILL_PERM;
 		close;
 	case 2:
 		mes "[Jason]";
-		mes "Oh? Let me see.";
+		mes "Oh? Lasciami vedere.";
 		next;
 		if (BaseClass != Job_Merchant) {
 			mes "[Jason]";
-			mes "Please come again after you can use the pushcart!";
+			mes "Torna quando potrai usare il carrello!";
 			close;
 		}
 		mes "[Jason]";
-		mes "Do you not remember what I have taught you?";
-		mes "I have taught you this method.";
+		mes "Non ti ricordi quello che ti ho insegnato?";
+		mes "Ti ho insegnato questo metodo.";
 		next;
 		mes "[Jason]";
-		mes "You have forgotten?";
-		mes "Let's recall now!";
+		mes "Hai dimenticato?";
+		mes "Ricordiamo ora!";
 		next;
 		mes "[Jason]";
-		mes "Think carefully, you will remember it again.";
+		mes "Pensa attentamente, te lo ricorderai di nuovo.";
 		skill "MC_CARTDECORATE",1,SKILL_PERM;
 		close;
 	}

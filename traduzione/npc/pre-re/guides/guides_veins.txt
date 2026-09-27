@@ -16,80 +16,80 @@
 //============================================================
 
 veins,210,345,5	script	Veins Guide#1::ve_guide	934,{
-	mes "[Veins Guide]";
-	mes "Desert City Veins welcomes adventurers seeking shelter from harsh sandstorms.";
-	mes "If this is the first time for you to use the guide services, why don't you check the...";
+	mes "Guida alle vene";
+	mes "Desert City Veins accoglie avventurieri che cercano rifugio dalle aride tempeste di sabbia.";
+	mes "Se è la prima volta che usa i servizi guida, perché non controlla il...";
 	set .@loop1,1;
 	while(.@loop1) {
 		next;
-		switch(select("Village Guide:Remove Marks from Mini-Map:Notice:Cancel")) {
+		switch(select("Guida al villaggio:Rimuovi i segni dalla mini-mappa:Avviso:Annulla")) {
 		case 1:
-			mes "[Veins Guide]";
-			mes "I can tell you any building location as long as it is in Veins.";
-			mes "So where do you want to go?";
+			mes "Guida alle vene";
+			mes "Posso dirti la posizione di qualsiasi edificio purché sia a Veins.";
+			mes "Allora dove vuoi andare?";
 			if (.@compass_check == 0) {
-				mes "Would you like me";
-				mes "to mark locations";
-				mes "on your Mini-Map?";
+				mes "Vorresti che io";
+				mes "segnalare le posizioni";
+				mes "sulla tua mini-mappa?";
 				next;
-				if (select("Yes:No") == 1) set .@compass_check,1;
+				if (select("Sì:No") == 1) set .@compass_check,1;
 			}
 			set .@loop2,1;
 			while(.@loop2) {
 				if (.@wait_button_chk == 0) set .@wait_button_chk,1;
 				else next;
 
-				switch(select("Temple:Inn:Weapon Shop:Tool Shop:Airship:Tavern:Geological Research Institute:Cancel")) {
+				switch(select("Tempio:Dentro:Negozio di armi:Laboratorio di strumenti:Diragli:Taverna:Istituto di Ricerca Geologica:Annulla")) {
 				case 1:
-					mes "[Veins Guide]";
-					mes "Our temple is located north,";
-					mes "and always crowded with sincere followers of Goddess Freya.";
+					mes "Guida alle vene";
+					mes "Il nostro tempio è situato a nord,";
+					mes "e sempre affollato di sinceri seguaci della Dea Freya.";
 					if (.@compass_check == 1) viewpoint 1,196,258,1,0xFF0000;
 					break;
 				case 2:
-					mes "[Veins Guide]";
-					mes "You can rest your fatigue of the journey in the Inn.";
-					mes "The left building next to me is the Inn of Veins.";
+					mes "Guida alle vene";
+					mes "Puoi riposare la stanchezza del viaggio nell'ostello.";
+					mes "L'edificio sulla sinistra accanto a me è l'Inn of Veins.";
 					if (.@compass_check == 1) viewpoint 1,128,266,2,0xFF00FF;
 					break;
 				case 3:
-					mes "[Veins Guide]";
-					mes "Yes, you should protect yourself from danger on your own.";
-					mes "Purchase high quality weapons at affordable prices.";
-					mes "The Veins Weapon Shop is located to the West.";
+					mes "Guida alle vene";
+					mes "Sì, dovresti proteggerti dal pericolo da solo.";
+					mes "Acquista armi di alta qualità a prezzi accessibili.";
+					mes "Il negozio di armi Le Vene è situato a Ovest.";
 					if (.@compass_check == 1) viewpoint 1,150,175,3,0x99FFFF;
 					break;
 				case 4:
-					mes "[Veins Guide]";
-					mes "Have you packed enough necessities  for your adventure?";
-					mes "If not, I suggest you check what the Veins in the Center can offer you.";
+					mes "Guida alle vene";
+					mes "Hai preparato abbastanza necessità per la tua avventura?";
+					mes "Se no, ti suggerisco di controllare cosa possono offrirti le Vene al Centro.";
 					if (.@compass_check == 1) viewpoint 1,230,161,4,0x0000FF;
 					break;
 				case 5:
-					mes "[Veins Guide]";
-					mes "Please be aware that Veins only operates cargo airships.";
+					mes "Guida alle vene";
+					mes "Si prega di notare che Veins opera solo dirigibili cargo.";
 					if (.@compass_check == 1) viewpoint 1,273,285,5,0x00FF00;
 					break;
 				case 6:
-					mes "[Veins Guide]";
-					mes "If you'd like to make friends with";
-					mes "the townspeople, I suggest you";
-					mes "go have a drink at the tavern to";
-					mes "the west.";
+					mes "Guida alle vene";
+					mes "Se vuoi fare amicizia con";
+					mes "i cittadini, suggerisco che tu";
+					mes "vai a bere qualcosa alla taverna per";
+					mes "l'ovest.";
 					if (.@compass_check == 1) viewpoint 1,150,217,6,0x00FF00;
 					break;
 				case 7:
-					mes "[Veins Guide]";
-					mes "Are you interested in studying geology?";
-					mes "Then you'd better go check out the";
-					mes "Geological Research Institute on";
-					mes "the 2nd floor of the weapon shop.";
+					mes "Guida alle vene";
+					mes "Sei interessato a studiare geologia?";
+					mes "Allora è meglio che tu vada a dare un'occhiata al";
+					mes "Istituto di Ricerca Geologica su";
+					mes "il secondo piano del negozio di armi.";
 					if (.@compass_check == 1) viewpoint 1,150,175,7,0x00FF00;
 					break;
 				case 8:
-					mes "[Veins Guide]";
-					mes "If you like to get rid of all the location marks on your Mini-Map,";
-					mes "just ask me again, and choose 'Remove Marks from Mini-Map' menu.";
+					mes "Guida alle vene";
+					mes "Se ti piace eliminare tutti i marcatori di posizione sulla tua Mappa Minima,";
+					mes "chiedimelo di nuovo e scegli il menu 'Rimuovi segni dalla mini-mappa'.";
 					set .@loop2,0;
 					break;
 				}
@@ -104,20 +104,20 @@ veins,210,345,5	script	Veins Guide#1::ve_guide	934,{
 			viewpoint 2,273,285,5,0x00FF00;
 			viewpoint 2,150,217,6,0x00FF00;
 			viewpoint 2,150,175,7,0x00FF00;
-			mes "[Veins Guide]";
-			mes "Okay, they are gone now. If you have more locations to ask, just let me know.";
-			mes "Enjoy your stay in Veins.";
+			mes "Guida alle vene";
+			mes "Va bene, sono spariti ora. Se hai altre località da chiedere, fammelo sapere.";
+			mes "Goditi il tuo soggiorno a Veins.";
 			break;
 		case 3:
-			mes "[Veins Guide]";
-			mes "When you are using the ''Village Guide'' menu,";
-			mes "make sure that building locations will be marked on your mini-map at the upper right side of your screen.";
-			mes "If you cannot see your mini-map, use the short cut key ''ctrl+tab'' or press the ''Map'' button on your basic information windows, okay?";
-			mes "And you can also zoom out your mini-map by using the ''-'' button in case you cannot view the entire map of the village.";
+			mes "Guida alle vene";
+			mes "Quando stai usando il menù 'Guida del Villaggio',";
+			mes "assicurati che le ubicazioni degli edifici vengano contrassegnate sulla tua minimaappa nell'angolo superiore destro del tuo schermo.";
+			mes "Se non riesci a vedere la tua minamappa, usa il tasto di scelta rapida 'ctrl+tab' o premi il pulsante 'Mappa' nelle tue finestre di informazioni base, ok?";
+			mes "E puoi anche ingrandire la tua minamappa utilizzando il pulsante “-” nel caso non riesci a vedere l'intera mappa del villaggio.";
 			break;
 		case 4:
-			mes "[Veins Guide]";
-			mes "Enjoy your stay in Veins.";
+			mes "Guida alle vene";
+			mes "Goditi il tuo soggiorno a Veins.";
 			close2;
 			set .@loop1,0;
 			break;

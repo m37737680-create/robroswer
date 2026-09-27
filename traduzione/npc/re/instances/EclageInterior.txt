@@ -19,67 +19,67 @@ ecl_hub01,132,12,3	script	Chief of Staff#tl02	435,{
 	.@md_name$ = "Eclage Interior";
 
 	if (.@party_id == 0 || is_party_leader() == false){
-		mes "-! Warning !-";
-		mes "This current quest will be held at Memorial dungeon.";
-		mes "Only the party leader will enter. Please create your party.";
+		mes "-! Attenzione !-";
+		mes "Questa attuale missione si svolgerà nel dungeon commemorativo.";
+		mes "Solo il capo del partito entrerà. Per favore, crea il tuo partito.";
 		close;
 	}
 	if (ep14_2_mylord == 29) {
 		mes "[Shenime]";
-		mes "This place is set up with lighting for Orb.";
-		mes "If you favor Mayor, you should be cautious here.";
+		mes "Questo posto è allestito con illuminazione per Orb.";
+		mes "Se favorisci il Sindaco, dovresti stare attento qui.";
 		next;
-		switch (select("Enter it.:Forget it.")) {
+		switch (select("Inseriscilo.:Dimenticalo.")) {
 		case 1:
 			if (instance_create(.@md_name$) < 0) {
 				mes "[Shenime]";
-				mes "There are some soldiers dispatched by Mayor not too long ago.";
-				mes "I should sure hope that you aren't the disturbance they're looking for, right?";
+				mes "Ci sono alcuni soldati inviati dal Sindaco non molto tempo fa.";
+				mes "Dovrei sperare che tu non sia il disturbo che stanno cercando, giusto?";
 				close;
 			}
 			ecl_interior_time = gettimetick(2) + 20 * 60;
 			mes "[Shenime]";
-			mes "Given the tight internal security, you should prepare yourself.";
-			mes "Wait here for a minute.";
+			mes "Dato il rigido sistema di sicurezza interno, dovresti prepararti.";
+			mes "Aspetta qui un minuto.";
 			close;
 		case 2:
 			mes "[Shenime]";
-			mes "It's not an easy task.";
+			mes "Non è un compito facile.";
 			close;
 		}
 	}
-	mes "[High-level Laphine's]";
-	mes "Hmm? This room?";
-	mes "Never mind. Don't worry about it.";
+	mes "[Di alto livello Laphine's]";
+	mes "Mh? Questa stanza?";
+	mes "Non importa. Non preoccuparti.";
 	close;
 }
 
 ecl_hub01,130,15,0	script	It is closed shut.	844,{
 	if (ep14_2_mylord == 29) {
-		mes "This door connects to the plaza's ceiling.";
-		mes "It's also a place where the lighting is set up to make Orb seem more beautiful.";
+		mes "Questa porta si collega al soffitto della piazza.";
+		mes "È anche un luogo dove l'illuminazione è allestita per far sembrare Orb più bello.";
 		next;
-		if (select("Enter it.:Forget it.") == 1) {
+		if (select("Inseriscilo.:Dimenticalo.") == 1) {
 			.@party_id = getcharid(1);
 			.@md_name$ = "Eclage Interior";
 			if (.@party_id == 0 || is_party_leader() == false) {
-				mes "-! Warning !-";
-				mes "This current quest will be held at Memorial dungeon.";
-				mes "Only the party leader will enter. Please create your party.";
+				mes "-! Attenzione !-";
+				mes "Questa attuale missione si svolgerà nel dungeon commemorativo.";
+				mes "Solo il capo del partito entrerà. Per favore, crea il tuo partito.";
 				close;
 			}
 			if (gettimetick(2) >= ecl_interior_time){
 				mes "[Shenime]";
-				mes "Looks like the soldiers inside are really tense.";
-				mes "It is pretty difficult to guide an outsider like you.";
+				mes "Sembra che i soldati all'interno siano davvero tesi.";
+				mes "È piuttosto difficile guidare un estraneo come te.";
 				close;
 			}
 			switch (instance_enter(.@md_name$)) {
 			case IE_OTHER:
-				mes "An unknown error has occurred.";
+				mes "Si è verificato un errore sconosciuto.";
 				close;
 			case IE_NOINSTANCE:
-				mes "It is closed shut.";
+				mes "È chiuso ermeticamente.";
 				close;
 			case IE_OK:
 				mapannounce "ecl_hub01",getpartyname(.@party_id) + " Party leader " + strcharinfo(0) + " is entering " + .@md_name$,bc_map,"0x00ff99";
@@ -89,27 +89,27 @@ ecl_hub01,130,15,0	script	It is closed shut.	844,{
 		} else
 			close;
 	}
-	mes "This door connects to the plaza's ceiling.";
-	mes "It's also a place where the lighting is set up to make Orb seem more beautiful.";
-	mes "It is closed shut.";
+	mes "Questa porta si collega al soffitto della piazza.";
+	mes "È anche un luogo dove l'illuminazione è allestita per far sembrare Orb più bello.";
+	mes "È chiuso ermeticamente.";
 	close;
 }
 
 1@ecl,58,69,3	script	Shenime#ecl01	435,{
 	mes "[Shenime]";
-	mes "Oh, what's going on here?";
-	mes "They destroyed additional troops that Mayor sent?";
+	mes "Oh, cosa sta succedendo qui?";
+	mes "Hanno distrutto truppe aggiuntive che il Sindaco ha mandato?";
 	next;
-	select("What...?:I fought monsters off!");
+	select("Cos'è...?:Ho sconfitto i mostri!");
 	mes "[Shenime]";
-	mes "It doesn't matter.";
-	mes "Your job ends here.";
-	mes "Now you became a betrayer.";
-	mes "Farewell, then!";
+	mes "Non importa.";
+	mes "Il tuo lavoro finisce qui.";
+	mes "Ora sei un traditore.";
+	mes "Addio, allora!";
 	specialeffect EF_BEGINSPELL3;
 	next;
 	mes "[" + strcharinfo(0) + "]";
-	mes "No...way!!!";
+	mes "No...modo!!!";
 	specialeffect2 EF_LORD;
 	percentheal -99,0;
 	soundeffect "wander_man_move.wav",1;
@@ -174,21 +174,21 @@ OnMyMobDead:
 
 OnTouch:
 	if ('mob_summoned > 1) end;
-    mes "Upon eliminating the intruders near the Orb, another strange-looking creatures appeared.";
+    mes "Dopo aver eliminato gli intrusi vicino all'Orb, apparvero altre creature dall'aspetto strano.";
     next;
-    mes "We couldn't communicate with them either, and one of them seemed furious after looking around and finding out that its fellows are defeated.";
+    mes "Non riuscivamo a comunicare nemmeno con loro, e uno di loro sembrava furioso dopo aver guardato intorno e scoperto che i suoi compagni erano sconfitti.";
     next;
     mes "[" + strcharinfo(0) + "]";
-    mes "They look as if they are incarnation of Morocc.";
-    mes "Is the King of Domons after the Orb?";
-    mes "Or is it just a coincidence?";
+    mes "Sembrano come se fossero l'incarnazione di Morocc.";
+    mes "Il Re di Domons dopo l'Orb?";
+    mes "O è solo una coincidenza?";
     next;
-    mes "[Subordinate of the King of Demons]";
-    mes "Kyaarr...Keraahhh!!!";
+    mes "Sottordinato del Re dei Demoni";
+    mes "Amore...Odio!!!";
     mes "Kkwaaa!";
     next;
-    mes "A battle cannot be avoided!";
-    mes "They will kill me!";
+    mes "Una battaglia non può essere evitata!";
+    mes "Mi uccideranno!";
 	close2;
 	hideonnpc instance_npcname("Suspicious Creature#5");
 	hideonnpc instance_npcname("Suspicious Creature#6");
@@ -218,20 +218,20 @@ OnTouch:
 	if ('mob_summoned > 0) end;
 	.@eclmap$ = instance_mapname("1@ecl");
 	.@eventname$ = instance_npcname("#event");
-	mes "An empty room with nothing inside.";
-	mes "a light is coming out of a circular equipment in the middle of the room.";
+	mes "Una stanza vuota senza nulla dentro.";
+	mes "Una luce sta uscendo da un apparecchio circolare nel mezzo della stanza.";
 	next;
-	mes "[Suspicious Creature]";
+	mes "Creatura sospetta";
 	mes "Keheehehehe......";
 	next;
-	mes "A group of unidentifiable creatures is approaching threateningly.";
-	mes "They seemed surprised, and although Bifrost's will still holds, it's hard to communicate.";
+	mes "Un gruppo di creature non identificabili sta avvicinandosi minacciosamente.";
+	mes "Sembravano sorpresi, e sebbene la volontà di Bifröst regga ancora, è difficile comunicare.";
 	next;
-	mes "[Suspicious Creature]";
+	mes "Creatura sospetta";
 	mes "Kyaarr...Ke...Keryarya!!";
 	next;
-	mes "It seems like they are going to start attacking any minute.";
-	mes "We cannot help fighting them!";
+	mes "Sembra che stiano per iniziare ad attaccare in qualsiasi momento.";
+	mes "Non possiamo aiutare a combatterli!";
 	close2;
 	hideonnpc instance_npcname("Suspicious Creature#1");
 	hideonnpc instance_npcname("Suspicious Creature#2");
@@ -257,88 +257,88 @@ OnMyMobDead:
 }
 
 1@ecl,148,97,3	script	Avant#	618,{
-	mes "[Avant]";
-	mes "Hey, look who's here!";
-	mes "You're a friend of my son, right?";
-	mes "What a strange chance it is that has brought us together here!";
+	mes "[Prima]";
+	mes "Ehi, guarda chi è qui!";
+	mes "Sei un amico di mio figlio, vero?";
+	mes "Che strana coincidenza ci abbia riuniti qui!";
 	cutin "avant01",1;
 	next;
-	mes "[Avant]";
-	mes "Did something happen to you?";
-	mes "There was a subtle and magical echo to it.";
-	mes "Immediately after that, you were thrown here.";
+	mes "[Prima]";
+	mes "Ti è successo qualcosa?";
+	mes "C'era un eco sottile e magico che ne proveniva.";
+	mes "Immediatamente dopo, sei stato gettato qui.";
 	next;
-	if (select("It's all because of you!:Shenime said...") == 1) {
-		mes "[Avant]";
-		mes "I don't understand a word you're saying.";
-		mes "Can't you organize your story? Don't you know 'five W's and one H' rule?";
+	if (select("È tutto colpa tua!:Shenime disse...") == 1) {
+		mes "[Prima]";
+		mes "Non capisco una parola che stai dicendo.";
+		mes "Non riesci a organizzare la tua storia? Non conosci la regola delle 'cinque W' e una 'H'?";
 		next;
 	}
-	mes "[Avant]";
-	mes "Ooh...so that's what happened.";
-	mes "So you're saying that Shenime was after the Orb?";
+	mes "[Prima]";
+	mes "Oh...quindi è successo questo.";
+	mes "Quindi stai dicendo che Shenime voleva l'Orb?";
 	next;
-	mes "[Avant]";
+	mes "[Prima]";
 	mes "hehehe...hahahhaha ahahahahha";
-	mes "Well, well...did he get me, too?";
-	mes "Me, Avant, of all the people?! Hahahaha!";
+	mes "Beh, beh...mi ha preso anche lui?";
+	mes "Io, Avant, di tutte le persone?! Ahahahaha!";
 	cutin "avant02",1;
 	next;
-	select("What do you mean?");
-	mes "[Avant]";
-	mes "I was doing a research on the power of the Orb on my own.";
-	mes "But Shenime just urged me persistently.";
+	select("Cosa intendi?");
+	mes "[Prima]";
+	mes "Stavo facendo una ricerca sul potere dell'Orb da solo.";
+	mes "Ma Shenime mi ha solo esortato persistentemente.";
 	cutin "avant01",1;
 	next;
-	mes "[Avant]";
-	mes "I started from thinking about the beauty of the Orb and went on to wondering what kind of power is accumulated inside the Orb...";
-	mes "and I started questioning the principle of the Orb's power since we all benefit from it.";
+	mes "[Prima]";
+	mes "Ho iniziato pensando alla bellezza dell'Orb e sono arrivato a chiedermi che tipo di potere si accumula all'interno dell'Orb...";
+	mes "e ho iniziato a mettere in discussione il principio del potere dell'Orb dato che tutti ne traggiamo beneficio.";
 	next;
-	mes "[Avant]";
-	mes "All Laphines think of the Orb as something natural as air and water, but he was the first one to make me perceive it differently and investigate its origin.";
-	mes "Right...Shenime. He excited my curiosity on purpose.";
+	mes "[Prima]";
+	mes "Tutti i Laphines pensano all'Orb come qualcosa di naturale come aria e acqua, ma lui è stato il primo a farmi percepirlo diversamente e ad investigarne l'origine.";
+	mes "Giusto... Shenime. Mi ha incuriosito apposta.";
 	next;
-	mes "[Avant]";
-	mes "Stimulate a person who wasn't aware of air and water, and make him recognize and carry on investigating!";
-	mes "Well, well...isn't that interesting!";
+	mes "[Prima]";
+	mes "Stimolare una persona che non era consapevole di aria e acqua, e farlo riconoscere e continuare a indagare!";
+	mes "Beh, beh...non è interessante!";
 	cutin "avant02",1;
 	next;
-	mes "[Avant]";
+	mes "[Prima]";
 	mes "Ha...hahaha...";
-	mes "...I'm so angry about the fact that I just realized how he used me, but what's even worse is that I've done something horrible to our people.";
-	mes "I think I'm pretty irritated now.";
+	mes "Sono così arrabbiato del fatto che ho appena realizzato come mi ha usato, ma ciò che è ancora peggio è che ho fatto qualcosa di orribile al nostro popolo.";
+	mes "Penso di essere piuttosto irritato ora.";
 	next;
-	select("You had a conscience?");
-	mes "[Avant]";
-	mes "What kind of a person do you think I am, seriously!";
-	mes "Is it because of my sons?";
-	mes "Well, then, I can't blame you too much.";
+	select("Avevi una coscienza?");
+	mes "[Prima]";
+	mes "Che tipo di persona pensi che io sia, sul serio!";
+	mes "È a causa dei miei figli?";
+	mes "Beh, allora, non posso biasimarti troppo.";
 	cutin "avant01",1;
 	next;
-	mes "[Avant]";
-	mes "...Bah.";
-	mes "It's no fun.";
-	mes "It's not fun anymore. I'm no longer interested in you.";
+	mes "[Prima]";
+	mes "Beh.";
+	mes "Non è divertente.";
+	mes "Non è più divertente. Non sono più interessato a te.";
 	next;
-	mes "[Avant]";
+	mes "[Prima]";
 	mes "......";
-	mes "Seems like there's a visitor.";
+	mes "Sembra che ci sia un visitatore.";
 	next;
 	cutin "minuel01",4;
 	mes "[Minuel]";
-	mes "" + strcharinfo(0) + "Sir,";
-	mes "Although you're detained on suspicion of being responsible for the recent incident in the lighting room,";
-	mes "there are some witnesses to prove your innocence.";
+	mes "" + strcharinfo(0) + "Signore,";
+	mes "Sebbene tu sia trattenuto/a sospetto di essere responsabile del recente incidente nella sala illuminazione,";
+	mes "ci sono dei testimoni per provare la tua innocenza.";
 	next;
 	mes "[Minuel]";
-	mes "I don't know the details,";
-	mes "but I also believe you're not guilty.";
-	mes "I'll move you to the treatment room since this seems like a severe wound.";
+	mes "Non conosco i dettagli,";
+	mes "ma credo anche che tu non sia colpevole.";
+	mes "Ti sposterò nella sala trattamenti dato che questa sembra una ferita grave.";
 	next;
 	mes "[Minuel]";
-	mes "I don't think it's a big deal.";
-	mes "...hopefully.";
-	mes "Let's go. I'll guide you.";
+	mes "Non credo sia un grosso problema.";
+	mes "speriamo.";
+	mes "Andiamo. Ti guiderò.";
 	close2;
 	cutin "",255;
 	warp "1@ecl",146,29;
@@ -347,122 +347,122 @@ OnMyMobDead:
 	
 1@ecl,148,29,3	script	Loki#ecl01	512,{
 	mes "[Loki]";
-	mes "It seems like this guy next to me has a lot more to say than I do.";
-	mes "Why don't you explain to him first?";
+	mes "Sembra che questo ragazzo accanto a me abbia molto di più da dire di quanto io faccia.";
+	mes "Perché non glielo spieghi prima?";
 	close;
 }	
 	
 1@ecl,147,30,3	script	Nydhog#ecl01	510,{
-	mes "[Guardian Nydhog]";
-	mes "I think you should talk to Hisie first.";
+	mes "[Guardiano Nydhog]";
+	mes "Penso che tu debba parlare prima con Hisie.";
 	close;
 }
 	
 1@ecl,144,27,5	script	Hisie#ecl01	623,{
 	cutin "hisie01",0;
 	mes "[Hisie]";
-	mes "Can you tell me exactly what happened?";
+	mes "Mi puoi dire esattamente cosa è successo?";
 	next;
-	select("I fought with monsters.");
+	select("Ho litigato con mostri.");
 	cutin "hisie03",0;
 	mes "[Hisie]";
-	mes "Monsters? Subordinates of Morocc?";
-	mes "What you were trying to kill were our soldiers, the Laphines!!";
-	mes "What on earth happened there?";
+	mes "Mostri? Subordinati di Morocc?";
+	mes "Quello che cercavi di uccidere erano i nostri soldati, i Laphines!!";
+	mes "Cosa diavolo è successo lì?";
 	npcskill "AL_HEAL",9,99,80;
 	next;
 	cutin "",255;
 	mes "[Loki]";
-	mes "It's because of this.";
-	mes "" + strcharinfo(0) + "It was inside the body of -";
-	mes "This is how powerful Shenime is.";
+	mes "È a causa di questo.";
+	mes "" + strcharinfo(0) + "Era all'interno del corpo di -";
+	mes "Questo è quanto potente è Shenime.";
 	next;
-	mes "On Loki's palm, there rested a small, thin, and dried piece of thorn.";
+	mes "Sulla mano di Loki giaceva un piccolo, sottile e secco pezzo di spina.";
 	next;
 	cutin "hisie03",0;
 	mes "[Hisie]";
-	mes "Shenime, the Chief of Staff?";
-	mes "Why is he related to this?";
+	mes "Shenime, il Capo di Gabinetto?";
+	mes "Perché è correlato a questo?";
 	npcskill "AL_HEAL",9,99,80;
 	next;
 	cutin "",255;
 	mes "[Loki]";
-	mes "Shenime is one of the subordinates of Morocc.";
-	mes "His power enbales him to control another person directly or mentally influence that person indirectly through a part of his body.";
+	mes "Shenime è uno dei subordinati di Morocc.";
+	mes "Il suo potere gli consente di controllare direttamente un'altra persona o influenzarla mentalmente indirettamente attraverso una parte del suo corpo.";
 	next;
-	select("Now that I think about it...");
+	select("Ora che ci penso...");
 	mes "[" + strcharinfo(0) + "]";
-	mes "Right before coming here, Shenime reached his hand out to me and I felt a spark when I held his hand.";
-	mes "I thought it was just my imagination and ignored it...maybe that's when he...";
+	mes "Poco prima di venire qui, Shenime mi ha teso la mano e ho sentito una scintilla quando l'ho tenuta.";
+	mes "Pensavo fosse solo la mia immaginazione e l'ho ignorato...forse è allora che lui...";
 	next;
 	mes "[Nydhog]";
-	mes "You're probably right.";
-	mes "They use wicked tricks.";
-	mes "This thorn here probably has clouded your judgement.";
+	mes "Hai probabilmente ragione.";
+	mes "Usano trucchi malvagi.";
+	mes "Questa spina qui ha probabilmente offuscato il tuo giudizio.";
 	next;
 	cutin "hisie03",0;
 	mes "[Hisie]";
-	mes "So you're saying that he deceived us all?";
-	mes "The Chief of Staff is a Laphine who stayed with us for a long time! He can't be...";
+	mes "Quindi stai dicendo che ci ha ingannati tutti?";
+	mes "Il Capo di Gabinetto è un Laphine che è rimasto con noi per molto tempo! Non può essere...";
 	npcskill "AL_HEAL",9,99,80;
 	next;
 	cutin "",255;
 	mes "[Loki]";
-	mes "He might have been under the influence for a good while.";
-	mes "Anyway, this guy is not guilty.";
-	mes "I can prove it.";
+	mes "Potrebbe essere stato sotto l'influenza per un buon periodo di tempo.";
+	mes "Comunque, questo tizio non è colpevole.";
+	mes "Posso dimostrarlo.";
 	next;
 	mes "[Nydhog]";
-	mes "I swear by the name of the guardian of Yggdrasil, too.";
-	mes "" + strcharinfo(0) + "- will by no means do such a thing.";
+	mes "Giuro anche dal nome del guardiano di Yggdrasil.";
+	mes "" + strcharinfo(0) + "non farà assolutamente una cosa del genere.";
 	next;
 	cutin "hisie02",0;
 	mes "[Hisie]";
-	mes "Hah...";
-	mes "But things got out of control.";
-	mes "I didn't expect this.";
+	mes "Ah...";
+	mes "Ma le cose sono sfuggite al controllo.";
+	mes "Non me lo aspettavo.";
 	next;
-	select("What happened to the Orb?");
+	select("Cosa è successo all'Orb?");
 	mes "[Hisie]";
-	mes "The inner core is stolen.";
-	mes "Nobody knows that the Orb's inner core is gone,";
-	mes "and that's why Karr didn't make it here.";
+	mes "Il nucleo interno è stato rubato.";
+	mes "Nessuno sa che il nucleo interno dell'Orb è sparito,";
+	mes "ed è per questo che Karr non ci ha fatto arrivare qui.";
 	npcskill "AL_HEAL",9,99,80;
 	next;
 	mes "[Hisie]";
-	mes "And what's more, several soldiers are injured because of you.";
-	mes "None of them died fortunately, but most of them are wounded severely.";
-	mes "The situation is not very good right now.";
+	mes "E per di più, diversi soldati sono feriti a causa di te.";
+	mes "Nessuno di loro è morto fortunatamente, ma la maggior parte di loro è gravemente ferita.";
+	mes "La situazione non è molto buona al momento.";
 	next;
 	cutin "",255;
 	mes "[Loki]";
-	mes "Someone has to take the responsibility here then.";
-	mes "In all probablility," + strcharinfo(0) + "it will be you.";
+	mes "Qualcuno deve assumersi la responsabilità qui allora.";
+	mes "In ogni probabilità," + strcharinfo(0) + "sarà tu.";
 	next;
 	cutin "hisie02",0;
 	mes "[Hisie]";
-	mes "......these two gentlemen here cleared up all charges related to the Orb,";
-	mes "but both you and Karr won't be able to avoid your responsibility.";
-	mes "you'll have to catch Shenime.";
+	mes "...questi due signori qui hanno chiarito tutte le accuse relative all'Orb,";
+	mes "ma né tu né Karr potrete evitare la vostra responsabilità.";
+	mes "dovrai prendere Shenime.";
 	npcskill "AL_HEAL",9,99,80;
 	next;
 	cutin "hisie01",0;
 	mes "[Hisie]";
-	mes "It seems like you've rested enough. Let's get going.";
-	mes "Karr is waiting for you.";
-	mes "What will you two do?";
+	mes "Sembra che tu abbia riposato abbastanza. Andiamo.";
+	mes "Karr ti sta aspettando.";
+	mes "Cosa farete voi due?";
 	next;
 	cutin "",255;
 	mes "[Loki]";
-	mes "Don't worry about us.";
-	mes "Our target is Morocc, the King of Demons.";
-	mes "It's good enough that we found an evidence here.";
+	mes "Non preoccuparti per noi.";
+	mes "Il nostro obiettivo è Morocc, il Re dei Demoni.";
+	mes "È abbastanza che abbiamo trovato una prova qui.";
 	next;
 	cutin "hisie01",0;
 	mes "[Hisie]";
-	mes "Thank you for your help.";
-	mes "We will take off now.";
-	mes "Let's go." + strcharinfo(0) + ".";
+	mes "Grazie per il tuo aiuto.";
+	mes "Decolleremo ora.";
+	mes "Andiamo." + strcharinfo(0) + ".";
 	ep14_2_mylord = 30;
 	changequest 7450,7451;
 	close2;

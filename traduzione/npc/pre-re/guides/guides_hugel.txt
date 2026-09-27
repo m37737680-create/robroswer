@@ -16,110 +16,110 @@
 //============================================================
 
 hugel,98,56,3	script	Hugel Guide Granny#huge	863,0,0,{
-	mes "[Hugel Guide Granny]";
-	mes "Oh, hello~ you are one energetic adventurer.";
-	mes "Welcome to Hugel. I was honored to guide you to this beautiful village.";
-	mes "If this is the first time for you to use the guide services, why don't you check the ''Notice'' menu first?";
+	mes "[Hugel Guida Nonna]";
+	mes "Oh, ciao~ sei un avventuriero così energico.";
+	mes "Benvenuti a Hugel. Sono stato onorato di guidarvi in questo bellissimo villaggio.";
+	mes "Se è la prima volta che usa i servizi guida, perché non controlla prima il menu 'Avvisi'?";
 	while(1) {
 		next;
-		switch(select("Village Guide:Remove Marks from Mini-Map:Notice:Cancel")) {
+		switch(select("Guida al villaggio:Rimuovi i segni dalla mini-mappa:Avviso:Annulla")) {
 		case 1:
-			mes "[Hugel Guide Granny]";
-			mes "I can tell you any building location as long as it is in Hugel.";
-			mes "So where do you want to go?";
+			mes "[Hugel Guida Nonna]";
+			mes "Posso dirti la posizione di qualsiasi edificio purché sia a Hugel.";
+			mes "Allora dove vuoi andare?";
 			if (.@compass_check == 0) {
-				mes "Would you like me";
-				mes "to mark locations";
-				mes "on your Mini-Map?";
+				mes "Vorresti che io";
+				mes "segnalare le posizioni";
+				mes "sulla tua mini-mappa?";
 				next;
-				if (select("Yes.:No.") == 1) set .@compass_check,1;
+				if (select("Sì.:No.") == 1) set .@compass_check,1;
 			}
 			set .@loop,1;
 			while(.@loop) {
 				if (.@wait_button_chk == 0) set .@wait_button_chk,1;
 				else next;
-				switch(select("Church:Inn:Pub:Airport:Weapon Shop:Tool Shop:Party Supplies Shop:^3131FFHunter Job Change Place^000000:^3131FFShrine Expedition's Place^000000:Monster Race Arena:Bingo Game Room:Cancel")) {
+				switch(select("Chiesa:Dentro:Pubblico:Aeroporto:Negozio di armi:Laboratorio di strumenti:Negozio di articoli per feste:^3131FFCacciatore Cambio Lavoro Luogo^000000:^3131FFLuogo della Spedizione dello Santuario^000000:Arena delle Corse di Mostri:Sala giochi Bingo:Annulla")) {
 				case 1:
-					mes "[Hugel Guide Granny]";
-					mes "Well, to me, this Church is rather like a place for old folks like me, you know...";
+					mes "[Hugel Guida Nonna]";
+					mes "Beh, per me, questa Chiesa è piuttosto un posto per vecchi come me, sai...";
 					if (.@compass_check)
 						viewpoint 1,156,116,2,0xFF0000;
 					break;
 				case 2:
-					mes "[Hugel Guide Granny]";
-					mes "Pudding rather than praise.";
-					mes "You'd better unpack your stuffs first before you start looking around this village.";
-					mes "It is the building right next to me.";
+					mes "[Hugel Guida Nonna]";
+					mes "Budino piuttosto che lodi.";
+					mes "Meglio che tu scarti i tuoi effetti prima di iniziare a guardare questo villaggio.";
+					mes "È l'edificio proprio accanto a me.";
 					if (.@compass_check)
 						viewpoint 1,104,79,3,0xFF00FF;
 					break;
 				case 3:
-					mes "[Hugel Guide Granny]";
-					mes "Yes, when you travel, you want to drop by a pub and make new friends.";
-					mes "Go east from here, then you will arrive at the pub.";
+					mes "[Hugel Guida Nonna]";
+					mes "Sì, quando viaggi, vuoi passare in un pub e fare nuove amicizie.";
+					mes "Vai a est da qui, e poi arriverai al pub.";
 					if (.@compass_check)
 						viewpoint 1,129,66,4,0x99FFFF;
 					break;
 				case 4:
-					mes "[Hugel Guide Granny]";
-					mes "A while ago, strangers came to village and built that strange airport kind of thing...";
-					mes "What do they call it? Airship?";
+					mes "[Hugel Guida Nonna]";
+					mes "Un po' fa, degli sconosciuti sono venuti al villaggio e hanno costruito quella strana cosa tipo aeroporto...";
+					mes "Come lo chiamano? Diragliando?";
 					if (.@compass_check)
 						viewpoint 1,178,146,5,0x0000FF;
 					break;
 				case 5:
-					mes "[Hugel Guide Granny]";
-					mes "Well, we have a weapon shop in the center of village.";
-					mes "But I don't know if there is any weapon that you find useful.";
+					mes "[Hugel Guida Nonna]";
+					mes "Beh, abbiamo un negozio di armi nel centro del villaggio.";
+					mes "Ma non so se c'è qualche arma che tu trovi utile.";
 					if (.@compass_check)
 						viewpoint 1,70,158,6,0x00FF00;
 					break;
 				case 6:
-					mes "[Hugel Guide Granny]";
-					mes "Yes, I love Hugel brand Red Potions. I haven't tasted Red Potions from any other brands yet...hohoho. ";
-					mes "The tool shop is located in the center of village.";
+					mes "[Hugel Guida Nonna]";
+					mes "Sì, adoro i Red Potions del marchio Hugel. Non ho ancora assaggiato Red Potions di nessun altro marchio...hohoho. ";
+					mes "Il negozio di attrezzi è situato nel centro del villaggio.";
 					if (.@compass_check)
 						viewpoint 1,93,167,7,0x00FF00;
 					break;
 				case 7:
-					mes "[Hugel Guide Granny]";
-					mes "The party supplies shop is around the center of village.";
-					mes "Make sure that you will not use any firecracker stuffs near other people, because it is dangerous, you know?";
+					mes "[Hugel Guida Nonna]";
+					mes "Il negozio di articoli per feste è vicino al centro del villaggio.";
+					mes "Assicurati di non usare nessun tipo di petardo vicino ad altre persone, perché è pericoloso, sai?";
 					if (.@compass_check)
 						viewpoint 1,91,105,8,0xFF99FF;
 					break;
 				case 8:
-					mes "[Hugel Guide Granny]";
-					mes "Oh, are you an aspiring Hunter?";
-					mes "Then head northeast following the beach, then you will find the Hunter job change place.";
+					mes "[Hugel Guida Nonna]";
+					mes "Sei un aspirante Cacciatore?";
+					mes "Poi dirigetevi a nord-est seguendo la spiaggia, e troverete il posto di cambio lavoro Hunter.";
 					if (.@compass_check)
 						viewpoint 1,206,228,9,0xFF9900;
 					break;
 				case 9:
-					mes "[Hugel Guide Granny]";
-					mes "I heard that the shrine expedition is staying in a house at the west.";
-					mes "They have put some kind of sign in the middle of village, so I guess that they are hiring people for something...";
-					mes "I wonder what they are doing in here...hmmm.";
+					mes "[Hugel Guida Nonna]";
+					mes "Ho sentito che l'escursione al santuario alloggerà in una casa a ovest.";
+					mes "Hanno messo una specie di cartello nel mezzo del villaggio, quindi immagino che stiano assumendo gente per qualcosa...";
+					mes "Mi chiedo cosa stiano facendo qui...mhm.";
 					if (.@compass_check)
 						viewpoint 1,52,91,10,0xFFFFFF;
 					break;
 				case 10:
-					mes "[Hugel Guide Granny]";
-					mes "I also like playing Monster Race games. It is pretty fun, you know?";
-					mes "Oh, you haven't tried it yet? No~ you'd better try. Trust me, you will like it.";
+					mes "[Hugel Guida Nonna]";
+					mes "Mi piacciono anche i giochi di Monster Race. Sono piuttosto divertenti, sai?";
+					mes "Oh, non l'hai ancora provato? No~ dovresti provarlo. Fidati di me, ti piacerà.";
 					if (.@compass_check)
 						viewpoint 1,58,72,11,0xFF9900;
 					break;
 				case 11:
-					mes "[Hugel Guide Granny]";
-					mes "Do you like bingo games? If you do, go visit Euklan's Bingo Game Room.";
+					mes "[Hugel Guida Nonna]";
+					mes "Ti piacciono i giochi di bingo? Se sì, vai a visitare la Sala Giochi di Bingo di Euklan.";
 					if (.@compass_check)
 						viewpoint 1,55,209,12,0x66FFFF;
 					break;
 				case 12:
-					mes "[Hugel Guide Granny]";
-					mes "If you like to get rid of all the location marks on your Mini-Map,";
-					mes "just ask me again, and choose ''Remove Marks from Mini-Map'' menu.";
+					mes "[Hugel Guida Nonna]";
+					mes "Se ti piace eliminare tutti i marcatori di posizione sulla tua Mappa Minima,";
+					mes "ri chiedimi e scegli il menu 'Rimuovi segni dalla mini-mappa'.";
 					set .@loop,0;
 				}
 			}
@@ -137,19 +137,19 @@ hugel,98,56,3	script	Hugel Guide Granny#huge	863,0,0,{
 			viewpoint 2,58,72,11,0xFF9900;
 			viewpoint 2,55,209,12,0x66FFFF;
 			set .@compass_check,0;
-			mes "[Hugel Guide Granny]";
-			mes "Okay, they are gone now. If you have more locations to ask, just let me know.";
+			mes "[Hugel Guida Nonna]";
+			mes "Va bene, sono spariti ora. Se hai altre località da chiedere, fammelo sapere.";
 			break;
 		case 3:
-			mes "[Hugel Guide Granny]";
-			mes "When you are using the ''Village Guide'' menu, ";
-			mes "make sure that building locations will be marked on your mini-map at the upper right side of your screen.";
-			mes "If you cannot see your mini-map, use the short cut key ''ctrl+tab'' or press the ''Map'' button on your basic information windows, okay?";
-			mes "And you can also zoom out your mini-map by using the ''-'' button in case you cannot view the entire map of the village.";
+			mes "[Hugel Guida Nonna]";
+			mes "Quando stai usando il menù 'Guida del Villaggio', ";
+			mes "assicurati che le ubicazioni degli edifici vengano contrassegnate sulla tua minimaappa nell'angolo superiore destro del tuo schermo.";
+			mes "Se non riesci a vedere la tua minamappa, usa il tasto di scelta rapida 'ctrl+tab' o premi il pulsante 'Mappa' nelle tue finestre di informazioni base, ok?";
+			mes "E puoi anche ingrandire la tua minamappa utilizzando il pulsante “-” nel caso non riesci a vedere l'intera mappa del villaggio.";
 			break;
 		case 4:
-			mes "[Hugel Guide Granny]";
-			mes "This guide job is pretty exciting. Hohoho~";
+			mes "[Hugel Guida Nonna]";
+			mes "Questa guida lavoro è piuttosto emozionante. Hohoho~";
 			close;
 		}
 	}

@@ -115,45 +115,45 @@ ra_in01,376,69,4	script	Inn Keeper#Annie	931,{
 
 //====================== Lighthalzen =================================
 lhz_in02,230,284,4	script	Hotel Employee#01	86,{
-	mes "[Hotel Employee]";
-	mes "Welcome to";
-	mes "the Royal Dragon,";
-	mes "where you can find the";
-	mes "finest accomodations";
-	mes "and the best service.";
+	mes "Dipendente dell'hotel";
+	mes "Benvenuto a";
+	mes "il Drago Reale,";
+	mes "dove puoi trovare il";
+	mes "migliori alloggiamenti";
+	mes "e il miglior servizio.";
 	next;
-	switch(select("Save Point:Rest - 5,000 zeny:Cancel")) {
+	switch(select("Punto di salvataggio:Riposo - 5.000 zeni:Annulla")) {
 	case 1:
 		savepoint "lhz_in02",209,275,1,1;
-		mes "[Hotel Employee]";
-		mes "Thank you, your";
-		mes "Respawn Point has";
-		mes "been saved here in";
-		mes "the Royal Dragon.";
+		mes "Dipendente dell'hotel";
+		mes "Grazie, tuo";
+		mes "Punto di riapparizione ha";
+		mes "salvato qui in";
+		mes "Il Drago Reale.";
 		close;
 	case 2:
 		if(Zeny < 5000) {
-			mes "[Hotel Employee]";
-			mes "I'm sorry, but";
-			mes "you need 5,000 zeny";
-			mes "in order to check in.";
+			mes "Dipendente dell'hotel";
+			mes "Mi dispiace, ma";
+			mes "hai bisogno di 5.000 zeny";
+			mes "per effettuare il check-in.";
 			close;
 		}
 		set Zeny,Zeny - 5000;
-		mes "[Hotel Employee]";
-		mes "Thank you~";
-		mes "I hope you enjoy";
-		mes "your stay in the";
-		mes "Royal Dragon.";
+		mes "Dipendente dell'hotel";
+		mes "Grazie~";
+		mes "Spero ti piaccia";
+		mes "il tuo soggiorno nel";
+		mes "Drago Reale.";
 		close2;
 		warp "lhz_in02",219,150;
 		percentheal 100,100;
 		npcskill "AL_BLESSING",10,99,99;
 		end;
 	case 3:
-		mes "[Hotel Employee]";
-		mes "Thank you and";
-		mes "have a nice day.";
+		mes "Dipendente dell'hotel";
+		mes "Grazie e";
+		mes "ti auguro una buona giornata.";
 		close;
 	}
 }
@@ -167,68 +167,68 @@ hu_in01,246,107,3	script	Inn Maid#Receptionist	53,{
 
 //======================== Veins ====================================
 ve_in,157,219,5	script	Inn Master#Receptionist	709,{
-	mes "[Inn Master]";
-	mes "Good day~";
-	mes "Welcome to the";
-	mes "most comfortable";
-	mes "inn here in Veins~";
+	mes "[Maestro della Locanda]";
+	mes "Buongiorno~";
+	mes "Benvenuto/a al";
+	mes "più comodo";
+	mes "qui qui a Veins~";
 	next;
-	switch(select("Save:Take a Rest -> 5000 zeny:Quit")) {
+	switch(select("Salva:Riposare -> 5000 zeny:Smetti")) {
 	case 1:
-		mes "[Inn Master]";
-		mes "Your Respawn Point";
-		mes "has been saved in Veins.";
-		mes "Enjoy your stay in town~";
+		mes "[Maestro della Locanda]";
+		mes "Il tuo punto di riapparizione";
+		mes "è stato salvato in Veins.";
+		mes "Goditi il tuo soggiorno in città~";
 		savepoint "ve_in",157,209,1,1;
 		close;
 	case 2:
-		mes "[Inn Master]";
+		mes "[Maestro della Locanda]";
 		if(Zeny < 5000){
-			mes "I'm sorry, but I don't";
-			mes "think you have enough";
-			mes "money to check in. The";
-			mes "service charge is 5,000 zeny.";
+			mes "Mi dispiace, ma non";
+			mes "pensi di averne abbastanza";
+			mes "soldi per il check-in. Il";
+			mes "la tassa di servizio è di 5.000 zeny.";
 			close;
 		}
-		mes "Enjoy your stay~";
+		mes "Goditi il tuo soggiorno~";
 		close2;
 		set Zeny,Zeny - 5000;
 		percentheal 100,100;
 		warp "ve_in",184,228;
 		end;
 	case 3:
-		mes "[Inn Master]";
-		mes "Please come again.";
+		mes "[Maestro della Locanda]";
+		mes "Per favore torna.";
 		close;
 	}
 }
 
 //======================== Brasilis =================================
 bra_in01,27,24,3	script	Hotel Keeper#bra1	478,{
-	mes "[Hotel Keeper]";
-	mes "Welcome to the beautiful Brasilis Hotel.";
+	mes "[Custode dell'hotel]";
+	mes "Benvenuti al bellissimo Hotel Brasilis.";
 	next;
-	switch(select("Save:Rest -5000 zeny:Cancel")) {
+	switch(select("Salva:Riposo -5000 zeny:Annulla")) {
 	case 1:
-		mes "[Hotel Keeper]";
-		mes "Do you want to save here at the Brasilis Hotel?";
+		mes "[Custode dell'hotel]";
+		mes "Vuoi fermarti qui all'Hotel Brasilis?";
 		next;
-		switch(select("No thank you.:Absolutely.")) {
+		switch(select("No grazie.:Assolutamente.")) {
 		case 1:
-			mes "[Hotel Keeper]";
-			mes "Ok then, enjoy your stay.";
+			mes "[Custode dell'hotel]";
+			mes "Allora, goditi il tuo soggiorno.";
 			close;
 		case 2:
-			mes "[Hotel Keeper]";
-			mes "Your respawn has been saved here at the hotel. I hope that you enjoy your stay here in Brasilis.";
+			mes "[Custode dell'hotel]";
+			mes "Il tuo respawn è stato salvato qui all'hotel. Spero che ti goda il tuo soggiorno qui a Brasilis.";
 			savepoint "bra_in01",144,69,1,1;
 			close;
 		}
 		end;
 	case 2:
 		if (Zeny > 4999) {
-			mes "[Hotel Keeper]";
-			mes "I will show you a great room.";
+			mes "[Custode dell'hotel]";
+			mes "Ti mostrerò un salone magnifico.";
 			close2;
 			if (Zeny < 5000)
 				end;
@@ -237,8 +237,8 @@ bra_in01,27,24,3	script	Hotel Keeper#bra1	478,{
 			warp "bra_in01",144,69;
 			end;
 		}
-		mes "[Hotel Keeper]";
-		mes "I'm sorry, but the service charge is 5,000 zeny per night.";
+		mes "[Custode dell'hotel]";
+		mes "Mi dispiace, ma il costo del servizio è di 5.000 zeni a notte.";
 	case 3:
 		close;
 	}
@@ -246,47 +246,47 @@ bra_in01,27,24,3	script	Hotel Keeper#bra1	478,{
 
 //======================== Einbroch =================================
 ein_in01,206,224,3	script	Hotel Employee#ein	855,{
-	mes "[Hotel Employee]";
-	mes "Good day, welcome to the";
-	mes "Einbroch Hotel. The staff is";
-	mes "always striving to accommodate";
-	mes "our guests with the highest";
-	mes "standards in cleanliness,";
-	mes "service and convenience~";
+	mes "Dipendente dell'hotel";
+	mes "Buongiorno, benvenuto al";
+	mes "Hotel Einbroch. Il personale è";
+	mes "sempre cercando di accogliere";
+	mes "i nostri ospiti con il più alto";
+	mes "standard di pulizia,";
+	mes "servizio e comodità";
 	next;
 	if (kain_ticket == 5) {
-		mes "[Hotel Employee]";
-		mes "Are you looking";
-		mes "for Mr. Defru Ark?";
-		mes "Oh right, he did mention";
-		mes "waiting for some package";
-		mes "from the Airport. Now let";
-		mes "me pull up that information...";
+		mes "Dipendente dell'hotel";
+		mes "Stai cercando";
+		mes "per il signor Defru Ark?";
+		mes "Ah, giusto, lo aveva menzionato";
+		mes "in attesa di un pacco";
+		mes "dall'aeroporto. Ora lasciar";
+		mes "mi porti quelle informazioni...";
 		next;
-		mes "[Hotel Employee]";
-		mes "Ah, here we are.";
-		mes "Mr. Defru Ark is";
-		mes "staying in Room 201.";
+		mes "Dipendente dell'hotel";
+		mes "Ah, eccoci qui.";
+		mes "Mr. Defru Ark è";
+		mes "restare nella Stanza 201.";
 		next;
 	}
 	else {
-		switch(select("Save:Take Rest - 5,000 zeny:Cancel")) {
+		switch(select("Salva:Riposare - 5.000 zeni:Annulla")) {
 		case 1:
-			mes "[Hotel Employee]";
-			mes "Your Respawn Point";
-			mes "has been saved here";
-			mes "in the Einbroch Hotel.";
-			mes "Thank you, and please";
-			mes "come again.";
+			mes "Dipendente dell'hotel";
+			mes "Il tuo punto di riapparizione";
+			mes "è stato salvato qui";
+			mes "nell'hotel Einbroch.";
+			mes "Grazie e per favore";
+			mes "ancora.";
 			close2;
 			savepoint "ein_in01",200,224,1,1;
 			end;
 		case 2:
 			if (Zeny > 4999) {
-				mes "[Hotel Employee]";
-				mes "Thank you.";
-				mes "Please enjoy";
-				mes "your rest~";
+				mes "Dipendente dell'hotel";
+				mes "Grazie.";
+				mes "Goditi";
+				mes "il tuo riposo~";
 				close2;
 				set Zeny, Zeny-5000;
 				percentheal 100,100;
@@ -294,23 +294,23 @@ ein_in01,206,224,3	script	Hotel Employee#ein	855,{
 				end;
 			}
 			else {
-				mes "[Hotel Employee]";
-				mes "I'm sorry, but the";
-				mes "accommodation fee is";
-				mes "5,000 zeny. Next time,";
-				mes "please make sure that you";
-				mes "bring enough zeny, okay?";
+				mes "Dipendente dell'hotel";
+				mes "Mi dispiace, ma il";
+				mes "la tariffa di alloggio è";
+				mes "5.000 zeni. La prossima volta,";
+				mes "per favore assicurati che tu";
+				mes "porta abbastanza zeny, ok?";
 				close;
 			}
 		case 3:
-			mes "[Hotel Employee]";
-			mes "Thank you and";
-			mes "please come again~";
+			mes "Dipendente dell'hotel";
+			mes "Grazie e";
+			mes "per favore vieni di nuovo~";
 			close;
 		}
 	}
-	mes "[Hotel Employee]";
-	mes "Have a good day.";
+	mes "Dipendente dell'hotel";
+	mes "Buona giornata.";
 	close;
 }
 
@@ -319,28 +319,28 @@ function	script	F_InnMaid	{
 	.@npc_name$ = getarg(0);
 
 	mes .@npc_name$;
-	mes "Welcome to";
+	mes "Benvenuto a";
 	mes getarg(1) + ".";
-	mes "How may I help you?";
+	mes "Come posso aiutarla?";
 	next;
-	switch(select("Save:Take a Rest -> 5000 zeny:Cancel")) {
+	switch(select("Salva:Riposare -> 5000 zeny:Annulla")) {
 	case 1:
 		mes .@npc_name$;
-		mes "Your respawn point";
-		mes "has been saved.";
-		mes "Thank you,";
-		mes "please come again.";
+		mes "Il tuo punto di riapparizione";
+		mes "è stato salvato.";
+		mes "Grazie,";
+		mes "per favore torna.";
 		savepoint getarg(2),getarg(3),getarg(4),1,1;
 		close;
 	case 2:
 		mes .@npc_name$;
 		if(Zeny < 5000){
-			mes "I'm sorry, but the service charge is 5,000 zeny. Please make sure that you have enough money to check in next time, okay?";
+			mes "Mi dispiace, ma la tassa di servizio è di 5.000 zeni. Per favore, assicurati di avere abbastanza soldi per il check-in la prossima volta, ok?";
 			close;
 		}
-		mes "Thank you.";
-		mes "I hope you";
-		mes "enjoy your rest~";
+		mes "Grazie.";
+		mes "Spero che tu";
+		mes "goditi il tuo riposo~";
 		close2;
 		set Zeny,Zeny - 5000;
 		percentheal 100,100;

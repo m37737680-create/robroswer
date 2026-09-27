@@ -20,81 +20,81 @@ yuno,138,187,4	script	Hypnotist Teacher	124,{
 	mes @npcname$;
 
 	if(MISC_QUEST & 1024){
-		mes "I already told you that you may only complete this event once.";
+		mes "Ti ho già detto che puoi completare questo evento solo una volta.";
 		close;
 	}
 	if(BaseLevel < 60) {
-		mes "Please return when you reach BaseLv 60 or higher.";
+		mes "Per favore torna quando raggiungerai BaseLv 60 o superiore.";
 		close;
 	}
 	if(SkillPoint != 0) {
-		mes "You will need to use up all of your skill points if you want me to continue.";
-		mes "Please come again soon!";
+		mes "Avrai bisogno di usare tutti i tuoi punti abilità se vuoi che io continui.";
+		mes "Torna presto!";
 		close;
 	}
 	if(Weight || checkfalcon() || checkcart() || checkriding()) {
-		mes "Would you like to reset skills?";
-		mes "I'm sorry, but...";
+		mes "Vuoi resettare le competenze?";
+		mes "Mi dispiace, ma...";
 		next;
 		mes @npcname$;
 		if(Weight) {
-			mes "You cannot reset skills";
-			mes "when you keep";
-			mes "any items.";
+			mes "Non puoi resettare le abilità";
+			mes "quando tieni";
+			mes "nessun articolo.";
 		} else if(checkcart())
-			mes "Please, drop your cart and we'll continue.";
+			mes "Per favore, lascia il carrello e continueremo.";
 		else if(checkfalcon())
-			mes "Please, free your Falcon and we'll continue.";
+			mes "Per favore, libera il tuo Falco e continueremo.";
 		else if(checkriding())
-			mes "Please, free your PecoPeco and we'll continue.";
+			mes "Per favore, libera il tuo PecoPeco e continueremo.";
 		next;
 		mes @npcname$;
-		mes "Come back soon!";
+		mes "Torna presto!";
 		close;
 	}
-	mes "Hello, I am the Skill Resetter.";
-	mes "Your name is ^0080FF"+strcharinfo(0)+"^000000.";
-	mes "How can I help you?";
+	mes "Ciao, sono il Resetatore di Abilità.";
+	mes "Il tuo nome è ^0080FF"+strcharinfo(0)+"^000000.";
+	mes "Come posso aiutarti?";
 	next;
-	menu "^009500Information about Reset skills.^000000",L_Info,"^00B6FFReset skills.^000000",L_Reset,"^000088Nevermind^000000",-;
+	menu "^009500Information about Reset skills.^000000",L_Info,"^00B6FFResettare abilità.^000000",L_Reset,"^000088Non importa^000000",-;
 
 	mes @npcname$;
-	mes "You know where to find me,";
-	mes "if you ever want a reset!!"; 
+	mes "Sai dove trovarmi,";
+	mes "se vorrai un reset!!"; 
 	close;
 
 L_Info:
 	mes @npcname$;
-	mes "This skill reset is not FREE OF CHARGE!!";
-	mes "Expense for the reset of skill is ^D5A50020000 Zeny x BaseLv^000000.";
-	mes "Yeah ...each One BaseLv costs 20000 Zeny to reset skill.";
+	mes "Questo reset di abilità non è GRATUITO!!";
+	mes "Spesa per il reset di abilità è ^D5A50020000 Zeny x BaseLv^000000.";
+	mes "Sì...ogni BaseLv costa 20000 Zeny per resettare la abilità.";
 	next;
 	mes @npcname$;
-	mes "Oh yeah, one more thing!";
-	mes "Any carts, falcons or pecos you have equiped";
-	mes "will be removed if you reset your skills.";
+	mes "Oh sì, un'altra cosa!";
+	mes "Quali carri, falconi o pecos hai equipaggiato";
+	mes "verrà rimosso se reimposti le tue abilità.";
 	next;
 	mes @npcname$;
-	mes "Just one time does again to shake the skill point";
-	mes "Careful with your skills from here on.";
+	mes "Solo una volta fa di nuovo per scuotere il punto abilità";
+	mes "Attento con le tue abilità d'ora in poi.";
 	close;
 	
 L_Reset:
 	mes @npcname$;
-	mes "Before skill reset in starting.";
-	mes "You shall have to first tell me your Base Level."; 
+	mes "Prima del reset delle abilità all'inizio.";
+	mes "Dovrai prima dirmi il tuo Livello Base."; 
 	next;
 	mes "^D5A500[" + strcharinfo(0) + "]^000000";
-	mes "My Base level is ^AA00AALevel " + BaseLevel + "BaseLv.^000000"; 
+	mes "Il mio livello base è ^AA00AALevel " + BaseLevel + "BaseLv.^000000"; 
 	next;
 	set @zeny,BaseLevel*20000;
 	mes @npcname$;
-	mes "Total zeny to the reset of skill amount ^529DFF" + @zeny + "Zeny^000000  for the skill reset service.";
+	mes "Totale zeny per il ripristino dell'importo delle abilità ^529DFF" + @zeny + "Zeny^000000 per il servizio di reset abilità.";
 	next;
 	if(Zeny < @zeny) {
 		mes @npcname$;
-		mes "It seems that you don't have enough money.";
-		mes "In addition we wait for the opportunity.";
+		mes "Sembra che non abbia abbastanza soldi.";
+		mes "Inoltre aspettiamo l'opportunità.";
 		emotion ET_SCRATCH;
 		close;
 	}
@@ -102,7 +102,7 @@ L_Reset:
 	set MISC_QUEST,MISC_QUEST | 1024;
 	resetskill;
 	mes @npcname$;
-	mes "Thank you.";
+	mes "Grazie.";
 	emotion ET_THANKS;
 //	logmes "SKILL RESET EVENT";
 	close;

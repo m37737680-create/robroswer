@@ -18,130 +18,130 @@
 // Main NPC :: resetskill_novice
 //============================================================
 izlude,127,175,3	script	Hypnotist#novice	124,{
-	mes "[Hypnotist]";
-	mes "Greetings, adventurer.";
-	mes "I'm a member of the Hypnotist";
-	mes "Academy sent here to Izlude";
-	mes "to provide Skill Reset services";
-	mes "to certain First Class characters for a really good price: free!";
+	mes "Ipnotista";
+	mes "Saluti, avventuriero.";
+	mes "Sono un membro di Hypnotist";
+	mes "Accademia inviata qui a Izlude";
+	mes "fornire servizi di reset delle competenze";
+	mes "a certi personaggi di prima classe a un prezzo davvero buono: gratis!";
 	next;
-	mes "[Hypnotist]";
-	mes "Although I offer unlimited";
-	mes "stat/skill resets for now, I have";
-	mes "two conditions that must be";
-	mes "fulfilled. First, you must be";
-	mes "lower than ^FF0000Base Level 50^000000.";
+	mes "Ipnotista";
+	mes "Sebbene io offra un numero illimitato di";
+	mes "reset di stat/abilità per ora, io ho";
+	mes "due condizioni che devono essere";
+	mes "adempito. Innanzitutto, devi essere";
+	mes "inferiore a ^FF0000Livello Base 50^000000.";
 	next;
-	mes "[Hypnotist]";
-	mes "Second, you must be a";
-	mes "^FF0000Swordman, Acolyte, Mage,";
-	mes "Thief, Archer, Merchant,";
-	mes "Taekwon Boy, or Taekwon Girl,";
-	mes "Gunslinger and Ninja^000000";
-	mes "Job character to qualify.";
-	mes "Now, do you have any questions?";
+	mes "Ipnotista";
+	mes "Secondo, devi essere un";
+	mes "^FF0000Spadaccino, Acolita, Mago,";
+	mes "Ladro, Arciere, Mercante,";
+	mes "Ragazzo di Taekwon, o ragazza di Taekwon";
+	mes "Coltivatore e Ninja^000000";
+	mes "Carattere lavorativo per qualificarsi.";
+	mes "Adesso, hai qualche domanda?";
 	next;
-	switch(select("^FF0000Stat/Skill Reset?:Reset stats:Reset skills^000000:Cancel")) {
+	switch(select("^FF0000Resettaggio Statistiche/Abilità?:Resetta le statistiche:Resetta abilità^000000:Annulla")) {
 	case 1:
-		mes "[Hypnotist]";
-		mes "Stat/Skill Resets allow adventuers";
-		mes "to redistribute their Skill";
-		mes "Points if they are unhappy";
-		mes "with their current skills.";
+		mes "Ipnotista";
+		mes "Reset di Stat/Abilità permettono agli avventurieri";
+		mes "ridistribuire le loro abilità";
+		mes "Punti se sono infelici";
+		mes "con le loro attuali competenze.";
 		next;
-		mes "[Hypnotist]";
-		mes "Before proceeding with";
-		mes "a Stat/Skill Reset, you must";
-		mes "reduce all of the weight";
-		mes "of all carried items on your";
-		mes "character to 0. You can put";
-		mes "extra items in Kafra Storage.";
+		mes "Ipnotista";
+		mes "Prima di procedere con";
+		mes "un reset di Stat/Abilità, devi";
+		mes "ridurre tutto il peso";
+		mes "di tutti gli oggetti trasportati sul tuo";
+		mes "carattere a 0. Puoi mettere";
+		mes "articoli extra in Kafra Storage.";
 		next;
-		mes "[Hypnotist]";
-		mes "Ah, it's also important";
-		mes "to remove your ^FF0000Pushcart^000000";
-		mes "if you have one equipped.";
-		mes "Otherwise, hypnosis won't";
-		mes "work, or will backfire...";
+		mes "Ipnotista";
+		mes "Ah, è anche importante";
+		mes "per rimuovere il tuo ^FF0000Pushcart^000000";
+		mes "se ne hai uno equipaggiato.";
+		mes "Altrimenti, l'ipnosi non";
+		mes "lavorare, o farà effetto contrario...";
 		close;
 	case 2:
 		set .@str$,"Stat";
 	case 3:
 		if (.@str$ == "")
 			set .@str$,"Skill";
-		mes "[Hypnotist]";
-		mes "Are you sure that you";
-		mes "want to proceed with";
-		mes "my ^FF0000"+.@str$+" Reset^000000 service?";
+		mes "Ipnotista";
+		mes "Sei sicuro che tu";
+		mes "voglio procedere con";
+		mes "mio ^FF0000"+.@str$+" Resettare il servizio ^000000?";
 		next;
-		if(select("Yes:Cancel") == 1)
+		if(select("Sì:Annulla") == 1)
 			break;
 	case 4:
-		mes "[Hypnotist]";
-		mes "Thank you, and good";
-		mes "luck on your adventures.";
-		mes "Please travel in safety~";
+		mes "Ipnotista";
+		mes "Grazie e buono";
+		mes "buona fortuna per le tue avventure.";
+		mes "Viaggiate in sicurezza~";
 		close;
 	}
 	if ((Class >= Job_Swordman && Class <= Job_Thief) || Class == Job_Taekwon || Class == Job_Gunslinger || Class == Job_Ninja) {
 		if (checkcart()) {
-			mes "[Hypnotist]";
-			mes "Oh! Please remove your";
-			mes "Pushcart before proceeding";
-			mes "with the "+.@str$+" Reset service.";
-			mes "Thanks for cooperating~";
+			mes "Ipnotista";
+			mes "Oh! Per favore rimuovi il tuo";
+			mes "Carretto prima di procedere";
+			mes "con il "+.@str$+" Ripristina servizio.";
+			mes "Grazie per la collaborazione~";
 			close;
 		}
 		if (Weight != 0) {
-			mes "[Hypnotist]";
-			mes "If you're here for my "+.@str$;
-			mes "Reset service, please";
-			mes "remember that you can't";
-			mes "reset your "+.@str$+"s until the";
+			mes "Ipnotista";
+			mes "Se sei qui per il mio "+.@str$;
+			mes "Ripristinare il servizio, per favore";
+			mes "ricordare che non puoi";
+			mes "resettare il tuo "+.@str$+"fino a il";
 			mes "^FF0000weight of your carried items in";
-			mes "your Inventory is reduced to 0^000000.";
+			mes "il tuo inventario è ridotto a 0^000000.";
 			next;
-			mes "[Hypnotist]";
-			mes "Why don't you place your";
-			mes "things into the Kafra Storage";
-			mes "for now? That way, you can";
-			mes "safely keep all of your goods.";
+			mes "Ipnotista";
+			mes "Perché non metti il tuo";
+			mes "cose nel magazzino di Kafra";
+			mes "per ora? In questo modo, puoi";
+			mes "conserva tutti i tuoi beni in sicurezza.";
 			close;
 		}
 		if (BaseLevel >= 50 && (Class == Job_Taekwon || Class == Job_Gunslinger || Class == Job_Ninja)) {
-			mes "[Hypnotist]";
-			mes "I'm sorry, but characters";
-			mes "with Base Levels higher";
-			mes "than 50 are ineligible for the";
+			mes "Ipnotista";
+			mes "Mi dispiace, ma caratteri";
+			mes "con Livelli Base più alti";
+			mes "meno 50 sono ineleggibili per il";
 			mes .@str$+" Reset service I provide.";
 			close;
 		}
-		mes "[Hypnotist]";
-		mes "Thank you for using";
-		mes "my "+.@str$+" Redistribution";
-		mes "services. Oh, and best";
-		mes "of luck to you on your";
-		mes "travels, adventurer.";
+		mes "Ipnotista";
+		mes "Grazie per aver usato";
+		mes "mio "+.@str$+" Ridistribuzione";
+		mes "servizi. Oh, e meglio";
+		mes "di buona fortuna a te per il tuo";
+		mes "viaggiatore, avventuriero.";
 		if (.@str$ == "Stat")
 			resetstatus;
 		else
 			resetskill;
 		close;
 	} else {
-		mes "[Hypnotist]";
-		mes "I'm sorry, but your";
-		mes "Job Class doesn't qualify";
-		mes "for the "+.@str$+" Reset service";
-		mes "that I provide. I can only";
-		mes "offer "+.@str$+" Resets to the";
-		mes "following Jobs...";
+		mes "Ipnotista";
+		mes "Mi dispiace, ma il tuo";
+		mes "Classe lavorativa non qualifica";
+		mes "per il "+.@str$+" Ripristina servizio";
+		mes "che io fornisco. Posso solo";
+		mes "offrire "+.@str$+" Si reimposta a";
+		mes "seguendo i lavori...";
 		next;
-		mes "[Hypnotist]";
-		mes "^FF0000Swordman, Acolyte,";
-		mes "Mage, Thief, Archer,";
-		mes "Merchant, Taekwon";
-		mes "Boy, Taekwon Girl,";
-		mes "Gunslinder and Ninja^000000.";
+		mes "Ipnotista";
+		mes "^FF0000Spadaccino, Acolita,";
+		mes "Mago, Ladro, Arciere";
+		mes "Mercante, Taekwon";
+		mes "Ragazzo, Ragazza di Taekwon-Do,";
+		mes "Gunslinder e Ninja^000000.";
 		close;
 	}
 }

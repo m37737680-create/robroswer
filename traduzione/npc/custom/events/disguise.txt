@@ -25,102 +25,102 @@ prontera,160,155,4	script	Disguise Event	795,{
 
 	if (getgmlevel()>=.@GMLevel) {
 		mes .@n$;
-		mes "Select an option.";
+		mes "Seleziona un'opzione.";
 		next;
-		switch(select("Turn ON/OFF Event:Event Settings")) {
+		switch(select("Evento Accensione/Spegnimento:Impostazioni evento")) {
 		case 1:
 			mes .@n$;
 			if (.EventON) {
-				mes "The Event is currently: [^0000FFON^000000]";
-				mes "Would you like to turn it OFF?";
+				mes "L'evento è attualmente: [^0000FFON^000000]";
+				mes "Vuoi spegnerlo?";
 			} else {
-				mes "The Event is currently: [^FF0000OFF^000000]";
-				mes "Would you like to turn it ON?";
+				mes "L'evento è attualmente: [^FF0000OFF^000000]";
+				mes "Vuoi accenderlo?";
 			}
-			if(select("Yes:No")==2) close;
+			if(select("Sì:No")==2) close;
 			if (.EventON) {
 				set .EventON,0; set .Timer,0;
 				setnpctimer 0; stopnpctimer;
-				announce "A GM has decided to turn the Disguise Event off. As a result no further prizes will be given.",bc_map | bc_blue;
+				announce ""Un Game Master ha deciso di disattivare l'Evento Trucco. Di conseguenza, non verranno più assegnati premi.",bc_map | bc_blue;
 				deletepset 1;
 				setnpcdisplay "Disguise Event",795;
 				close;
 			}
 			set .EventON,1; set .Timer,1; setnpctimer 0; initnpctimer;
 			set .ResetCounter,.ResetCounter+1;
-			announce "The Disguise Event will begin in 3 minutes.",bc_all | bc_blue;
-			announce "The Event is being held in Prontera.",bc_all | bc_blue;
+			announce ""L'evento del travestimento inizierà tra 3 minuti.",bc_all | bc_blue;
+			announce ""L'evento si terrà a Prontera.",bc_all | bc_blue;
 			close;
 		case 2:
 			mes .@n$;
-			mes "Pick a setting to modify.";
+			mes "Scegli un'impostazione da modificare.";
 			next;
-			switch(select("Monster Display:Number of Rounds:Prize Settings")) {
+			switch(select("Mostra mostri:Numero di Round:Impostazioni premi")) {
 			case 1:
 				setarray .@r$[0],"Disguise as all monsters.","Disguise as MVPs only.";
 				mes .@n$;
-				mes "Choose a disguise rule.";
+				mes "Scegli una regola del travestimento.";
 				next;
 				set .Rule, select(implode(.@r$,":"));
 				mes .@n$;
-				mes "The Disguise Rule has been set:";
+				mes "La Regola del Travestimento è stata impostata:";
 				mes "  > ^0055FF"+.@r$[.Rule-1]+"^000000";
 				close;
 			case 2:
 				mes .@n$;
-				mes "Input the number of rounds you want the event to last.";
-				mes "Current number: [^0000FF"+.Rounds+"^000000]";
+				mes "Inserisci il numero di round che vuoi che l'evento duri.";
+				mes "Numero corrente: [^0000FF"+.Rounds+"^000000]";
 				next;
 				input .@Rounds;
 				set .Rounds,.@Rounds;
 				mes .@n$;
-				mes "The number of rounds has been changed to "+.Rounds+".";
+				mes "Il numero di round è stato cambiato in "+.Rounds+".";
 				close;
 			case 3:
 				mes .@n$;
-				mes "Input the Item ID of the prize given each round.";
-				mes "Current item: [^0000FF"+getitemname(.Prize)+"^000000] (ID #"+.Prize+")";
+				mes "Inserisci l'ID dell'articolo del premio dato ad ogni turno.";
+				mes "Articolo corrente: [^0000FF"+getitemname(.Prize)+"^000000] (ID #"+.Prize+")";
 				next;
 				input .@Prize;
 				mes .@n$;
 				if (getitemname(.@Prize)=="" || getitemname(.@Prize)=="null") {
-					mes "That item does not exist. Please try again.";
+					mes "Quell'articolo non esiste. Riprova per favore.";
 					close;
 				}
 				set .Prize,.@Prize;
-				mes "Input the amount to be given.";
+				mes "Inserisci l'importo da dare.";
 				next;
 				input .@amount;
 				mes .@n$;
 				if (.@amount<=0 || .@amount>=10000) {
-					mes "That amount is invalid. Using default amount of 1.";
+					mes "L'importo è non valido. Utilizzo l'importo predefinito di 1.";
 					set .@amount,1;
 					next;
 					mes .@n$;
 				}
 				set .PrizeAmt,.@amount;
-				mes "The Prize has been changed successfully.";
-				mes "Prize: "+.PrizeAmt+"x [^0000FF"+getitemname(.Prize)+"^000000]";
+				mes "Il premio è stato modificato con successo.";
+				mes "Premio: "+.PrizeAmt+"x [^0000FF"+getitemname(.Prize)+"^000000]";
 				close;
 			}
 		}
 	}
 	if (.EventON) end;
 	mes .@n$;
-	mes "Welcome.";
-	mes "How may I be of assistance?";
-	if(select("Information:Nothing, just passing through.")==2) close;
+	mes "Benvenuto.";
+	mes "Come posso esserle d'aiuto?";
+	if(select("Informazioni:Niente, solo di passaggio.")==2) close;
 	next;
 	mes .@n$;
-	mes "This event is quite simple.";
-	mes "At the start of the event, I will";
-	mes "disguise myself as a random";
-	mes "monster. You have to shout";
-	mes "that monster's name out loud.";
+	mes "Questo evento è piuttosto semplice.";
+	mes "All'inizio dell'evento, io";
+	mes "disguisarmi come un caso casuale";
+	mes "mostro. Devi urlare";
+	mes "il nome di quel mostro ad alta voce.";
 	next;
-	mes "If you are correct, you will receive";
-	mes "a prize. If not, keep trying!";
-	mes "That's all that there is to this event.";
+	mes "Se hai ragione, riceverai";
+	mes "un premio. Se non è così, continua a provare!";
+	mes "È tutto quello che c'è di questo evento.";
 	close;
 
 OnInit:
@@ -163,8 +163,8 @@ OnClock2200:
 	set .EventON,1;
 	set .Timer,1;
 	set .Wait,1;
-	announce "The Disguise Event will begin in 3 minutes.",bc_all | bc_blue;
-	announce "The Event is being held in Prontera.",bc_all | bc_blue;
+	announce ""L'evento del travestimento inizierà tra 3 minuti.",bc_all | bc_blue;
+	announce ""L'evento si terrà a Prontera.",bc_all | bc_blue;
 	setnpctimer 0;
 	initnpctimer;
 	end;
@@ -177,7 +177,7 @@ OnTimer30000:
 	if (.Timer) end;
 	set .Change,0;
 	setnpcdisplay "Disguise Event",795;
-	npctalk "Disguise Event : You took too long to guess what I was. Please wait 10 seconds while I disguise again.";
+	npctalk "Evento Mascheramento: Ci hai messo troppo tempo a indovinare cosa ero. Per favore, aspetta 10 secondi mentre mi maschero di nuovo.";
 	specialeffect EF_DETECT2;
 	set $MonsterName$,"";
 	deletepset 1;
@@ -187,18 +187,18 @@ OnTimer30000:
 	end;
 OnTimer60000:
 	if (.Timer!=1) end;
-	announce "The Disguise Event will begin in 2 minutes.",bc_all | bc_blue;
-	announce "The Event is being held in Prontera.",bc_all | bc_blue;
+	announce ""L'evento del travestimento inizierà tra 2 minuti.",bc_all | bc_blue;
+	announce ""L'evento si terrà a Prontera.",bc_all | bc_blue;
 	end;
 OnTimer120000:
 	if (.Timer!=1) end;
-	announce "The Disguise Event will begin 1 minute.",bc_all | bc_blue;
-	announce "The Event is being held in Prontera.",bc_all | bc_blue;
+	announce ""L'evento del travestimento inizierà tra 1 minuto.",bc_all | bc_blue;
+	announce ""L'evento si terrà a Prontera.",bc_all | bc_blue;
 	end;
 OnTimer180000:
 	if (.Timer!=1) end;
-	announce "The Disguise Event has begun!",bc_all | bc_blue;
-	announce "The Event is being held in Prontera.",bc_all | bc_blue;
+	announce ""L'evento del travestimento è iniziato!",bc_all | bc_blue;
+	announce ""L'evento si terrà a Prontera.",bc_all | bc_blue;
 	set .Timer,0; stopnpctimer;
 	setnpctimer 0; initnpctimer;
 iDisguise:
@@ -225,7 +225,7 @@ iDisguise:
 	end;
 iCorrect:
 	if (.Winner) {
-		dispbottom "Someone has already won this round.";
+		dispbottom "Qualcuno ha già vinto questo turno.";
 		end;
 	}
 	set .Winner,1;
@@ -238,7 +238,7 @@ iCorrect:
 		setnpcdisplay "Disguise Event",795;
 		set .RoundCount,0; set .Change,0; set .EventON,0;
 		setnpctimer 0; stopnpctimer;
-		npctalk "Disguise Event : Thank you all for playing. That was the last round of the Disguise Event. Come play again later.";
+		npctalk "Evento del travestimento: Grazie a tutti per aver giocato. Questo è stato l'ultimo round dell'Evento del travestimento. Venite a giocare di nuovo più tardi.";
 		end;
 	}
 	setnpcdisplay "Disguise Event",795;
