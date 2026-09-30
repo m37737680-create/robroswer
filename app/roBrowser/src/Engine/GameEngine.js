@@ -22,6 +22,7 @@ import LoginEngine from 'Engine/LoginEngine.js';
 import Network from 'Network/NetworkManager.js';
 import Renderer from 'Renderer/Renderer.js';
 import MapRenderer from 'Renderer/MapRenderer.js';
+import EntityManager from 'Renderer/EntityManager.js';
 import UIManager from 'UI/UIManager.js';
 import Cursor from 'UI/CursorManager.js';
 import Scrollbar from 'UI/Scrollbar.js';
