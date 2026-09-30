@@ -43,7 +43,7 @@ final class Client
 			return;
 		}
 
-		$path = self::$path . self::$data_ini;
+		$path = self::$data_ini;
 
 		if (!file_exists($path)) {
 			Debug::write('File not found: ' . $path, 'error');
@@ -104,12 +104,6 @@ final class Client
 		// Read data first
 		if (file_exists($local_pathEncoded) && is_readable($local_pathEncoded)) {
 			Debug::write('File found at ' . $local_path, 'success');
-
-			// Store file
-			if(self::$AutoExtract) {
-				return self::store( $path, file_get_contents($local_pathEncoded) );
-			}
-
 			return file_get_contents($local_pathEncoded);
 		}
 		else {
