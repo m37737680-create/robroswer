@@ -125,8 +125,10 @@ let _mapTransitioning = false;
  * Called by MapEngine.js just before MapRenderer.setMap().
  */
 export function beginMapTransition() {
-	_mapTransitioning = true;
-	_pendingEntityQueue.length = 0;
+	if (!_mapTransitioning) {
+		_mapTransitioning = true;
+		_pendingEntityQueue.length = 0;
+	}
 }
 
 /**

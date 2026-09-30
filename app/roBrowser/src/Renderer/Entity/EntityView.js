@@ -569,23 +569,30 @@ function UpdateBodyStyle(look) {
 			Entity = this.constructor;
 
 			// Loading
-			Client.loadFile(path + '.act');
-			Client.loadFile(
-				path + '.spr',
-				function () {
-					this.files.body.spr = path + '.spr';
-					this.files.body.act = path + '.act';
+			const loadSpr = () => {
+				Client.loadFile(
+					path + '.spr',
+					function () {
+						this.files.body.spr = path + '.spr';
+						this.files.body.act = path + '.act';
 
-					// Update linked attachments
-					this.bodypalette = this._bodypalette;
-					this.weapon = this._weapon;
-					this.shield = this._shield;
-				}.bind(this),
-				null,
-				{
-					to_rgba: this.objecttype !== Entity.TYPE_PC
-				}
-			);
+						// Update linked attachments
+						this.bodypalette = this._bodypalette;
+						this.weapon = this._weapon;
+						this.shield = this._shield;
+					}.bind(this),
+					function () {
+						// On error (e.g. timeout during heavy map load), retry after 1s
+						setTimeout(loadSpr, 1000);
+					}.bind(this),
+					{
+						to_rgba: this.objecttype !== Entity.TYPE_PC
+					}
+				);
+			};
+
+			Client.loadFile(path + '.act');
+			loadSpr();
 		}.bind(this),
 		50
 	);

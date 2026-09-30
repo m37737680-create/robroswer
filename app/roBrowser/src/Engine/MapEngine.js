@@ -159,6 +159,10 @@ class MapEngine {
 		_exiting = false;
 		_exitTimer = null;
 
+		// Begin buffering entity-spawn packets immediately upon map server connect,
+		// in case the server sends spawn packets before ZC_ACCEPT_ENTER.
+		beginMapTransition();
+
 		// Connect to char server
 		const forceAddress = Configs.get('forceUseAddress');
 		const server_info = Configs.getServer();

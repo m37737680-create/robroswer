@@ -33,7 +33,7 @@ NpcMenu.mouseMode = GUIComponent.MouseMode.FREEZE;
 /**
  * @var {number} index selected in menu
  */
-let _index = 0;
+let _index = -1;
 
 /**
  * @var {number} NPC ID
@@ -127,7 +127,11 @@ NpcMenu.onKeyDown = function onKeyDown(event) {
 
 		case KEYS.UP: {
 			const divs = content.querySelectorAll('div[data-index]');
-			_index = Math.max(_index - 1, 0);
+			if (_index === -1) {
+				_index = divs.length > 0 ? divs.length - 1 : -1;
+			} else {
+				_index = Math.max(_index - 1, 0);
+			}
 
 			divs.forEach(d => d.classList.remove('selected'));
 			if (divs[_index]) {
@@ -139,7 +143,11 @@ NpcMenu.onKeyDown = function onKeyDown(event) {
 
 		case KEYS.DOWN: {
 			const divs = content.querySelectorAll('div[data-index]');
-			_index = Math.min(_index + 1, divs.length - 1);
+			if (_index === -1) {
+				_index = 0;
+			} else {
+				_index = Math.min(_index + 1, divs.length - 1);
+			}
 
 			divs.forEach(d => d.classList.remove('selected'));
 			if (divs[_index]) {
@@ -169,7 +177,7 @@ NpcMenu.setMenu = function setMenu(menu, gid) {
 	const list = menu.split(':');
 
 	_ownerID = gid;
-	_index = 0;
+	_index = -1;
 
 	content.innerHTML = '';
 
@@ -182,17 +190,15 @@ NpcMenu.setMenu = function setMenu(menu, gid) {
 			content.appendChild(div);
 		}
 	}
-
-	const first = content.querySelector('div[data-index]');
-	if (first) {
-		first.classList.add('selected');
-	}
 };
 
 /**
  * Submit an index
  */
 function validate() {
+	if (_index === -1) {
+		return; // require selection
+	}
 	NpcMenu.onSelectMenu(_ownerID, _index + 1);
 }
 
