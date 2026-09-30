@@ -95,6 +95,7 @@ import MainEngine from './MapEngine/Main.js';
 import MapStateEngine from './MapEngine/MapState.js';
 import NPCEngine from './MapEngine/NPC.js';
 import EntityEngine from './MapEngine/Entity.js';
+import { beginMapTransition, flushEntityQueue } from './MapEngine/Entity.js';
 import ItemEngine from './MapEngine/Item.js';
 import MailEngine from './MapEngine/Mail.js';
 import PrivateMessageEngine from './MapEngine/PrivateMessage.js';
@@ -771,8 +772,16 @@ function onMapChange(pkt) {
 		if (PACKETVER.value >= 20130320) {
 			Network.sendPacket(new PACKET.CZ.BLOCKING_PLAY_CANCEL());
 		}
+
+		// Flush entity packets that arrived during the map-load transition.
+		// These are mob/player spawn packets the server sent while EntityManager
+		// was being freed and before NOTIFY_ACTORINIT was dispatched.
+		flushEntityQueue();
 	};
 
+	// Begin buffering entity-spawn packets so they are not lost while
+	// EntityManager is being freed and the new map is being loaded.
+	beginMapTransition();
 	MapRenderer.setMap(pkt.mapName);
 }
 
@@ -862,6 +871,7 @@ function onExitSuccess() {
 	UIManager.removeComponents();
 	Network.close();
 	Renderer.stop();
+	EntityManager.free();
 	MapRenderer.free();
 	SoundManager.stop();
 	BGM.stop();
@@ -908,6 +918,7 @@ function onRestartAnswer(pkt) {
 		cleanGameUI();
 		Session.Achievement = null;
 		Mouse.intersect = false;
+		EntityManager.free();
 		MapRenderer.free();
 		Renderer.stop();
 		onRestart();

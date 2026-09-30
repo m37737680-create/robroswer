@@ -105,10 +105,55 @@ const MAX_ATTACKMT = AVG_ATTACK_SPEED * 2;
 const clanEmblems = {};
 
 /**
+ * Queue of entity spawn packets buffered during map loading transitions.
+ * Packets arriving while the map is loading (EntityManager was just freed)
+ * are stored here and replayed once onLoad() finishes via flushEntityQueue().
+ */
+const _pendingEntityQueue = [];
+
+/**
+ * Flag set to true while we are inside a map transition (between
+ * EntityManager.free() and the end of MapRenderer.onLoad()).
+ * During this window we queue incoming spawn packets instead of processing
+ * them immediately, so they are not lost to the EntityManager.free() call.
+ */
+let _mapTransitioning = false;
+
+/**
+ * Mark the start of a map transition so subsequent entity-spawn packets are
+ * queued instead of processed immediately.
+ * Called by MapEngine.js just before MapRenderer.setMap().
+ */
+export function beginMapTransition() {
+	_mapTransitioning = true;
+	_pendingEntityQueue.length = 0;
+}
+
+/**
+ * Flush all entity packets that arrived during the map transition and process
+ * them now that onLoad() has completed and the EntityManager is ready.
+ * Called by MapEngine.js at the end of the MapRenderer.onLoad() callback.
+ */
+export function flushEntityQueue() {
+	_mapTransitioning = false;
+	const queued = _pendingEntityQueue.splice(0);
+	for (const pkt of queued) {
+		onEntitySpam(pkt);
+	}
+}
+
+/**
  * Spam an entity on the map
  * Generic packet handler
  */
 function onEntitySpam(pkt) {
+	// If we are in the middle of a map transition (EntityManager was freed),
+	// queue the packet and replay it after onLoad() finishes.
+	if (_mapTransitioning) {
+		_pendingEntityQueue.push(pkt);
+		return;
+	}
+
 	let entity = EntityManager.get(pkt.GID);
 
 	if (entity) {

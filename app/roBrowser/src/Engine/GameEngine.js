@@ -204,6 +204,7 @@ function onReload() {
 		WinList.setList(list);
 	}
 	Renderer.stop();
+	EntityManager.free();
 	MapRenderer.free();
 	BGM.play('01.mp3');
 }

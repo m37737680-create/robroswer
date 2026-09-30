@@ -153,6 +153,8 @@ class MapRenderer {
 			// Parse the filename (ugly RO)
 			const filename = mapname.replace(/\.gat$/i, '.rsw');
 
+			EntityManager.free();
+
 			Background.setLoading(function () {
 				// Hooking Thread
 				Thread.hook('MAP_PROGRESS', onProgressUpdate.bind(MapRenderer));
@@ -194,8 +196,6 @@ class MapRenderer {
 	static free() {
 		const gl = Renderer.getContext();
 
-		EntityManager.free();
-		EntityManager.clearLifeCache();
 		GridSelector.free(gl);
 		Sounds.free();
 		Effects.free();
