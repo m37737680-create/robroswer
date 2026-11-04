@@ -87,7 +87,14 @@ class RobustROTranslator:
 
         cached = self.get_cached_translation(text)
         if cached is not None:
-            return cached
+            if '\n' in cached or '\r' in cached:
+                for key in (text, text.strip()):
+                    if self.cache.get(key) == cached:
+                        del self.cache[key]
+                        self.dirty_cache_count += 1
+                print(f"⚠️ Traduzione in cache scartata perché contiene interruzioni di riga: '{text[:25]}...'")
+            else:
+                return cached
 
         if self.cache_only:
             # In questa modalità il modello non deve essere contattato:
@@ -108,7 +115,8 @@ class RobustROTranslator:
                             'Translate the English text to Italian. Return only the translation, '
                             'with no explanation, markdown, quotes, or code fences. Preserve every '
                             'placeholder such as __0__, escape sequence, tag, code, and formatting '
-                            'token exactly and in the same order.'
+                            'token exactly and in the same order. Return a single line; never include '
+                            'literal line breaks in the translation.'
                         ),
                     },
                     {'role': 'user', 'content': text},
@@ -126,6 +134,8 @@ class RobustROTranslator:
             translated = data['choices'][0]['message']['content'].strip()
             if not translated:
                 raise ValueError('Il server locale ha restituito una traduzione vuota.')
+            if '\n' in translated or '\r' in translated:
+                raise ValueError('Il modello ha restituito una traduzione su più righe.')
             source_placeholders = re.findall(r'__\s*\d+\s*__', text)
             translated_placeholders = re.findall(r'__\s*\d+\s*__', translated)
             if source_placeholders != translated_placeholders:
@@ -343,14 +353,14 @@ class RobustROTranslator:
         ann_match = re.search(r'(?:^|[\s;{}])announce\s+"((?:[^"\\]|\\.)*)"', line)
         if ann_match:
             trans = self.translate_string_content(ann_match.group(1))
-            return line[:ann_match.start(1)] + f'"{trans}"' + line[ann_match.end(1) + 1:]
+            return line[:ann_match.start(1)] + trans + line[ann_match.end(1):]
 
         # 9. Comando mapannounce "<mappa>", "<messaggio>", flag...
         # Mantiene la mappa intatta nel primo parametro e traduce il messaggio nel secondo
         mapann_match = re.search(r'(?:^|[\s;{}])mapannounce\s+"(?:[^"\\]|\\.)*"\s*,\s*"((?:[^"\\]|\\.)*)"', line)
         if mapann_match:
             trans = self.translate_string_content(mapann_match.group(1))
-            return line[:mapann_match.start(1)] + f'"{trans}"' + line[mapann_match.end(1) + 1:]
+            return line[:mapann_match.start(1)] + trans + line[mapann_match.end(1):]
 
         return line
 

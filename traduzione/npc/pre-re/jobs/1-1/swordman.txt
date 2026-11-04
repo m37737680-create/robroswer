@@ -311,7 +311,7 @@ job_sword1,230,204,2	script	Test Hall Staff#2swd_3	105,{
 	callfunc "F_JobSwdStaff",1;
 }
 job_sword1,223,167,2	script	Mae#swd_1_success	92,{
-	mapannounce "job_sword1",""Candidato " + strcharinfo(0) + ". You successfully passed the test.",bc_map;
+	mapannounce "job_sword1","Candidato " + strcharinfo(0) + ". You successfully passed the test.",bc_map;
 	set job_sword_q,4;
 	mes "[Mae]";
 	mes "Ti congratulo sinceramente per aver superato l'esame!";
@@ -335,7 +335,7 @@ function	script	F_JobSwdStaff	{
 	mes "Ti arrendi?";
 	next;
 	if (select("Sì.:No.") == 1) {
-		mapannounce "job_sword1",""Candidato " + strcharinfo(0) + " quit the test.",bc_map;
+		mapannounce "job_sword1","Candidato " + strcharinfo(0) + " quit the test.",bc_map;
 		warp "izlude_in",65,165;
 		end;
 	}
@@ -350,7 +350,7 @@ OnTouch:
 	mes "Candidato " + strcharinfo(0) + "Ti arrendi?";
 	next;
 	if (select("Sì.:No.") == 1) {
-		mapannounce "job_sword1",""Candidato " + strcharinfo(0) + " quit the test..",bc_map;
+		mapannounce "job_sword1","Candidato " + strcharinfo(0) + " quit the test..",bc_map;
 		warp "izlude_in",65,165;
 		end;
 	}
@@ -360,7 +360,7 @@ OnTouch:
 
 function	script	F_JobSwdTestStaff2	{
 OnTouch:
-	mapannounce "job_sword1",""Candidato " + strcharinfo(0) + ". Pass the "+getarg(0)+" course.",bc_map;
+	mapannounce "job_sword1","Candidato " + strcharinfo(0) + ". Pass the "+getarg(0)+" course.",bc_map;
 	warp "job_sword1",getarg(1),getarg(2);
 	end;
 }

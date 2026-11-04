@@ -53,7 +53,7 @@ te_prtcas01,204,204,3	script	Blacksmith Kai#tegod01	4_M_RACHMAN2,{
 		case 1:
 			if (.@economy > 29) {
 				if (countitem(6595) > 1 && countitem(6596) > 0 && countitem(6594) > 3 && countitem(6597) > 2 && countitem(6602) > 0 && countitem(6605) > 0 && countitem(6604) > 0 && countitem(2115) > 0) {
-					mes "^ff0000Valkyrja's Shield is needed in the process of making Hervor.";
+					mes "Lo Scudo di Valkyrie ^ff0000 è necessario nel processo per fare Hervor.";
 					mes "Non dovresti possedere altri oggetti tranne gli Scudi di Valkyrie per procedere con la missione.^ff0000";
 					next;
 					mes "^ff0000Even if the refinement level and cards have been applied, the process requires any one of the Valkyrja's Shields you may have.";
@@ -78,7 +78,7 @@ te_prtcas01,204,204,3	script	Blacksmith Kai#tegod01	4_M_RACHMAN2,{
 					mes "... sì, c'erano delle ragazze..";
 					mes "Ho dovuto scappare per loro...";
 					donpcevent "#tequest_master_prt01::OnCommandOn";
-					mapannounce "te_prtcas01",""Una voce di ragazza: Ehi, stavate parlando di noi? È "+ .@npc_name$ +", right? I can't believe you ran away to a place like this.",bc_map,"0x00FF00",FW_BOLD,20,0,40;
+					mapannounce "te_prtcas01","Una voce di ragazza: Ehi, stavate parlando di noi? È "+ .@npc_name$ +", right? I can't believe you ran away to a place like this.",bc_map,"0x00FF00",FW_BOLD,20,0,40;
 					next;
 					mes "["+ .@npc_name$ +"]";
 					mes "Oh, no...!";
@@ -208,7 +208,7 @@ te_prtcas01,204,204,3	script	Blacksmith Kai#tegod01	4_M_RACHMAN2,{
 		switch( select( "Fai Hervor.","Materiali fusibili.","Non ora." ) ) {
 		case 1:
 			if (countitem(6595) > 1 && countitem(6596) > 0 && countitem(6594) > 3 && countitem(6597) > 2 && countitem(6602) > 0 && countitem(6605) > 0 && countitem(6604) > 0 && countitem(2115) > 0) {
-				mes "^ff0000Valkyrja's Shield is needed in the process of making Hervor.";
+				mes "Lo Scudo di Valkyrie ^ff0000 è necessario nel processo per fare Hervor.";
 				mes "Non dovresti possedere altri oggetti tranne gli Scudi di Valkyrie per procedere con la missione.^ff0000";
 				next;
 				mes "^ff0000Even if the refinement level and cards have been applied, the process requires any one of the Valkyrja's Shields you may have.";
@@ -239,7 +239,7 @@ te_prtcas01,204,204,3	script	Blacksmith Kai#tegod01	4_M_RACHMAN2,{
 				delitem 2115,1;// Valkyrja's_Shield
 				$2012_tegod_gloria = 5;
 				getitem 2181,1;// Hervor
-				announce ""Il dono di Velund [ Hervor ] viene introdotto in questo mondo da ["+ strcharinfo(0) +"] of ["+ getguildname(.@guild_id) +"] Guild.",bc_all,"0x70dbdb",FW_NORMAL,12;
+				announce "Il dono di Velund [ Hervor ] viene introdotto in questo mondo da ["+ strcharinfo(0) +"] of ["+ getguildname(.@guild_id) +"] Guild.",bc_all,"0x70dbdb",FW_NORMAL,12;
 				if (.@economy > 20)
 					setcastledata "te_prtcas01",2,(.@economy-20);
 				else
@@ -296,7 +296,7 @@ S_Material:
 	mes "A proposito, Muspellium e Essenza di Runico devono essere creati separatamente con materiali aggiuntivi.";
 	next;
 	mes "["+ .@npc_name$ +"]";
-	mes "In order to make Muspellium, you need to ^4d4dffcombine 50 Eluniums and 50 Oridecons^000000.";
+	mes "Per fare il Muspellium, hai bisogno di ^4d4dffcombinare 50 Eluniums e 50 Oridecons^000000.";
 	mes "Per Essenza di Runa, hai bisogno di ^4d4dffcombinare 200 Antiche Pietre Runiche Grezze e 100 Mistiche Pietre Runiche Grezze^000000.";
 	next;
 	mes "["+ .@npc_name$ +"]";
@@ -442,16 +442,16 @@ OnCommandOn:
 	end;
 
 OnTimer10000:
-	announce ""Voci di ragazze: Kai~ Sappiamo già dove sei. È finita!",bc_all,"0xFF0000",FW_NORMAL,10;
+	announce "Voci di ragazze: Kai~ Sappiamo già dove sei. È finita!",bc_all,"0xFF0000",FW_NORMAL,10;
 	end;
 OnTimer15000:
-	announce ""Voci di ragazze: Aspetteremo solo 10 minuti. Se non vi presentate nel frattempo, assalteremo la fortezza!",bc_all,"0xFF0000",FW_NORMAL,10;
+	announce "Voci di ragazze: Aspetteremo solo 10 minuti. Se non vi presentate nel frattempo, assalteremo la fortezza!",bc_all,"0xFF0000",FW_NORMAL,10;
 	end;
 OnTimer595000:
-	mapannounce "te_prtcas01", ""Una voce da ragazza: Kai! Come osi ignorare il nostro avvertimento! Quindi, hai compagnia lì, eh? Ma quanto pensi che resteranno con te?!",bc_map,"0x00ff00",FW_NORMAL,12;
+	mapannounce "te_prtcas01", "Una voce da ragazza: Kai! Come osi ignorare il nostro avvertimento! Quindi, hai compagnia lì, eh? Ma quanto pensi che resteranno con te?!",bc_map,"0x00ff00",FW_NORMAL,12;
 	end;
 OnTimer598000:
-	mapannounce "te_prtcas01", ""Sei costretto fuori dalla fortezza da un potere sconosciuto.",bc_map,"0x00ff00",FW_NORMAL,12;
+	mapannounce "te_prtcas01", "Sei costretto fuori dalla fortezza da un potere sconosciuto.",bc_map,"0x00ff00",FW_NORMAL,12;
 	end;
 
 OnTimer600000:
@@ -469,7 +469,7 @@ OnTimer600000:
 	end;
 
 OnTimer602000:
-	announce ""La regione di Gaebolg in Gloria è sotto attacco da un gruppo di esseri non identificati.",bc_all,"0xFF0000",FW_NORMAL,10;
+	announce "La regione di Gaebolg in Gloria è sotto attacco da un gruppo di esseri non identificati.",bc_all,"0xFF0000",FW_NORMAL,10;
 	monster "te_prtcas01",0,0,"Raydric",1163,15, .npc_name$ +"::OnMyMobDead";
 	monster "te_prtcas01",0,0,"Khalitzburg",1132,10, .npc_name$ +"::OnMyMobDead";
 	monster "te_prtcas01",0,0,"Abysmal Knight",1219,5, .npc_name$ +"::OnMyMobDead";
@@ -506,16 +506,16 @@ S_MobRedondant:
 	end;
 
 OnTimer4200000:
-	mapannounce "te_prtcas01", ""Ragazze: ... quanto dobbiamo aspettare?",bc_map,"0x00ff00",FW_NORMAL,12;
+	mapannounce "te_prtcas01", "Ragazze: ... quanto dobbiamo aspettare?",bc_map,"0x00ff00",FW_NORMAL,12;
 	end;
 OnTimer4205000:
-	mapannounce "te_prtcas01", ""Ragazze: Dovrebbe essere fatto per noi!",bc_map,"0x00ff00",FW_NORMAL,12;
+	mapannounce "te_prtcas01", "Ragazze: Dovrebbe essere fatto per noi!",bc_map,"0x00ff00",FW_NORMAL,12;
 	end;
 OnTimer4210000:
-	mapannounce "te_prtcas01", ""Ragazze: Dai, smettete! Siete così persistenti!!",bc_map,"0x00ff00",FW_NORMAL,12;
+	mapannounce "te_prtcas01", "Ragazze: Dai, smettete! Siete così persistenti!!",bc_map,"0x00ff00",FW_NORMAL,12;
 	end;
 OnTimer4220000:
-	mapannounce "te_prtcas01", ""Aira: Ah! Non ce la faccio più! Ragazze, venite qui!",bc_map,"0x00ff00",FW_NORMAL,12;
+	mapannounce "te_prtcas01", "Aira: Ah! Non ce la faccio più! Ragazze, venite qui!",bc_map,"0x00ff00",FW_NORMAL,12;
 
 	$2012_tegod_gloria = 3;// quest off until someone break the emp
 	callsub S_EventReset;
@@ -554,7 +554,7 @@ OnTimer4240000:
 	end;
 
 OnTimer4243000:
-	mapannounce "te_prtcas01", ""Hai fallito nel riconquistare la fortezza. Kai è sparito.",bc_map,"0x00ff00",FW_NORMAL,12;
+	mapannounce "te_prtcas01", "Hai fallito nel riconquistare la fortezza. Kai è sparito.",bc_map,"0x00ff00",FW_NORMAL,12;
 	disablenpc "Blacksmith Kai#tegod01";
 	callsub S_EventOff;// clear setnpcdisplay
 	.npc_name$ = "";
@@ -911,25 +911,25 @@ OnTimer1000:
 	if (mobcount( "te_prtcas01",strnpcinfo(0) +"::OnMyMobDead" ) == 0) {
 		$@2012_tegirls_prt01++;
 		if ($@2012_tegirls_prt01 == 7) {
-			mapannounce "te_prtcas01",""Kai: aahhh!! Le ragazze hanno rotto gli scudi e sono entrate dove c'è l'Emperium!!!!",bc_map,"0x00ff00",FW_NORMAL,12;
+			mapannounce "te_prtcas01","Kai: aahhh!! Le ragazze hanno rotto gli scudi e sono entrate dove c'è l'Emperium!!!!",bc_map,"0x00ff00",FW_NORMAL,12;
 			donpcevent "#eproom_girls_prt01::OnCommandOn";
 		}
 		else {
 			.@npc_name$ = strnpcinfo(0);
 			if (.@npc_name$ == "#aira_real_prt01")
-				mapannounce "te_prtcas01",""Aira: Pensi che io sia perduta? Hai torto! Ci facciamo strada dove c'è Kai!!",bc_map,"0x00ff00",FW_NORMAL,12;
+				mapannounce "te_prtcas01","Aira: Pensi che io sia perduta? Hai torto! Ci facciamo strada dove c'è Kai!!",bc_map,"0x00ff00",FW_NORMAL,12;
 			else if (.@npc_name$ == "#kuluna_real_prt01")
-				mapannounce "te_prtcas01",""Kuluna: ... Questo si chiama una ritirata strategica.",bc_map,"0x00ff00",FW_NORMAL,12;
+				mapannounce "te_prtcas01","Kuluna: ... Questo si chiama una ritirata strategica.",bc_map,"0x00ff00",FW_NORMAL,12;
 			else if (.@npc_name$ == "#mallina_real_prt01")
-				mapannounce "te_prtcas01",""Mallina: ... Perché ci disturbate così tanto? Ma la vittoria sarà nostra alla fine!!",bc_map,"0x00ff00",FW_NORMAL,12;
+				mapannounce "te_prtcas01","Mallina: ... Perché ci disturbate così tanto? Ma la vittoria sarà nostra alla fine!!",bc_map,"0x00ff00",FW_NORMAL,12;
 			else if (.@npc_name$ == "#ezella_real_prt01")
-				mapannounce "te_prtcas01",""Ezella: Oh tu, un debole che svanirebbe come il vento... !!!",bc_map,"0x00ff00",FW_NORMAL,12;
+				mapannounce "te_prtcas01","Ezella: Oh tu, un debole che svanirebbe come il vento... !!!",bc_map,"0x00ff00",FW_NORMAL,12;
 			else if (.@npc_name$ == "#lune_real_prt01")
-				mapannounce "te_prtcas01",""Lune: ..Va bene. Che la battaglia abbia inizio!",bc_map,"0x00ff00",FW_NORMAL,12;
+				mapannounce "te_prtcas01","Lune: ..Va bene. Che la battaglia abbia inizio!",bc_map,"0x00ff00",FW_NORMAL,12;
 			else if (.@npc_name$ == "#morin_real_prt01")
-				mapannounce "te_prtcas01",""Morin: Non è... più interessante.",bc_map,"0x00ff00",FW_NORMAL,12;
+				mapannounce "te_prtcas01","Morin: Non è... più interessante.",bc_map,"0x00ff00",FW_NORMAL,12;
 			else if (.@npc_name$ == "#nasarin_real_prt01")
-				mapannounce "te_prtcas01",""Nasarin: .. Ho sprecato il mio tempo. Kai è nel centro di questa fortezza?",bc_map,"0x00ff00",FW_NORMAL,12;
+				mapannounce "te_prtcas01","Nasarin: .. Ho sprecato il mio tempo. Kai è nel centro di questa fortezza?",bc_map,"0x00ff00",FW_NORMAL,12;
 		}
 	}
 	stopnpctimer;
@@ -971,7 +971,7 @@ OnTimer3000:
 	if (mobcount( "te_prtcas01","#eproom_girls_prt01::OnMyMobDead" ) == 0) {
 		donpcevent "#tequest_master_prt01::OnStop";
 		$2012_tegod_gloria = 4;
-		mapannounce "te_prtcas01",""Hai sconfitto le ragazze e riconquistato la fortezza con successo.",bc_map,"0x00ff00",FW_NORMAL,12;
+		mapannounce "te_prtcas01","Hai sconfitto le ragazze e riconquistato la fortezza con successo.",bc_map,"0x00ff00",FW_NORMAL,12;
 	}
 	stopnpctimer;
 	end;

@@ -125,7 +125,7 @@ prt_church,103,88,3	script	Praying Minister#arch	60,{
 				mes "Ministro che prega";
 				mes "Vai lì e trova il prete Dayan.";
 				mes "Digli esattamente,";
-				mes "'^3131FFI'm here for the Holy Pilgrimage.^000000'";
+				mes "^3131FFSono qui per il Pellegrinaggio Sacro.^000000";
 				next;
 				mes "Ministro che prega";
 				mes "È molto vecchio quindi ha problemi di udito.";
@@ -257,10 +257,10 @@ umbala,139,227,3	script	Priest#arch	60,{
 		mes "Si porta le mani alle orecchie verso di te.";
 		next;
 		mes "[" + strcharinfo(0) + "]";
-		mes "^FF0000I'm here for the Holy Pilgrimage!^000000";
-		mes "^FF0000I'm here for the Holy Pilgrimage!^000000";
-		mes "^FF0000I'm here for the Holy Pilgrimage!^000000";
-		mes "^FF0000I'm here for the Holy Pilgrimage!^000000";
+		mes "^FF0000Sono qui per il Pellegrinaggio Sacro!^000000";
+		mes "^FF0000Sono qui per il Pellegrinaggio Sacro!^000000";
+		mes "^FF0000Sono qui per il Pellegrinaggio Sacro!^000000";
+		mes "^FF0000Sono qui per il Pellegrinaggio Sacro!^000000";
 		next;
 		mes "[Prete Dayan]";
 		mes "Ehm... sei tu?";
@@ -984,7 +984,7 @@ job3_arch01,29,34,3	script	Valkyrie#arch	403,{
 	end;
 OnBc:
 	set $@archbs,0;
-	mapannounce "job3_arch01",""Valkyrie: Penso che qualcuno sia caduto nel santuario. Riesco ad sentire la risata sgradevole del diavolo.",bc_map,"0xFFCE00";
+	mapannounce "job3_arch01","Valkyrie: Penso che qualcuno sia caduto nel santuario. Riesco ad sentire la risata sgradevole del diavolo.",bc_map,"0xFFCE00";
 	hideoffnpc "Valkyrie#arch";
 	end;
 }
@@ -993,7 +993,7 @@ job3_arch02,119,49,0	script	#arch_1_start	139,6,6,{
 OnTouch:
 	if (countitem(12381) == 0)
 		getitem 12381,1; //ValkyrieA_Scroll
-	mapannounce "job3_arch02",""Sussurri di un'impersonazione: Mi sento pesante! Liberami!",bc_map,"0xFFCE00";
+	mapannounce "job3_arch02","Sussurri di un'impersonazione: Mi sento pesante! Liberami!",bc_map,"0xFFCE00";
 	disablenpc "#arch_1_start";
 	end;
 }
@@ -1008,12 +1008,12 @@ OnTouch:
 			viewpoint 1,113,327,1,0xFF9900;
 		set .@randht, rand(1,10);
 		if (.@randht < 8)
-			mapannounce "job3_arch02",""Sussurri di un'impersonazione: sento gli spiriti del diavolo! Fai attenzione!",bc_map,"0xFFCE00";
+			mapannounce "job3_arch02","Sussurri di un'impersonazione: sento gli spiriti del diavolo! Fai attenzione!",bc_map,"0xFFCE00";
 		else if ((.@randht == 8) || (.@randht == 9))
-			mapannounce "job3_arch02",""Sussurri di un'impersonazione: Stanno arrivando!",bc_map,"0xFFCE00";
+			mapannounce "job3_arch02","Sussurri di un'impersonazione: Stanno arrivando!",bc_map,"0xFFCE00";
 		end;
 	}
-	mapannounce "job3_arch02",""Sussurrando di un'impersonazione: Non puoi fare nulla da solo! Torniamo indietro!",bc_map,"0xFFCE00";
+	mapannounce "job3_arch02","Sussurrando di un'impersonazione: Non puoi fare nulla da solo! Torniamo indietro!",bc_map,"0xFFCE00";
 	mapwarp "job3_arch02","job3_arch01",29,29;
 	end;
 }
@@ -1036,11 +1036,11 @@ OnTouch:
 		delitem 12381,1; //ValkyrieA_Scroll
 		// fall through
 	} else if (getmercinfo(1) == 2037) {
-		mapannounce "job3_arch02",""Incubo di Valkyrie: Un'incompetente illusione di Valkyrie è venuta qui con l'aiuto degli umani. Vuoi quell'incubo?",bc_map,"0xFF0000";
+		mapannounce "job3_arch02","Incubo di Valkyrie: Un'incompetente illusione di Valkyrie è venuta qui con l'aiuto degli umani. Vuoi quell'incubo?",bc_map,"0xFF0000";
 		donpcevent "mob#arch_1::OnKill";
 		end;
 	}
-	mapannounce "job3_arch02",""Sussurrando di un'impersonazione: Non puoi fare nulla da solo! Torniamo indietro!",bc_map,"0xFFCE00";
+	mapannounce "job3_arch02","Sussurrando di un'impersonazione: Non puoi fare nulla da solo! Torniamo indietro!",bc_map,"0xFFCE00";
 	mapwarp "job3_arch02","job3_arch01",29,29;
 	end;
 }
@@ -1068,7 +1068,7 @@ OnEnable:
 OnMyMobDead:
 	if (mobcount("job3_arch02","#arch_val01::OnMyMobDead") < 1) {
 		donpcevent "#arch_redcell::OnGreen";
-		mapannounce "job3_arch02",""Incubo di Valkyrie: La tua vittoria è solo un falso immagine! hahahaha!",bc_map,"0xFF0000";
+		mapannounce "job3_arch02","Incubo di Valkyrie: La tua vittoria è solo un falso immagine! hahahaha!",bc_map,"0xFF0000";
 		hideoffnpc "Valkyrie#arch_01";
 		disablenpc "#arch_1_start";
 		disablenpc "#arch_1_01";
@@ -1098,7 +1098,7 @@ OnEnable:
 	end;
 OnMyMobDead:
 	if (mobcount("job3_arch02","#arch_val02::OnMyMobDead") < 1) {
-		mapannounce "job3_arch02",""Incubo di Valkyrie: Sei così infantile. Ti invito a una festa del diavolo. Mi assicurerò che ti diverta!",bc_map,"0xFF0000";
+		mapannounce "job3_arch02","Incubo di Valkyrie: Sei così infantile. Ti invito a una festa del diavolo. Mi assicurerò che ti diverta!",bc_map,"0xFF0000";
 		hideoffnpc "Valkyrie#arch_02";
 		disablenpc "#arch_2_boss";
 		viewpoint 1,279,234,1,0xFFFF99;
@@ -1161,7 +1161,7 @@ job3_arch02,244,46,5	script	Valkyrie#arch_02	403,{
 	next;
 	mes "[Valkiria Anguhilde]";
 	mes "Ma la battaglia non è ancora finita.";
-	mes "You remember a ^3131FFruined shrine on the center of the island^000000?";
+	mes "Ti ricordi un santuario rovinato ^3131FF al centro dell'isola^000000?";
 	mes "Sarà completato solo quando userai un tubo per corno.";
 	next;
 	mes "[Valkiria Anguhilde]";
@@ -1343,7 +1343,7 @@ job3_arch02,132,323,0	script	#arch_2_01	139,5,5,{
 	end;
 OnTouch:
 	if (countitem(12382))
-		mapannounce "job3_arch02",""Sussurri di Valchiria: Vedo un nuovo antico rotolo!",bc_map;
+		mapannounce "job3_arch02","Sussurri di Valchiria: Vedo un nuovo antico rotolo!",bc_map;
 	end;
 }
 
@@ -1355,14 +1355,14 @@ OnTouch:
 	} else if (getmercinfo(1) == 2038) {
 		set .@randht, rand(1,10);
 		if (.@randht < 8)
-			mapannounce "job3_arch02",""Sussurri di un'impersonazione: posso sentire gli spiriti del diavolo. Riesci a sentire? Il suono dell'accampamento nelle folle.",bc_map,"0xFFCE00";
+			mapannounce "job3_arch02","Sussurri di un'impersonazione: posso sentire gli spiriti del diavolo. Riesci a sentire? Il suono dell'accampamento nelle folle.",bc_map,"0xFFCE00";
 		else if ((.@randht == 8) || (.@randht == 9))
-			mapannounce "job3_arch02",""Sussurri di un'impersonazione: Prontezza al combattimento!",bc_map,"0xFFCE00";
+			mapannounce "job3_arch02","Sussurri di un'impersonazione: Prontezza al combattimento!",bc_map,"0xFFCE00";
 		else
-			mapannounce "job3_arch02",""Sussurro di un'impersonazione: Non posso lasciarti. Muori!",bc_map,"0xFFCE00";
+			mapannounce "job3_arch02","Sussurro di un'impersonazione: Non posso lasciarti. Muori!",bc_map,"0xFFCE00";
 		end;
 	}
-	mapannounce "job3_arch02",""Sussurrando di un'impersonazione: Non puoi fare nulla da solo! Torniamo indietro!",bc_map,"0xFFCE00";
+	mapannounce "job3_arch02","Sussurrando di un'impersonazione: Non puoi fare nulla da solo! Torniamo indietro!",bc_map,"0xFFCE00";
 	mapwarp "job3_arch02","job3_arch01",29,29;
 	end;
 }
@@ -1381,13 +1381,13 @@ job3_arch02,190,146,0	duplicate(archbjcq2)	#arch_2_11	139,5,5
 // Not in official script.
 job3_arch02,252,267,0	script	#arch_2_12	139,5,5,{
 OnTouch:
-	mapannounce "job3_arch02",""Sussurrando di un'impersonazione: È un incrocio. Andiamo sulla sinistra. Devo trovare la mia pipa.",bc_map,"0xFFCE00";
+	mapannounce "job3_arch02","Sussurrando di un'impersonazione: È un incrocio. Andiamo sulla sinistra. Devo trovare la mia pipa.",bc_map,"0xFFCE00";
 	end;
 }
 
 job3_arch02,250,290,0	script	#arch_2_13	139,5,5,{
 OnTouch:
-	mapannounce "job3_arch02",""Sussurri di un'impersonazione: posso vedere un santuario in rovina. Riposa lì.",bc_map,"0xFFCE00";
+	mapannounce "job3_arch02","Sussurri di un'impersonazione: posso vedere un santuario in rovina. Riposa lì.",bc_map,"0xFFCE00";
 	end;
 }
 */
@@ -1398,10 +1398,10 @@ OnTouch:
 		delitem 12382,1; //ValkyrieB_Scroll
 		// fall through
 	} else if (getmercinfo(1) == 2038) {
-		mapannounce "job3_arch02",""Un grido del diavolo: Sei così infantile. Ti invito a una festa di diavoli. Ti farò divertire!",bc_map,"0xFF0000";
+		mapannounce "job3_arch02","Un grido del diavolo: Sei così infantile. Ti invito a una festa di diavoli. Ti farò divertire!",bc_map,"0xFF0000";
 		end;
 	}
-	mapannounce "job3_arch02",""Sussurrando di un'impersonazione: Non puoi fare nulla da solo! Torniamo indietro!",bc_map,"0xFFCE00";
+	mapannounce "job3_arch02","Sussurrando di un'impersonazione: Non puoi fare nulla da solo! Torniamo indietro!",bc_map,"0xFFCE00";
 	mapwarp "job3_arch02","job3_arch01",29,29;
 	end;
 }
@@ -1409,7 +1409,7 @@ OnTouch:
 job3_arch02,284,159,0	script	#arch_3_01	139,20,20,{
 OnTouch:
 	if (Class != Job_Priest) {
-		mapannounce "job3_arch02",""Frus: Vuoi vedere Dio? Ok, ti manderò io stesso nel regno dei morti!",bc_map,"0xFF0000";
+		mapannounce "job3_arch02","Frus: Vuoi vedere Dio? Ok, ti manderò io stesso nel regno dei morti!",bc_map,"0xFF0000";
 		areamonster "job3_arch02",239,41,249,51,"Frus",1762,1,"#arch_3_01::OnMyMobDead";
 	}
 	disablenpc "#arch_3_01";
@@ -1427,7 +1427,7 @@ OnKill:
 job3_arch02,307,200,0	script	#arch_3_02	139,5,5,{
 OnTouch:
 	if (BaseJob == Job_Priest) {
-		mapannounce "job3_arch02",""Skogul: Sei il mio ospite!",bc_map,"0xFF0000";
+		mapannounce "job3_arch02","Skogul: Sei il mio ospite!",bc_map,"0xFF0000";
 		areamonster "job3_arch02",306,199,308,201,"Skogul",1761,1,"#arch_3_02::OnMyMobDead";
 	}
 	disablenpc "#arch_3_02";
@@ -1444,7 +1444,7 @@ OnKill:
 
 job3_arch02,296,216,0	script	#arch_3_03	139,5,5,{
 OnTouch:
-	mapannounce "job3_arch02",""Frus: Mi piace il tuo viso... Posso rubartelo?",bc_map,"0xFF0000";
+	mapannounce "job3_arch02","Frus: Mi piace il tuo viso... Posso rubartelo?",bc_map,"0xFF0000";
 	areamonster "job3_arch02",295,215,297,217,"Frus",1762,1,"#arch_3_03::OnMyMobDead";
 	disablenpc "#arch_3_03";
 	end;
@@ -1580,10 +1580,10 @@ OnTimer540000:
 	}
 	end;
 OnTimer600000:
-	mapannounce "job3_arch02",""Il incubo della Valkyrie: non ce la faccio più!",bc_map,"0xFF0000";
+	mapannounce "job3_arch02","Il incubo della Valkyrie: non ce la faccio più!",bc_map,"0xFF0000";
 	end;
 OnTimer605000:
-	mapannounce "job3_arch02",""Sussurri di Valchiria: No modo! Non posso lasciarvi fare questo. Tornate indietro!",bc_map,"0xFFCE00";
+	mapannounce "job3_arch02","Sussurri di Valchiria: No modo! Non posso lasciarvi fare questo. Tornate indietro!",bc_map,"0xFFCE00";
 	mapwarp "job3_arch02","job3_arch01",29,29;
 	donpcevent "Valkyrie#arch::OnBc";
 	stopnpctimer;

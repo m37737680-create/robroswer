@@ -52,9 +52,9 @@ OnMinute10:	// Start time (every hour)
 	.@label$ = strnpcinfo(0) + "::OnMobKilled";
 	killmonster .event_map$, .@label$;
 	monster .event_map$,0,0,"Please don't kill me!",1084,.@spawn, .@label$;
-	announce ""Trova il fungo: Totale di " + .@spawn + " Mushrooms have been spawned in " + .event_map$ + "!",0;
+	announce "Trova il fungo: Totale di " + .@spawn + " Mushrooms have been spawned in " + .event_map$ + "!",0;
 	sleep 2500;
-	announce ""Trova il fungo: Ogni fungo che uccidi ti darà " + getitemname(.prize) + "!",0;
+	announce "Trova il fungo: Ogni fungo che uccidi ti darà " + getitemname(.prize) + "!",0;
 	end;
 
 OnMobKilled:
@@ -63,9 +63,9 @@ OnMobKilled:
 	getitem .prize, .amount;
 	.@spawn = mobcount( .event_map$, strnpcinfo(0) + "::OnMobKilled" );
 	if (.@spawn > 0)
-		announce ""[ " + strcharinfo(0) + " ] has killed a Mushroom. There are now " + .@spawn + " Mushroom(s) left.",bc_map;
+		announce "[ " + strcharinfo(0) + " ] has killed a Mushroom. There are now " + .@spawn + " Mushroom(s) left.",bc_map;
 	else {
-		announce ""L'evento 'Trova il Fungo' è terminato. Tutti i funghi sono stati uccisi.",0;
+		announce "L'evento 'Trova il Fungo' è terminato. Tutti i funghi sono stati uccisi.",0;
 		.status = 0;
 		.event_map$ = "";
 	}

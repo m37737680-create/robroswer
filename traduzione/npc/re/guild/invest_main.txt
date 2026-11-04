@@ -325,7 +325,7 @@ OnCalculate:
 	}
 	end;
 OnInvest_start:
-	announce ""Da ora, inizieremo gli investimenti per collegare il 'Porta dell'Abisso' nelle aree WOE: Regno delle Valchirie, Lago del Bosco Verde, Luina, Britoniah.",bc_all,0xFF0000; //FW_NORMAL 10
+	announce "Da ora, inizieremo gli investimenti per collegare il 'Porta dell'Abisso' nelle aree WOE: Regno delle Valchirie, Lago del Bosco Verde, Luina, Britoniah.",bc_all,0xFF0000; //FW_NORMAL 10
 	set $fund_prt01,0;
 	set $fund_prt02,0;
 	set $fund_prt03,0;
@@ -349,12 +349,12 @@ OnInvest_start:
 	donpcevent "Investment_total#fund00::OnEnable";
 	end;
 OnInvest_stop:
-	announce ""Abbiamo terminato gli investimenti per collegare la 'Porta dell'Abisso'.",bc_all,0xFF0000; //FW_NORMAL 10
+	announce "Abbiamo terminato gli investimenti per collegare la 'Porta dell'Abisso'.",bc_all,0xFF0000; //FW_NORMAL 10
 	donpcevent "Investment_total#fund00::OnReset";
 	donpcevent "#fund_master::OnCalculate_Election";
 	end;
 OnResult:
-	announce ""Abbiamo i risultati degli investimenti per la 'Porta dell'Abisso'. Puoi controllare sulla Bacheca dello Stato degli Investimenti in ogni area WOE.",bc_all,0xFF0000; //FW_NORMAL 10
+	announce "Abbiamo i risultati degli investimenti per la 'Porta dell'Abisso'. Puoi controllare sulla Bacheca dello Stato degli Investimenti in ogni area WOE.",bc_all,0xFF0000; //FW_NORMAL 10
 	if ($2011_agit_invest == 4) {
 		set $fund_prt01,0;
 		set $fund_prt02,0;
@@ -452,7 +452,7 @@ OnTimer3600000:
 			if ($agit_result_timer % 10 == 5 || $agit_result_timer % 10 == 0 || $agit_result_timer == 58) {
 				set $agit_result_notice, $agit_result_notice+1;
 				donpcevent "Investment_total#fund00::OnVarInit";
-				announce ""No. "+$agit_result_notice+" Interim statement is now available. You can check through the Investment Status Board in each WOE area.",bc_all,0xFF0000; //FW_NORMAL 10
+				announce "No. "+$agit_result_notice+" Interim statement is now available. You can check through the Investment Status Board in each WOE area.",bc_all,0xFF0000; //FW_NORMAL 10
 			}
 
 			donpcevent "Investment_total#fund00::OnTimerReset";
@@ -538,7 +538,7 @@ OnTimer60000:
 		set $agit_revoting_timer, $agit_revoting_timer+1;
 		donpcevent "Revoting Manager#Invest1::OnTimerReset";
 	} else if (.@revote == 30) {
-		announce ""Gilda dei Mercanti di Zampe di Gatto: Ora stiamo per chiudere il voto aggiuntivo. Annunceremo presto i risultati.",bc_all,0xFF0000; //FW_NORMAL 10
+		announce "Gilda dei Mercanti di Zampe di Gatto: Ora stiamo per chiudere il voto aggiuntivo. Annunceremo presto i risultati.",bc_all,0xFF0000; //FW_NORMAL 10
 		donpcevent "Revoting Manager#Invest2::OnDisable";
 		donpcevent "Revoting Manager#Invest1::OnEnable";
 		set $agit_revoting_timer, $agit_revoting_timer+1;
@@ -634,16 +634,16 @@ OnNotice_on:
 	initnpctimer;
 	end;
 OnTimer5000:
-	announce ""Gilda Mercanti delle Zampe di Gatto: Poiché nessuna area WOE ha raggiunto il livello massimo di investimento per connettere la 'Porta dell'Abisso'...",bc_all,0xFF0000; //FW_NORMAL 10
+	announce "Gilda Mercanti delle Zampe di Gatto: Poiché nessuna area WOE ha raggiunto il livello massimo di investimento per connettere la 'Porta dell'Abisso'...",bc_all,0xFF0000; //FW_NORMAL 10
 	end;
 OnTimer8000:
-	announce ""Gilda dei Mercanti di Zampe di Gatto: Stavamo per collegare la 'Porta dell'Abisso' all'area WOE che ha investito di più.",bc_all,0xFF0000; //FW_NORMAL 10
+	announce "Gilda dei Mercanti di Zampe di Gatto: Stavamo per collegare la 'Porta dell'Abisso' all'area WOE che ha investito di più.",bc_all,0xFF0000; //FW_NORMAL 10
 	end;
 OnTimer11000:
-	announce ""Gilda dei Mercanti di Zampe di Gatto: Tuttavia, c'erano aree che investivano la stessa quantità. Quindi le sottoporrò a votazione.",bc_all,0xFF0000; //FW_NORMAL 10
+	announce "Gilda dei Mercanti di Zampe di Gatto: Tuttavia, c'erano aree che investivano la stessa quantità. Quindi le sottoporrò a votazione.",bc_all,0xFF0000; //FW_NORMAL 10
 	end;
 OnTimer14000:
-	announce ""Gilda Mercanti delle Zampe di Gatto: Votazioni aggiuntive saranno disponibili per 30 minuti. Puoi votare nel Regno delle Valchirie.",bc_all,0xFF0000; //FW_NORMAL 10
+	announce "Gilda Mercanti delle Zampe di Gatto: Votazioni aggiuntive saranno disponibili per 30 minuti. Puoi votare nel Regno delle Valchirie.",bc_all,0xFF0000; //FW_NORMAL 10
 	end;
 OnTimer20000:
 	explode(.@candidates$, callsub(OnGetCandidates, $2011_agit_invest),"|");
@@ -657,7 +657,7 @@ OnTimer20000:
 		else if (.@candidates$[.@i] == "prt")
 			set .@choices$[.@i],"Valkyrie Realm";
 	}
-	announce ""Gilda dei Mercanti di Zampe di Gatto: I candidati per il voto aggiuntivo sono... "+implode(.@choices$," vs. ")+".",bc_all,0xFF0000; //FW_NORMAL 10
+	announce "Gilda dei Mercanti di Zampe di Gatto: I candidati per il voto aggiuntivo sono... "+implode(.@choices$," vs. ")+".",bc_all,0xFF0000; //FW_NORMAL 10
 	set $fund_prt_extra,0;
 	set $fund_pay_extra,0;
 	set $fund_gef_extra,0;
@@ -856,7 +856,7 @@ OnAgitInvest:
 			mes "^4d4dffAbyss Gate^000000 indipendentemente dal rango di investimento che include lo strato più profondo della dungeon della gilda.";
 			next;
 			mes .@n$;
-			mes "^ff0000If there is no Agit region that reached the maximum investment, then the region with the";
+			mes "^ff0000Se non c'è alcuna regione Agit che ha raggiunto l'investimento massimo, allora la regione con il";
 			mes "la partecipazione di investimento più alta otterrà il Portale dell'Abisso collegato con l'investimento raccolto da tutte le regioni.^000000";
 			next;
 			mes .@n$;

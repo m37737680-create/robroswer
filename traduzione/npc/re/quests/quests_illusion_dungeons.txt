@@ -1689,10 +1689,10 @@ gef_dun01,132,223,5	script	Grimm#ilgf	4_M_MINISTER,{
 		npctalk "Vorrei leggerlo anch'io.", "Mojo#ilgf", bc_self;
 		next;
 		mes "[Grimm]";
-		mes "The content of this notebook isn't what causes me alarm. Didn't you detect some ^0000cdstrange energy^000000 when you touch it?";
+		mes "Il contenuto di questo taccuino non è ciò che mi allarma. Non hai rilevato qualche energia strana^0000cd quando l'hai toccato^000000?";
 		next;
 		mes "[Grimm]";
-		mes "This book is sustained with its owner's spiritual energy, and it's pulling those who gaze upon it into ^0000cdthe world inside it^000000.";
+		mes "Questo libro è sostenuto dall'energia spirituale del suo proprietario e sta attirando coloro che lo fissano nel ^0000cdmondo all'interno di esso^000000.";
 		next;
 		mes "[Mojo]";
 		mes "E per questo voglio vedere il quaderno così tanto. Voglio sapere come contiene un mondo dentro di sé e perché è stato scoperto solo ora.";
@@ -2194,7 +2194,7 @@ gef_d01_i,113,230,5	script	Gem#ilgf01	1_F_PRIEST,{
 		mes "Pensavamo ci metterebbe un'eternità trovarli, così abbiamo deciso di separarci. Stavamo parlando di come fare quando sei arrivato/a.";
 		next;
 		mes "[Antoine]";
-		mes "I can't say how glad I am to have you here. Now that there are four of us, ^0000cdtwo of us can stay while the other two look^000000.";
+		mes "Non so quanto sono felice di averti qui. Ora che siamo in quattro, ^0000cddue di noi possono restare mentre gli altri due guardano^000000.";
 		next;
 		select("Come appaiono i membri mancanti?");
 		mes "[Gem]";
@@ -3922,7 +3922,7 @@ gef_d01_i,1,1,5	script	ill_vampire_spawn_bomi	-1,{
 	end;
 OnStart:
 	sleep 1000;
-	mapannounce "gef_d01_i", ""Oh, no... Sento le tossine diffondersi nel mio corpo...!", bc_map, 0xFF0000;
+	mapannounce "gef_d01_i", "Oh, no... Sento le tossine diffondersi nel mio corpo...!", bc_map, 0xFF0000;
 	if (mobcount("gef_d01_i", "ill_vampire_spawn_bomi::OnMobDead") < 1 && mobcount("gef_d01_i", "ill_vampire_spawn_dracula::OnMobDead") < 1) {
 		monster "gef_d01_i",84,135,"Berserk Bomi",3756,1,"ill_vampire_spawn_bomi::OnMobDead";
 	}
@@ -3930,13 +3930,13 @@ OnStart:
 OnMobDead:
 	enablenpc( "Wizard#ilgf001" );
 	disablenpc( "Dracula#ilgf02" );
-	mapannounce "gef_d01_i", ""Bomi sta cadendo in un sonno lungo e profondo.", bc_map, 0x00ff00;
-	mapannounce "gef_d01_i", ""Dracula arrabbiato: Chi osa ferire il mio Bomi?!", bc_map, 0x00ff00;
+	mapannounce "gef_d01_i", "Bomi sta cadendo in un sonno lungo e profondo.", bc_map, 0x00ff00;
+	mapannounce "gef_d01_i", "Dracula arrabbiato: Chi osa ferire il mio Bomi?!", bc_map, 0x00ff00;
 	sleep 1000;
 	if (rand(2) == 1)
-		mapannounce "gef_d01_i", ""Dracula arrabbiato: Lascia Bomi in pace! Combatti contro di me invece!", bc_map, 0xFF0000;
+		mapannounce "gef_d01_i", "Dracula arrabbiato: Lascia Bomi in pace! Combatti contro di me invece!", bc_map, 0xFF0000;
 	else
-		mapannounce "gef_d01_i", ""Dracula arrabbiato: Bomi ha bisogno di riposo. Mi occuperò io di te!", bc_map, 0xFF0000;
+		mapannounce "gef_d01_i", "Dracula arrabbiato: Bomi ha bisogno di riposo. Mi occuperò io di te!", bc_map, 0xFF0000;
 	killmonster "gef_d01_i", "ill_vampire_spawn_bomi::OnMobDead";
 	killmonster "gef_d01_i", "ill_vampire_spawn_dracula::OnMobDead";
 	monster "gef_d01_i",0,0,"Angry Dracula",3757,1,"ill_vampire_spawn_dracula::OnMobDead";
@@ -3948,9 +3948,9 @@ gef_d01_i,1,1,5	script	ill_vampire_spawn_dracula	-1,{
 OnMobDead:
 	killmonster "gef_d01_i", "ill_vampire_spawn_bomi::OnMobDead";
 	killmonster "gef_d01_i", "ill_vampire_spawn_dracula::OnMobDead";
-	mapannounce "gef_d01_i", ""Dracula arrabbiato: È ora che Bomi si svegli. Umani, non dimenticate la vostra promessa!", bc_map, 0x00ff00;
+	mapannounce "gef_d01_i", "Dracula arrabbiato: È ora che Bomi si svegli. Umani, non dimenticate la vostra promessa!", bc_map, 0x00ff00;
 	sleep 2000;
-	mapannounce "gef_d01_i", ""Bomi sta svegliandosi dal suo lungo e profondo sonno.", bc_map, 0x00ff00;
+	mapannounce "gef_d01_i", "Bomi sta svegliandosi dal suo lungo e profondo sonno.", bc_map, 0x00ff00;
 	if (mobcount("gef_d01_i", "ill_vampire_spawn_bomi::OnMobDead") < 1) {
 		disablenpc( "Wizard#ilgf001" );
 		enablenpc( "Wizard#ilgf01" );
@@ -4860,17 +4860,17 @@ OnEvent:
 	initnpctimer;
 	end;
 OnTimer1000:
-	mapannounce "ice_d03_i", ""Tutta l'energia che era sigillata all'interno della grotta è stata rilasciata, risvegliando Ktullanux.", bc_map, 0xFFFF00;
+	mapannounce "ice_d03_i", "Tutta l'energia che era sigillata all'interno della grotta è stata rilasciata, risvegliando Ktullanux.", bc_map, 0xFFFF00;
 	end;
 OnTimer3000:
 	stopnpctimer;
-	mapannounce "ice_d03_i", ""Ktullanux: Chi osa chiamarmi un lucertola? Vi congelerò tutti!", bc_map, 0xFFFF00;
+	mapannounce "ice_d03_i", "Ktullanux: Chi osa chiamarmi un lucertola? Vi congelerò tutti!", bc_map, 0xFFFF00;
 	specialeffect EF_PORTAL;
 	if (mobcount("ice_d03_i", "bosseff#frozen::OnBossDead") < 1)
 		monster "ice_d03_i",149,112,"Awakened Ktullanux",3796,1, "bosseff#frozen::OnBossDead";	// ILL_KTULLANUX
 	end;
 OnBossDead:
-	mapannounce "ice_d03_i", ""Tornerò...", bc_map;
+	mapannounce "ice_d03_i", "Tornerò...", bc_map;
 	end;
 }
 
@@ -5212,7 +5212,7 @@ ice_d03_i,155,43,3	script(CLOAKED)	Zeith#frozen01	4_M_FROZEN_GC,{
 		next;
 		mes "^ff0000I hugged Vrid as he asked.^000000";
 		mes "";
-		mes "^ff0000Light flashed!^000000";
+		mes "^ff0000Un lampo ha lampeggiato!^000000";
 		mes "^ff0000No, aspetta. Era solo il ghiaccio che rifletteva la luce ambientale.^000000";
 		mes "^ff0000Non è successo nulla.^000000";
 		next;
@@ -5592,7 +5592,7 @@ alberta,211,28,5	script	Knight Aylvar#illtur	4_M_YOUNGKNIGHT,{
 		next;
 		select("Potresti dirmi com'è il tuo amico?");
 		mes "[Cavaliere Aylvar]";
-		mes "^0000CDHe wears glasses^000000 and has blue short hair. ^0000CDHis face is just like a scholar^000000 so you should be able to recognize him.";
+		mes "Indossa occhiali^0000CD e ha i capelli corti blu.^000000 Il suo viso è proprio come quello di uno studioso^0000CD quindi dovresti essere in grado di riconoscerlo.^000000";
 		next;
 		if (select( "Mostrami il pezzo. Lasciami dare un'occhiata.", "Scusa ma sono occupato/a." ) == 2) {
 			npctalk "Aylvar : Leiphen, my friend... Please be safe.", "", bc_self;
@@ -6421,7 +6421,7 @@ tur_d03_i,235,187,7	script	Susceptible Soldier#	4_M_KEEN_SOLDIER,{
 		select( "Hai visto questa persona?", "Sei... sei bene?" );
 		specialeffect EF_SCREEN_QUAKE;
 		mes "Soldato Suscettibile";
-		mes "^BDBDBDA^000000 human? A ^BDBDBDhuuu^000000man? There would ^BDBDBDbe no such thing^000000!!!!!";
+		mes "^BDBDBDUn ^000000 umano? Un ^BDBDBDhuuu^000000uomo? Non ci sarebbe ^BDBDBDniente del genere^000000___!!!!!";
 		mes "Dannazione ^BDBDBDte^000000! Non guardarmi ^BDBDBDcosì^000000 a me ^BDBDBDcome^000000 così... ^BDBDBDNon^000000 guardare!";
 		next;
 		npctalk "Munch... Muunch, treasure... My treasure... Munch... Muunch...", "Susceptible Soldier#", bc_self;
@@ -7156,7 +7156,7 @@ tur_d04_i,26,167,5	script	Archeologist Leiphen#illtur02	2_M_ALCHE,{
 		mes "Ok, andiamo! Per favore, mi mostri la strada per il posto più vicino!";
 		next;
 		emotion ET_SCRATCH, .@account_id;
-		mes " - ^424242I didn't mean that about the talking part, but let's go anyway.";
+		mes " ^424242Non intendevo quello sul fatto di parlare, ma andiamo comunque.";
 		mes "Al posto più vicino... ^FF0000Andiamo dalla _^424242donna affamata.^000000 -";
 		delitem 7564,10;	// Rotten_Meat
 		ill_turtle = 7;
@@ -9403,7 +9403,7 @@ iz_d04_i,127,228,4	script	Jerrymon#jerry3	1_M_01,{
 			mes "E a volte sembrano minacciarci.";
 			next;
 			mes "[Jerrymon]";
-			mes "In quel senso, potresti occuparti di alcune creature delle profondità marine? Magari possiamo prendere ^4d4dff" + getitemname(25899) + "^000000 from them.";
+			mes "In quel senso, potresti occuparti di alcune creature delle profondità marine? Magari possiamo prendere ^4d4dff" + getitemname(25899) + "da loro.^000000";
 			next;
 			mes "[Jerrymon]";
 			mes "Togliere 10 ciascuno di ^4d4dff" + getmonsterinfo("ILL_SROPHO", MOB_NAME) + "^000000, ^4d4dff" + getmonsterinfo("MAL_DEVIAZIONE", MOB_NAME) + "^000000, e ^4d4dff" + getmonsterinfo("ILL_MARSE", MOB_NAME) + "^000000.";

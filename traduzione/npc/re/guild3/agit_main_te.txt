@@ -163,7 +163,7 @@ OnAgitBreak:
 	if (agitcheck3())
 		donpcevent strnpcinfo(0) +"::OnEmpSpawn";
 	sleep 7000;
-	announce ""Il [" + getcastlename(.@map$) + "] castle has been conquered by the [" + getguildName(.@guild_id) + "] guild.",bc_all|bc_woe;
+	announce "Il [" + getcastlename(.@map$) + "] castle has been conquered by the [" + getguildName(.@guild_id) + "] guild.",bc_all|bc_woe;
 	end;
 
 OnGuildBreak:
@@ -174,7 +174,7 @@ OnGuildBreak:
 	disablenpc "Kafra Employee#"+ .@tmp$;
 	setcastledata .@map$,CD_GUILD_ID,0;
 	sleep 7000;
-	announce ""Base della Gilda [" + getcastlename(.@map$) + "] has been abandoned.",bc_all;
+	announce "Base della Gilda [" + getcastlename(.@map$) + "] has been abandoned.",bc_all;
 	donpcevent strnpcinfo(0) +"::OnAgitInit3";
 	end;
 
@@ -183,9 +183,9 @@ S_Message:
 	.@guild_id = getcastledata(.@map$,CD_GUILD_ID);
 	
 	if (.@guild_id)
-		announce ""Il [" + getcastlename(.@map$) + "] castle is occupied by the [" + getguildname(.@guild_id) + "] guild.",bc_all,"0xFF0000",FW_NORMAL,10;
+		announce "Il [" + getcastlename(.@map$) + "] castle is occupied by the [" + getguildname(.@guild_id) + "] guild.",bc_all,"0xFF0000",FW_NORMAL,10;
 	else
-		announce ""Il [" + getcastlename(.@map$) + "] castle is currently unoccupied.", bc_all,"0xFF0000",FW_NORMAL,10;
+		announce "Il [" + getcastlename(.@map$) + "] castle is currently unoccupied.", bc_all,"0xFF0000",FW_NORMAL,10;
 	if (compare( .@map$,"te_alde" ))
 		.@string$ = "alde0"+ charat( .@map$,getstrlen(.@map$)-1 );
 	else
@@ -452,7 +452,7 @@ function GuardianData;
 			close;
 		}
 		mes "Contatterai la sede centrale di Kafra e assumerai un dipendente per il nostro Castello?";
-		mes "^ff0000 10,000 zeny is required for their services. ";
+		mes "^ff0000 Sono richiesti 10.000 zeny per i loro servizi. ";
 		next;
 		if (select( "Assumere.","Annulla" ) == 2) {
 			mes .@npc_name$;

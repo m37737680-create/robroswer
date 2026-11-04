@@ -32,7 +32,7 @@ lighthalzen,1,1,0	script	Law Enforcement	HIDDEN_NPC,{
 	end;
 
 OnEnable:
-	mapannounce "lighthalzen",""Attenzione, cittadini. La nostra sicurezza è stata violata e la città è in stato di Allerta Gangster. Trovate riparo immediatamente!",bc_map;
+	mapannounce "lighthalzen","Attenzione, cittadini. La nostra sicurezza è stata violata e la città è in stato di Allerta Gangster. Trovate riparo immediatamente!",bc_map;
 	initnpctimer;
 	for (set .@i, 0; .@i < 30; set .@i, .@i + 1)
 		monster "lighthalzen",0,0,"Gangster",1592,1,"Law Enforcement::OnMyMobDead";
@@ -40,7 +40,7 @@ OnEnable:
 
 OnTimer220000:
 	killmonster "lighthalzen","Law Enforcement::OnMyMobDead";
-	mapannounce "lighthalzen",""Attenzione, cittadini. Il nostro dipartimento di forze dell'ordine ha contenuto con successo la situazione. Lo stato di allerta è stato cancellato.",bc_map;
+	mapannounce "lighthalzen","Attenzione, cittadini. Il nostro dipartimento di forze dell'ordine ha contenuto con successo la situazione. Lo stato di allerta è stato cancellato.",bc_map;
 	set $@Lhz_Gangster_Alert, 0;
 	stopnpctimer;
 	end;
@@ -87,7 +87,7 @@ lighthalzen,267,200,3	script	Guard#lhz01	4_M_LGTGUARD,{
 		mes "Zzzz... Zzz...";
 		mes "ZZZzzzzzzzzzz...";
 		next;
-		mes "^3355FFThis guard is";
+		mes "^3355FFQuesto guardia è";
 		mes "addormentandosi, quindi questo è";
 		mes "l'opportunità perfetta";
 		mes "scivolare oltre lui.^000000";
@@ -154,7 +154,7 @@ lighthalzen,294,223,7	script	Guard#lhz02	4_M_LGTGUARD,{
 		mes "Zzzz... Zzz...";
 		mes "ZZZzzzzzzzzzz...";
 		next;
-		mes "^3355FFThis guard is";
+		mes "^3355FFQuesto guardia è";
 		mes "addormentandosi, quindi questo è";
 		mes "l'opportunità perfetta";
 		mes "scivolare oltre lui.^000000";
@@ -690,7 +690,7 @@ lhz_cube,237,198,0	script	Bundle of Files#cube	HIDDEN_NPC,{
 
 lhz_cube,234,202,0	script	Picture#cube	HIDDEN_NPC,{
 	if (lhz_secret01 < 2) {
-		mes "^3355FFThis picture hanging";
+		mes "^3355FFQuesto quadro appeso";
 		mes "sulla parete cattura";
 		mes "la tua attenzione per qualche cosa";
 		mes "ragione inspiegabilmente strana.^000000";
@@ -706,7 +706,7 @@ lhz_cube,234,202,0	script	Picture#cube	HIDDEN_NPC,{
 		close;
 	}
 	if (lhz_secret01 == 2) {
-		mes "^3355FFThis picture hanging";
+		mes "^3355FFQuesto quadro appeso";
 		mes "sulla parete cattura";
 		mes "la tua attenzione per qualche cosa";
 		mes "ragione inspiegabilmente strana.^000000";
@@ -745,7 +745,7 @@ lhz_cube,234,202,0	script	Picture#cube	HIDDEN_NPC,{
 				}
 				close;
 			}
-			mes "^3355FFUnfortunately,";
+			mes "^3355FFSfortunatamente,";
 			mes "facendo quello apparentemente";
 			mes "non era abbastanza per muovere";
 			mes "la foto. Forse tu";
@@ -790,14 +790,14 @@ lhz_cube,242,201,0	script	Drawer#cube	HIDDEN_NPC,{
 		close;
 	}
 	if (lhz_secret01 == 1) {
-		mes "^3355FF The drawer here";
+		mes "^3355FF Il cassetto qui";
 		mes "sembra interessante, ma";
 		mes "è bloccato. Speriamo che tu";
 		mes "riesco a capire come aprirlo.^000000";
 		next;
 		input .@input$;
 		if (.@input$ == "Red Key") {
-			mes "^3355FFYou insert the Red Key";
+			mes "^3355FFInserisci la Chiave Rossa";
 			mes "dentro la serratura e apri il";
 			mes "cassetto. Dentro, trovi un";
 			mes "^000000Jackknife^3355FF quello che decidi";
@@ -806,7 +806,7 @@ lhz_cube,242,201,0	script	Drawer#cube	HIDDEN_NPC,{
 			lhz_secret01 = 2;
 		}
 		else {
-			mes "^3355FFUnfortunately, you";
+			mes "^3355FFSfortunatamente, tu";
 			mes "non si può aprire o rompere";
 			mes "la serratura del cassetto";
 			mes "facendo questo. Hai bisogno";
@@ -845,7 +845,7 @@ lhz_cube,248,179,0	script	Chest#cube	HIDDEN_NPC,{
 		}
 		close;
 	}
-	mes "^3355FFThis is just a normal";
+	mes "^3355FFQuesto è solo un normale";
 	mes "petto. C'era un tempo che";
 	mes "un attrezzo ^000000Axe^3355FF sopra";
 	mes "fino a quando non l'hai preso.^000000";
@@ -1000,7 +1000,7 @@ lhz_cube,224,192,0	script	Power Generator#cube	HIDDEN_NPC,{
 
 lhz_cube,244,201,0	script	Status Light#cube	HIDDEN_NPC,{
 	if (lhz_secret01 < 7) {
-		mes "^3355FFThe Status Light is";
+		mes "^3355FFLa spia di stato è";
 		mes "Su. Sembra che ci sia";
 		mes "qualcosa dentro il";
 		mes "lampadina, ma non puoi ottenere";
@@ -1084,13 +1084,13 @@ lhz_cube,234,200,0	script	Desk#cube	HIDDEN_NPC,{
 		next;
 		switch( select( "Sulla scrivania", "Sotto la scrivania", "Cassettiere" ) ) {
 		case 1:
-			mes "^3355FFAlas, no matter how much";
+			mes "^3355FFAhimè, non importa quanto";
 			mes "tu rovisti attraverso di esso,";
 			mes "il disordine sulla scrivania";
 			mes "si rivela inutile per te.^000000";
 			next;
 			if (Sex == SEX_MALE) {
-				mes "^3355FFAn issue of the";
+				mes "^3355FFUn numero di";
 				mes "Rivista di ballo,";
 				mes "''Harmonic Lick'' cattura";
 				mes "il tuo occhio, ma tu davvero";
@@ -1139,7 +1139,7 @@ lhz_cube,234,200,0	script	Desk#cube	HIDDEN_NPC,{
 	next;
 	switch( select( "Sulla scrivania", "Sotto la scrivania", "Cassettiere" ) ) {
 	case 1:
-		mes "^3355FFAlas, no matter how much";
+		mes "^3355FFAhimè, non importa quanto";
 		mes "tu rovisti attraverso di esso,";
 		mes "il disordine sulla scrivania";
 		mes "si rivela inutile per te.^000000";
@@ -1252,7 +1252,7 @@ lhz_cube,247,198,0	script	Bed#cube	HIDDEN_NPC,{
 				mes "il bastone semplicemente non era abbastanza lungo.^000000";
 			}
 			else {
-				mes "^3355FFUnfortunately,";
+				mes "^3355FFSfortunatamente,";
 				mes "qualsiasi cosa tu usavi prima";
 				mes "cercare di raggiungere l'oggetto";
 				mes "non ha funzionato. Avrai";
@@ -1291,7 +1291,7 @@ lhz_cube,247,198,0	script	Bed#cube	HIDDEN_NPC,{
 				lhz_secret02 = 4;
 			}
 			else {
-				mes "^3355FFUnfortunately,";
+				mes "^3355FFSfortunatamente,";
 				mes "qualsiasi cosa tu usavi prima";
 				mes "cercare di raggiungere l'oggetto";
 				mes "non ha funzionato. Avrai";
@@ -1327,7 +1327,7 @@ lhz_cube,229,184,0	script	Goblet#cube	HIDDEN_NPC,{
 			mes "ho perso la festa.^000000";
 			next;
 			if (select( "Esamina il calice.", "Annulla" ) == 1) {
-				mes "^3355FFInside the goblet,";
+				mes "^3355FFDentro il calice,";
 				mes "trovi una chiave arrugginita ^000000Rusty Key^3355FF";
 				mes "che decidi di tenere.";
 				mes "Tuttavia, dovrai prendere";
@@ -1338,11 +1338,11 @@ lhz_cube,229,184,0	script	Goblet#cube	HIDDEN_NPC,{
 			}
 			close;
 		}
-		mes "^3355FFThis is the goblet where";
+		mes "^3355FFQuesto è il calice dove";
 		mes "hai trovato che ^000000Chiave Arrugginita^3355FF.^000000";
 		close;
 	}
-	mes "^3355FFThis is goblet cup where";
+	mes "^3355FFQuesto è il calice dove";
 	mes "hai trovato che ^000000Chiave Arrugginita^3355FF.^000000";
 	close;
 }
@@ -1404,7 +1404,7 @@ lhz_cube,249,191,0	script	Cabinet#cube	HIDDEN_NPC,{
 		next;
 		if (select( "Aperto", "Annulla" ) == 1) {
 			input .@input$;
-			mes "^3355FFUnfortunately, the";
+			mes "^3355FFPurtroppo, il";
 			mes "l'armadio è stato chiuso a chiave.";
 			mes "Avrai bisogno della chiave giusta";
 			mes "per aprire i cassetti.^000000";
@@ -1474,7 +1474,7 @@ lhz_cube,224,197,0	script	Experiment Tube#cube	HIDDEN_NPC,{
 		next;
 		input .@input$;
 		if (.@input$ == "Black Key") {
-			mes "^3355FFYou insert the Black Key";
+			mes "^3355FFInserisci la Chiave Nera";
 			mes "nella serratura, causando";
 			mes "il tubo di esperimento da aprire";
 			mes "e rivelare un ^000000Oval^3355FF che tu";
@@ -1590,7 +1590,7 @@ lhz_cube,248,193,0	script	Box#cube1	HIDDEN_NPC,{
 			if (lhz_secret02 == 4) {
 				input .@input$;
 				if (.@input$ == "Cube") {
-					mes "^3355FFYou insert the Cube";
+					mes "^3355FFInserisci il Cubo";
 					mes "nel foro cubico";
 					mes "e scatta al suo posto.";
 					mes "Il tuo Kindergarten formale";
@@ -2203,7 +2203,7 @@ lhz_in02,201,210,5	script	Digotz	4_M_LGTMAN,{
 			next;
 			cutin "",255;
 			mes "Diario di Benkaistein";
-			mes "^856363Digotz's been sick for three";
+			mes "^856363Digotz è stato male per tre";
 			mes "giorni ora. È solo un normale";
 			mes "freddo e Maku continua a dire";
 			mes "è colpa di Digotz che si è ammalato.^FFFFFF ^856363 Ma mi chiede sempre di";
@@ -2365,7 +2365,7 @@ lhz_in02,201,210,5	script	Digotz	4_M_LGTMAN,{
 		mes "^FF0000Hopeless bastard!";
 		mes "^FF0000You're still a stubborn jerk!";
 		mes "^FF0000You owe me at least 3 lunches!";
-		mes "^FF0000Not to mention an apology!";
+		mes "^FF0000Per non parlare di un'scusa!";
 		mes "^FF0000Ma a chi importa cosa pensi?!";
 		mes "Sono così maledettamente felice senza di te!^000000";
 		close3;
@@ -2456,7 +2456,7 @@ lhz_in02,201,210,5	script	Digotz	4_M_LGTMAN,{
 		mes "^FF0000Hopeless bastard!";
 		mes "^FF0000You're still a stubborn jerk!";
 		mes "^FF0000You owe me at least 3 lunches!";
-		mes "^FF0000Not to mention an apology!";
+		mes "^FF0000Per non parlare di un'scusa!";
 		mes "^FF0000Ma a chi importa cosa pensi?!";
 		mes "Sono così maledettamente felice senza di te!^000000";
 		set friendship,4;
@@ -2628,7 +2628,7 @@ lighthalzen,337,232,3	script	Maku	4_M_LGTPOOR,{
 		next;
 		cutin "",255;
 		mes "Diario di Benkaistein";
-		mes "^856363Digot's been sick for three";
+		mes "^856363Digot è stato malato per tre";
 		mes "giorni ora. È solo un normale";
 		mes "freddo e Maku continua a dire";
 		mes "è colpa di Digotz che si è ammalato.^FFFFFF ^856363 Ma mi chiede sempre di";
@@ -3282,7 +3282,7 @@ yuno_in04,168,117,3	script	Book#lhz	HIDDEN_NPC,{
 	if (friendship == 10) {
 		set friendship,11;
 		getitem 7351,1; //Friend's_Diary
-		mes "^3355FFThis book is labeled,";
+		mes "^3355FFQuesto libro è etichettato";
 		mes "Diario di Benkaistein";
 		mes "Vol. 6.'' Questo è probabilmente";
 		mes "cosa stava cercando di fare Benkaistein";
@@ -4776,7 +4776,7 @@ lhz_in03,32,162,3	script	Crippled Girl#li_tre	1_M_INNKEEPER,{
 			mes "......";
 			next;
 			mes "Posseduto "+strcharinfo(0)+"]";
-			mes "^3131FFSetsu, please remember";
+			mes "^3131FFSetsu, per favore ricordati";
 			mes "che non farei mai niente";
 			mes "farti del male. Perdonami per";
 			mes "lasciandoti indietro. Spero";
@@ -4971,7 +4971,7 @@ lhz_in03,32,162,3	script	Crippled Girl#li_tre	1_M_INNKEEPER,{
 					mes "...............";
 					next;
 					mes "Posseduto "+strcharinfo(0)+"]";
-					mes "^3131FFSetsu, please remember";
+					mes "^3131FFSetsu, per favore ricordati";
 					mes "che non farei mai niente";
 					mes "farti del male. Perdonami per";
 					mes "lasciandoti indietro. Spero";
@@ -6978,7 +6978,7 @@ OnTouch_:
 		mes "In questo modo.^000000";
 		next;
 		mes "[??????]";
-		mes "^333333Hurry up, before";
+		mes "^333333Sbrigati, prima che";
 		mes "gli altri ti vedono...^000000";
 		next;
 		mes "["+strcharinfo(0)+"]";
@@ -7003,7 +7003,7 @@ OnTouch_:
 				mes "Posso saperne di più su questo...";
 				next;
 				mes "[??????]";
-				mes "^333333So why did you tell";
+				mes "^333333Quindi perché l'hai detto";
 				mes "venire a un tale";
 				mes "un posto pericoloso...?^000000";
 				next;
@@ -7042,7 +7042,7 @@ OnTouch_:
 				mes ".....................";
 				mes "..................";
 				next;
-				mes "^3355FFThat other voice...";
+				mes "^3355FFQuella altra voce...";
 				mes "A chi appartenesse";
 				mes "è sparito! Cos'è";
 				mes "cosa succede qui?^000000";
@@ -8568,7 +8568,7 @@ OnTouch_:
 		mes "dalla finestra.^000000";
 		next;
 		mes "[????]";
-		mes "^333333That's expected...";
+		mes "^333333È previsto...";
 		mes "Ma... Perché ha...";
 		mes "il presidente...^000000";
 		next;
@@ -8584,7 +8584,7 @@ OnTouch_:
 		mes "....sarai................";
 		mes "...............Non possiamo fermarci.^000000";
 		next;
-		mes "^3355FFThe whispers grow";
+		mes "^3355FFI sussurri crescono";
 		mes "più e più finché";
 		mes "non puoi più sentire";
 		mes "qualunque cosa. Uno di quelli";
@@ -9613,7 +9613,7 @@ OnTouch_:
 								mes "aprire questa porta.^000000";
 								close;
 							}
-							mes "^3355FFAfter inserting the";
+							mes "^3355FFDopo aver inserito il";
 							mes "passaggio, un pannello all'interno";
 							mes "la porta scorre aperta,";
 							mes "rivelando una tastiera numerica.";
@@ -9736,7 +9736,7 @@ lhz_in01,182,35,0	script	File Search Engine	HIDDEN_NPC,{
 
 	if((lhz_boss > 28) && (lhz_boss < 35))
 	{
-		mes "^3355FFThis machine can be";
+		mes "^3355FFQuesta macchina può essere";
 		mes "usato per localizzare specifico";
 		mes "documenti all'interno del";
 		mes "Archivio Segreto. Tuttavia,";
@@ -9853,7 +9853,7 @@ L_Search:
 				close;
 		}
 	}
-	mes "^3355FFThis machine can be";
+	mes "^3355FFQuesta macchina può essere";
 	mes "usato per localizzare specifico";
 	mes "documenti all'interno del";
 	mes "Archivio Segreto, Tuttavia,";
@@ -9877,7 +9877,7 @@ lhz_in01,177,31,0	script	Door#sneak	HIDDEN_NPC,{
 	}
 	else if(lhz_boss < 36)
 	{
-		mes "^3355FFThe door is shut, but";
+		mes "^3355FFLa porta è chiusa, ma";
 		mes "c'è un dispositivo che";
 		mes "assomiglia un po' a";
 		mes "tastiera di accesso che era accesa";
@@ -9914,7 +9914,7 @@ lhz_in01,184,40,0	script	Area 1-5	HIDDEN_NPC,{
 	}
 	if((lhz_boss > 28) && (lhz_boss < 31))
 	{
-		mes "^3355FFThere's literally thousands";
+		mes "^3355FFCi sono letteralmente migliaia";
 		mes "di documenti da esaminare.";
 		mes "Non c'è modo che tu possa trovare";
 		mes "qualcosa di valore qui in";
@@ -9937,7 +9937,7 @@ lhz_in01,184,40,0	script	Area 1-5	HIDDEN_NPC,{
 		mes "il Laboratorio per ricerca.^000000";
 		next;
 		mes "Informazioni Classificate";
-		mes "^8C1717However, something";
+		mes "^8C1717Tuttavia, qualcosa";
 		mes "accadde ai minatori";
 		mes "chi ha scoperto il pezzo";
 		mes "di Cuore di Ymir. Apparentemente,";
@@ -9953,7 +9953,7 @@ lhz_in01,184,52,0	script	Area 1-7	HIDDEN_NPC,{
 
 	if((lhz_boss > 28) && (lhz_boss < 32))
 	{
-		mes "^3355FFThere's literally thousands";
+		mes "^3355FFCi sono letteralmente migliaia";
 		mes "di documenti da esaminare.";
 		mes "Non c'è modo che tu possa trovare";
 		mes "qualcosa di valore qui in";
@@ -10015,7 +10015,7 @@ lhz_in01,184,46,0	script	Area 3-2	HIDDEN_NPC,{
 
 	if((lhz_boss > 28) && (lhz_boss < 30))
 	{
-		mes "^3355FFThere's literally thousands";
+		mes "^3355FFCi sono letteralmente migliaia";
 		mes "di documenti da esaminare.";
 		mes "Non c'è modo che tu possa trovare";
 		mes "qualcosa di valore qui in";
@@ -10080,7 +10080,7 @@ lhz_in01,184,48,0	script	Area 3-3	HIDDEN_NPC,{
 
 	if((lhz_boss > 28) && (lhz_boss < 34))
 	{
-		mes "^3355FFThere's literally thousands";
+		mes "^3355FFCi sono letteralmente migliaia";
 		mes "di documenti da esaminare.";
 		mes "Non c'è modo che tu possa trovare";
 		mes "qualcosa di valore qui in";
@@ -10128,7 +10128,7 @@ lhz_in01,177,56,0	script	Area 6-1	HIDDEN_NPC,{
 
 	if((lhz_boss > 28) && (lhz_boss < 33))
 	{
-		mes "^3355FFThere's literally thousands";
+		mes "^3355FFCi sono letteralmente migliaia";
 		mes "di documenti da esaminare.";
 		mes "Non c'è modo che tu possa trovare";
 		mes "qualcosa di valore qui in";
@@ -11863,7 +11863,7 @@ OnEnter:
 OnTouch_:
 	if(lhz_rekenber == 19)
 	{
-		mes "^3355FFYou peek through the";
+		mes "^3355FFSbiri attraverso il";
 		mes "taglio nell'involucro";
 		mes "che copre uno";
 		mes "de i pacchetti.^000000";

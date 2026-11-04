@@ -101,14 +101,14 @@ prontera,164,171,3	script	MvP Ladder Warper	56,{
 		close;
 	}
 	Zeny -= .register_cost;
-	announce ""La festa ["+ strcharinfo(1) +"] has started the MvP ladder game.", bc_all;
+	announce "La festa ["+ strcharinfo(1) +"] has started the MvP ladder game.", bc_all;
 	set .party_id, getcharid(1);
 	set .@time_enter, gettimetick(2);
 	for ( .@i = 0; .@i < $@partymembercount; .@i++ ) {
 		if ( isloggedin( $@partymemberaid[.@i], $@partymembercid[.@i] ) ) {
 			attachrid $@partymemberaid[.@i];
 			if ( strcharinfo(3) == strnpcinfo(4) ) {
-				announce ""Hai "+ .timeout +" minutes to complete "+ .totalround +" rounds.", bc_self;
+				announce "Hai "+ .timeout +" minutes to complete "+ .totalround +" rounds.", bc_self;
 				.@name$[.@c] = strcharinfo(0);
 				.@c++;
 			}
@@ -150,10 +150,10 @@ prontera,164,171,3	script	MvP Ladder Warper	56,{
 		else
 			mapannounce .eventmap$, "Time used [ "+( .@timeused / 60 )+" min "+( .@timeused % 60 )+" sec ]", bc_map;
 		sleep 10000;
-		announce ""La festa ["+ getpartyname( .party_id ) +"] has finished the MvP ladder game!", bc_all;
+		announce "La festa ["+ getpartyname( .party_id ) +"] has finished the MvP ladder game!", bc_all;
 	}
 	else
-		announce ""La festa ["+ getpartyname( .party_id ) +"] has failed to finish the MvP ladder game.", bc_all;
+		announce "La festa ["+ getpartyname( .party_id ) +"] has failed to finish the MvP ladder game.", bc_all;
 	mapwarp .eventmap$, .map$, .x, .y;
 	killmonsterall .eventmap$;
 	.party_id = .round = 0;

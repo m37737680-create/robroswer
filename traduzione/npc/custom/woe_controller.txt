@@ -173,7 +173,7 @@ OnMinute00:
 		for(set .@i,0; .@i<.Size; set .@i,.@i+4) {
 			if (gettime(DT_DAYOFWEEK) == $WOE_CONTROL[.@i] && gettime(DT_HOUR) == $WOE_CONTROL[.@i+2]) {
 			OnWOEEnd:
-				announce ""La Guerra di Imperium è finita!",bc_all|bc_woe;
+				announce "La Guerra di Imperium è finita!",bc_all|bc_woe;
 				AgitEnd; AgitEnd2; AgitEnd3;
 				sleep 1000;
 				for(set .@j,0; .@j<.total_castle; set .@j,.@j+1) {
@@ -195,7 +195,7 @@ OnMinute00:
 				deletearray .Active[0],2;
 				set .Active[0], $WOE_CONTROL[.@i+3];
 				if (.Init) { AgitEnd; AgitEnd2; AgitEnd3; }
-				else announce ""La Guerra di Imperium è iniziata!",bc_all|bc_woe;
+				else announce "La Guerra di Imperium è iniziata!",bc_all|bc_woe;
 				sleep 1000;
 				AgitStart; AgitStart2; AgitStart3;
 				for(set .@j,0; .@j<.total_castle; set .@j,.@j+1) {
@@ -216,8 +216,8 @@ OnMinute00:
 
 function Disp_Owner {
 	set .@o, getcastledata(getarg(0),1);
-	if (.@o) announce ""Il ["+getcastlename(getarg(0))+"] castle "+((getarg(1))?"has been conquered":"is currently held")+" by the ["+getguildname(.@o)+"] guild.",bc_all|bc_woe;
-	else announce ""Il ["+getcastlename(getarg(0))+"] castle is currently unoccupied.",bc_all|bc_woe;
+	if (.@o) announce "Il ["+getcastlename(getarg(0))+"] castle "+((getarg(1))?"has been conquered":"is currently held")+" by the ["+getguildname(.@o)+"] guild.",bc_all|bc_woe;
+	else announce "Il ["+getcastlename(getarg(0))+"] castle is currently unoccupied.",bc_all|bc_woe;
 	return;
 }
 function Add_Zero {
@@ -445,7 +445,7 @@ while(1) {
 			for(set .@j,0; .@j<.size_region[.@i]; set .@j,.@j+1) {
 				.@index = getd( ".castle_index_in_region_" + .@i + "[" + .@j + "]" );
 				set .@t, getcastledata(.Castles$[.@index],1);
-				mes "  ~ "+getcastlename(.Castles$[.@index])+": "+((.@t)?"^0055FF"+getguildname(.@t):"^777777unoccupied")+"^000000";
+				mes "  ~ "+getcastlename(.Castles$[.@index])+": "+((.@t)?"^0055FF"+getguildname(.@t):"^777777non occupato")+"^000000";
 			}
 			if (.@i < 5) mes " ";
 		}

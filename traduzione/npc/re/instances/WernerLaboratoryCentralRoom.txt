@@ -151,7 +151,7 @@ slabw01,246,88,3	script	Central_room#evt_gate01	PORTAL,{
 	if (terra_gloria_main != 21 && terra_gloria_main < 23)
 		end;
 	if (getcharid(1) < 1 || (terra_gloria_main == 21 && is_party_leader() == false)) {
-		mes "^4d4dffMD Only the party leader can enter [Central room] now.^000000";
+		mes "^4d4dffMD Solo il leader del gruppo può entrare nella [Sala centrale] ora.^000000";
 		close;
 	}
 	mes "Puoi andare nella sala centrale.";
@@ -177,7 +177,7 @@ slabw01,246,88,3	script	Central_room#evt_gate01	PORTAL,{
 		mes "Si è verificato un errore sconosciuto.";
 		close;
 	case IE_OK:
-		mapannounce "slabw01", """ + strcharinfo(0) + " of the party, " + getpartyname( getcharid(1) ) + ", is entering the " + .@md_name$ + ".", bc_map, 0xFF99;
+		mapannounce "slabw01", "" + strcharinfo(0) + " of the party, " + getpartyname( getcharid(1) ) + ", is entering the " + .@md_name$ + ".", bc_map, 0xFF99;
 		// warp "1@slw",187,24;
 		end;
 	}
@@ -379,7 +379,7 @@ OnInstanceInit:
 	next;
 	mes "[Eisen Werner]";
 	mes "Dato che è un dispositivo semplice, immagino che tu possa.";
-	mes "Change ^ff0000red^000000 to ^4d4dffblue^000000.";
+	mes "Cambia ^ff0000red^000000 in ^4d4dffblue^000000.";
 	mes "E cambia ^4d4dffblue^000000 con ^ff0000red^000000. Questo è tutto.";
 	next;
 	mes "[Eisen Werner]";
@@ -713,7 +713,7 @@ OnTouch:
 
 1@slw,53,171,5	script	Eisen Werner#werner05	4_M_EISEN,{
 	if (is_party_leader() == false) {
-		mes "^4d4dffOnly the party leader can proceed with this event.^000000";
+		mes "^4d4dffSolo il capo del partito può procedere con questo evento.^000000";
 		close;
 	}
 	if (checkweight(501,1) == 0) {

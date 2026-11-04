@@ -75,7 +75,7 @@ OnGuildBreak:
 	disablenpc "Kafra Employee#"+substr(strnpcinfo(2),0,1)+substr(strnpcinfo(2),8,9);
 	setcastledata strnpcinfo(2),CD_GUILD_ID,0;
 	sleep 7000;
-	announce ""Base della Gilda ["+getcastlename(strnpcinfo(2))+"] has been abandoned.",0;
+	announce "Base della Gilda ["+getcastlename(strnpcinfo(2))+"] has been abandoned.",0;
 	donpcevent strnpcinfo(0)+"::OnRecvCastle2";
 	end;
 
@@ -620,7 +620,7 @@ OnStartArena:
 	// Disable Kafra
 	disablenpc "Kafra Employee#"+strnpcinfo(2);
 
-	announce ""Il ["+getguildname(.@GID)+"] guild conquered the ["+.@region$+" "+charat(strnpcinfo(2),3)+"] stronghold of "+getcastlename(strnpcinfo(4))+"!",bc_all|bc_woe;
+	announce "Il ["+getguildname(.@GID)+"] guild conquered the ["+.@region$+" "+charat(strnpcinfo(2),3)+"] stronghold of "+getcastlename(strnpcinfo(4))+"!",bc_all|bc_woe;
 	mapannounce strnpcinfo(4),"The emperium has been shattered!",bc_map,"0x00FF00",FW_NORMAL,20,0,40;
 	donpcevent "Manager#"+strnpcinfo(4)+"::OnReset";
 	maprespawnguildid strnpcinfo(4),getcastledata(strnpcinfo(4),CD_GUILD_ID),2;
@@ -954,7 +954,7 @@ OnInit:
 	set .@num, atoi(charat(strnpcinfo(1),0));
 	set .@var$,"$agit_"+strnpcinfo(2);
 	if (getcharid(2) == .@GID) {
-		mes "^3355FFYou will need the";
+		mes "^3355FFAvrai bisogno del";
 		mes "seguendo materiali a";
 		mes "ricostruire un distrutto";
 		mes "Pietra Guardiana.^000000";
@@ -973,7 +973,7 @@ OnInit:
 			close;
 		}
 		if ((countitem(984) > 0) && (countitem(985) > 0) && (countitem(7049) > 29) && (countitem(717) > 4) && (countitem(715) > 4) && (countitem(716) > 4)) {
-			mes "^3355FFArrange Stones, Elunium, and";
+			mes "^3355FFDisporre Pietre, Elunium e";
 			mes "Oridecon, in quell'ordine, nel";
 			mes "centro. Poi devi disporre";
 			mes "le gemme incantate a";
@@ -987,13 +987,13 @@ OnInit:
 			next;
 			set .@i, select("Elunium:Oridecon:Pietra")-1;
 			if (.@i == 0) set .@nice,.@nice+10;
-			mes "^3355FFYou have lined the";
+			mes "^3355FFHai allineato il";
 			mes "fuori dal centro";
 			mes "con qualche "+.@stone$[.@i]+".^000000";
 			next;
 			set .@i, select("Elunium:Oridecon:Pietra")-1;
 			if (.@i == 1) set .@nice,.@nice+10;
-			mes "^3355FFYou covered the";
+			mes "^3355FFHai coperto il";
 			mes "il resto dei materiali";
 			mes "con qualche "+.@stone$[.@i]+".^000000";
 			next;
@@ -1029,7 +1029,7 @@ OnInit:
 			}
 			if (.@nice > 90) {
 				if (!getd(.@var$+"["+(.@num-1)+"]")) {
-					mes "^3355FFThe Guardian Stone";
+					mes "^3355FFLa Pietra del Guardiano";
 					mes "Sistema di riparazione ha";
 					mes "già completato.^000000";
 					close;
@@ -1122,7 +1122,7 @@ OnEnable:
 				next;
 				select("Continua");
 				if ((countitem(1019) > 29) && (countitem(999) > 9) && (countitem(1011) > 9) && (countitem(984) > 4)) {
-					mes "^3355FFYou will need Trunks to";
+					mes "^3355FFAvrai bisogno di Trunks per";
 					mes "riparare la struttura di supporto,";
 					mes "Oridecon per migliorare il";
 					mes "l'endurance di Gate, e";
@@ -1135,7 +1135,7 @@ OnEnable:
 						else {
 							switch(rand(1,4)) {
 							case 1:
-								mes "^3355FFThe support frame";
+								mes "^3355FFIl telaio di supporto";
 								mes "gravemente danneggiato:";
 								mes "aggiustando questa parte";
 								mes "è una priorità assoluta.^000000";
@@ -1162,7 +1162,7 @@ OnEnable:
 									mes "Dovrai ricominciare.^000000";
 									close;
 								case 4:
-									mes "^3355FFYou tried using oridecon,";
+									mes "^3355FFHai provato a usare oridecon,";
 									mes "ma non funziona molto";
 									mes "beh. Dovrai provare";
 									mes "qualcos'altro.^000000";
@@ -1233,7 +1233,7 @@ OnEnable:
 									mes "Dovrai ricominciare.^000000";
 									close;
 								case 4:
-									mes "^3355FFYou tried using oridecon,";
+									mes "^3355FFHai provato a usare oridecon,";
 									mes "ma non funziona molto";
 									mes "beh. Dovrai provare";
 									mes "qualcos'altro.^000000";
@@ -1268,7 +1268,7 @@ OnEnable:
 									next;
 									break;
 								case 4:
-									mes "^3355FFYou tried using oridecon,";
+									mes "^3355FFHai provato a usare oridecon,";
 									mes "ma non funziona molto";
 									mes "beh. Dovrai provare";
 									mes "qualcos'altro.^000000";
@@ -1282,14 +1282,14 @@ OnEnable:
 					mes "con la riparazione del cancello.^000000";
 					next;
 					if (!agitcheck2()) {
-						mes "^3355FFUnfortunately, the Fortress";
+						mes "^3355FFPurtroppo, la Fortezza";
 						mes "Non è possibile ricostruire il cancello:";
 						mes "l'Emperium non è più qui.^000000";
 						close;
 					}
 					else {
 						if (.@rp_temp == .@ro_of01) {
-							mes "^3355FFThe Fortress Gate has";
+							mes "^3355FFLa Porta della Fortezza ha";
 							mes "stato riparato con successo!^000000";
 							delitem 1019,30; //Wooden_Block
 							delitem 999,10; //Steel
@@ -1310,7 +1310,7 @@ OnEnable:
 							end;
 						}
 						else {
-							mes "^3355FFThe wall has been breached,";
+							mes "^3355FFIl muro è stato violato,";
 							mes "e il tentativo di riparare il";
 							mes "La Porta della Fortezza è fallita.";
 							mes "Hai perso alcuni dei tuoi";

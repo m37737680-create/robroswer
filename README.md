@@ -180,8 +180,10 @@ solo override o file personalizzati.
 # Comandos Mais usados 
 #### Start o docker-composer
 docker-compose -f "docker-compose.yaml" up -d --build
+docker compose --env-file .env.renewal up -d --build --force-recreate
 #### Stop o docker-composer
 docker compose -f "docker-compose.yaml" down
+docker compose --env-file .env.renewal down
 #### Configurar o Emulador
 "./configure && make clean && make server" ou "./configure && make clean && make sql"
 #### Start do emulador 
