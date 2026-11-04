@@ -41,11 +41,11 @@
 
 
 		/**
-		 * If set to true, files loaded from GRFs will be extracted to the data folder
-		 * It will avoid to load GRFs each time the client request a file and
-		 * save server resources.
+		 * If set to true, files loaded from GRFs will be cached under their
+		 * original relative path (for example, data/ or System/).
+		 * Existing local files take precedence and are not overwritten.
 		 *
-		 * Note: it required write access to the data folder.
+		 * Note: it requires write access to the client folder.
 		 */
 		'CLIENT_AUTOEXTRACT'  =>    true,
 

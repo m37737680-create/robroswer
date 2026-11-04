@@ -87,7 +87,7 @@ final class Client
 
 
 	/**
-	 * Get a file from client, search it on data folder first and then on grf
+	 * Get a file from client, search the local client folder first and then the GRFs
 	 *
 	 * @param {string} file path
 	 * @return {boolean} success
@@ -134,7 +134,7 @@ final class Client
 
 
 	/**
-	 * Storing file in data folder (convert it if needed)
+	 * Store file under its original relative path (convert it if needed)
 	 *
 	 * @param {string} save to path
 	 * @param {string} file content
@@ -168,7 +168,10 @@ final class Client
 		}
 
 		// Saving file
-		file_put_contents( $local_path, $content);
+		if (file_put_contents($local_path, $content) === false) {
+			Debug::write("Can't write file '{$local_path}'.", 'error');
+		}
+
 		return $content;
 	}
 

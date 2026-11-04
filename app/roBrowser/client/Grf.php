@@ -1,9 +1,9 @@
 <?php
 
 /**
-* @fileoverview Grf - Load and Parse .grf file (only 0x200 version without DES encryption).
+* @fileoverview Grf - Load and Parse .grf files (versions 0x200 and 0x300).
 * @author Vincent Thibault (alias KeyWorld - Twitter: @robrowser)
-* @version 1.0.0
+* @version 1.1.0
 */
 
 class Grf
@@ -19,6 +19,21 @@ class Grf
 	 * @var {Array} file header
 	 */
 	private $header;
+
+	/**
+	 * @var {boolean} whether this GRF uses 64-bit offsets
+	 */
+	private $uses64BitOffsets = false;
+
+	/**
+	 * @var {int} GRF version
+	 */
+	private $version = 0;
+
+	/**
+	 * @var {int} archive size
+	 */
+	private $filesize = 0;
 
 
 	/**
@@ -86,6 +101,8 @@ class Grf
 			return;
 		}
 
+		$this->filesize = filesize($filename);
+
 		// Open it
 		$this->fp   = fopen( $filename, 'r' );
 	}
@@ -101,22 +118,75 @@ class Grf
 			return;
 		}
 
-		// Parse header.
-		$this->header = unpack("a15signature/a15key/Ltable_offset/Lseeds/Lfilecount/Lversion", fread($this->fp, self::HEADER_SIZE) );
-
-		if ($this->header['signature'] !== 'Master of Magic' || $this->header['version'] !== 0x200) {
-			Debug::write('Invalid GRF version "'. $this->filename .'". Can\'t opened it', 'error');
+		$header = fread($this->fp, self::HEADER_SIZE);
+		if ($header === false || strlen($header) !== self::HEADER_SIZE) {
+			Debug::write('Can\'t read GRF header "'. $this->filename .'"', 'error');
 			return;
 		}
 
-		// Load table list
-		fseek( $this->fp, $this->header['table_offset'], SEEK_CUR);
-		$fileTableInfo   = unpack("Lpack_size/Lreal_size", fread($this->fp, 0x08));
-		$this->fileTable = @gzuncompress( fread( $this->fp, $fileTableInfo['pack_size'] ), $fileTableInfo['real_size'] );
+		$signature = explode("\0", substr($header, 0, 15))[0];
+		$this->version = unpack('Lversion', substr($header, 42, 4))['version'];
+		$this->uses64BitOffsets = $this->version === 0x300;
+
+		if ($signature !== 'Master of Magic' && $signature !== 'Event Horizon') {
+			Debug::write('Unsupported GRF signature "'. $signature .'" in "'. $this->filename .'"', 'error');
+			return;
+		}
+
+		if ($this->version !== 0x200 && $this->version !== 0x300) {
+			Debug::write('Unsupported GRF version 0x'. dechex($this->version) .' in "'. $this->filename .'". Supported versions are 0x200 and 0x300.', 'error');
+			return;
+		}
+
+		if ($this->uses64BitOffsets && PHP_INT_SIZE < 8) {
+			Debug::write('GRF 0x300 requires 64-bit PHP to read file offsets: '. $this->filename, 'error');
+			return;
+		}
+
+		if ($this->uses64BitOffsets) {
+			$this->header = array(
+				'table_offset' => unpack('Poffset', substr($header, 30, 8))['offset'],
+				'filecount' => unpack('Lfilecount', substr($header, 38, 4))['filecount']
+			);
+		}
+		else {
+			$this->header = unpack("a15signature/a15key/Ltable_offset/Lseeds/Lfilecount/Lversion", $header);
+		}
+
+		$table_offset = $this->header['table_offset'];
+		if ($table_offset < 0 || $table_offset + self::HEADER_SIZE + ($this->uses64BitOffsets ? 12 : 8) > $this->filesize) {
+			Debug::write('Invalid GRF file table offset in "'. $this->filename .'"', 'error');
+			return;
+		}
+
+		// GRF 0x300 has an additional 4-byte field before the file table.
+		if (fseek($this->fp, $table_offset + ($this->uses64BitOffsets ? 4 : 0), SEEK_CUR) !== 0) {
+			Debug::write('Can\'t seek to file table in "'. $this->filename .'"', 'error');
+			return;
+		}
+
+		$fileTableInfoBytes = fread($this->fp, 0x08);
+		if ($fileTableInfoBytes === false || strlen($fileTableInfoBytes) !== 0x08) {
+			Debug::write('Can\'t read file table header in "'. $this->filename .'"', 'error');
+			return;
+		}
+
+		$fileTableInfo = unpack("Lpack_size/Lreal_size", $fileTableInfoBytes);
+		if (
+			$fileTableInfo['pack_size'] <= 0 ||
+			$fileTableInfo['real_size'] <= 0 ||
+			$fileTableInfo['pack_size'] > $this->filesize - ftell($this->fp)
+		) {
+			Debug::write('Invalid file table size in "'. $this->filename .'"', 'error');
+			return;
+		}
+
+		$compressedFileTable = fread($this->fp, $fileTableInfo['pack_size']);
+		$this->fileTable = @gzuncompress($compressedFileTable, $fileTableInfo['real_size']);
 
 		// Extraction error
 		if ($this->fileTable === false) {
-			Debug::write('Can\t extract fileTable in GRF "'. $this->filename .'"', 'error');
+			Debug::write('Can\'t extract file table in GRF "'. $this->filename .'"', 'error');
 			return;
 		}
 
@@ -151,19 +221,56 @@ class Grf
 			return false;
 		}
 
-		// Extract file info from fileList
+		// Extract file info from file list. GRF 0x300 stores 64-bit file offsets.
 		$position += strlen($filename) + 1;
-		$fileInfo  = unpack('Lpack_size/Llength_aligned/Lreal_size/Cflags/Lposition', substr($this->fileTable, $position, 17) );
+		$entrySize = $this->uses64BitOffsets ? 21 : 17;
+		$entry = substr($this->fileTable, $position, $entrySize);
+		if (strlen($entry) !== $entrySize) {
+			Debug::write('Invalid file table entry for '. $filename .' in '. $this->filename, 'error');
+			return false;
+		}
 
-		// Just open file.
+		$fileInfo = $this->uses64BitOffsets
+			? unpack('Lpack_size/Llength_aligned/Lreal_size/Cflags/Pposition', $entry)
+			: unpack('Lpack_size/Llength_aligned/Lreal_size/Cflags/Lposition', $entry);
+
+		if (($fileInfo['flags'] & 1) !== 1) {
+			Debug::write('Requested path is not a file in GRF '. $this->filename);
+			return false;
+		}
+
 		if ($fileInfo['flags'] !== 1) {
-			Debug::write('Can\'t decrypt file in GRF '. $this->filename);
+			Debug::write('Encrypted GRF entry is not supported: '. $filename .' in '. $this->filename, 'error');
+			return false;
+		}
+
+		if (
+			$fileInfo['pack_size'] <= 0 ||
+			$fileInfo['real_size'] <= 0 ||
+			$fileInfo['position'] < 0 ||
+			$fileInfo['position'] + self::HEADER_SIZE + $fileInfo['pack_size'] > $this->filesize
+		) {
+			Debug::write('Invalid file entry bounds for '. $filename .' in '. $this->filename, 'error');
 			return false;
 		}
 
 		// Extract file
-		fseek( $this->fp, $fileInfo['position'] + self::HEADER_SIZE, SEEK_SET );
-		$content = gzuncompress( fread($this->fp, $fileInfo['pack_size']), $fileInfo['real_size'] );
+		if (fseek($this->fp, $fileInfo['position'] + self::HEADER_SIZE, SEEK_SET) !== 0) {
+			Debug::write('Can\'t seek to file '. $filename .' in '. $this->filename, 'error');
+			return false;
+		}
+
+		$compressedFile = fread($this->fp, $fileInfo['pack_size']);
+		if ($compressedFile === false || strlen($compressedFile) !== $fileInfo['pack_size']) {
+			Debug::write('Can\'t read file '. $filename .' from '. $this->filename, 'error');
+			return false;
+		}
+
+		$content = @gzuncompress($compressedFile, $fileInfo['real_size']);
+		if ($content === false) {
+			Debug::write('Can\'t decompress file '. $filename .' from '. $this->filename, 'error');
+			return false;
+		}
 
 		Debug::write('File found and extracted from '. $this->filename, 'success');
 		return true;
