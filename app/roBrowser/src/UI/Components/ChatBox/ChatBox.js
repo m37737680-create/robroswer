@@ -275,6 +275,19 @@ ChatBox.init = function init() {
 
 	const inputChatbox = root.querySelector('.input-chatbox');
 	const chatInputBar = root.querySelector('.input');
+	const placeChatCaretAtEnd = () => {
+		if (!inputChatbox) {
+			return;
+		}
+
+		const range = document.createRange();
+		const selection = window.getSelection();
+		range.selectNodeContents(inputChatbox);
+		range.collapse(false);
+		selection.removeAllRanges();
+		selection.addRange(range);
+	};
+
 	if (inputChatbox && chatInputBar) {
 		const focusChatInput = event => {
 			if (
@@ -285,6 +298,7 @@ ChatBox.init = function init() {
 			}
 
 			inputChatbox.focus();
+			placeChatCaretAtEnd();
 		};
 
 		chatInputBar.addEventListener('click', focusChatInput);
@@ -306,21 +320,11 @@ ChatBox.init = function init() {
 	// Move caret to end of text
 	if (inputChatbox) {
 		inputChatbox.addEventListener('click', function () {
-			const range = document.createRange();
-			const selection = window.getSelection();
-			range.selectNodeContents(this);
-			range.collapse(false);
-			selection.removeAllRanges();
-			selection.addRange(range);
+			placeChatCaretAtEnd();
 		});
 
 		inputChatbox.addEventListener('focus', function () {
-			const range = document.createRange();
-			const selection = window.getSelection();
-			range.selectNodeContents(this);
-			range.collapse(false);
-			selection.removeAllRanges();
-			selection.addRange(range);
+			placeChatCaretAtEnd();
 		});
 
 		inputChatbox.maxLength = MAX_LENGTH;
