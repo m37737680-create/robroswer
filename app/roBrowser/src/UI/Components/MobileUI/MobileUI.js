@@ -461,6 +461,7 @@ function toggleMobileChatLog() {
 
 	const opening = !document.body.classList.contains('mobile-chat-open');
 	document.body.classList.toggle('mobile-chat-open', opening);
+	ChatBox._host?.classList.toggle('mobile-chat-open', opening);
 	if (opening) {
 		ChatBox.ui.show();
 	} else {
@@ -477,6 +478,18 @@ function setMobileChatButtonState(open) {
 		button.setAttribute('title', open ? 'Chiudi chat' : 'Apri chat');
 		button.classList.toggle('active', open);
 	}
+}
+
+function setMobileComponentStyles(enabled) {
+	const chatHost = ChatBox._host;
+	const autoCombat = UIManager.components.AutoCombat;
+
+	chatHost?.classList.toggle('mobile-ui-enabled', enabled);
+	chatHost?.classList.toggle(
+		'mobile-chat-open',
+		enabled && document.body.classList.contains('mobile-chat-open')
+	);
+	autoCombat?._host?.classList.toggle('mobile-ui-enabled', enabled);
 }
 
 /**
@@ -969,10 +982,12 @@ MobileUI.onAppend = function onAppend() {
 	if (Session.isTouchDevice) {
 		this._host.style.display = 'block';
 		document.body.classList.add('mobile-ui-enabled');
+		setMobileComponentStyles(true);
 		markExistingMobileHud();
 	} else {
 		this._host.style.display = 'none';
 		document.body.classList.remove('mobile-ui-enabled');
+		setMobileComponentStyles(false);
 	}
 
 	this._host.style.position = 'fixed';
@@ -1014,6 +1029,7 @@ MobileUI.onShortCut = function onShortCut(key) {
 MobileUI.onRemove = function onRemove() {
 	document.body.classList.remove('mobile-ui-enabled');
 	document.body.classList.remove('mobile-chat-open');
+	setMobileComponentStyles(false);
 	setMobileChatButtonState(false);
 	if (ChatBox._host) {
 		ChatBox._host.style.display = '';
@@ -1041,6 +1057,7 @@ MobileUI.show = function show() {
 	this._host.style.display = 'block';
 	this._host.style.position = 'fixed';
 	document.body.classList.add('mobile-ui-enabled');
+	setMobileComponentStyles(true);
 	markExistingMobileHud();
 };
 

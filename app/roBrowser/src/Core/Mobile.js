@@ -109,14 +109,27 @@ function touchTranslationX(oldTouches, touches) {
 	return 0;
 }
 
+function isNativeUiTouch(event) {
+	const path = event.composedPath ? event.composedPath() : [event.target];
+	return path.some(
+		node =>
+			node instanceof HTMLElement &&
+			(node.id === 'ChatBox' || node.id === 'AutoCombat' || node.classList.contains('autoCombatIcon'))
+	);
+}
+
 /**
  * Start touching the screen
  * Process gesture, or action
  */
 const onTouchStart = (function onTouchStartClosure() {
 	return function (event) {
-		const path = event.composedPath ? event.composedPath() : [event.target];
-		if (path.some(node => node instanceof HTMLElement && node.id === 'ChatBox')) {
+		if (isNativeUiTouch(event)) {
+			_touchState = null;
+			_rotatingTouch = false;
+			_processGesture = false;
+			_intersect = false;
+			Mouse.intersect = false;
 			return;
 		}
 
@@ -161,6 +174,10 @@ const onTouchStart = (function onTouchStartClosure() {
  * process OnMouseUp if no gesture detected
  */
 function onTouchEnd(event) {
+	if (isNativeUiTouch(event)) {
+		return;
+	}
+
 	if (_rotatingTouch) {
 		_rotatingTouch = false;
 		_processGesture = false;
@@ -214,6 +231,10 @@ function onTouchEnd(event) {
  * Else move.
  */
 function onTouchMove(event) {
+	if (isNativeUiTouch(event)) {
+		return;
+	}
+
 	event.stopImmediatePropagation();
 
 	const touches = event.touches;

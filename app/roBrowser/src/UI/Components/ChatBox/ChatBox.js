@@ -180,6 +180,7 @@ ChatBox.init = function init() {
 	if (mobileCloseButton) {
 		mobileCloseButton.addEventListener('click', () => {
 			document.body.classList.remove('mobile-chat-open');
+			ChatBox._host.classList.remove('mobile-chat-open');
 			ChatBox.ui.hide();
 			document.body.dispatchEvent(new Event('mobile-chat-closed'));
 		});

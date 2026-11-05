@@ -508,6 +508,7 @@ function addIcon() {
 }
 
 component.onAppend = ((onAppend) => function wrappedOnAppend() {
+	this._host.classList.toggle('mobile-ui-enabled', document.body.classList.contains('mobile-ui-enabled'));
 	onAppend.call(this);
 	addIcon();
 })(component.onAppend);
