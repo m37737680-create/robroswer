@@ -168,3 +168,55 @@ ui-button {
 :host-context(.custom-cursor) * {
 	cursor: none !important;
 }
+
+:host-context(body.mobile-ui-enabled).mobile-window {
+	position: fixed !important;
+	inset: max(18px, 3vh, env(safe-area-inset-top, 0px)) max(14px, 3vw, env(safe-area-inset-right, 0px))
+		max(18px, 3vh, env(safe-area-inset-bottom, 0px)) max(14px, 3vw, env(safe-area-inset-left, 0px)) !important;
+	width: auto !important;
+	height: auto !important;
+}
+
+:host-context(body.mobile-ui-enabled).mobile-window .ui-component-root {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 0;
+	min-height: 0;
+	padding: 12px;
+	box-sizing: border-box;
+	overflow: auto;
+	background: rgba(0, 0, 0, 0.3);
+}
+
+:host-context(body.mobile-ui-enabled).mobile-window .ui-component-root > * {
+	flex: none;
+	transform: scale(var(--mobile-window-scale, 1));
+	transform-origin: center;
+	touch-action: pan-x pan-y;
+}
+
+:host-context(body.mobile-ui-enabled).mobile-window button,
+:host-context(body.mobile-ui-enabled).mobile-window input,
+:host-context(body.mobile-ui-enabled).mobile-window select,
+:host-context(body.mobile-ui-enabled).mobile-window textarea {
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
+}
+
+@media (pointer: coarse) {
+	:host-context(body.mobile-ui-enabled).mobile-window button,
+	:host-context(body.mobile-ui-enabled).mobile-window input,
+	:host-context(body.mobile-ui-enabled).mobile-window select,
+	:host-context(body.mobile-ui-enabled).mobile-window textarea {
+		min-height: 36px;
+	}
+
+	:host-context(body.mobile-ui-enabled).mobile-window input,
+	:host-context(body.mobile-ui-enabled).mobile-window select,
+	:host-context(body.mobile-ui-enabled).mobile-window textarea {
+		font-size: max(16px, 1em);
+	}
+}

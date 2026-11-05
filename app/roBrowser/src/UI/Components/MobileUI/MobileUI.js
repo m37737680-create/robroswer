@@ -959,20 +959,45 @@ function isFreeCell(x, y) {
 }
 
 /**
+ * Keep the HUD that is already visible when touch controls are enabled in place.
+ */
+function markExistingMobileHud() {
+	requestAnimationFrame(() => {
+		if (!document.body.classList.contains('mobile-ui-enabled')) {
+			return;
+		}
+
+		for (const component of Object.values(UIManager.components)) {
+			if (component === MobileUI || !component._host || !component._host.isConnected) {
+				continue;
+			}
+
+			const style = window.getComputedStyle(component._host);
+			if (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') {
+				component.__mobileHud = true;
+			}
+		}
+	});
+}
+
+/**
  * Apply preferences once append to body
  */
 MobileUI.onAppend = function onAppend() {
 	if (Session.isTouchDevice) {
 		this._host.style.display = 'block';
+		document.body.classList.add('mobile-ui-enabled');
+		markExistingMobileHud();
 	} else {
 		this._host.style.display = 'none';
+		document.body.classList.remove('mobile-ui-enabled');
 	}
 
+	this._host.style.position = 'fixed';
 	this._host.style.top = '0px';
 	this._host.style.left = '0px';
 	this._host.style.zIndex = '1000';
-	// Width/height handled by CSS :host { width:100%; height:100% }
-	// so the overlay always matches the viewport on resize/rotate.
+	// The fixed host and dynamic viewport height keep controls aligned on rotation.
 };
 
 /**
@@ -1005,6 +1030,23 @@ MobileUI.onShortCut = function onShortCut(key) {
  * Removes MobileUI
  */
 MobileUI.onRemove = function onRemove() {
+	document.body.classList.remove('mobile-ui-enabled');
+	for (const component of Object.values(UIManager.components)) {
+		if (component._host) {
+			component._host.classList.remove('mobile-window');
+			component._host.style.removeProperty('--mobile-window-scale');
+		}
+		if (component.__mobileResizeHandler) {
+			window.removeEventListener('resize', component.__mobileResizeHandler);
+			component.__mobileResizeHandler = null;
+		}
+		if (component.__mobileResizeObserver) {
+			component.__mobileResizeObserver.disconnect();
+			component.__mobileResizeObserver = null;
+		}
+		component.__mobileHud = false;
+	}
+
 	_preferences.y = 0;
 	_preferences.x = 0;
 	_preferences.zIndex = 1000;
@@ -1022,6 +1064,9 @@ MobileUI.onRemove = function onRemove() {
  */
 MobileUI.show = function show() {
 	this._host.style.display = 'block';
+	this._host.style.position = 'fixed';
+	document.body.classList.add('mobile-ui-enabled');
+	markExistingMobileHud();
 };
 
 /**

@@ -71,6 +71,8 @@ class Camera {
 	 * @type {number} zoomFinal
 	 */
 	static zoomFinal = Preferences.zoom;
+	static mobileZoomLocked = false;
+	static mobileZoom = Preferences.zoom || 125;
 
 	/**
 	 * @type {vec2} angle rotation
@@ -217,6 +219,19 @@ class Camera {
 	}
 
 	/**
+	 * Keep the camera distance fixed for the duration of a mobile session.
+	 */
+	static lockZoomForMobile() {
+		if (!this.mobileZoomLocked) {
+			this.mobileZoom = this.zoomFinal || Preferences.zoom || 125;
+			this.mobileZoomLocked = true;
+		}
+
+		this.zoom = this.mobileZoom;
+		this.zoomFinal = this.mobileZoom;
+	}
+
+	/**
 	 * Set screen quake
 	 *
 	 * @param {number} Start tick
@@ -330,7 +345,9 @@ class Camera {
 				}
 			}
 			if (KEYS.CTRL) {
-				this.zoomFinal = 125.0;
+				if (!this.mobileZoomLocked) {
+					this.zoomFinal = 125.0;
+				}
 			} else {
 				if (DB.isIndoor(this.currentMap)) {
 					this.angleFinal[1] = this.indoorRotationTo;
@@ -364,7 +381,7 @@ class Camera {
 		}
 
 		// Zoom
-		else if (KEYS.CTRL) {
+		else if (KEYS.CTRL && !this.mobileZoomLocked) {
 			this.zoomFinal -= (Mouse.screen.y - this.action.y) * ((this.zoomStep * this.zoomStepMult) / 10);
 			if (DB.isIndoor(this.currentMap)) {
 				this.zoomFinal = Math.min(this.zoomFinal, Math.abs(this.altitudeRange) * this.MAX_ZOOM_INDOOR);
@@ -414,7 +431,7 @@ class Camera {
 	 * @param {number} delta (zoom)
 	 */
 	static setZoom(delta) {
-		if (delta) {
+		if (delta && !this.mobileZoomLocked) {
 			this.zoomFinal += delta * this.zoomStep * this.zoomStepMult;
 			if (DB.isIndoor(this.currentMap)) {
 				this.zoomFinal = Math.min(this.zoomFinal, Math.abs(this.altitudeRange) * this.MAX_ZOOM_INDOOR);
@@ -485,6 +502,9 @@ class Camera {
 	static update(tick) {
 		const lerp = Math.min((tick - this.lastTick) * 0.006, 1.0);
 		this.lastTick = tick;
+		if (this.mobileZoomLocked) {
+			this.zoomFinal = this.mobileZoom;
+		}
 
 		// Update camera from mouse movement
 		if (this.action.x !== -1 && this.action.y !== -1 && this.action.active) {

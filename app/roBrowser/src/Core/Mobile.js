@@ -31,6 +31,8 @@ let _processGesture = false;
  * @var {number} save angle and scale value
  */
 let _scale, _angle, _touches, _intersect;
+let _mobileFullscreenRequest = false;
+let _landscapeLockRequested = false;
 
 /**
  * Timer to detect delayed click
@@ -105,28 +107,6 @@ function touchTranslationX(oldTouches, touches) {
 		Math.abs(1 - x1 / x2) < 0.25 // need a coordinate movement
 	) {
 		return (x1 + x2) >> 1;
-	}
-
-	return 0;
-}
-
-/**
- * Get translation size (height)
- *
- * @param {TouchList} old touches
- * @param {TouchList} new touches
- */
-function touchTranslationY(oldTouches, touches) {
-	const y1 = touches[0].pageY - oldTouches[0].pageY;
-	const y2 = touches[1].pageY - oldTouches[1].pageY;
-
-	if (
-		y1 &&
-		y2 && // need a direction
-		y1 < 0 === y2 < 0 && // same direction
-		Math.abs(1 - y1 / y2) < 0.25 // need a coordinate movement
-	) {
-		return (y1 + y2) >> 1;
 	}
 
 	return 0;
@@ -232,16 +212,15 @@ function onTouchMove(event) {
 	const scale = touchDistance(touches) - _scale;
 	//var angle = touchAngle(touches) / _angle;
 	const x = Math.abs(touchTranslationX(_touches, touches));
-	const y = Math.abs(touchTranslationY(_touches, touches));
 
-	if (!Camera.action.active && (x > 10 || y > 10)) {
-		KEYS.SHIFT = y > x;
+	if (!Camera.action.active && x > 10) {
+		KEYS.SHIFT = false;
 		Camera.rotate(true);
 		return;
 	}
 
-	// Process zoom
-	if (Math.abs(scale) > 10) {
+	// Mobile camera distance stays fixed; horizontal two-finger movement only rotates.
+	if (!Camera.mobileZoomLocked && Math.abs(scale) > 10) {
 		Camera.zoomFinal -= scale * 0.1;
 		Camera.zoomFinal = Math.min(
 			Camera.zoomFinal,
@@ -251,26 +230,111 @@ function onTouchMove(event) {
 	}
 }
 
-// Add full screen on mobile (sux to have the browser title bar)
-if (Math.max(screen.availHeight, screen.availWidth) <= 800) {
-	// Fullscreen on action
-	window.addEventListener('touchstart', () => {
-		if (!Context.isFullScreen()) {
-			Context.requestFullScreen();
-		}
+function updateLandscapeNotice() {
+	document.body.classList.toggle(
+		'mobile-landscape-required',
+		Session.isTouchDevice && window.matchMedia('(orientation: portrait)').matches
+	);
+}
+
+function lockLandscapeOrientation() {
+	if (!Session.isTouchDevice || !Context.isFullScreen()) {
+		_landscapeLockRequested = false;
+		updateLandscapeNotice();
+		return;
+	}
+
+	const orientation = screen.orientation;
+	if (!orientation || typeof orientation.lock !== 'function') {
+		updateLandscapeNotice();
+		return;
+	}
+
+	if (_landscapeLockRequested) {
+		return;
+	}
+
+	_landscapeLockRequested = true;
+	orientation.lock('landscape').catch(error => {
+		_landscapeLockRequested = false;
+		console.warn('[Mobile] Unable to lock the screen to landscape orientation.', error);
+		updateLandscapeNotice();
 	});
 }
 
-//Add mobile UI on touch
+function requestMobileFullscreen() {
+	if (!Session.isTouchDevice) {
+		return;
+	}
+
+	if (Context.isFullScreen()) {
+		lockLandscapeOrientation();
+		return;
+	}
+
+	if (_mobileFullscreenRequest) {
+		return;
+	}
+
+	const root = document.documentElement;
+	const requestFullscreen =
+		root.requestFullscreen ||
+		root.mozRequestFullScreen ||
+		root.webkitRequestFullscreen;
+
+	if (!requestFullscreen) {
+		updateLandscapeNotice();
+		return;
+	}
+
+	_mobileFullscreenRequest = true;
+	const result = requestFullscreen.call(root);
+	if (result && typeof result.then === 'function') {
+		result.then(
+			() => {
+				_mobileFullscreenRequest = false;
+				lockLandscapeOrientation();
+			},
+			error => {
+				_mobileFullscreenRequest = false;
+				console.warn('[Mobile] Unable to enter fullscreen for landscape orientation.', error);
+				updateLandscapeNotice();
+			}
+		);
+	} else {
+		_mobileFullscreenRequest = false;
+	}
+}
+
+function enableMobileModeForCoarsePointer() {
+	if (window.matchMedia('(pointer: coarse)').matches) {
+		Session.isTouchDevice = true;
+		Camera.lockZoomForMobile();
+		updateLandscapeNotice();
+	}
+}
+
+enableMobileModeForCoarsePointer();
+
+// Add mobile UI on touch
 function touchDevice() {
 	Session.isTouchDevice = true;
+	Camera.lockZoomForMobile();
+	updateLandscapeNotice();
+	requestMobileFullscreen();
 
 	if (Session.Playing) {
-		//Already playing, don't wait for map change, just show it
 		MobileUI.show();
 	}
 }
 window.addEventListener('touchstart', touchDevice, { once: true });
+window.addEventListener('touchstart', requestMobileFullscreen, { passive: true });
+window.addEventListener('resize', updateLandscapeNotice);
+window.addEventListener('orientationchange', updateLandscapeNotice);
+document.addEventListener('fullscreenchange', () => {
+	_mobileFullscreenRequest = false;
+	lockLandscapeOrientation();
+});
 
 // Touch controls
 window.addEventListener('touchstart', onTouchStart, { passive: false });

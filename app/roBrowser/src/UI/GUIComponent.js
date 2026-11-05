@@ -107,6 +107,8 @@ class GUIComponent {
 		this.__preparing = false;
 		this.__active = false;
 		this.__scrollbarObserver = null;
+		this.__mobileResizeHandler = null;
+		this.__mobileResizeObserver = null;
 		this.__mouseStopBlock = null;
 
 		this._keyHandler = null;
@@ -311,6 +313,17 @@ class GUIComponent {
 				this.__scrollbarObserver.disconnect();
 				this.__scrollbarObserver = null;
 			}
+
+			if (this.__mobileResizeHandler) {
+				window.removeEventListener('resize', this.__mobileResizeHandler);
+				this.__mobileResizeHandler = null;
+			}
+			if (this.__mobileResizeObserver) {
+				this.__mobileResizeObserver.disconnect();
+				this.__mobileResizeObserver = null;
+			}
+
+			this._host.classList.remove('mobile-window');
 		}
 	}
 
@@ -321,7 +334,17 @@ class GUIComponent {
 	 * Equivalent to UIComponent.prototype.focus().
 	 */
 	focus() {
-		if (!this.manager || !this.needFocus) return;
+		if (!this.manager) return;
+
+		if (
+			this.name !== 'MobileUI' &&
+			document.body.classList.contains('mobile-ui-enabled') &&
+			!this.__mobileHud
+		) {
+			this._setMobileWindow();
+		}
+
+		if (!this.needFocus) return;
 
 		const components = this.manager.components;
 		const list = [];
@@ -357,6 +380,46 @@ class GUIComponent {
 
 		// Push ourselves to top
 		this._setZIndex(this, list.length + 50 - j);
+	}
+
+	_setMobileWindow() {
+		this._host.classList.add('mobile-window');
+
+		const fitContent = () => {
+			const children = this._container ? Array.from(this._container.children) : [];
+			if (!children.length || !this._host.isConnected) return;
+
+			const contentWidth = Math.max(
+				...children.map(content => Math.max(content.scrollWidth, content.offsetWidth))
+			);
+			const contentHeight = Math.max(
+				...children.map(content => Math.max(content.scrollHeight, content.offsetHeight))
+			);
+			const availableWidth = Math.max(0, this._host.clientWidth - 24);
+			const availableHeight = Math.max(0, this._host.clientHeight - 24);
+
+			if (!contentWidth || !contentHeight || !availableWidth || !availableHeight) return;
+
+			const scale = Math.min(1.5, availableWidth / contentWidth, availableHeight / contentHeight);
+			this._host.style.setProperty('--mobile-window-scale', String(scale));
+		};
+
+		if (this.__mobileResizeHandler) {
+			window.removeEventListener('resize', this.__mobileResizeHandler);
+		}
+
+		this.__mobileResizeHandler = fitContent;
+		window.addEventListener('resize', fitContent);
+		if (typeof ResizeObserver !== 'undefined') {
+			if (this.__mobileResizeObserver) {
+				this.__mobileResizeObserver.disconnect();
+			}
+			this.__mobileResizeObserver = new ResizeObserver(fitContent);
+			for (const child of this._container.children) {
+				this.__mobileResizeObserver.observe(child);
+			}
+		}
+		requestAnimationFrame(fitContent);
 	}
 
 	/**
@@ -538,6 +601,10 @@ class GUIComponent {
 		if (!handleEl) return this;
 
 		const onStart = event => {
+			if (document.body.classList.contains('mobile-ui-enabled')) {
+				return;
+			}
+
 			if (event.type === 'touchstart') {
 				Mouse.screen.x = event.touches[0].pageX;
 				Mouse.screen.y = event.touches[0].pageY;
@@ -1204,6 +1271,9 @@ class GUIComponent {
 			show() {
 				host.style.display = '';
 				component._fixPositionOverflow();
+				if (document.body.classList.contains('mobile-ui-enabled')) {
+					component.focus();
+				}
 				return proxy;
 			},
 			hide() {
@@ -1214,6 +1284,9 @@ class GUIComponent {
 				if (host.style.display === 'none') {
 					host.style.display = '';
 					component._fixPositionOverflow();
+					if (document.body.classList.contains('mobile-ui-enabled')) {
+						component.focus();
+					}
 				} else {
 					host.style.display = 'none';
 				}
