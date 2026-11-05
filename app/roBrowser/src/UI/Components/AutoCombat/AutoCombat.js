@@ -42,6 +42,7 @@ const TARGET_STUCK_TIMEOUT = 3500;
 const UNREACHABLE_TARGET_COOLDOWN = 10000;
 let pendingPickupGID = 0;
 let pendingPickupAt = 0;
+let touchToggleTimeout = null;
 const pickupFailures = new Map();
 const ignoredPickupGIDs = new Set();
 const MAX_PICKUP_FAILURES = 5;
@@ -93,7 +94,7 @@ component.render = () => `
 			<button class="close" type="button">×</button>
 		</div>
 		<div class="autocombat-body">
-			<section>
+			<section class="automation-settings">
 				<h3>Automation</h3>
 				<label class="switch"><input class="auto-loot" type="checkbox"><span>Auto-loot</span></label>
 				<label class="switch"><input class="auto-attack" type="checkbox"><span>Auto-attack</span></label>
@@ -105,15 +106,23 @@ component.render = () => `
 					<option value="all">All monsters in map</option>
 					<option value="specific">Only selected monsters</option>
 				</select>
-				<select class="monster-list" multiple size="5"></select>
+				<select class="monster-list" multiple size="4"></select>
 				<small class="monster-status"></small>
 			</section>
 			<section class="potion-settings">
 				<h3>Potions</h3>
-				<div class="field"><label>HP item</label><select class="hp-item"></select></div>
-				<div class="field"><label>Use below <output class="hp-value"></output>%</label><input class="hp-percent" type="range" min="1" max="99"></div>
-				<div class="field"><label>SP item</label><select class="sp-item"></select></div>
-				<div class="field"><label>Use below <output class="sp-value"></output>%</label><input class="sp-percent" type="range" min="1" max="99"></div>
+				<div class="resource-settings">
+					<div class="resource-card">
+						<strong>HP</strong>
+						<select class="hp-item" aria-label="HP item"></select>
+						<div class="field"><label>Use below <output class="hp-value"></output>%</label><input class="hp-percent" type="range" min="1" max="99"></div>
+					</div>
+					<div class="resource-card">
+						<strong>SP</strong>
+						<select class="sp-item" aria-label="SP item"></select>
+						<div class="field"><label>Use below <output class="sp-value"></output>%</label><input class="sp-percent" type="range" min="1" max="99"></div>
+					</div>
+				</div>
 				<small class="inventory-status"></small>
 			</section>
 		</div>
@@ -199,6 +208,7 @@ function refreshMonsters(root) {
 		option.selected = selected.has(id);
 		select.appendChild(option);
 	});
+	select.hidden = names.size === 0;
 	root.querySelector('.monster-status').textContent = `${select.options.length} monster type(s) known on this map`;
 }
 
@@ -471,7 +481,28 @@ function addIcon() {
 		zIndex: '50',
 		cursor: 'pointer'
 	});
-	icon.addEventListener('click', () => component._host.style.display === 'none' ? open() : close());
+	const toggle = () => (component._host.style.display === 'none' ? open() : close());
+	icon.addEventListener('click', () => {
+		if (touchToggleTimeout) {
+			clearTimeout(touchToggleTimeout);
+			touchToggleTimeout = null;
+			return;
+		}
+		toggle();
+	});
+	icon.addEventListener(
+		'touchstart',
+		event => {
+			event.preventDefault();
+			event.stopPropagation();
+			event.stopImmediatePropagation();
+			toggle();
+			touchToggleTimeout = setTimeout(() => {
+				touchToggleTimeout = null;
+			}, 750);
+		},
+		{ passive: false }
+	);
 	icon.addEventListener('mousedown', event => event.stopImmediatePropagation());
 	document.body.appendChild(icon);
 }

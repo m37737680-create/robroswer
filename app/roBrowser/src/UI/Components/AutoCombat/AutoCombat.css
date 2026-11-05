@@ -76,3 +76,171 @@ small { display: block; color: #8e9bb0; font-size: 11px; }
 	font: bold 18px Arial, sans-serif;
 }
 .autoCombatIcon:hover { filter: brightness(1.2); }
+
+:host-context(body.mobile-ui-enabled) {
+	position: fixed !important;
+	top: 5dvh !important;
+	left: 5vw !important;
+	width: 90vw !important;
+	height: auto !important;
+	max-height: 90dvh;
+	z-index: 1200 !important;
+}
+
+:host-context(body.mobile-ui-enabled) .autocombat {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	max-height: 90dvh;
+	box-sizing: border-box;
+	font-size: 12px;
+}
+
+:host-context(body.mobile-ui-enabled) .titlebar {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	flex: none;
+	padding: 6px 9px;
+}
+
+:host-context(body.mobile-ui-enabled) .autocombat-body {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	align-content: start;
+	gap: 8px;
+	max-height: calc(90dvh - 42px);
+	padding: 8px;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	scrollbar-width: thin;
+	touch-action: pan-y;
+}
+
+:host-context(body.mobile-ui-enabled) section {
+	min-width: 0;
+	margin: 0;
+	padding: 7px;
+}
+
+:host-context(body.mobile-ui-enabled) .automation-settings {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 7px;
+}
+
+:host-context(body.mobile-ui-enabled) .automation-settings > h3 {
+	grid-column: 1 / -1;
+	margin-bottom: 2px;
+	font-size: 11px;
+}
+
+:host-context(body.mobile-ui-enabled) .automation-settings .switch {
+	min-width: 0;
+	min-height: 38px;
+	margin: 0;
+	padding: 6px 8px;
+	gap: 6px;
+	border: 1px solid rgba(169, 199, 255, 0.18);
+	border-radius: 5px;
+	background: rgba(169, 199, 255, 0.07);
+}
+
+:host-context(body.mobile-ui-enabled) .automation-settings input {
+	accent-color: #75b7ff;
+}
+
+:host-context(body.mobile-ui-enabled) select {
+	min-width: 0;
+	margin: 2px 0 5px;
+	padding: 6px;
+	font-size: 12px;
+}
+
+:host-context(body.mobile-ui-enabled) .attack-settings select:not([hidden]) {
+	display: block;
+}
+
+:host-context(body.mobile-ui-enabled) .monster-list {
+	height: 78px;
+	max-height: 78px;
+	min-height: 0;
+	margin-top: 2px;
+}
+
+:host-context(body.mobile-ui-enabled) .resource-settings {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 7px;
+}
+
+:host-context(body.mobile-ui-enabled) .resource-card {
+	min-width: 0;
+	padding: 7px;
+	border: 1px solid rgba(169, 199, 255, 0.18);
+	border-radius: 5px;
+	background: rgba(169, 199, 255, 0.07);
+}
+
+:host-context(body.mobile-ui-enabled) .resource-card > strong {
+	display: block;
+	margin-bottom: 4px;
+	color: #a9c7ff;
+}
+
+:host-context(body.mobile-ui-enabled) .field {
+	margin-top: 3px;
+}
+
+:host-context(body.mobile-ui-enabled) .field label {
+	gap: 4px;
+	font-size: 11px;
+}
+
+:host-context(body.mobile-ui-enabled) input[type='range'] {
+	margin: 5px 0 0;
+	accent-color: #75b7ff;
+}
+
+:host-context(body.mobile-ui-enabled) .monster-status,
+:host-context(body.mobile-ui-enabled) .inventory-status {
+	margin-top: 4px;
+}
+
+@media (max-width: 620px) {
+	:host-context(body.mobile-ui-enabled) .autocombat-body {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	:host-context(body.mobile-ui-enabled) .automation-settings {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	:host-context(body.mobile-ui-enabled) .potion-settings,
+	:host-context(body.mobile-ui-enabled) .attack-settings,
+	:host-context(body.mobile-ui-enabled) .automation-settings {
+		grid-column: 1;
+	}
+}
+
+@media (max-height: 480px) {
+	:host-context(body.mobile-ui-enabled) {
+		top: 3dvh !important;
+		max-height: 94dvh;
+	}
+
+	:host-context(body.mobile-ui-enabled) .autocombat {
+		max-height: 94dvh;
+	}
+
+	:host-context(body.mobile-ui-enabled) .autocombat-body {
+		max-height: calc(94dvh - 38px);
+		gap: 6px;
+		padding: 6px;
+	}
+
+	:host-context(body.mobile-ui-enabled) .resource-card {
+		padding: 5px;
+	}
+}

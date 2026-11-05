@@ -176,6 +176,15 @@ ChatBox.tabs = [];
 ChatBox.init = function init() {
 	const root = _root();
 
+	const mobileCloseButton = root.querySelector('.mobile-chat-close');
+	if (mobileCloseButton) {
+		mobileCloseButton.addEventListener('click', () => {
+			document.body.classList.remove('mobile-chat-open');
+			ChatBox.ui.hide();
+			document.body.dispatchEvent(new Event('mobile-chat-closed'));
+		});
+	}
+
 	if (!ContextMenu.__loaded) ContextMenu.prepare();
 	_heightIndex = _preferences.height - 1;
 	ChatBox.updateHeight();

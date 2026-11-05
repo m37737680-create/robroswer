@@ -233,3 +233,91 @@
 	width: 15px;
 	height: 10px;
 }
+
+:host-context(body.mobile-ui-enabled:not(.mobile-chat-open)) {
+	display: none !important;
+}
+
+:host-context(body.mobile-ui-enabled.mobile-chat-open) {
+	position: fixed !important;
+	inset: 8vh 5vw auto !important;
+	width: 90vw !important;
+	height: min(62dvh, 360px) !important;
+	z-index: 1200 !important;
+}
+
+:host-context(body.mobile-ui-enabled.mobile-chat-open) #chatbox {
+	display: flex;
+	flex-direction: column;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 8px;
+	border: 1px solid rgba(255, 255, 255, 0.7);
+	border-radius: 8px;
+	background: rgba(0, 0, 0, 0.82);
+}
+
+:host-context(body.mobile-ui-enabled.mobile-chat-open) #chatbox .header {
+	flex: none;
+}
+
+:host-context(body.mobile-ui-enabled.mobile-chat-open) #chatbox .body {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	min-height: 0;
+}
+
+:host-context(body.mobile-ui-enabled.mobile-chat-open) #chatbox .contentwrapper {
+	flex: 1;
+	min-height: 0;
+	height: auto !important;
+}
+
+:host-context(body.mobile-ui-enabled.mobile-chat-open) #chatbox .content {
+	font-size: 14px;
+	line-height: 1.35;
+	touch-action: pan-y;
+}
+
+:host-context(body.mobile-ui-enabled.mobile-chat-open) #chatbox .battlemode {
+	display: none !important;
+}
+
+:host-context(body.mobile-ui-enabled.mobile-chat-open) #chatbox .input {
+	display: flex !important;
+	flex: none;
+	width: 100%;
+	box-sizing: border-box;
+	background-color: rgba(255, 255, 255, 0.9);
+}
+
+:host-context(body.mobile-ui-enabled.mobile-chat-open) #chatbox .mobile-chat-close {
+	display: flex;
+	position: absolute;
+	top: 5px;
+	right: 8px;
+	z-index: 2;
+	width: 32px;
+	height: 32px;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid rgba(255, 255, 255, 0.7);
+	border-radius: 50%;
+	background: rgba(40, 40, 40, 0.9);
+	color: white;
+	font-size: 24px;
+}
+
+#chatbox .mobile-chat-close {
+	display: none;
+}
+
+@media (max-height: 480px) {
+	:host-context(body.mobile-ui-enabled.mobile-chat-open) {
+		inset: 6vh 5vw auto !important;
+		height: 72dvh !important;
+	}
+}

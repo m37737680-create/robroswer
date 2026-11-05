@@ -25,6 +25,7 @@ import cssText from './MobileUI.css?raw';
 import glMatrix from 'Vendors/gl-matrix.js';
 import Camera from 'Renderer/Camera.js';
 import _KEYS from 'Controls/KeyEventHandler.js'; // Currently unused, preserved for future development
+import ChatBox from 'UI/Components/ChatBox/ChatBox.js';
 
 const vec2 = glMatrix.vec2;
 const mat2 = glMatrix.mat2;
@@ -124,6 +125,8 @@ function bindButton(root, selector, handler) {
  */
 MobileUI.init = function init() {
 	const root = MobileUI.getRoot();
+
+	document.body.addEventListener('mobile-chat-closed', () => setMobileChatButtonState(false));
 
 	bindButton(root, '#toggleUIButton', e => {
 		toggleButtons();
@@ -229,6 +232,11 @@ MobileUI.init = function init() {
 		stopPropagation(e);
 	});
 
+	bindButton(root, '#chatToggleButton', e => {
+		toggleMobileChatLog();
+		stopPropagation(e);
+	});
+
 	bindButton(root, '#switchshorcutButton', e => {
 		switchSkillButtons();
 		stopPropagation(e);
@@ -251,8 +259,6 @@ MobileUI.init = function init() {
 
 	// Initialize the joystick - MicromeX
 	setupJoystick();
-	// Initialize the NPC Talk Button - MicromeX
-	setupTalkToNpcButton();
 };
 
 /**
@@ -306,7 +312,7 @@ function toggleButtons() {
 			'#buttonContainer',
 			'#attackButton',
 			'#pickupButton',
-			'#talktonpcButton',
+			'#chatToggleButton',
 			'#switchshorcutButton'
 		].forEach(sel => {
 			const el = root.querySelector(sel);
@@ -362,7 +368,7 @@ function toggleButtons() {
 			'#buttonContainer',
 			'#attackButton',
 			'#pickupButton',
-			'#talktonpcButton',
+			'#chatToggleButton',
 			'#switchshorcutButton'
 		].forEach(sel => {
 			const el = root.querySelector(sel);
@@ -445,6 +451,31 @@ function toggleStatus() {
 	const statusIcons = document.querySelector('#StatusIcons');
 	if (statusIcons) {
 		statusIcons.style.display = statusIcons.style.display === 'none' ? '' : 'none';
+	}
+}
+
+function toggleMobileChatLog() {
+	if (!ChatBox.__active) {
+		ChatBox.append();
+	}
+
+	const opening = !document.body.classList.contains('mobile-chat-open');
+	document.body.classList.toggle('mobile-chat-open', opening);
+	if (opening) {
+		ChatBox.ui.show();
+	} else {
+		ChatBox.ui.hide();
+	}
+
+	setMobileChatButtonState(opening);
+}
+
+function setMobileChatButtonState(open) {
+	const button = MobileUI.getRoot().querySelector('#chatToggleButton');
+	if (button) {
+		button.setAttribute('aria-label', open ? 'Chiudi chat' : 'Apri chat');
+		button.setAttribute('title', open ? 'Chiudi chat' : 'Apri chat');
+		button.classList.toggle('active', open);
 	}
 }
 
@@ -850,55 +881,6 @@ function moveCharacter(x, y, tileSize) {
 }
 
 /**
- * Talk to NPC Button Function - MicromeX
- */
-function setupTalkToNpcButton() {
-	const root = MobileUI.getRoot();
-	const talkButton = root.querySelector('#talktonpcButton');
-
-	function findNearestNpc() {
-		const player = Session.Entity;
-
-		if (!player) {
-			return null;
-		}
-
-		let nearestNpc = null;
-		let minDistance = 3;
-
-		EntityManager.forEach(entity => {
-			if (entity.objecttype === entity.constructor.TYPE_NPC) {
-				const dx = entity.position[0] - player.position[0];
-				const dy = entity.position[1] - player.position[1];
-				const distance = Math.sqrt(dx ** 2 + dy ** 2);
-
-				if (distance <= minDistance) {
-					minDistance = distance;
-					nearestNpc = entity;
-				}
-			}
-		});
-
-		return nearestNpc;
-	}
-
-	function talkToNearestNpc() {
-		const nearestNpc = findNearestNpc();
-
-		if (!nearestNpc) {
-			return;
-		}
-
-		const talkPacket = new PACKET.CZ.CONTACTNPC();
-		talkPacket.NAID = nearestNpc.GID;
-
-		Network.sendPacket(talkPacket);
-	}
-
-	talkButton.addEventListener('click', talkToNearestNpc);
-}
-
-/**
  * Search free cells around a position
  *
  * @param {number} x
@@ -1031,6 +1013,11 @@ MobileUI.onShortCut = function onShortCut(key) {
  */
 MobileUI.onRemove = function onRemove() {
 	document.body.classList.remove('mobile-ui-enabled');
+	document.body.classList.remove('mobile-chat-open');
+	setMobileChatButtonState(false);
+	if (ChatBox._host) {
+		ChatBox._host.style.display = '';
+	}
 	for (const component of Object.values(UIManager.components)) {
 		component.__mobileHud = false;
 	}

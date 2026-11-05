@@ -115,6 +115,11 @@ function touchTranslationX(oldTouches, touches) {
  */
 const onTouchStart = (function onTouchStartClosure() {
 	return function (event) {
+		const path = event.composedPath ? event.composedPath() : [event.target];
+		if (path.some(node => node instanceof HTMLElement && node.id === 'ChatBox')) {
+			return;
+		}
+
 		remoteAutoFocus();
 		_touches = Array.from(event.touches, touch => ({
 			identifier: touch.identifier,
