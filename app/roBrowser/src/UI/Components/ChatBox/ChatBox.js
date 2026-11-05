@@ -181,8 +181,6 @@ ChatBox.tabs = [];
  */
 ChatBox.init = function init() {
 	const root = _root();
-	const chatboxTouchEl = root.querySelector('#chatbox');
-	let touchScroll = null;
 	const mobileCloseButton = root.querySelector('.mobile-chat-close');
 
 	if (mobileCloseButton) {
@@ -195,64 +193,6 @@ ChatBox.init = function init() {
 			document.body.dispatchEvent(new Event('mobile-chat-closed'));
 		});
 	}
-
-	chatboxTouchEl.addEventListener(
-		'touchstart',
-		event => {
-			if (!ChatBox._host.classList.contains('mobile-chat-open')) {
-				return;
-			}
-
-			const target = event.target instanceof Element ? event.target : null;
-			const button = target && target.closest('.ro-custom-scrollbar .btn-up, .ro-custom-scrollbar .btn-down');
-			const content = button ? button.closest('.content') : target && target.closest('.content.active');
-			if (button && content) {
-				content.scrollTop += button.classList.contains('btn-up') ? -20 : 20;
-				event.preventDefault();
-				event.stopPropagation();
-				return;
-			}
-
-			if (!content || (target && target.closest('.ro-custom-scrollbar')) || event.touches.length !== 1) {
-				touchScroll = null;
-				return;
-			}
-
-			touchScroll = {
-				content,
-				identifier: event.touches[0].identifier,
-				lastY: event.touches[0].clientY
-			};
-		},
-		{ capture: true, passive: false }
-	);
-
-	chatboxTouchEl.addEventListener(
-		'touchmove',
-		event => {
-			if (!touchScroll || !ChatBox._host.classList.contains('mobile-chat-open')) {
-				return;
-			}
-
-			const touch = Array.from(event.touches).find(item => item.identifier === touchScroll.identifier);
-			if (!touch) {
-				return;
-			}
-
-			const deltaY = touchScroll.lastY - touch.clientY;
-			touchScroll.content.scrollTop += deltaY;
-			touchScroll.lastY = touch.clientY;
-			event.preventDefault();
-			event.stopPropagation();
-		},
-		{ capture: true, passive: false }
-	);
-
-	const resetTouchScroll = () => {
-		touchScroll = null;
-	};
-	chatboxTouchEl.addEventListener('touchend', resetTouchScroll, true);
-	chatboxTouchEl.addEventListener('touchcancel', resetTouchScroll, true);
 
 	if (!ContextMenu.__loaded) ContextMenu.prepare();
 	_heightIndex = _preferences.height - 1;

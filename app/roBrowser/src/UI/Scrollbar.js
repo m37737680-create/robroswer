@@ -398,6 +398,52 @@ class ScrollBar {
 			e.stopPropagation();
 		});
 
+		if (skinName === 'chatbox') {
+			let touchIdentifier = null;
+			let lastTouchY = 0;
+
+			element.addEventListener(
+				'touchstart',
+				event => {
+					if (event.touches.length !== 1 || event.target.closest('.ro-custom-scrollbar')) {
+						touchIdentifier = null;
+						return;
+					}
+
+					touchIdentifier = event.touches[0].identifier;
+					lastTouchY = event.touches[0].clientY;
+				},
+				{ passive: true }
+			);
+
+			element.addEventListener(
+				'touchmove',
+				event => {
+					if (touchIdentifier === null) {
+						return;
+					}
+
+					const touch = Array.from(event.touches).find(item => item.identifier === touchIdentifier);
+					if (!touch) {
+						return;
+					}
+
+					element.scrollTop += lastTouchY - touch.clientY;
+					lastTouchY = touch.clientY;
+					updateThumb();
+					event.preventDefault();
+					event.stopPropagation();
+				},
+				{ passive: false }
+			);
+
+			const resetTouch = () => {
+				touchIdentifier = null;
+			};
+			element.addEventListener('touchend', resetTouch, { passive: true });
+			element.addEventListener('touchcancel', resetTouch, { passive: true });
+		}
+
 		upBtn.addEventListener('mousedown', () => {
 			element.scrollTop -= 20;
 			updateThumb();
