@@ -181,16 +181,28 @@ ChatBox.tabs = [];
  */
 ChatBox.init = function init() {
 	const root = _root();
+	const chatboxEl = root.querySelector('#chatbox');
 
-	const mobileCloseButton = root.querySelector('.mobile-chat-close');
-	if (mobileCloseButton) {
-		mobileCloseButton.addEventListener('click', () => {
-			document.body.classList.remove('mobile-chat-open');
-			ChatBox._host.classList.remove('mobile-chat-open');
-			ChatBox.ui.hide();
-			document.body.dispatchEvent(new Event('mobile-chat-closed'));
-		});
-	}
+	chatboxEl.addEventListener(
+		'touchstart',
+		event => {
+			if (!ChatBox._host.classList.contains('mobile-chat-open')) {
+				return;
+			}
+
+			const target = event.target instanceof Element ? event.target : null;
+			const button = target && target.closest('.ro-custom-scrollbar .btn-up, .ro-custom-scrollbar .btn-down');
+			const content = button && button.closest('.content');
+			if (!button || !content) {
+				return;
+			}
+
+			content.scrollTop += button.classList.contains('btn-up') ? -20 : 20;
+			event.preventDefault();
+			event.stopPropagation();
+		},
+		{ capture: true, passive: false }
+	);
 
 	if (!ContextMenu.__loaded) ContextMenu.prepare();
 	_heightIndex = _preferences.height - 1;
@@ -807,8 +819,7 @@ ChatBox.switchTab = function switchTab(tabID) {
 	const contentDiv = root.querySelector(`.body .content[data-content="${this.activeTab}"]`);
 	if (contentDiv) {
 		contentDiv.classList.add('active');
-		const scrollTarget = getChatScrollTarget(contentDiv);
-		scrollTarget.scrollTop = scrollTarget.scrollHeight;
+		contentDiv.scrollTop = contentDiv.scrollHeight;
 	}
 
 	const onInput = root.querySelector('.header tr td div.on input');
@@ -829,10 +840,7 @@ ChatBox.onAppend = function OnAppend() {
 	if (bmEl) bmEl.style.display = 'block';
 
 	const content = root.querySelector('.content.active');
-	if (content) {
-		const scrollTarget = getChatScrollTarget(content);
-		scrollTarget.scrollTop = scrollTarget.scrollHeight;
-	}
+	if (content) content.scrollTop = content.scrollHeight;
 };
 
 /**
@@ -1035,10 +1043,7 @@ ChatBox.onKeyDown = function OnKeyDown(event) {
 			this.updateHeight(false);
 			{
 				const activeContent = root.querySelector(`.content[data-content="${this.activeTab}"]`);
-				if (activeContent) {
-					const scrollTarget = getChatScrollTarget(activeContent);
-					scrollTarget.scrollTop = scrollTarget.scrollHeight;
-				}
+				if (activeContent) activeContent.scrollTop = activeContent.scrollHeight;
 			}
 			break;
 
@@ -1228,8 +1233,7 @@ function flushMessageBuffer() {
 		if (!content) return;
 
 		const fragment = document.createDocumentFragment();
-		const scrollTarget = getChatScrollTarget(content);
-		const wasAtBottom = shouldScrollDownBeforeAdd(scrollTarget, scrollTarget.clientHeight);
+		const wasAtBottom = shouldScrollDownBeforeAdd(content, content.offsetHeight);
 
 		messagesByTab[TabNum].forEach(msg => {
 			const color = msg.color || getColorForType(msg.colorType);
@@ -1257,14 +1261,9 @@ function flushMessageBuffer() {
 		}
 
 		if (wasAtBottom) {
-			scrollTarget.scrollTop = scrollTarget.scrollHeight;
+			content.scrollTop = content.scrollHeight;
 		}
 	});
-}
-
-function getChatScrollTarget(content) {
-	const mobileChatOpen = ChatBox._host && ChatBox._host.classList.contains('mobile-chat-open');
-	return mobileChatOpen ? content.closest('#chatbox .body') || content : content;
 }
 
 function getColorForType(colorType) {
@@ -1354,8 +1353,7 @@ ChatBox.updateHeight = function changeHeight(AlwaysVisible) {
 
 	const active = root.querySelector(`.content[data-content="${this.activeTab}"]`);
 	if (active) {
-		const scrollTarget = getChatScrollTarget(active);
-		scrollTarget.scrollTop = scrollTarget.scrollHeight;
+		active.scrollTop = active.scrollHeight;
 	}
 };
 
@@ -1430,10 +1428,8 @@ function onScroll(event) {
 		delta = -event.deltaY / Math.abs(event.deltaY);
 	}
 
-	const scrollTarget = getChatScrollTarget(this);
 	const lineHeight = getScrollLineHeightPx(this);
-	scrollTarget.scrollTop =
-		Math.floor(scrollTarget.scrollTop / lineHeight) * lineHeight - (delta || 0) * lineHeight;
+	this.scrollTop = Math.floor(this.scrollTop / lineHeight) * lineHeight - (delta || 0) * lineHeight;
 	event.preventDefault();
 }
 
@@ -1600,8 +1596,7 @@ function makeResizableDiv() {
 
 		const active = root.querySelector(`.content[data-content="${ChatBox.activeTab}"]`);
 		if (active) {
-			const scrollTarget = getChatScrollTarget(active);
-			scrollTarget.scrollTop = scrollTarget.scrollHeight;
+			active.scrollTop = active.scrollHeight;
 		}
 	};
 
