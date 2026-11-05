@@ -268,6 +268,15 @@ ChatBox.init = function init() {
 	}
 
 	const inputChatbox = root.querySelector('.input-chatbox');
+	const chatInputWrapper = root.querySelector('.input .wrapper');
+	if (inputChatbox && chatInputWrapper) {
+		chatInputWrapper.addEventListener('click', event => {
+			event.stopPropagation();
+			if (event.target !== inputChatbox) {
+				inputChatbox.focus();
+			}
+		});
+	}
 
 	if (Configs.get('restoreChatFocus', false) && inputChatbox) {
 		inputChatbox.addEventListener('blur', () => {
