@@ -101,7 +101,7 @@ function _root() {
 function appendChatContextMenu() {
 	ContextMenu.remove();
 	ContextMenu.append();
-	ContextMenu._host.style.zIndex = ChatBox._host.classList.contains('mobile-chat-open') ? '1301' : '';
+	ContextMenu._host.style.zIndex = '1301';
 }
 
 /**

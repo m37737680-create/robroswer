@@ -7,7 +7,6 @@
  *
 + */
 
-import Context from 'Core/Context.js';
 import UIManager from 'UI/UIManager.js';
 import GUIComponent from 'UI/GUIComponent.js';
 import Preferences from 'Core/Preferences.js';
@@ -132,11 +131,6 @@ MobileUI.init = function init() {
 		toggleButtons();
 		stopPropagation(e);
 	});
-	bindButton(root, '#fullscreenButton', e => {
-		toggleFullScreen();
-		stopPropagation(e);
-	});
-
 	// F-key buttons
 	const fKeyMap = [
 		['#f1Button', 112],
@@ -270,17 +264,6 @@ function logKeyPress(keyCode) {
 }
 
 /**
- * Toggles full screen display
- */
-function toggleFullScreen() {
-	if (!Context.isFullScreen()) {
-		Context.requestFullScreen();
-	} else {
-		Context.cancelFullScreen();
-	}
-}
-
-/**
  * Emulates a keypress event
  *
  * @param {number} keyId
@@ -305,7 +288,6 @@ function toggleButtons() {
 	if (showButtons) {
 		// Hide all bars and buttons
 		[
-			'#topBar',
 			'#leftBar',
 			'#rightBar',
 			'#joystickContainer',
@@ -361,7 +343,6 @@ function toggleButtons() {
 		showButtons = false;
 	} else {
 		[
-			'#topBar',
 			'#leftBar',
 			'#rightBar',
 			'#joystickContainer',
