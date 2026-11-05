@@ -268,14 +268,21 @@ ChatBox.init = function init() {
 	}
 
 	const inputChatbox = root.querySelector('.input-chatbox');
-	const chatInputWrapper = root.querySelector('.input .wrapper');
-	if (inputChatbox && chatInputWrapper) {
-		chatInputWrapper.addEventListener('click', event => {
-			event.stopPropagation();
-			if (event.target !== inputChatbox) {
-				inputChatbox.focus();
+	const chatInputBar = root.querySelector('.input');
+	if (inputChatbox && chatInputBar) {
+		const focusChatInput = event => {
+			if (
+				!ChatBox._host.classList.contains('mobile-chat-open') ||
+				event.target.closest('input, button, ui-button')
+			) {
+				return;
 			}
-		});
+
+			inputChatbox.focus();
+		};
+
+		chatInputBar.addEventListener('touchstart', focusChatInput, { passive: true });
+		chatInputBar.addEventListener('click', focusChatInput);
 	}
 
 	if (Configs.get('restoreChatFocus', false) && inputChatbox) {
