@@ -301,6 +301,7 @@ ChatBox.init = function init() {
 			placeChatCaretAtEnd();
 		};
 
+		chatInputBar.addEventListener('touchstart', focusChatInput, { passive: true });
 		chatInputBar.addEventListener('click', focusChatInput);
 	}
 
