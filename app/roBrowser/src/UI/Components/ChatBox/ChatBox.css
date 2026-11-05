@@ -276,26 +276,32 @@
 	flex: 1;
 	flex-direction: column;
 	min-height: 0;
-}
-
-:host(.mobile-ui-enabled.mobile-chat-open) #chatbox .contentwrapper {
-	display: flex;
-	flex-direction: column;
-	flex: 1;
-	min-height: 0;
-	height: auto !important;
-	overflow: hidden;
-}
-
-:host(.mobile-ui-enabled.mobile-chat-open) #chatbox .content {
-	flex: 1;
-	min-height: 0;
-	height: auto;
-	font-size: 14px;
-	line-height: 1.35;
 	overflow-x: hidden;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
+	touch-action: pan-y;
+	overscroll-behavior-y: contain;
+}
+
+:host(.mobile-ui-enabled.mobile-chat-open) #chatbox .event_add_cursor {
+	display: none;
+}
+
+:host(.mobile-ui-enabled.mobile-chat-open) #chatbox .contentwrapper {
+	display: block;
+	flex: none;
+	height: auto !important;
+	width: 100%;
+	overflow: visible;
+	touch-action: pan-y;
+}
+
+:host(.mobile-ui-enabled.mobile-chat-open) #chatbox .content {
+	flex: none;
+	height: auto;
+	font-size: 14px;
+	line-height: 1.35;
+	overflow: visible;
 	overscroll-behavior-y: contain;
 	touch-action: pan-y;
 }

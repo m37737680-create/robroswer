@@ -807,7 +807,8 @@ ChatBox.switchTab = function switchTab(tabID) {
 	const contentDiv = root.querySelector(`.body .content[data-content="${this.activeTab}"]`);
 	if (contentDiv) {
 		contentDiv.classList.add('active');
-		contentDiv.scrollTop = contentDiv.scrollHeight;
+		const scrollTarget = getChatScrollTarget(contentDiv);
+		scrollTarget.scrollTop = scrollTarget.scrollHeight;
 	}
 
 	const onInput = root.querySelector('.header tr td div.on input');
@@ -828,7 +829,10 @@ ChatBox.onAppend = function OnAppend() {
 	if (bmEl) bmEl.style.display = 'block';
 
 	const content = root.querySelector('.content.active');
-	if (content) content.scrollTop = content.scrollHeight;
+	if (content) {
+		const scrollTarget = getChatScrollTarget(content);
+		scrollTarget.scrollTop = scrollTarget.scrollHeight;
+	}
 };
 
 /**
@@ -1031,7 +1035,10 @@ ChatBox.onKeyDown = function OnKeyDown(event) {
 			this.updateHeight(false);
 			{
 				const activeContent = root.querySelector(`.content[data-content="${this.activeTab}"]`);
-				if (activeContent) activeContent.scrollTop = activeContent.scrollHeight;
+				if (activeContent) {
+					const scrollTarget = getChatScrollTarget(activeContent);
+					scrollTarget.scrollTop = scrollTarget.scrollHeight;
+				}
 			}
 			break;
 
@@ -1221,7 +1228,8 @@ function flushMessageBuffer() {
 		if (!content) return;
 
 		const fragment = document.createDocumentFragment();
-		const wasAtBottom = shouldScrollDownBeforeAdd(content, content.offsetHeight);
+		const scrollTarget = getChatScrollTarget(content);
+		const wasAtBottom = shouldScrollDownBeforeAdd(scrollTarget, scrollTarget.clientHeight);
 
 		messagesByTab[TabNum].forEach(msg => {
 			const color = msg.color || getColorForType(msg.colorType);
@@ -1249,9 +1257,14 @@ function flushMessageBuffer() {
 		}
 
 		if (wasAtBottom) {
-			content.scrollTop = content.scrollHeight;
+			scrollTarget.scrollTop = scrollTarget.scrollHeight;
 		}
 	});
+}
+
+function getChatScrollTarget(content) {
+	const mobileChatOpen = ChatBox._host && ChatBox._host.classList.contains('mobile-chat-open');
+	return mobileChatOpen ? content.closest('#chatbox .body') || content : content;
 }
 
 function getColorForType(colorType) {
@@ -1341,7 +1354,8 @@ ChatBox.updateHeight = function changeHeight(AlwaysVisible) {
 
 	const active = root.querySelector(`.content[data-content="${this.activeTab}"]`);
 	if (active) {
-		active.scrollTop = active.scrollHeight;
+		const scrollTarget = getChatScrollTarget(active);
+		scrollTarget.scrollTop = scrollTarget.scrollHeight;
 	}
 };
 
@@ -1416,8 +1430,10 @@ function onScroll(event) {
 		delta = -event.deltaY / Math.abs(event.deltaY);
 	}
 
+	const scrollTarget = getChatScrollTarget(this);
 	const lineHeight = getScrollLineHeightPx(this);
-	this.scrollTop = Math.floor(this.scrollTop / lineHeight) * lineHeight - (delta || 0) * lineHeight;
+	scrollTarget.scrollTop =
+		Math.floor(scrollTarget.scrollTop / lineHeight) * lineHeight - (delta || 0) * lineHeight;
 	event.preventDefault();
 }
 
@@ -1584,7 +1600,8 @@ function makeResizableDiv() {
 
 		const active = root.querySelector(`.content[data-content="${ChatBox.activeTab}"]`);
 		if (active) {
-			active.scrollTop = active.scrollHeight;
+			const scrollTarget = getChatScrollTarget(active);
+			scrollTarget.scrollTop = scrollTarget.scrollHeight;
 		}
 	};
 
