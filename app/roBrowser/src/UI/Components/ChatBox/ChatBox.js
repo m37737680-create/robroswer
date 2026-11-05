@@ -274,7 +274,6 @@ ChatBox.init = function init() {
 	}
 
 	const inputChatbox = root.querySelector('.input-chatbox');
-	const chatInputBar = root.querySelector('.input');
 	const placeChatCaretAtEnd = () => {
 		if (!inputChatbox) {
 			return;
@@ -287,23 +286,6 @@ ChatBox.init = function init() {
 		selection.removeAllRanges();
 		selection.addRange(range);
 	};
-
-	if (inputChatbox && chatInputBar) {
-		const focusChatInput = event => {
-			if (
-				!ChatBox._host.classList.contains('mobile-chat-open') ||
-				event.target.closest('input, button, ui-button')
-			) {
-				return;
-			}
-
-			inputChatbox.focus();
-			placeChatCaretAtEnd();
-		};
-
-		chatInputBar.addEventListener('touchstart', focusChatInput, { passive: true });
-		chatInputBar.addEventListener('click', focusChatInput);
-	}
 
 	if (Configs.get('restoreChatFocus', false) && inputChatbox) {
 		inputChatbox.addEventListener('blur', () => {
@@ -321,6 +303,7 @@ ChatBox.init = function init() {
 	// Move caret to end of text
 	if (inputChatbox) {
 		inputChatbox.addEventListener('click', function () {
+			this.focus();
 			placeChatCaretAtEnd();
 		});
 
