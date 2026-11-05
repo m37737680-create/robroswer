@@ -1032,18 +1032,6 @@ MobileUI.onShortCut = function onShortCut(key) {
 MobileUI.onRemove = function onRemove() {
 	document.body.classList.remove('mobile-ui-enabled');
 	for (const component of Object.values(UIManager.components)) {
-		if (component._host) {
-			component._host.classList.remove('mobile-window');
-			component._host.style.removeProperty('--mobile-window-scale');
-		}
-		if (component.__mobileResizeHandler) {
-			window.removeEventListener('resize', component.__mobileResizeHandler);
-			component.__mobileResizeHandler = null;
-		}
-		if (component.__mobileResizeObserver) {
-			component.__mobileResizeObserver.disconnect();
-			component.__mobileResizeObserver = null;
-		}
 		component.__mobileHud = false;
 	}
 

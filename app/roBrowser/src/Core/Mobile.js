@@ -15,7 +15,6 @@
  * Import dependencies
  */
 import Context from 'Core/Context.js';
-import Events from 'Core/Events.js';
 import Camera from 'Renderer/Camera.js';
 import Session from 'Engine/SessionStorage.js';
 import Mouse from 'Controls/MouseEventHandler.js';
@@ -33,11 +32,9 @@ let _processGesture = false;
 let _scale, _angle, _touches, _intersect;
 let _mobileFullscreenRequest = false;
 let _landscapeLockRequested = false;
-
-/**
- * Timer to detect delayed click
- */
-let _timer = -1;
+let _touchState = null;
+let _rotatingTouch = false;
+const C_TOUCH_SWIPE_THRESHOLD = 14;
 
 /**
  * @namespace Mobile
@@ -117,54 +114,40 @@ function touchTranslationX(oldTouches, touches) {
  * Process gesture, or action
  */
 const onTouchStart = (function onTouchStartClosure() {
-	function delayedClick() {
-		// Only process mousedown if not doing a gesture
-		if (!_processGesture) {
-			_timer = -1;
-
-			if (Mobile.onTouchStart) {
-				Mobile.onTouchStart();
-			}
-
-			if (!_intersect) {
-				if (Mobile.onTouchEnd) {
-					Mobile.onTouchEnd();
-				}
-			}
-
-			Mouse.intersect = _intersect;
-		}
-	}
-
 	return function (event) {
 		remoteAutoFocus();
-		_touches = event.touches;
+		_touches = Array.from(event.touches, touch => ({
+			identifier: touch.identifier,
+			pageX: touch.pageX,
+			pageY: touch.pageY
+		}));
 		event.preventDefault();
 		event.stopImmediatePropagation();
 
-		// Delayed click (to detect gesture)
-		if (_timer > -1) {
-			Events.clearTimeout(_timer);
-			_timer = -1;
-		}
-
 		// Gesture
 		if (_touches.length > 1) {
+			_touchState = null;
 			_scale = touchDistance(_touches);
 			_angle = touchAngle(_touches);
 			_processGesture = true;
 			return;
 		}
 
-		Mouse.screen.x = _touches[0].pageX;
-		Mouse.screen.y = _touches[0].pageY;
+		const touch = _touches[0];
+		_touchState = {
+			identifier: touch.identifier,
+			startX: touch.pageX,
+			startY: touch.pageY,
+			startedAt: Date.now(),
+			moved: false
+		};
+		_rotatingTouch = false;
+		_processGesture = false;
+		Mouse.screen.x = touch.pageX;
+		Mouse.screen.y = touch.pageY;
 
-		if (!Session.FreezeUI) {
-			Mouse.intersect = true;
-			_intersect = true;
-		}
-
-		_timer = Events.setTimeout(delayedClick, 200);
+		_intersect = !Session.FreezeUI;
+		Mouse.intersect = _intersect;
 	};
 })();
 
@@ -173,23 +156,52 @@ const onTouchStart = (function onTouchStartClosure() {
  * process OnMouseUp if no gesture detected
  */
 function onTouchEnd(event) {
+	if (_rotatingTouch) {
+		_rotatingTouch = false;
+		_processGesture = false;
+		_touchState = null;
+		KEYS.SHIFT = false;
+		Camera.rotate(false);
+		Mouse.intersect = false;
+		_intersect = false;
+		return;
+	}
+
 	if (_processGesture) {
 		_processGesture = false;
+		_touchState = null;
 		KEYS.SHIFT = false;
 		Camera.rotate(false);
 		return;
 	}
 
-	if (_timer > -1) {
+	const touchState = _touchState;
+	_touchState = null;
+	if (!touchState || touchState.moved || !_intersect) {
+		Mouse.intersect = false;
 		_intersect = false;
 		return;
 	}
 
-	if (Mobile.onTouchEnd) {
-		Mobile.onTouchEnd();
-	}
+	const releaseTap = () => {
+		Mouse.screen.x = touchState.startX;
+		Mouse.screen.y = touchState.startY;
+		if (Mobile.onTouchStart) {
+			Mobile.onTouchStart();
+		}
+		if (Mobile.onTouchEnd) {
+			Mobile.onTouchEnd();
+		}
+		Mouse.intersect = false;
+		_intersect = false;
+	};
 
-	Mouse.intersect = false;
+	const delay = Math.max(0, 200 - (Date.now() - touchState.startedAt));
+	if (delay) {
+		window.setTimeout(releaseTap, delay);
+	} else {
+		releaseTap();
+	}
 }
 
 /**
@@ -200,9 +212,45 @@ function onTouchMove(event) {
 	event.stopImmediatePropagation();
 
 	const touches = event.touches;
+	if (!touches.length) {
+		return;
+	}
 
 	Mouse.screen.x = touches[0].pageX;
 	Mouse.screen.y = touches[0].pageY;
+
+	if (_touchState && touches.length === 1 && touches[0].identifier === _touchState.identifier) {
+		const deltaX = touches[0].pageX - _touchState.startX;
+		const deltaY = touches[0].pageY - _touchState.startY;
+
+		if (!_touchState.moved && Math.abs(deltaX) > C_TOUCH_SWIPE_THRESHOLD) {
+			if (Math.abs(deltaX) > Math.abs(deltaY) * 1.25) {
+				_touchState.moved = true;
+				_rotatingTouch = true;
+				_processGesture = true;
+				KEYS.SHIFT = false;
+				Mouse.screen.x = _touchState.startX;
+				Mouse.screen.y = _touchState.startY;
+				Camera.startMobileRotation();
+				event.preventDefault();
+				return;
+			}
+		}
+
+		if (Math.abs(deltaY) > C_TOUCH_SWIPE_THRESHOLD) {
+			_touchState.moved = true;
+		}
+
+		if (_rotatingTouch) {
+			event.preventDefault();
+			return;
+		}
+
+		if (_touchState.moved) {
+			event.preventDefault();
+			return;
+		}
+	}
 
 	// Not in gesture, just process
 	if (!_processGesture) {
@@ -339,6 +387,17 @@ document.addEventListener('fullscreenchange', () => {
 // Touch controls
 window.addEventListener('touchstart', onTouchStart, { passive: false });
 window.addEventListener('touchend', onTouchEnd);
+window.addEventListener('touchcancel', () => {
+	if (_rotatingTouch || _processGesture) {
+		Camera.rotate(false);
+	}
+	_rotatingTouch = false;
+	_processGesture = false;
+	_touchState = null;
+	KEYS.SHIFT = false;
+	Mouse.intersect = false;
+	_intersect = false;
+});
 window.addEventListener('touchmove', onTouchMove);
 
 /**

@@ -232,6 +232,16 @@ class Camera {
 	}
 
 	/**
+	 * Start a mobile camera rotation without triggering the desktop double-click reset.
+	 */
+	static startMobileRotation() {
+		this.action.x = Mouse.screen.x;
+		this.action.y = Mouse.screen.y;
+		this.action.tick = Date.now();
+		this.action.active = true;
+	}
+
+	/**
 	 * Set screen quake
 	 *
 	 * @param {number} Start tick
