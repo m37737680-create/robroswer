@@ -274,18 +274,6 @@ ChatBox.init = function init() {
 	}
 
 	const inputChatbox = root.querySelector('.input-chatbox');
-	const placeChatCaretAtEnd = () => {
-		if (!inputChatbox) {
-			return;
-		}
-
-		const range = document.createRange();
-		const selection = window.getSelection();
-		range.selectNodeContents(inputChatbox);
-		range.collapse(false);
-		selection.removeAllRanges();
-		selection.addRange(range);
-	};
 
 	if (Configs.get('restoreChatFocus', false) && inputChatbox) {
 		inputChatbox.addEventListener('blur', () => {
@@ -300,51 +288,9 @@ ChatBox.init = function init() {
 		});
 	}
 
-	// Move caret to end of text
+	// Keep chat input length and pasted text within the client limit.
 	if (inputChatbox) {
-		inputChatbox.addEventListener('click', function () {
-			this.focus();
-			placeChatCaretAtEnd();
-		});
-
-		inputChatbox.addEventListener('focus', function () {
-			placeChatCaretAtEnd();
-		});
-
 		inputChatbox.maxLength = MAX_LENGTH;
-
-		inputChatbox.addEventListener('input', event => {
-			const currentText = extractChatMessage(inputChatbox);
-			if (currentText.length >= MAX_LENGTH) {
-				event.preventDefault();
-			}
-		});
-
-		inputChatbox.addEventListener('keydown', event => {
-			const currentText = extractChatMessage(inputChatbox);
-			if (currentText.length >= MAX_LENGTH) {
-				const allowedKeys = [
-					'ArrowLeft',
-					'ArrowUp',
-					'ArrowRight',
-					'ArrowDown',
-					'Backspace',
-					'Delete',
-					'Enter',
-					'Insert'
-				];
-
-				if (allowedKeys.includes(event.key)) {
-					return true;
-				}
-
-				if (event.ctrlKey || event.altKey) {
-					return true;
-				}
-				event.preventDefault();
-				return false;
-			}
-		});
 
 		inputChatbox.addEventListener('paste', event => {
 			event.preventDefault();
@@ -358,19 +304,15 @@ ChatBox.init = function init() {
 			pastedText = pastedText.replace(/\u00A0/g, ' ');
 
 			const currentText = extractChatMessage(inputChatbox);
-			const remaining = MAX_LENGTH - currentText.length;
+			const start = inputChatbox.selectionStart ?? currentText.length;
+			const end = inputChatbox.selectionEnd ?? start;
+			const remaining = MAX_LENGTH - currentText.length + (end - start);
 			if (remaining <= 0) {
 				return;
 			}
 
 			const toInsert = pastedText.substr(0, remaining);
-
-			if (document.queryCommandSupported && document.queryCommandSupported('insertText')) {
-				document.execCommand('insertText', false, toInsert);
-			} else {
-				const node = document.createTextNode(toInsert);
-				inputChatbox.appendChild(node);
-			}
+			inputChatbox.setRangeText(toInsert, start, end, 'end');
 		});
 	}
 
@@ -720,7 +662,7 @@ ChatBox.clean = function Clean() {
 	});
 
 	const inputChatbox = root.querySelector('.input-chatbox');
-	if (inputChatbox) inputChatbox.innerHTML = '';
+	if (inputChatbox) inputChatbox.value = '';
 
 	const nickBox = root.querySelector('.input .username');
 	if (nickBox) nickBox.value = '';
@@ -1057,11 +999,7 @@ ChatBox.onKeyDown = function OnKeyDown(event) {
 		case KEYS.UP:
 			if (!document.querySelector('#NpcMenu')) {
 				if (activeElement === messageBox) {
-					if (shouldLetChatInputHandleVerticalArrows(messageBox, 'up')) {
-						event.stopImmediatePropagation();
-						return true;
-					}
-					messageBox.innerHTML = _historyMessage.previous();
+					messageBox.value = _historyMessage.previous();
 					break;
 				}
 
@@ -1076,11 +1014,7 @@ ChatBox.onKeyDown = function OnKeyDown(event) {
 		case KEYS.DOWN:
 			if (!document.querySelector('#NpcMenu')) {
 				if (activeElement === messageBox) {
-					if (shouldLetChatInputHandleVerticalArrows(messageBox, 'down')) {
-						event.stopImmediatePropagation();
-						return true;
-					}
-					messageBox.innerHTML = _historyMessage.next();
+					messageBox.value = _historyMessage.next();
 					break;
 				}
 
@@ -1125,12 +1059,7 @@ ChatBox.onKeyDown = function OnKeyDown(event) {
 			}
 
 			messageBox.focus();
-			const range = document.createRange();
-			const sel = window.getSelection();
-			range.selectNodeContents(messageBox);
-			range.collapse(false);
-			sel.removeAllRanges();
-			sel.addRange(range);
+			messageBox.setSelectionRange(messageBox.value.length, messageBox.value.length);
 			event.stopImmediatePropagation();
 			return false;
 		}
@@ -1201,7 +1130,7 @@ ChatBox.submit = function Submit() {
 	// Save in history
 	_historyMessage.push(trimmedText);
 
-	$text.innerHTML = '';
+	$text.value = '';
 
 	// Command
 	if (trimmedText[0] === '/') {
@@ -1213,20 +1142,11 @@ ChatBox.submit = function Submit() {
 };
 
 /**
- * Extract plain chat text from the contenteditable input while preserving item links.
+ * Extract plain chat text from the message input.
  */
 function extractChatMessage(inputEl) {
 	if (!inputEl) return '';
-	const clone = inputEl.cloneNode(true);
-
-	clone.querySelectorAll('span.item-link').forEach(el => {
-		const itemData = el.getAttribute('data-item') || el.dataset.item || '';
-		el.replaceWith(document.createTextNode(itemData));
-	});
-
-	let result = clone.textContent;
-	result = result.replace(/\u00A0/g, ' ');
-	return result;
+	return (inputEl.value || '').replace(/\u00A0/g, ' ');
 }
 
 /**
@@ -1439,74 +1359,6 @@ function getChatBottomAnchorPx(root, fallback) {
 	}
 
 	return fallback;
-}
-
-/**
- * Determine if vertical arrow should scroll the contenteditable rather than navigate history
- */
-function shouldLetChatInputHandleVerticalArrows(inputEl, direction) {
-	if (!inputEl) {
-		return false;
-	}
-
-	const sel = window.getSelection();
-	if (!sel || sel.rangeCount < 1) {
-		return false;
-	}
-
-	const range = sel.getRangeAt(0);
-	if (!range) {
-		return false;
-	}
-
-	const anchorNode = sel.anchorNode || range.startContainer;
-	if (!anchorNode) {
-		return false;
-	}
-
-	if (anchorNode !== inputEl && !(inputEl.contains && inputEl.contains(anchorNode))) {
-		return false;
-	}
-
-	if (!sel.isCollapsed) {
-		return true;
-	}
-
-	const text = extractChatMessage(inputEl);
-	const hasNewline = text.indexOf('\n') > -1;
-	const hasOverflow = inputEl.scrollHeight > inputEl.clientHeight + 1;
-	if (!hasNewline && !hasOverflow) {
-		return false;
-	}
-
-	let caretRect;
-	try {
-		caretRect =
-			range.getClientRects && range.getClientRects().length
-				? range.getClientRects()[0]
-				: range.getBoundingClientRect();
-	} catch (_e) {
-		return true;
-	}
-
-	if (!caretRect) {
-		return true;
-	}
-
-	const inputRect = inputEl.getBoundingClientRect ? inputEl.getBoundingClientRect() : null;
-	if (!inputRect) {
-		return true;
-	}
-
-	if (direction === 'up') {
-		return caretRect.top > inputRect.top + 2;
-	}
-
-	if (direction === 'down') {
-		return caretRect.bottom < inputRect.bottom - 2;
-	}
-
-	return false;
 }
 
 /**
@@ -1805,7 +1657,10 @@ ChatBox.insertText = function (text) {
 	const input = root.querySelector('.input-chatbox');
 	if (!input) return;
 
-	input.appendChild(document.createTextNode(text));
+	const start = input.selectionStart ?? input.value.length;
+	const end = input.selectionEnd ?? start;
+	const remaining = MAX_LENGTH - input.value.length + (end - start);
+	input.setRangeText(text.substr(0, remaining), start, end, 'end');
 	input.focus();
 };
 
