@@ -126,6 +126,8 @@ function bindButton(root, selector, handler) {
 MobileUI.init = function init() {
 	const root = MobileUI.getRoot();
 
+	document.body.addEventListener('mobile-chat-closed', () => setMobileChatButtonState(false));
+
 	bindButton(root, '#toggleUIButton', e => {
 		toggleButtons();
 		stopPropagation(e);
