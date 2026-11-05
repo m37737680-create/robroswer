@@ -98,6 +98,12 @@ function _root() {
 	return ChatBox._shadow || ChatBox._host;
 }
 
+function appendChatContextMenu() {
+	ContextMenu.remove();
+	ContextMenu.append();
+	ContextMenu._host.style.zIndex = ChatBox._host.classList.contains('mobile-chat-open') ? '1301' : '';
+}
+
 /**
  * Render HTML
  */
@@ -281,7 +287,6 @@ ChatBox.init = function init() {
 			inputChatbox.focus();
 		};
 
-		chatInputBar.addEventListener('touchstart', focusChatInput, { passive: true });
 		chatInputBar.addEventListener('click', focusChatInput);
 	}
 
@@ -425,8 +430,7 @@ ChatBox.init = function init() {
 				return;
 			}
 
-			ContextMenu.remove();
-			ContextMenu.append();
+			appendChatContextMenu();
 
 			for (let i = 0; i < count; ++i) {
 				ContextMenu.addElement(names[i], onPrivateMessageUserSelection(names[i]));
@@ -461,8 +465,7 @@ ChatBox.init = function init() {
 			const pos = this.getBoundingClientRect();
 			const ui = ContextMenu.ui.find('.menu');
 
-			ContextMenu.remove();
-			ContextMenu.append();
+			appendChatContextMenu();
 
 			ContextMenu.addElement(DB.getMessage(85), onChangeTargetMessage(ChatBox.TYPE.PUBLIC));
 			ContextMenu.addElement(DB.getMessage(86), onChangeTargetMessage(ChatBox.TYPE.PARTY));
@@ -574,8 +577,7 @@ ChatBox.init = function init() {
 				Mouse.screen.x = event.pageX;
 				Mouse.screen.y = event.pageY;
 
-				ContextMenu.remove();
-				ContextMenu.append();
+				appendChatContextMenu();
 				ContextMenu.addElement('Chat font x1.0', setChatFontScale(1.0));
 				ContextMenu.addElement('Chat font x1.2', setChatFontScale(1.2));
 				ContextMenu.addElement('Chat font x1.4', setChatFontScale(1.4));
