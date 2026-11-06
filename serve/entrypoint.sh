@@ -120,5 +120,6 @@ make server
 
 /bin/bash /pre-import.sh
 /bin/bash /20-fluxcp-schemas.sh
+rm -f /rathena/.*.pid
 ./athena-start start
 exec tail -f /dev/null
