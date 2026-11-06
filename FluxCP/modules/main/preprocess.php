@@ -1,6 +1,30 @@
 <?php
 if (!defined('FLUX_ROOT')) exit;
 
+$clientPublicHost = trim((string)(getenv('CLIENT_PUBLIC_HOST') ?: ''));
+$gameUrl = null;
+
+if ($clientPublicHost !== '') {
+	$clientUrl = parse_url(preg_match('~^https?://~i', $clientPublicHost) ? $clientPublicHost : '//' . $clientPublicHost);
+	$scheme = is_array($clientUrl) && isset($clientUrl['scheme']) ? strtolower($clientUrl['scheme']) : null;
+	$validClientUrl = is_array($clientUrl)
+		&& !empty($clientUrl['host'])
+		&& (!$scheme || in_array($scheme, array('http', 'https'), true))
+		&& !isset($clientUrl['user'])
+		&& !isset($clientUrl['pass'])
+		&& !isset($clientUrl['query'])
+		&& !isset($clientUrl['fragment'])
+		&& (!isset($clientUrl['path']) || $clientUrl['path'] === '' || $clientUrl['path'] === '/');
+
+	if ($validClientUrl) {
+		$gameUrl = ($scheme ? "$scheme://" : '//') . $clientUrl['host'];
+		if (isset($clientUrl['port'])) {
+			$gameUrl .= ':' . $clientUrl['port'];
+		}
+		$gameUrl .= '/renewal/';
+	}
+}
+
 // Check for "special" date fields.
 $__dates = array();
 foreach ($params->toArray() as $key => $value) {

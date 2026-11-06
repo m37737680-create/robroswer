@@ -1,8 +1,44 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 
-<?php if(Flux::config('CMSNewsOnHomepage')): ?>
-	<h2><?php echo htmlspecialchars(sprintf(Flux::message('MainPageWelcome'), Flux::config('SiteTitle'))) ?></h2>
+<section class="roita-home">
+	<div class="roita-hero">
+		<p class="roita-eyebrow">Ragnarok Online</p>
+		<h1>Benvenuti su Roita!</h1>
+		<p class="roita-intro">Crea il tuo account e tuffati nell'avventura: non devi installare nulla, puoi giocare direttamente dal browser.</p>
+		<div class="roita-actions">
+			<a class="roita-button roita-button-primary" href="<?php echo htmlspecialchars($this->url('account', 'create'), ENT_QUOTES, 'UTF-8') ?>">Registrati per iniziare</a>
+			<?php if ($gameUrl): ?>
+				<a class="roita-button roita-button-secondary" href="<?php echo htmlspecialchars($gameUrl, ENT_QUOTES, 'UTF-8') ?>">Gioca da desktop</a>
+			<?php endif; ?>
+		</div>
+		<?php if (!$gameUrl): ?>
+			<p class="roita-config-notice">Il link al gioco non è configurato. Imposta CLIENT_PUBLIC_HOST nel file .env per abilitarlo.</p>
+		<?php endif; ?>
+	</div>
 
+	<div class="roita-home-grid">
+		<article class="roita-card">
+			<span class="roita-card-icon" aria-hidden="true">⌨</span>
+			<h2>Gioca da computer</h2>
+			<p>Registrati e premi il pulsante qui sopra. Si aprirà il gioco nel browser, senza download o installazioni.</p>
+		</article>
+		<article class="roita-card">
+			<span class="roita-card-icon" aria-hidden="true">📱</span>
+			<h2>Gioca da mobile</h2>
+			<p>Apri lo stesso link del gioco da Safari su iPhone/iPad oppure da Chrome su Android:</p>
+			<?php if ($gameUrl): ?>
+				<p><a class="roita-game-link" href="<?php echo htmlspecialchars($gameUrl, ENT_QUOTES, 'UTF-8') ?>"><?php echo htmlspecialchars($gameUrl, ENT_QUOTES, 'UTF-8') ?></a></p>
+			<?php endif; ?>
+			<ol class="roita-steps">
+				<li><strong>iPhone e iPad:</strong> in Safari tocca il pulsante <em>Condividi</em>, scorri le opzioni e scegli <em>Aggiungi alla schermata Home</em>.</li>
+				<li><strong>Android:</strong> in Chrome apri il menu con i tre puntini e scegli <em>Aggiungi a schermata Home</em> o <em>Installa app</em>.</li>
+			</ol>
+			<p>L'icona di Roita apparirà sulla schermata Home: toccala per tornare a giocare.</p>
+		</article>
+	</div>
+</section>
+
+<?php if(Flux::config('CMSNewsOnHomepage')): ?>
 	<?php if($newstype == '1'):?>
 		<?php if($news): ?>
 			<div class="newsDiv">
@@ -50,13 +86,4 @@
 
 
 
-<?php else: ?>
-	<h2><?php echo htmlspecialchars(Flux::message('MainPageHeading')) ?></h2>
-	<p><strong><?php echo htmlspecialchars(Flux::message('MainPageInfo')) ?></strong></p>
-	<p><?php echo htmlspecialchars(Flux::message('MainPageInfo2')) ?></p>
-	<ol>
-		<li><p class="green"><?php echo htmlspecialchars(sprintf(Flux::message('MainPageStep1'), __FILE__)) ?></p></li>
-		<li><p class="green"><?php echo htmlspecialchars(Flux::message('MainPageStep2')) ?></p></li>
-	</ol>
-	<p style="text-align: right"><strong><em><?php echo htmlspecialchars(Flux::message('MainPageThanks')) ?></em></strong></p>
 <?php endif ?>
