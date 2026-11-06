@@ -1324,15 +1324,21 @@ export function createSkillList({
 			try {
 				const shortcut = UIManager.components.ShortCut;
 				const shortcutRoot = shortcut?.getRoot();
-				const dropTarget = Array.from(shortcutRoot?.querySelectorAll('.container') || []).find(slot => {
+				let dropTarget = null;
+				let nearestDistance = Infinity;
+
+				for (const slot of shortcutRoot?.querySelectorAll('.container') || []) {
 					const rect = slot.getBoundingClientRect();
-					return (
-						touch.clientX >= rect.left &&
-						touch.clientX <= rect.right &&
-						touch.clientY >= rect.top &&
-						touch.clientY <= rect.bottom
-					);
-				});
+					const dx = touch.clientX - (rect.left + rect.width / 2);
+					const dy = touch.clientY - (rect.top + rect.height / 2);
+					const distance = Math.hypot(dx, dy);
+					const hitRadius = Math.hypot(rect.width / 2 + 12, rect.height / 2 + 12);
+
+					if (distance <= hitRadius && distance < nearestDistance) {
+						dropTarget = slot;
+						nearestDistance = distance;
+					}
+				}
 
 				if (dropTarget) {
 					const dropEvent = new Event('drop', { bubbles: true, cancelable: true });
