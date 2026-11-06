@@ -73,7 +73,7 @@ NpcMenu.init = function init() {
 	const content = root.querySelector('.content');
 	if (content) {
 		content.addEventListener('mousedown', e => {
-			const div = e.target.closest('div');
+			const div = e.target.closest('div[data-index]');
 			if (div && content.contains(div)) {
 				selectIndex(div);
 			}
@@ -81,7 +81,7 @@ NpcMenu.init = function init() {
 		});
 
 		content.addEventListener('dblclick', e => {
-			const div = e.target.closest('div');
+			const div = e.target.closest('div[data-index]');
 			if (div && content.contains(div)) {
 				validate();
 			}
@@ -196,7 +196,9 @@ NpcMenu.setMenu = function setMenu(menu, gid) {
  * Submit an index
  */
 function validate() {
-	if (_index === -1) {
+	const root = NpcMenu.getRoot();
+	const options = root.querySelectorAll('.content div[data-index]');
+	if (!Number.isInteger(_index) || _index < 0 || _index >= options.length) {
 		return; // require selection
 	}
 	NpcMenu.onSelectMenu(_ownerID, _index + 1);
@@ -215,11 +217,16 @@ function cancel() {
 function selectIndex(div) {
 	const root = NpcMenu.getRoot();
 	const content = root.querySelector('.content');
+	const index = Number.parseInt(div.dataset.index, 10);
+	if (!Number.isInteger(index)) {
+		return;
+	}
+
 	const divs = content.querySelectorAll('div[data-index]');
 	divs.forEach(d => d.classList.remove('selected'));
 	div.classList.add('selected');
 
-	_index = parseInt(div.dataset.index, 10);
+	_index = index;
 }
 
 /**
