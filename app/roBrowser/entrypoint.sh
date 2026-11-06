@@ -201,6 +201,10 @@ generate_base_config | tee \
     >/dev/null
 echo "Config.js generated."
 
+# Keep the navigation index derived from the NPC scripts loaded by rAthena.
+RENEWAL="$renewal" node /app/scripts/npc-navigation-index.mjs --once
+RENEWAL="$renewal" node /app/scripts/npc-navigation-index.mjs --watch &
+
 
 # ============================================================
 # Avvio

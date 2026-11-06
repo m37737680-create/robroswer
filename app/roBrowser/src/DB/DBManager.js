@@ -165,6 +165,11 @@ const NaviMobTable = {};
 const NaviNpcTable = {};
 
 /**
+ * @const {Object} English NaviNpc Table
+ */
+const NaviNpcEnglishTable = {};
+
+/**
  * @const {Object} NaviLink Table
  */
 const NaviLinkTable = {};
@@ -266,6 +271,11 @@ class DB {
 	 * @type {Object} CharName by GID list
 	 */
 	static CNameTable = {};
+
+	/**
+	 * @type {{byLocation: Object, byClassLocation: Object, entries: Array}}
+	 */
+	static ServerNpcNavigation = { byLocation: {}, byClassLocation: {}, entries: [] };
 
 	/**
 	 * @type {string} interface path
@@ -431,11 +441,17 @@ class DB {
 	}
 
 	static isLoaded = false;
+	static isNavigationLoaded = false;
+	static isNpcEnglishLoaded = false;
+	static isMobNavigationLoaded = false;
 	static count = 0;
 	static index = 0;
 	static async lazyInit() {
 		console.log('Loading DB files...');
 		await startLua();
+		DB.isNavigationLoaded = false;
+		DB.isNpcEnglishLoaded = false;
+		DB.isMobNavigationLoaded = false;
 		// Callback
 		DB.index = 0;
 		DB.count = 0;
@@ -592,58 +608,6 @@ class DB {
 			// Status
 			loadStateIconInfo(DB.LUA_PATH + 'stateicon/', null, onLoad());
 
-			// Legacy Navigation
-			if (PACKETVER.value >= 20111010) {
-				loadLuaValue(
-					DB.LUA_PATH + 'navigation/navi_map_krpri.lub',
-					'Navi_Map',
-					function (json) {
-						Object.assign(NaviMapTable, json);
-					},
-					onLoad()
-				);
-				loadLuaValue(
-					DB.LUA_PATH + 'navigation/navi_mob_krpri.lub',
-					'Navi_Mob',
-					function (json) {
-						Object.assign(NaviMobTable, json);
-					},
-					onLoad()
-				);
-				loadLuaValue(
-					DB.LUA_PATH + 'navigation/navi_npc_krpri.lub',
-					'Navi_Npc',
-					function (json) {
-						Object.assign(NaviNpcTable, json);
-					},
-					onLoad()
-				);
-				loadLuaValue(
-					DB.LUA_PATH + 'navigation/navi_link_krpri.lub',
-					'Navi_Link',
-					function (json) {
-						Object.assign(NaviLinkTable, json);
-					},
-					onLoad()
-				);
-				loadLuaValue(
-					DB.LUA_PATH + 'navigation/navi_linkdistance_krpri.lub',
-					'Navi_Distance',
-					function (json) {
-						Object.assign(NaviLinkDistanceTable, json);
-					},
-					onLoad()
-				);
-				loadLuaValue(
-					DB.LUA_PATH + 'navigation/navi_npcdistance_krpri.lub',
-					'Navi_NpcDistance',
-					function (json) {
-						Object.assign(NaviNpcDistanceTable, json);
-					},
-					onLoad()
-				);
-			}
-
 			// HatEffect
 			if (PACKETVER.value >= 20150507) {
 				loadHatEffectInfo(onLoad());
@@ -754,6 +718,86 @@ class DB {
 
 			// Quest
 			loadTable('data/questid2display.txt', '#', 6, parseQuestEntry, onLoad(), true);
+		}
+
+		// Navigation tables are required by the Navigation UI even when optional Lua DB loading is disabled.
+		if (PACKETVER.value >= 20111010) {
+			loadLuaValue(
+				DB.LUA_PATH + 'navigation/navi_map_krpri.lub',
+				'Navi_Map',
+				function (json) {
+					if (json) {
+						Object.assign(NaviMapTable, json);
+					}
+				},
+				onLoad()
+			);
+			loadLuaValue(
+				DB.LUA_PATH + 'navigation/navi_mob_krpri.lub',
+				'Navi_Mob',
+				function (json) {
+					if (json) {
+						Object.assign(NaviMobTable, json);
+						DB.isMobNavigationLoaded = true;
+					}
+				},
+				onLoad(),
+				'windows-949'
+			);
+			loadLuaValue(
+				DB.LUA_PATH + 'navigation/navi_npc_krpri.lub',
+				'Navi_Npc',
+				function (json) {
+					if (json) {
+						Object.assign(NaviNpcTable, json);
+						DB.isNavigationLoaded = true;
+					}
+				},
+				onLoad(),
+				'windows-949'
+			);
+			loadLuaValue(
+				DB.LUA_PATH + 'navigation/navi_npc_krsak.lub',
+				'Navi_Npc',
+				function (json) {
+					if (json) {
+						Object.assign(NaviNpcEnglishTable, json);
+					}
+					DB.isNpcEnglishLoaded = true;
+				},
+				onLoad(),
+				'windows-949'
+			);
+			loadLuaValue(
+				DB.LUA_PATH + 'navigation/navi_link_krpri.lub',
+				'Navi_Link',
+				function (json) {
+					if (json) {
+						Object.assign(NaviLinkTable, json);
+					}
+				},
+				onLoad()
+			);
+			loadLuaValue(
+				DB.LUA_PATH + 'navigation/navi_linkdistance_krpri.lub',
+				'Navi_Distance',
+				function (json) {
+					if (json) {
+						Object.assign(NaviLinkDistanceTable, json);
+					}
+				},
+				onLoad()
+			);
+			loadLuaValue(
+				DB.LUA_PATH + 'navigation/navi_npcdistance_krpri.lub',
+				'Navi_NpcDistance',
+				function (json) {
+					if (json) {
+						Object.assign(NaviNpcDistanceTable, json);
+					}
+				},
+				onLoad()
+			);
 		}
 
 		// Load ItemMoveInfo and attach to ItemTable
@@ -3467,10 +3511,12 @@ class DB {
 	 *
 	 * @param {string} query - The search query
 	 * @param {string} type - The type of search (ALL, NPC, MOB)
+	 * @param {{includeAll?: boolean}} options - Search options
 	 * @returns {Array} Array of search results
 	 */
-	static searchNavigation(query, type) {
-		if (!query || query.length < 2) {
+	static searchNavigation(query, type, options) {
+		const includeAll = Boolean(options && options.includeAll);
+		if (!includeAll && (!query || query.length < 2)) {
 			return [];
 		}
 
@@ -3480,6 +3526,15 @@ class DB {
 				.replace(/[\u0300-\u036f]/g, '')
 				.toLowerCase()
 				.trim();
+		const normalizeMapName = value =>
+			normalizeSearchText(String(value || '').replace(/\.(gat|rsw)$/i, '')).replace(
+				/^(.+)_[a-d]$/,
+				'$1'
+			);
+		const makeReadableName = value =>
+			String(value || '')
+				.replace(/_/g, ' ')
+				.replace(/\b[A-Z]{2,}\b/g, word => (word === 'MVP' ? word : word[0] + word.slice(1).toLowerCase()));
 		query = normalizeSearchText(query);
 		type = String(type || 'ALL').toUpperCase();
 		const results = [];
@@ -3501,6 +3556,16 @@ class DB {
 					.filter(key => /^\d+$/.test(key))
 					.sort((a, b) => Number(a) - Number(b));
 				if (numericKeys.length > 0) {
+					const numericValues = numericKeys.map(key => value[key]);
+					if (
+						typeof numericValues[0] === 'string' &&
+						typeof numericValues[4] === 'string' &&
+						numericValues[4].length > 0 &&
+						Number.isFinite(Number(numericValues[6])) &&
+						Number.isFinite(Number(numericValues[7]))
+					) {
+						return [numericValues];
+					}
 					return flattenEntries(numericKeys.map(key => value[key]));
 				}
 				if (
@@ -3519,6 +3584,38 @@ class DB {
 			return [];
 		};
 
+		const englishNpcNamesByLocationAndClass = new Map();
+		const englishNpcNamesByLocation = new Map();
+		const englishNpcNamesByMapAndId = new Map();
+		const serverNpcNamesByLocation = DB.ServerNpcNavigation.byLocation;
+		const serverNpcNamesByClassLocation = DB.ServerNpcNavigation.byClassLocation;
+		const isEnglishName = value =>
+			Boolean(value) && !/[\u1100-\u11ff\u2e80-\ua4cf\uac00-\ud7af\uf900-\ufaff]/i.test(value);
+		for (const npc of flattenEntries(NaviNpcEnglishTable)) {
+			const mapName = normalizeSearchText(npc[0] || npc.mapName || npc.MapName);
+			const npcId = npc[1] ?? npc.id ?? npc.NpcID;
+			const classId = npc[3] ?? npc.classId ?? npc.ClassID;
+			const x = npc[6] ?? npc.x ?? npc.X;
+			const y = npc[7] ?? npc.y ?? npc.Y;
+			const englishName = String(npc[4] || npc.name || npc.NpcName || npc.npc_name || '');
+			if (!mapName || !isEnglishName(englishName)) {
+				continue;
+			}
+
+			if (npcId !== undefined) {
+				englishNpcNamesByMapAndId.set(`${mapName}|${npcId}|${classId}`, englishName);
+			}
+			if (x === undefined || y === undefined) {
+				continue;
+			}
+			const location = `${mapName}|${Number(x)}|${Number(y)}`;
+			const locationAndClass = `${location}|${classId}`;
+			englishNpcNamesByLocationAndClass.set(locationAndClass, englishName);
+			const namesAtLocation = englishNpcNamesByLocation.get(location) || [];
+			namesAtLocation.push(englishName);
+			englishNpcNamesByLocation.set(location, namesAtLocation);
+		}
+
 		// Search NPCs if type is ALL or NPC
 		if (type === 'ALL' || type === 'NPC') {
 			// NaviNpcTable structure: [["map_name", npc_id, npc_type, class_id, "npc_name", "", x, y], ...]
@@ -3527,9 +3624,33 @@ class DB {
 				const npc = npcEntries[i];
 				const mapName = String(npc[0] || npc.mapName || npc.MapName || '').replace(/\.gat$/i, '');
 				const npcId = npc[1] ?? npc.id ?? npc.NpcID;
-				const npcName = String(npc[4] || npc.name || npc.NpcName || npc.npc_name || '');
+				const localizedName = String(npc[4] || npc.name || npc.NpcName || npc.npc_name || '');
+				const classId = npc[3] ?? npc.classId ?? npc.ClassID;
 				const x = npc[6] ?? npc.x ?? npc.X;
 				const y = npc[7] ?? npc.y ?? npc.Y;
+				const location = `${normalizeSearchText(mapName)}|${Number(x)}|${Number(y)}`;
+				const namesAtLocation = englishNpcNamesByLocation.get(location);
+				const normalizedMapName = String(mapName)
+					.replace(/\.(gat|rsw)$/i, '')
+					.toLowerCase()
+					.replace(/^(.+)_[a-d]$/, '$1');
+				const scriptNameKey = `${normalizedMapName}|${classId}|${Number(x)}|${Number(y)}`;
+				const scriptEnglishName = serverNpcNamesByClassLocation[scriptNameKey];
+				const scriptLocationName =
+					serverNpcNamesByLocation[`${normalizedMapName}|${Number(x)}|${Number(y)}`];
+				const spriteName = String(MonsterTable[classId] || '')
+					.replace(/^\d+_[mf]_/i, '')
+					.replace(/^\d+_/, '')
+					.replace(/_?\d+$/, '');
+				const readableSpriteName = makeReadableName(spriteName).replace(/\bJobguider\b/i, 'Job Guider');
+				const npcName =
+					(isEnglishName(scriptEnglishName) && scriptEnglishName) ||
+					(isEnglishName(scriptLocationName) && scriptLocationName) ||
+					englishNpcNamesByMapAndId.get(`${normalizeSearchText(mapName)}|${npcId}|${classId}`) ||
+					englishNpcNamesByLocationAndClass.get(`${location}|${classId}`) ||
+					(namesAtLocation && namesAtLocation.length === 1 ? namesAtLocation[0] : null) ||
+					(isEnglishName(readableSpriteName) && readableSpriteName) ||
+					`NPC ${npcId}`;
 
 				// Skip if no name
 				if (!npcName) {
@@ -3537,17 +3658,51 @@ class DB {
 				}
 
 				// Check if the NPC name contains the query
-				const searchable = `${normalizeSearchText(npcName)} ${normalizeSearchText(mapName)} ${npcId}`;
-				if (searchable.includes(query)) {
+				const searchable = `${normalizeSearchText(npcName)} ${normalizeSearchText(
+					localizedName
+				)} ${normalizeSearchText(spriteName)} ${normalizeSearchText(mapName)} ${npcId}`;
+				if (includeAll || searchable.includes(query)) {
 					results.push({
 						type: 'NPC',
 						id: npcId,
 						name: npcName,
+						localizedName: localizedName !== npcName ? localizedName : null,
 						mapName: mapName,
+						classId,
 						x,
 						y
 					});
 				}
+			}
+
+			const seenScriptEntries = new Set(
+				results.map(
+					npc =>
+						`${normalizeMapName(npc.mapName)}|${Number(npc.x)}|${Number(npc.y)}|${npc.classId}`
+				)
+			);
+			for (const npc of DB.ServerNpcNavigation.entries) {
+				const entryKey = `${normalizeMapName(npc.mapName)}|${Number(npc.x)}|${Number(npc.y)}|${npc.classId}`;
+				if (seenScriptEntries.has(entryKey)) {
+					continue;
+				}
+				const searchable = `${normalizeSearchText(npc.name)} ${normalizeSearchText(
+					npc.mapName
+				)} ${npc.x} ${npc.y} ${npc.classId}`;
+				if (!includeAll && !searchable.includes(query)) {
+					continue;
+				}
+				seenScriptEntries.add(entryKey);
+				results.push({
+					type: 'NPC',
+					id: null,
+					name: npc.name,
+					localizedName: null,
+					mapName: npc.mapName,
+					classId: npc.classId,
+					x: npc.x,
+					y: npc.y
+				});
 			}
 		}
 
@@ -3558,8 +3713,13 @@ class DB {
 			for (let i = 0; i < mobEntries.length; i++) {
 				const mob = mobEntries[i];
 				const mapName = String(mob[0] || mob.mapName || mob.MapName || '').replace(/\.gat$/i, '');
-				const mobId = mob[3] ?? mob.id ?? mob.mobId ?? mob.MobID; // Using mob_class as the ID
-				const mobName = String(mob[4] || mob.name || mob.MobName || mob.mob_name || '');
+				const packedMobId = mob[3] ?? mob.id ?? mob.mobId ?? mob.MobID;
+				const numericMobId = Number(packedMobId);
+				const mobId = Number.isFinite(numericMobId) ? numericMobId & 0xffff : packedMobId;
+				const localizedName = String(mob[4] || mob.name || mob.MobName || mob.mob_name || '');
+				const spriteName = makeReadableName(mob[5] || mob.sprite || mob.SpriteName || '');
+				const englishName = makeReadableName(this.getMonsterName(mobId));
+				const mobName = englishName !== 'Unknown' ? englishName : spriteName || localizedName;
 
 				// Skip if no name
 				if (!mobName) {
@@ -3567,14 +3727,17 @@ class DB {
 				}
 
 				// Check if the MOB name contains the query
-				const searchable = `${normalizeSearchText(mobName)} ${normalizeSearchText(mapName)} ${mobId}`;
-				if (searchable.includes(query)) {
+				const searchable = `${normalizeSearchText(mobName)} ${normalizeSearchText(localizedName)} ${normalizeSearchText(
+					spriteName
+				)} ${normalizeSearchText(mapName)} ${mobId}`;
+				if (includeAll || searchable.includes(query)) {
 					// Note: mob_info might contain position data, but structure is unclear
 					// For now, we're not including x/y coordinates for mobs
 					results.push({
 						type: 'MOB',
 						id: mobId,
 						name: mobName,
+						localizedName: localizedName !== mobName ? localizedName : null,
 						mapName: mapName,
 						x: null,
 						y: null
@@ -3588,8 +3751,8 @@ class DB {
 			return a.name.localeCompare(b.name);
 		});
 
-		// Limit to 50 results to avoid performance issues
-		return results.slice(0, 50);
+		// Limit text searches, but allow the navigation dropdown to enumerate all entries.
+		return results;
 	}
 
 	/**
@@ -7189,7 +7352,7 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc) {
  *
  * @author guicaulada
  */
-function loadLuaValue(file_path, variable_name, callback, onEnd) {
+function loadLuaValue(file_path, variable_name, callback, onEnd, decodeCharset) {
 	try {
 		console.log('Loading file "' + file_path + '"...');
 		Client.loadFile(file_path, async function (file) {
@@ -7211,14 +7374,23 @@ function loadLuaValue(file_path, variable_name, callback, onEnd) {
 
 				// Add key-value pairs to objects at any nesting level
 				ctx.extractValue = value => {
-					result = JSON.parse(userStringDecoder.decode(value));
+					result = JSON.parse(userStringDecoder.decode(value, decodeCharset));
 				};
 
 				// Create and execute a wrapper Lua code to extract the variable
 				lua.doStringSync(
 					String.raw`
 							local function escape_str(str)
-								return str:gsub("\\", "\\\\"):gsub("\"", "\\\"")
+								return str:gsub("\\", "\\\\")
+									:gsub("\"", "\\\"")
+									:gsub("\b", "\\b")
+									:gsub("\f", "\\f")
+									:gsub("\n", "\\n")
+									:gsub("\r", "\\r")
+									:gsub("\t", "\\t")
+									:gsub("[%z\1-\31]", function (char)
+										return string.format("\\u%04x", string.byte(char))
+									end)
 							end
 
 							local function to_json(value)

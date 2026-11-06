@@ -102,6 +102,7 @@ let _pathUpdateLock = false;
  */
 let _pathFindingWorker = null;
 let _autoWalkTimer = null;
+let _autoWalkRequested = true;
 
 /**
  * @var {Object} map data
@@ -156,6 +157,43 @@ function normalizeMapName(mapName) {
 		.toLowerCase();
 	mapName = mapName.replace(/^(.+)_[a-d]$/, '$1');
 	return mapName;
+}
+
+function areNavigationTablesLoaded(type) {
+	const npcLoaded = DB.isNavigationLoaded && DB.isNpcEnglishLoaded;
+	const mobLoaded = DB.isMobNavigationLoaded;
+	return type === 'ALL' ? npcLoaded && mobLoaded : type === 'MOB' ? mobLoaded : npcLoaded;
+}
+
+function getCurrentMapNavigationResults(type, query) {
+	const currentMap = normalizeMapName(getCurrentMap());
+	const normalizedQuery = String(query || '')
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.toLowerCase()
+		.trim();
+	const results = DB.searchNavigation('', type, { includeAll: true }).filter(
+		result => normalizeMapName(result.mapName) === currentMap
+	);
+
+	if (!normalizedQuery) {
+		return results;
+	}
+	if (normalizedQuery.length < 2) {
+		return [];
+	}
+
+	return results.filter(result => {
+		const searchable = [result.name, result.localizedName, result.mapName, result.id]
+			.map(value =>
+				String(value || '')
+					.normalize('NFD')
+					.replace(/[\u0300-\u036f]/g, '')
+					.toLowerCase()
+			)
+			.join(' ');
+		return searchable.includes(normalizedQuery);
+	});
 }
 
 /**
@@ -274,11 +312,15 @@ function initializePathFindingWorker() {
 							this.updateTargetText();
 							this.setTargetCoordinatesBlinking(false);
 							this.setLocationTitle(mapName, _finalTargetData.map, _finalTargetData.displayName);
-							this.startAutoWalk();
+							this.updateNavigationButton(_autoWalkRequested ? 'navigating' : 'ready');
+							if (_autoWalkRequested) {
+								this.startAutoWalk();
+							}
 						} else {
 							this.updateTargetText(true);
 							this.setTargetCoordinatesBlinking(false);
 							this.setLocationTitle(mapName, null);
+							this.updateNavigationButton('unavailable');
 						}
 					}
 					break;
@@ -293,7 +335,7 @@ function resetPathFindingWorker() {
 }
 
 Navigation.startAutoWalk = function startAutoWalk() {
-	if (_autoWalkTimer || !_path.length || !_finalTargetData) {
+	if (!_autoWalkRequested || _autoWalkTimer || !_path.length || !_finalTargetData) {
 		return;
 	}
 
@@ -340,6 +382,10 @@ Navigation.stopAutoWalk = function stopAutoWalk() {
 	if (_autoWalkTimer) {
 		clearTimeout(_autoWalkTimer);
 		_autoWalkTimer = null;
+	}
+	_autoWalkRequested = false;
+	if (_finalTargetData) {
+		this.updateNavigationButton(_path.length ? 'ready' : 'calculating');
 	}
 };
 
@@ -424,6 +470,73 @@ Navigation.init = function init() {
 	// Bind events
 	root.querySelector('.close').addEventListener('click', () => this.hide());
 	root.querySelector('.search-button').addEventListener('click', () => this.onSearch());
+	root.querySelector('.search-type').addEventListener('change', () => {
+		const servicesToggle = root.querySelector('.services-toggle');
+		if (servicesToggle.checked) {
+			this.loadCurrentMapNavigationResults(
+				root.querySelector('.search-type').value,
+				root.querySelector('.search-input').value.trim()
+			);
+		}
+	});
+	root.querySelector('.services-toggle').addEventListener('change', event => {
+		if (event.currentTarget.checked) {
+			this.loadCurrentMapNavigationResults(
+				root.querySelector('.search-type').value,
+				root.querySelector('.search-input').value.trim()
+			);
+		} else {
+			this.loadMapNavigationResults(getCurrentMap());
+		}
+	});
+	root.querySelector('.start-navigation').addEventListener('click', event => {
+		event.stopPropagation();
+		if (!_path.length || !_finalTargetData) {
+			return;
+		}
+
+		_autoWalkRequested = true;
+		this.updateNavigationButton('navigating');
+		this.startAutoWalk();
+	});
+	root.querySelector('.stop-navigation').addEventListener('click', event => {
+		event.stopPropagation();
+		this.stopAutoWalk();
+	});
+
+	const npcNavigationUrl = new URL('npc-navigation.json', window.location.href);
+	fetch(npcNavigationUrl, { cache: 'no-store' })
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`Request failed with HTTP ${response.status}`);
+			}
+			return response.json();
+		})
+		.then(navigation => {
+			if (
+				navigation.version !== 1 ||
+				!navigation.byLocation ||
+				!navigation.byClassLocation ||
+				!Array.isArray(navigation.entries)
+			) {
+				throw new Error('Server returned an invalid NPC navigation index.');
+			}
+			DB.ServerNpcNavigation = navigation;
+			const searchInput = root.querySelector('.search-input');
+			if (root.querySelector('.services-toggle').checked) {
+				this.loadCurrentMapNavigationResults(
+					root.querySelector('.search-type').value,
+					searchInput.value.trim()
+				);
+			} else if (searchInput.value.trim()) {
+				this.onSearch();
+			} else {
+				this.loadMapNavigationResults(getCurrentMap());
+			}
+		})
+		.catch(error => {
+			console.error('[Navigation] Could not load active server NPC names.', error);
+		});
 
 	const searchInput = root.querySelector('.search-input');
 	searchInput.addEventListener('keypress', e => {
@@ -436,13 +549,18 @@ Navigation.init = function init() {
 	searchInput.addEventListener('focus', () => {
 		const resultsContainer = root.querySelector('.search-results');
 		if (resultsContainer && resultsContainer.children.length > 0) {
-			resultsContainer.style.display = '';
+			resultsContainer.style.display = 'block';
 		}
 	});
 
 	// Hide search results when clicking outside (on document level)
 	_documentClickHandler = e => {
-		if (!e.target.closest('.search-results, .search-input, .search-button, .search-type')) {
+		const clickedSearchArea = e.composedPath().some(
+			node =>
+				node instanceof Element &&
+				node.matches('.search-results, .search-input, .search-button, .search-type')
+		);
+		if (!clickedSearchArea) {
 			const resultsContainer = root.querySelector('.search-results');
 			if (resultsContainer) {
 				resultsContainer.style.display = 'none';
@@ -492,7 +610,8 @@ Navigation.onAppend = function onAppend() {
 			endMap: _finalTargetData.map,
 			endX: _finalTargetData.x,
 			endY: _finalTargetData.y,
-			displayName: _finalTargetData.displayName
+			displayName: _finalTargetData.displayName,
+			autoWalk: _autoWalkRequested
 		});
 	}
 };
@@ -517,16 +636,40 @@ Navigation.onSearch = function onSearch() {
 	const root = Navigation.getRoot();
 	const query = root.querySelector('.search-input').value.trim();
 	const type = root.querySelector('.search-type').value;
+	const servicesToggle = root.querySelector('.services-toggle');
 
-	if (query.length < 2) {
+	if (servicesToggle.checked) {
+		this.loadCurrentMapNavigationResults(type, query);
+		return;
+	}
+
+	if (!query || !areNavigationTablesLoaded(type)) {
+		this.loadAllNavigationResults(type, 0, query);
 		return;
 	}
 
 	// Search for NPCs and MOBs
-	const results = DB.searchNavigation(query, type);
+	let results = query.length >= 2 ? DB.searchNavigation(query, type) : [];
+	if (query.length >= 2) {
+		const currentMapResults = getCurrentMapNavigationResults(type, query);
+		const resultsByKey = new Map(
+			results.map(result => [
+				`${result.type}|${result.mapName}|${result.id}|${result.x}|${result.y}`,
+				result
+			])
+		);
+		for (const result of currentMapResults) {
+			resultsByKey.set(`${result.type}|${result.mapName}|${result.id}|${result.x}|${result.y}`, result);
+		}
+		results = Array.from(resultsByKey.values());
+	}
 
 	// Display search results
 	this.displaySearchResults(results);
+	const resultsContainer = root.querySelector('.search-results');
+	if (resultsContainer) {
+		resultsContainer.style.display = 'block';
+	}
 	if (results.length === 0) {
 		console.warn(`[Navigation] No ${type} navigation result for "${query}".`);
 	}
@@ -535,13 +678,18 @@ Navigation.onSearch = function onSearch() {
 /**
  * Display search results
  */
-Navigation.displaySearchResults = function displaySearchResults(results) {
+Navigation.displaySearchResults = function displaySearchResults(results, markerMap) {
 	const root = Navigation.getRoot();
 	_markers.length = 0;
 
 	for (let i = 0; i < results.length; i++) {
 		const result = results[i];
-		if (result.type === 'NPC' && result.x !== null && result.y !== null) {
+		if (
+			result.type === 'NPC' &&
+			result.x !== null &&
+			result.y !== null &&
+			(!markerMap || normalizeMapName(result.mapName) === normalizeMapName(markerMap))
+		) {
 			this.addMarker(result.x, result.y, 'rgb(255, 190, 0)', result.name, normalizeMapName(result.mapName));
 		}
 	}
@@ -576,18 +724,38 @@ Navigation.displaySearchResults = function displaySearchResults(results) {
 
 		// Add type icon (NPC or MOB)
 		const typeIcon = result.type === 'NPC' ? 'npc_icon' : 'mob_icon';
-		resultItem.innerHTML =
-			`<span class="result-type ${typeIcon}">${result.type}</span>` +
-			`<span class="result-name">${result.name}</span>` +
-			`<span class="result-map">${result.mapName}</span>`;
+		const resultType = document.createElement('span');
+		resultType.className = `result-type ${typeIcon}`;
+		resultType.textContent = result.type;
+		resultItem.appendChild(resultType);
+
+		const resultName = document.createElement('span');
+		resultName.className = 'result-name';
+		resultName.textContent = result.name;
+		resultItem.appendChild(resultName);
+
+		const resultMap = document.createElement('span');
+		resultMap.className = 'result-map';
+		resultMap.textContent = result.mapName;
+		resultItem.appendChild(resultMap);
 
 		// Store result data
 		resultItem._resultData = result;
 
-		// Add click handler
-		resultItem.addEventListener('click', () => {
-			this.navigateToSearchResult(result);
-		});
+		const hasCoordinates =
+			result.x !== null &&
+			result.x !== undefined &&
+			result.y !== null &&
+			result.y !== undefined &&
+			Number.isFinite(Number(result.x)) &&
+			Number.isFinite(Number(result.y));
+		if (hasCoordinates) {
+			resultItem.addEventListener('click', () => {
+				this.navigateToSearchResult(result);
+			});
+		} else {
+			resultItem.classList.add('result-item--static');
+		}
 
 		resultsList.appendChild(resultItem);
 	}
@@ -618,7 +786,8 @@ Navigation.navigateToSearchResult = function navigateToSearchResult(result) {
 		endMap: result.mapName,
 		endX: result.x,
 		endY: result.y,
-		displayName: result.name
+		displayName: result.name,
+		autoWalk: false
 	});
 
 	// Hide the search results
@@ -686,6 +855,10 @@ Navigation.findClosestWalkableCell = function findClosestWalkableCell(x, y, maxR
  * Handle map click event
  */
 Navigation.onMapClick = function onMapClick(event) {
+	if (event.target.closest('.start-navigation, .stop-navigation')) {
+		return;
+	}
+
 	const root = Navigation.getRoot();
 	const mapDisplay = root.querySelector('.map-display');
 	const rect = mapDisplay.getBoundingClientRect();
@@ -709,7 +882,8 @@ Navigation.onMapClick = function onMapClick(event) {
 		endMap: currentMap,
 		endX: mapCoords.x,
 		endY: mapCoords.y,
-		displayName: 'Map Click'
+		displayName: 'Map Click',
+		autoWalk: false
 	});
 };
 
@@ -774,18 +948,94 @@ Navigation.loadMap = function loadMap(mapName, displayName) {
 	this.loadMapNavigationResults(normalizeMapName(mapBaseName));
 };
 
-Navigation.loadMapNavigationResults = function loadMapNavigationResults(mapName, attempt) {
+Navigation.loadMapNavigationResults = function loadMapNavigationResults(mapName, attempt, showDropdown) {
 	attempt = attempt || 0;
-	const results = DB.searchNavigation(mapName, 'ALL').filter(
-		result => normalizeMapName(result.mapName) === normalizeMapName(mapName)
-	);
-	if (results.length > 0 || attempt >= 12) {
-		this.displaySearchResults(results);
+	if (!areNavigationTablesLoaded('NPC') && attempt < 120) {
+		setTimeout(() => {
+			this.loadMapNavigationResults(mapName, attempt + 1, showDropdown);
+		}, 250);
 		return;
 	}
-	setTimeout(() => {
-		this.loadMapNavigationResults(mapName, attempt + 1);
-	}, 250);
+
+	const results = DB.searchNavigation('', 'NPC', { includeAll: true }).filter(
+		result => normalizeMapName(result.mapName) === normalizeMapName(mapName)
+	);
+	this.displaySearchResults(results);
+	if (showDropdown) {
+		const resultsContainer = this.getRoot().querySelector('.search-results');
+		if (resultsContainer) {
+			resultsContainer.style.display = 'block';
+		}
+	}
+};
+
+Navigation.loadCurrentMapNavigationResults = function loadCurrentMapNavigationResults(type, query, attempt) {
+	attempt = attempt || 0;
+	query = String(query || '').trim();
+	if (!areNavigationTablesLoaded(type) && attempt < 120) {
+		setTimeout(() => {
+			this.loadCurrentMapNavigationResults(type, query, attempt + 1);
+		}, 250);
+		return;
+	}
+
+	if (!areNavigationTablesLoaded(type)) {
+		console.error(`[Navigation] ${type} navigation table did not load from the client.`);
+		return;
+	}
+
+	const currentMap = normalizeMapName(getCurrentMap());
+	const currentMapResults = getCurrentMapNavigationResults(type, query);
+	this.displaySearchResults(currentMapResults, currentMap);
+
+	const resultsContainer = this.getRoot().querySelector('.search-results');
+	if (resultsContainer) {
+		resultsContainer.style.display = 'block';
+	}
+};
+
+Navigation.loadAllNavigationResults = function loadAllNavigationResults(type, attempt, query) {
+	attempt = attempt || 0;
+	query = query || '';
+	if (!areNavigationTablesLoaded(type) && attempt < 120) {
+		setTimeout(() => {
+			this.loadAllNavigationResults(type, attempt + 1, query);
+		}, 250);
+		return;
+	}
+
+	if (!areNavigationTablesLoaded(type)) {
+		console.error(`[Navigation] ${type} navigation table did not load from the client.`);
+		return;
+	}
+
+	let results =
+		query.length === 0
+			? DB.searchNavigation('', type, { includeAll: true })
+			: query.length >= 2
+				? DB.searchNavigation(query, type)
+				: [];
+	if (query.length >= 2) {
+		const currentMapResults = getCurrentMapNavigationResults(type, query);
+		const resultsByKey = new Map(
+			results.map(result => [
+				`${result.type}|${result.mapName}|${result.id}|${result.x}|${result.y}`,
+				result
+			])
+		);
+		for (const result of currentMapResults) {
+			resultsByKey.set(`${result.type}|${result.mapName}|${result.id}|${result.x}|${result.y}`, result);
+		}
+		results = Array.from(resultsByKey.values());
+	}
+	this.displaySearchResults(results, normalizeMapName(getCurrentMap()));
+	const resultsContainer = this.getRoot().querySelector('.search-results');
+	if (resultsContainer) {
+		resultsContainer.style.display = 'block';
+	}
+	if (results.length === 0) {
+		console.warn(`[Navigation] No ${type} navigation records are available for "${query}".`);
+	}
 };
 
 /**
@@ -793,10 +1043,13 @@ Navigation.loadMapNavigationResults = function loadMapNavigationResults(mapName,
  */
 Navigation.clear = function clear() {
 	this.stopAutoWalk();
+	_autoWalkRequested = false;
 	this.clearPath();
 	_finalTargetData = null;
 	_targetData = null;
 	_isMapClickTarget = false;
+	this.targetResult = null;
+	this.updateNavigationButton('hidden');
 
 	// Hide the target coordinates display
 	const root = Navigation.getRoot();
@@ -863,7 +1116,9 @@ Navigation.renderCanvas = function renderCanvas(tick) {
 			endMap: _finalTargetData.map,
 			endX: _finalTargetData.x,
 			endY: _finalTargetData.y,
-			displayName: _finalTargetData.displayName
+			displayName: _finalTargetData.displayName,
+			autoWalk: _autoWalkRequested,
+			recalculate: true
 		});
 		_lastPathUpdate = tick;
 	}
@@ -1121,6 +1376,50 @@ Navigation.setLocationTitle = function setLocationTitle(currentMap, targetMap, d
 	}
 };
 
+Navigation.updateNavigationButton = function updateNavigationButton(state) {
+	const root = Navigation.getRoot();
+	const startButton = root && root.querySelector('.start-navigation');
+	const stopButton = root && root.querySelector('.stop-navigation');
+	if (!startButton || !stopButton) {
+		return;
+	}
+
+	if (state === 'hidden' || (!_finalTargetData && !this.targetResult)) {
+		startButton.hidden = true;
+		startButton.disabled = true;
+		stopButton.hidden = true;
+		stopButton.disabled = true;
+		return;
+	}
+
+	switch (state) {
+		case 'navigating':
+			startButton.hidden = true;
+			startButton.disabled = true;
+			stopButton.hidden = false;
+			stopButton.disabled = false;
+			break;
+		case 'calculating':
+			startButton.hidden = false;
+			startButton.disabled = true;
+			stopButton.hidden = true;
+			stopButton.disabled = true;
+			break;
+		case 'unavailable':
+			startButton.hidden = false;
+			startButton.disabled = true;
+			stopButton.hidden = true;
+			stopButton.disabled = true;
+			break;
+		default:
+			startButton.hidden = false;
+			startButton.disabled = !_path.length || !_finalTargetData;
+			stopButton.hidden = true;
+			stopButton.disabled = true;
+			break;
+	}
+};
+
 /**
  * Set coordinates text with proper formatting
  */
@@ -1264,7 +1563,8 @@ Navigation.show = function show() {
 			endMap: _finalTargetData.map,
 			endX: _finalTargetData.x,
 			endY: _finalTargetData.y,
-			displayName: _finalTargetData.displayName
+			displayName: _finalTargetData.displayName,
+			autoWalk: _autoWalkRequested
 		});
 	}
 
@@ -1387,6 +1687,7 @@ Navigation.navigateTo = function navigateTo(options) {
 	const startMap = normalizeMapName(options.startMap);
 	const endMap = normalizeMapName(options.endMap);
 	const displayName = options.displayName;
+	_autoWalkRequested = Object.prototype.hasOwnProperty.call(options, 'autoWalk') ? options.autoWalk : true;
 
 	if (
 		_finalTargetData &&
@@ -1406,6 +1707,9 @@ Navigation.navigateTo = function navigateTo(options) {
 		y: options.endY,
 		displayName: displayName
 	};
+	if (!options.recalculate && _path.length === 0) {
+		this.updateNavigationButton('calculating');
+	}
 
 	// Get warp types based on Services checkbox
 	let warpTypes = [200, 201];
@@ -1426,6 +1730,9 @@ Navigation.navigateTo = function navigateTo(options) {
 
 	if (!path || path.length === 0) {
 		this.setTargetCoordinatesText(options.endX, options.endY, { targetMap: endMap });
+		if (!options.recalculate) {
+			this.updateNavigationButton('unavailable');
+		}
 		return;
 	}
 
