@@ -1329,12 +1329,16 @@ export function createSkillList({
 
 				for (const slot of shortcutRoot?.querySelectorAll('.container') || []) {
 					const rect = slot.getBoundingClientRect();
+					const insideExpandedSlot =
+						touch.clientX >= rect.left - 12 &&
+						touch.clientX <= rect.right + 12 &&
+						touch.clientY >= rect.top &&
+						touch.clientY <= rect.bottom + 24;
 					const dx = touch.clientX - (rect.left + rect.width / 2);
 					const dy = touch.clientY - (rect.top + rect.height / 2);
 					const distance = Math.hypot(dx, dy);
-					const hitRadius = Math.hypot(rect.width / 2 + 12, rect.height / 2 + 12);
 
-					if (distance <= hitRadius && distance < nearestDistance) {
+					if (insideExpandedSlot && distance < nearestDistance) {
 						dropTarget = slot;
 						nearestDistance = distance;
 					}
