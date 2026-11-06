@@ -89,8 +89,12 @@ export function createSkillList({
 		timer: null,
 		dragging: false,
 		ghost: null,
+		touchStarted: false,
+		touchId: null,
 		startX: 0,
-		startY: 0
+		startY: 0,
+		clientX: 0,
+		clientY: 0
 	};
 
 	Component.init = function init() {
@@ -244,6 +248,11 @@ export function createSkillList({
 			if (!skillEl) {
 				return;
 			}
+			if (touchDrag && _touchDrag.touchStarted) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return;
+			}
 			const index = parseInt(skillEl.getAttribute('data-index'), 10);
 			const skill = getSkillById(index);
 
@@ -291,14 +300,10 @@ export function createSkillList({
 				if (iconTarget) {
 					onSkillTouchMove(e);
 				}
-			});
+			}, { passive: false });
 
-			container.addEventListener('touchend', e => {
-				const iconTarget = e.target.closest('.skill .icon');
-				if (iconTarget) {
-					onSkillTouchEnd(e);
-				}
-			});
+			container.addEventListener('touchend', onSkillTouchEnd);
+			container.addEventListener('touchcancel', onSkillTouchCancel);
 		}
 
 		this.draggable('.titlebar');
@@ -1223,7 +1228,7 @@ export function createSkillList({
 	}
 
 	function onSkillTouchStart(event, iconEl) {
-		const touch = event.touches[0];
+		const touch = event.changedTouches[0];
 		const skillDiv = iconEl.closest('.skill');
 		const index = parseInt(skillDiv.getAttribute('data-index'), 10);
 		const skill = getSkillById(index);
@@ -1234,18 +1239,30 @@ export function createSkillList({
 
 		_touchDrag.startX = touch.pageX;
 		_touchDrag.startY = touch.pageY;
+		_touchDrag.clientX = touch.clientX;
+		_touchDrag.clientY = touch.clientY;
+		_touchDrag.touchStarted = true;
+		_touchDrag.touchId = touch.identifier;
 		_touchDrag.ghost = null;
 		_touchDrag.dragging = false;
 
 		_touchDrag.timer = setTimeout(() => {
+			_touchDrag.timer = null;
 			_touchDrag.dragging = true;
 
-			const ghost = iconEl.cloneNode(true);
+			const ghost = iconEl.querySelector('img')?.cloneNode();
+			if (!ghost) {
+				_cleanupTouchDrag();
+				return;
+			}
 			ghost.classList.add('drag-ghost');
-			ghost.style.position = 'absolute';
+			ghost.style.position = 'fixed';
 			ghost.style.zIndex = '10000';
-			ghost.style.left = `${touch.pageX - 12}px`;
-			ghost.style.top = `${touch.pageY - 12}px`;
+			ghost.style.width = '48px';
+			ghost.style.height = '48px';
+			ghost.style.objectFit = 'contain';
+			ghost.style.left = `${_touchDrag.clientX - 24}px`;
+			ghost.style.top = `${_touchDrag.clientY - 24}px`;
 			ghost.style.opacity = '0.8';
 			ghost.style.pointerEvents = 'none';
 			document.body.appendChild(ghost);
@@ -1260,17 +1277,23 @@ export function createSkillList({
 	}
 
 	function onSkillTouchMove(event) {
-		if (!_touchDrag.timer && !_touchDrag.dragging) {
+		if (_touchDrag.touchId === null || (!_touchDrag.timer && !_touchDrag.dragging)) {
 			return;
 		}
 
-		const touch = event.touches[0];
+		const touch = Array.from(event.touches).find(item => item.identifier === _touchDrag.touchId);
+		if (!touch) {
+			return;
+		}
+
+		_touchDrag.clientX = touch.clientX;
+		_touchDrag.clientY = touch.clientY;
 
 		if (_touchDrag.dragging) {
 			event.preventDefault();
 			if (_touchDrag.ghost) {
-				_touchDrag.ghost.style.left = `${touch.pageX - 12}px`;
-				_touchDrag.ghost.style.top = `${touch.pageY - 12}px`;
+				_touchDrag.ghost.style.left = `${touch.clientX - 24}px`;
+				_touchDrag.ghost.style.top = `${touch.clientY - 24}px`;
 			}
 		} else {
 			const dx = touch.pageX - _touchDrag.startX;
@@ -1283,26 +1306,36 @@ export function createSkillList({
 	}
 
 	function onSkillTouchEnd(event) {
+		if (_touchDrag.touchId === null) {
+			return;
+		}
+
+		const touch = Array.from(event.changedTouches).find(item => item.identifier === _touchDrag.touchId);
+		if (!touch) {
+			return;
+		}
+
 		if (_touchDrag.timer) {
 			clearTimeout(_touchDrag.timer);
 			_touchDrag.timer = null;
 		}
 
 		if (_touchDrag.dragging) {
-			_touchDrag.dragging = false;
+			try {
+				const shortcut = UIManager.components.ShortCut;
+				const shortcutRoot = shortcut?.getRoot();
+				const dropTarget = Array.from(shortcutRoot?.querySelectorAll('.container') || []).find(slot => {
+					const rect = slot.getBoundingClientRect();
+					return (
+						touch.clientX >= rect.left &&
+						touch.clientX <= rect.right &&
+						touch.clientY >= rect.top &&
+						touch.clientY <= rect.bottom
+					);
+				});
 
-			if (_touchDrag.ghost) {
-				_touchDrag.ghost.remove();
-				_touchDrag.ghost = null;
-			}
-
-			const touch = event.changedTouches[0];
-			const target = document.elementFromPoint(touch.clientX, touch.clientY);
-
-			if (target) {
-				const dropTarget = target.closest('.container');
 				if (dropTarget) {
-					const dropEvent = new Event('drop', { bubbles: true });
+					const dropEvent = new Event('drop', { bubbles: true, cancelable: true });
 					dropEvent.dataTransfer = {
 						getData(type) {
 							if (type === 'Text') {
@@ -1313,10 +1346,35 @@ export function createSkillList({
 					};
 					dropTarget.dispatchEvent(dropEvent);
 				}
+			} finally {
+				_cleanupTouchDrag();
 			}
-
-			delete window._OBJ_DRAG_;
+			return;
 		}
+
+		_cleanupTouchDrag();
+	}
+
+	function onSkillTouchCancel(event) {
+		if (
+			_touchDrag.touchId !== null &&
+			Array.from(event.changedTouches).some(item => item.identifier === _touchDrag.touchId)
+		) {
+			_cleanupTouchDrag();
+		}
+	}
+
+	function _cleanupTouchDrag() {
+		if (_touchDrag.timer) {
+			clearTimeout(_touchDrag.timer);
+		}
+		_touchDrag.timer = null;
+		_touchDrag.ghost?.remove();
+		_touchDrag.ghost = null;
+		_touchDrag.dragging = false;
+		_touchDrag.touchStarted = false;
+		_touchDrag.touchId = null;
+		delete window._OBJ_DRAG_;
 	}
 
 	function skillLevelSelectUp(skill, root) {
