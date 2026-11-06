@@ -47,6 +47,8 @@ import Mail from 'UI/Components/Mail/Mail.js';
 import WriteRodex from 'UI/Components/Rodex/WriteRodex.js';
 import { transferInventoryItemStack } from './InventoryItemTransfer.js';
 
+const hasTouchInput = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
+
 function _sanitizeHtml(str) {
 	const whitelist = ['font', 'i', 'b'];
 	const div = document.createElement('div');
@@ -257,6 +259,9 @@ export function createInventory(config) {
 				const item = e.target.closest('.item');
 				if (item) {
 					onItemClick.call(item, e);
+					if (hasTouchInput && !e.shiftKey) {
+						onItemInfo.call(item, e);
+					}
 				}
 			});
 		}
