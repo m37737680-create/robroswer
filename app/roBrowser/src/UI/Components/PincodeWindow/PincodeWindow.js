@@ -20,6 +20,24 @@ import 'UI/Elements/Elements.js';
  * Pincode Window namespace
  */
 const PincodeWindow = new GUIComponent('PincodeWindow', cssText);
+let _resizeHandler = null;
+
+function updateWindowPosition() {
+	if (!PincodeWindow._host) {
+		return;
+	}
+
+	const width = 540;
+	const height = 365;
+	const viewport = window.visualViewport;
+	const viewportWidth = viewport ? viewport.width : window.innerWidth;
+	const viewportHeight = viewport ? viewport.height : window.innerHeight;
+	const scale = Math.max(0.1, Math.min(1, (viewportWidth - 16) / width, (viewportHeight - 16) / height));
+	PincodeWindow._host.style.transform = `scale(${scale})`;
+	PincodeWindow._host.style.transformOrigin = 'top left';
+	PincodeWindow._host.style.left = `${Math.max(0, (viewportWidth - width * scale) / 2)}px`;
+	PincodeWindow._host.style.top = `${Math.max(0, (viewportHeight - height * scale) / 2)}px`;
+}
 
 /**
  * Render HTML
@@ -106,8 +124,7 @@ function advanceVisualSeed() {
 PincodeWindow.init = function init() {
 	const root = this.getRoot();
 
-	this._host.style.top = (Renderer.height - 358) / 2 + 'px';
-	this._host.style.left = (Renderer.width - 576) / 2 + 'px';
+	updateWindowPosition();
 
 	// Disable pass fields
 	root.querySelector('.pass').disabled = true;
@@ -186,6 +203,16 @@ PincodeWindow.init = function init() {
  * Once append to body
  */
 PincodeWindow.onAppend = function onAppend() {
+	updateWindowPosition();
+	if (_resizeHandler) {
+		window.removeEventListener('resize', _resizeHandler);
+	}
+	_resizeHandler = updateWindowPosition;
+	window.addEventListener('resize', _resizeHandler);
+	if (window.visualViewport) {
+		window.visualViewport.addEventListener('resize', _resizeHandler);
+	}
+
 	// Create modal overlay to block clicks on elements behind
 	if (!PincodeWindow._overlay) {
 		const overlay = document.createElement('div');
@@ -211,6 +238,13 @@ PincodeWindow.onAppend = function onAppend() {
  */
 PincodeWindow.onRemove = function onRemove() {
 	Renderer.stop(render);
+	if (_resizeHandler) {
+		window.removeEventListener('resize', _resizeHandler);
+		if (window.visualViewport) {
+			window.visualViewport.removeEventListener('resize', _resizeHandler);
+		}
+		_resizeHandler = null;
+	}
 
 	// Remove modal overlay
 	if (PincodeWindow._overlay) {

@@ -100,6 +100,8 @@ export function createCharSelect(config) {
 	 */
 	let _disable_UI = false;
 	let _connectPending = false;
+	let _lastSlotTap = -1;
+	let _lastSlotTapTime = 0;
 
 	/**
 	 * Grid (V4) background/countdown state
@@ -132,6 +134,31 @@ export function createCharSelect(config) {
 				const slot = root.querySelector(`#slot${i}`);
 				if (slot) {
 					slot.addEventListener('mousedown', genericCanvasDown(i));
+					slot.addEventListener('click', event => {
+						const now = Date.now();
+						if (!_slots[i]) {
+							moveCursorTo(i);
+							const isTouch =
+								event.pointerType === 'touch' ||
+								(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+							if (isTouch) {
+								create();
+								_lastSlotTap = -1;
+							}
+							return;
+						}
+
+						if (_lastSlotTap === i && now - _lastSlotTapTime < 600) {
+							moveCursorTo(i);
+							connect();
+							_lastSlotTap = -1;
+							return;
+						}
+
+						moveCursorTo(i);
+						_lastSlotTap = i;
+						_lastSlotTapTime = now;
+					});
 				}
 			}
 
@@ -218,13 +245,21 @@ export function createCharSelect(config) {
 	Component.onAppend = function onAppend() {
 		_connectPending = false;
 		_disable_UI = false;
+		_lastSlotTap = -1;
+		_lastSlotTapTime = 0;
 
 		if (gridLayout) {
 			Component.updateCharSlot();
 
 			startCountdownInterval();
 
-			// Update values
+			if (!_slots[_index]) {
+				const firstCharacterIndex = _slots.findIndex(Boolean);
+				if (firstCharacterIndex !== -1) {
+					_index = firstCharacterIndex;
+				}
+			}
+
 			moveCursorTo(_index);
 			_bgInterval = setInterval(changeBackgroundEverySecond, 250);
 			// Start rendering
@@ -557,6 +592,10 @@ export function createCharSelect(config) {
 			_entitySlots[character.CharNum].hideShadow = true;
 
 			Component.updateCharSlot(character.CharNum);
+			if (_list.length === 1 || !_slots[_index]) {
+				_index = character.CharNum;
+				moveCursorTo(_index);
+			}
 			return;
 		}
 

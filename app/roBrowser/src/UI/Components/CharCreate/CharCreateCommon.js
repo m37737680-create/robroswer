@@ -220,6 +220,9 @@ export function createCharCreate(config) {
 
 		if (hasRace) {
 			applyRaceMessages(root);
+			if (!gridHairstyle) {
+				bindJobDescriptions(root);
+			}
 		}
 	};
 
@@ -528,21 +531,77 @@ export function createCharCreate(config) {
 		if (gridHairstyle) {
 			root.querySelector('.title').textContent = DB.getMessage(3356 - 1);
 			root.querySelector('.human_title').textContent = DB.getMessage(3017 - 1);
-			root.querySelector('.human_desc').textContent = DB.getMessage(3021 - 1);
+			const humanDescription = DB.getMessage(
+				3021 - 1,
+				'Dominant race of Rune Midgard. Unlimited potential. Excellent adaptability to solve problems.'
+			);
+			root.querySelector('.human_desc').textContent = humanDescription;
+			root.querySelector('.human_desc').setAttribute('aria-label', humanDescription);
 			root.querySelector('.doram_title').textContent = DB.getMessage(3019 - 1);
-			root.querySelector('.doram_desc').textContent = DB.getMessage(3022 - 1);
+			const doramDescription = DB.getMessage(
+				3022 - 1,
+				'Race of Pasta continent with natural born curiosity and sparkie character.'
+			);
+			root.querySelector('.doram_desc').textContent = doramDescription;
+			root.querySelector('.doram_desc').setAttribute('aria-label', doramDescription);
 			root.querySelector('.hair_style_title').textContent = DB.getMessage(3347 - 1);
 			root.querySelector('.hair_color_title').textContent = DB.getMessage(3348 - 1);
 			root.querySelector('.return').textContent = DB.getMessage(3352 - 1);
 			root.querySelector('.make').textContent = DB.getMessage(3346 - 1);
 		} else {
 			root.querySelector('.race_select .human .title').textContent = DB.getMessage(3017 - 1);
-			root.querySelector('.race_select .human .desc').textContent = DB.getMessage(3021 - 1);
-			root.querySelector('.race_select .human .jobs').textContent = DB.getMessage(3018 - 1);
+			const humanDescription = DB.getMessage(
+				3021 - 1,
+				'Dominant race of Rune Midgard. Unlimited potential. Excellent adaptability to solve problems.'
+			);
+			root.querySelector('.race_select .human .desc').textContent = humanDescription;
+			root.querySelector('.race_select .human .desc').title = humanDescription;
+			root.querySelector('.race_select .human .jobs').textContent = DB.getMessage(3018 - 1, 'JOB');
+			root.querySelector('.race_select .human .jobs').title =
+				'Swordman, Mage, Archer, Acolyte, Merchant, Thief';
+			root.querySelector('.race_select .human .desc').setAttribute('aria-label', humanDescription);
 
 			root.querySelector('.race_select .doram .title').textContent = DB.getMessage(3019 - 1);
-			root.querySelector('.race_select .doram .desc').textContent = DB.getMessage(3022 - 1);
-			root.querySelector('.race_select .doram .jobs').textContent = DB.getMessage(3020 - 1);
+			const doramDescription = DB.getMessage(
+				3022 - 1,
+				'Race of Pasta continent with natural born curiosity and sparkie character.'
+			);
+			root.querySelector('.race_select .doram .desc').textContent = doramDescription;
+			root.querySelector('.race_select .doram .desc').title = doramDescription;
+			root.querySelector('.race_select .doram .jobs').textContent = DB.getMessage(3020 - 1, 'JOB');
+			root.querySelector('.race_select .doram .jobs').title = 'Summoner';
+			root.querySelector('.race_select .doram .desc').setAttribute('aria-label', doramDescription);
+		}
+	}
+
+	function bindJobDescriptions(root) {
+		const jobDetails = {
+			human: 'Swordman: melee | Mage: magic | Archer: ranged | Acolyte: support | Merchant: trade | Thief: stealth',
+			doram: 'Summoner: summons and commands nature spirits'
+		};
+
+		for (const [race, description] of Object.entries(jobDetails)) {
+			const jobs = root.querySelector(`.race_select .${race} .jobs`);
+			if (!jobs) {
+				continue;
+			}
+
+			jobs.setAttribute('role', 'button');
+			jobs.setAttribute('tabindex', '0');
+			jobs.setAttribute('aria-expanded', 'false');
+			jobs.setAttribute('aria-label', `Show ${race} job descriptions`);
+			jobs.addEventListener('click', event => {
+				event.preventDefault();
+				const expanded = jobs.classList.toggle('job-details-visible');
+				jobs.textContent = expanded ? description : DB.getMessage(race === 'human' ? 3017 : 3019, 'JOB');
+				jobs.setAttribute('aria-expanded', String(expanded));
+			});
+			jobs.addEventListener('keydown', event => {
+				if (event.key === 'Enter' || event.key === ' ') {
+					event.preventDefault();
+					jobs.click();
+				}
+			});
 		}
 	}
 
