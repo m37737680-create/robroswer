@@ -470,24 +470,11 @@ Navigation.init = function init() {
 	// Bind events
 	root.querySelector('.close').addEventListener('click', () => this.hide());
 	root.querySelector('.search-button').addEventListener('click', () => this.onSearch());
-	root.querySelector('.search-type').addEventListener('change', () => {
-		const servicesToggle = root.querySelector('.services-toggle');
-		if (servicesToggle.checked) {
-			this.loadCurrentMapNavigationResults(
-				root.querySelector('.search-type').value,
-				root.querySelector('.search-input').value.trim()
-			);
-		}
-	});
-	root.querySelector('.services-toggle').addEventListener('change', event => {
-		if (event.currentTarget.checked) {
-			this.loadCurrentMapNavigationResults(
-				root.querySelector('.search-type').value,
-				root.querySelector('.search-input').value.trim()
-			);
-		} else {
-			this.loadMapNavigationResults(getCurrentMap());
-		}
+	root.querySelector('.search-type').addEventListener('change', () => this.onSearch());
+	root.querySelector('.services-toggle').addEventListener('change', () => this.refreshServiceMarkers());
+	root.querySelector('.current-map-toggle').addEventListener('change', () => this.onSearch());
+	root.querySelector('.search-results-close').addEventListener('click', () => {
+		root.querySelector('.search-results').style.display = 'none';
 	});
 	root.querySelector('.start-navigation').addEventListener('click', event => {
 		event.stopPropagation();
@@ -523,7 +510,7 @@ Navigation.init = function init() {
 			}
 			DB.ServerNpcNavigation = navigation;
 			const searchInput = root.querySelector('.search-input');
-			if (root.querySelector('.services-toggle').checked) {
+			if (root.querySelector('.current-map-toggle').checked) {
 				this.loadCurrentMapNavigationResults(
 					root.querySelector('.search-type').value,
 					searchInput.value.trim()
@@ -548,7 +535,8 @@ Navigation.init = function init() {
 	// Focus handling for search input
 	searchInput.addEventListener('focus', () => {
 		const resultsContainer = root.querySelector('.search-results');
-		if (resultsContainer && resultsContainer.children.length > 0) {
+		const resultsContent = root.querySelector('.search-result-content');
+		if (resultsContainer && resultsContent && resultsContent.children.length > 0) {
 			resultsContainer.style.display = 'block';
 		}
 	});
@@ -636,9 +624,9 @@ Navigation.onSearch = function onSearch() {
 	const root = Navigation.getRoot();
 	const query = root.querySelector('.search-input').value.trim();
 	const type = root.querySelector('.search-type').value;
-	const servicesToggle = root.querySelector('.services-toggle');
+	const currentMapToggle = root.querySelector('.current-map-toggle');
 
-	if (servicesToggle.checked) {
+	if (currentMapToggle.checked) {
 		this.loadCurrentMapNavigationResults(type, query);
 		return;
 	}
@@ -678,43 +666,34 @@ Navigation.onSearch = function onSearch() {
 /**
  * Display search results
  */
-Navigation.displaySearchResults = function displaySearchResults(results, markerMap) {
+Navigation.displaySearchResults = function displaySearchResults(results) {
 	const root = Navigation.getRoot();
-	_markers.length = 0;
-
-	for (let i = 0; i < results.length; i++) {
-		const result = results[i];
-		if (
-			result.type === 'NPC' &&
-			result.x !== null &&
-			result.y !== null &&
-			(!markerMap || normalizeMapName(result.mapName) === normalizeMapName(markerMap))
-		) {
-			this.addMarker(result.x, result.y, 'rgb(255, 190, 0)', result.name, normalizeMapName(result.mapName));
-		}
-	}
 
 	// Get or create results container
 	let resultsContainer = root.querySelector('.search-results');
 	if (!resultsContainer) {
 		resultsContainer = document.createElement('div');
 		resultsContainer.className = 'search-results';
+		resultsContainer.innerHTML =
+			'<button class="search-results-close" type="button" aria-label="Close search results">&times;</button>' +
+			'<div class="search-result-content" role="listbox"></div>';
 		root.querySelector('.content').appendChild(resultsContainer);
-	} else {
-		resultsContainer.innerHTML = '';
 	}
+	const resultsContent = resultsContainer.querySelector('.search-result-content');
+	resultsContent.innerHTML = '';
 
 	// If no results, show a message
 	if (results.length === 0) {
-		resultsContainer.innerHTML = '<div class="no-results">No results found</div>';
+		resultsContent.innerHTML = '<div class="no-results">No results found</div>';
 		resultsContainer.style.display = '';
+		this.refreshServiceMarkers();
 		return;
 	}
 
 	// Create results list
 	const resultsList = document.createElement('ul');
 	resultsList.className = 'results-list';
-	resultsContainer.appendChild(resultsList);
+	resultsContent.appendChild(resultsList);
 
 	// Add each result to the list
 	for (let i = 0; i < results.length; i++) {
@@ -762,6 +741,7 @@ Navigation.displaySearchResults = function displaySearchResults(results, markerM
 
 	// Show the results container
 	resultsContainer.style.display = '';
+	this.refreshServiceMarkers();
 };
 
 /**
@@ -774,6 +754,7 @@ Navigation.navigateToSearchResult = function navigateToSearchResult(result) {
 
 	this.clear();
 	this.targetResult = result;
+	this.refreshServiceMarkers();
 	_isMapClickTarget = false;
 
 	const currentMap = getCurrentMap();
@@ -957,8 +938,9 @@ Navigation.loadMapNavigationResults = function loadMapNavigationResults(mapName,
 		return;
 	}
 
+	const mapOnly = this.getRoot().querySelector('.current-map-toggle').checked;
 	const results = DB.searchNavigation('', 'NPC', { includeAll: true }).filter(
-		result => normalizeMapName(result.mapName) === normalizeMapName(mapName)
+		result => !mapOnly || normalizeMapName(result.mapName) === normalizeMapName(mapName)
 	);
 	this.displaySearchResults(results);
 	if (showDropdown) {
@@ -984,9 +966,8 @@ Navigation.loadCurrentMapNavigationResults = function loadCurrentMapNavigationRe
 		return;
 	}
 
-	const currentMap = normalizeMapName(getCurrentMap());
 	const currentMapResults = getCurrentMapNavigationResults(type, query);
-	this.displaySearchResults(currentMapResults, currentMap);
+	this.displaySearchResults(currentMapResults);
 
 	const resultsContainer = this.getRoot().querySelector('.search-results');
 	if (resultsContainer) {
@@ -1028,7 +1009,7 @@ Navigation.loadAllNavigationResults = function loadAllNavigationResults(type, at
 		}
 		results = Array.from(resultsByKey.values());
 	}
-	this.displaySearchResults(results, normalizeMapName(getCurrentMap()));
+	this.displaySearchResults(results);
 	const resultsContainer = this.getRoot().querySelector('.search-results');
 	if (resultsContainer) {
 		resultsContainer.style.display = 'block';
@@ -1049,6 +1030,7 @@ Navigation.clear = function clear() {
 	_targetData = null;
 	_isMapClickTarget = false;
 	this.targetResult = null;
+	this.refreshServiceMarkers();
 	this.updateNavigationButton('hidden');
 
 	// Hide the target coordinates display
@@ -1075,6 +1057,9 @@ Navigation.clearPath = function clearPath() {
  * Add a marker to the map
  */
 Navigation.addMarker = function addMarker(x, y, color, label, map) {
+	if (x === null || x === undefined || y === null || y === undefined) {
+		return;
+	}
 	if (!Number.isFinite(Number(x)) || !Number.isFinite(Number(y))) {
 		return;
 	}
@@ -1086,6 +1071,35 @@ Navigation.addMarker = function addMarker(x, y, color, label, map) {
 		label: label || '',
 		map: map ? normalizeMapName(map) : null
 	});
+};
+
+Navigation.refreshServiceMarkers = function refreshServiceMarkers() {
+	const root = this.getRoot();
+	if (!root) {
+		return;
+	}
+
+	_markers.length = 0;
+	const currentMap = normalizeMapName(getCurrentMap());
+	if (root.querySelector('.services-toggle').checked && areNavigationTablesLoaded('NPC')) {
+		const services = DB.searchNavigation('', 'NPC', { includeAll: true });
+		for (const service of services) {
+			if (
+				service.x !== null &&
+				service.x !== undefined &&
+				service.y !== null &&
+				service.y !== undefined &&
+				normalizeMapName(service.mapName) === currentMap
+			) {
+				this.addMarker(service.x, service.y, 'rgb(255, 190, 0)', service.name, currentMap);
+			}
+		}
+	}
+
+	const selectedTarget = this.targetResult;
+	if (selectedTarget && normalizeMapName(selectedTarget.mapName) === currentMap) {
+		this.addMarker(selectedTarget.x, selectedTarget.y, 'rgb(255, 0, 0)', selectedTarget.name, currentMap);
+	}
 };
 
 /**
@@ -1148,8 +1162,9 @@ Navigation.renderCanvas = function renderCanvas(tick) {
 		return mapToScreen(x, y, width, height);
 	};
 
-	// Draw town info icons
-	if (_towninfo && _towninfo.length) {
+	// Draw town info icons when map services are enabled
+	const servicesToggle = this.getRoot().querySelector('.services-toggle');
+	if (servicesToggle && servicesToggle.checked && _towninfo && _towninfo.length) {
 		for (let i = 0; i < _towninfo.length; i++) {
 			const info = _towninfo[i];
 			const pos = mapToScreenBound(info.X, info.Y);
@@ -1683,7 +1698,6 @@ Navigation.waitForMapData = function waitForMapData(callback) {
  * Unified navigation function that handles both same-map and cross-map navigation
  */
 Navigation.navigateTo = function navigateTo(options) {
-	const root = Navigation.getRoot();
 	const startMap = normalizeMapName(options.startMap);
 	const endMap = normalizeMapName(options.endMap);
 	const displayName = options.displayName;
@@ -1711,13 +1725,6 @@ Navigation.navigateTo = function navigateTo(options) {
 		this.updateNavigationButton('calculating');
 	}
 
-	// Get warp types based on Services checkbox
-	let warpTypes = [200, 201];
-	const servicesToggle = root.querySelector('.services-toggle');
-	if (servicesToggle && servicesToggle.checked) {
-		warpTypes = [200, 201, 202, 203, 204, 205];
-	}
-
 	const path = MapPathFinder.findPathBetweenMaps(
 		startMap,
 		options.startX,
@@ -1725,7 +1732,7 @@ Navigation.navigateTo = function navigateTo(options) {
 		endMap,
 		options.endX,
 		options.endY,
-		warpTypes
+		[200, 201]
 	);
 
 	if (!path || path.length === 0) {
