@@ -79,6 +79,10 @@ const _preferences = Preferences.get(
 	1.0
 );
 
+let _lastSelectedEmoticon = null;
+let _lastEmoticonClickTime = 0;
+const DOUBLE_CLICK_DELAY = 400;
+
 /**
  * Initialize UI
  */
@@ -101,17 +105,21 @@ Emoticons.init = function init() {
 		}
 	);
 
-	// Delegated dblclick on canvas → play emoticon
-	contentEl.addEventListener('dblclick', event => {
+	contentEl.addEventListener('click', event => {
 		const canvas = event.target.closest('canvas');
 		if (!canvas) return;
-		onPlayEmoticon(canvas);
-	});
 
-	// Delegated mousedown on canvas → select emoticon
-	contentEl.addEventListener('mousedown', event => {
-		const canvas = event.target.closest('canvas');
-		if (!canvas) return;
+		const idx = canvas.getAttribute('data-index');
+		const now = Date.now();
+		if (idx === _lastSelectedEmoticon && now - _lastEmoticonClickTime <= DOUBLE_CLICK_DELAY) {
+			_lastSelectedEmoticon = null;
+			_lastEmoticonClickTime = 0;
+			onPlayEmoticon(canvas);
+			return;
+		}
+
+		_lastSelectedEmoticon = idx;
+		_lastEmoticonClickTime = now;
 		onSelectEmoticon(canvas);
 	});
 
@@ -242,10 +250,11 @@ function onSelectEmoticon(canvas) {
 	}
 
 	if (cmd) {
-		ChatBox.ui
-			.find('.input .message')
-			.html('/' + cmd)
-			.focus();
+		const input = ChatBox.getRoot().querySelector('.input-chatbox');
+		if (input) {
+			input.value = '/' + cmd;
+			input.focus();
+		}
 	}
 }
 
@@ -258,7 +267,16 @@ function onPlayEmoticon(canvas) {
 	const idx = canvas.getAttribute('data-index');
 	const cmd = EmoticonsDB.names[idx];
 
-	ChatBox.ui.find('.input .message').html('/' + cmd);
+	if (!cmd) {
+		return;
+	}
+
+	const input = ChatBox.getRoot().querySelector('.input-chatbox');
+	if (!input) {
+		return;
+	}
+
+	input.value = '/' + cmd;
 	ChatBox.submit();
 }
 

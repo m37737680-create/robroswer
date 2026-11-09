@@ -25,6 +25,7 @@ import glMatrix from 'Vendors/gl-matrix.js';
 import Camera from 'Renderer/Camera.js';
 import _KEYS from 'Controls/KeyEventHandler.js'; // Currently unused, preserved for future development
 import ChatBox from 'UI/Components/ChatBox/ChatBox.js';
+import ProcessCommand from 'Controls/ProcessCommand.js';
 
 const vec2 = glMatrix.vec2;
 const mat2 = glMatrix.mat2;
@@ -195,7 +196,12 @@ MobileUI.init = function init() {
 		stopPropagation(e);
 	});
 	bindButton(root, '#insButton', e => {
-		logKeyPress(45);
+		ProcessCommand.processCommand.call(ChatBox, 'sit');
+		stopPropagation(e);
+	});
+
+	bindButton(root, '#emoticonsButton', e => {
+		UIManager.getComponent('Emoticons').onShortCut({ cmd: 'TOGGLE' });
 		stopPropagation(e);
 	});
 
