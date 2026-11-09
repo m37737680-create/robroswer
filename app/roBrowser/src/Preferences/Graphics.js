@@ -48,6 +48,8 @@ const defaultGraphicsSettings = {
 	 */
 	damageMotion: 0,
 
+	hideCosmeticEquipment: false,
+
 	pixelPerfectSprites: false,
 
 	/**

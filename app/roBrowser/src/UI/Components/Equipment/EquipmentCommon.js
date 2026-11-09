@@ -217,6 +217,11 @@ export function createEquipment({
 		if (costumeConfig) {
 			const showCostumeBtn = root.querySelector('.show_costume');
 			if (showCostumeBtn) showCostumeBtn.addEventListener('mousedown', toggleCostume);
+			const removeEquipBtn = root.querySelector('.remove_equip');
+			if (removeEquipBtn) {
+				removeEquipBtn.addEventListener('mousedown', toggleCosmeticEquipment);
+				updateCosmeticEquipmentButton(removeEquipBtn);
+			}
 		}
 		const cartBtn = root.querySelector('.cartitems');
 		if (cartBtn) cartBtn.addEventListener('click', onCartItems);
@@ -366,6 +371,8 @@ export function createEquipment({
 					if (showEquipEl) showEquipEl.style.display = 'none';
 					const showEquipSpan = showEquipEl ? showEquipEl.nextElementSibling : null;
 					if (showEquipSpan && showEquipSpan.tagName === 'SPAN') showEquipSpan.style.display = 'none';
+					const removeEquipEl = root.querySelector('.remove_equip');
+					if (removeEquipEl) removeEquipEl.style.display = 'none';
 
 					if (currentTabId === 'costume') {
 						const costumeEl = root.querySelector('.show_costume');
@@ -383,6 +390,8 @@ export function createEquipment({
 					if (showEquipEl) showEquipEl.style.display = '';
 					const showEquipSpan = showEquipEl ? showEquipEl.nextElementSibling : null;
 					if (showEquipSpan && showEquipSpan.tagName === 'SPAN') showEquipSpan.style.display = '';
+					const removeEquipEl = root.querySelector('.remove_equip');
+					if (removeEquipEl) removeEquipEl.style.display = '';
 
 					const costumeEl = root.querySelector('.show_costume');
 					if (costumeEl) costumeEl.style.display = 'none';
@@ -665,6 +674,29 @@ export function createEquipment({
 
 	function toggleEquip() {
 		Component.onConfigUpdate(0, !_showEquip ? 1 : 0);
+	}
+
+	function toggleCosmeticEquipment() {
+		GraphicsSettings.hideCosmeticEquipment = !GraphicsSettings.hideCosmeticEquipment;
+		GraphicsSettings.save();
+		const root = Component.getRoot();
+		updateCosmeticEquipmentButton(root.querySelector('.remove_equip'));
+		Renderer.render(renderCharacter);
+	}
+
+	function updateCosmeticEquipmentButton(button) {
+		if (!button) return;
+		const hidden = GraphicsSettings.hideCosmeticEquipment;
+		button.classList.toggle('cosmetic-hidden', hidden);
+		button.setAttribute('aria-pressed', String(hidden));
+		button.setAttribute(
+			'title',
+			hidden ? 'Show headgear and robe' : 'Hide headgear and robe'
+		);
+		button.setAttribute(
+			'aria-label',
+			hidden ? 'Show headgear and robe' : 'Hide headgear and robe'
+		);
 	}
 
 	function toggleCostume() {

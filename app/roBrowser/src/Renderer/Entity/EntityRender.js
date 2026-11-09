@@ -354,6 +354,8 @@ const renderEntity = (function renderEntityClosure() {
 								StatusConst.EffectState.DRAGON4 |
 								StatusConst.EffectState.DRAGON5 |
 								StatusConst.EffectState.WUGRIDER) || self.allRidingState;
+					const hideCosmeticEquipment =
+						self.objecttype === Entity.TYPE_PC && GraphicsSettings.hideCosmeticEquipment;
 
 					function robeCorrection(lookingFront) {
 						if (self.robe > 0 && self.robeHeight && self.bodyHeight) {
@@ -403,7 +405,7 @@ const renderEntity = (function renderEntityClosure() {
 						}
 
 						// Draw Robe
-						if (self.robe > 0) {
+						if (self.robe > 0 && !hideCosmeticEquipment) {
 							SpriteRenderer.zIndex = robeCorrection(true);
 							renderElement(self, self.files.robe, 'robe', _position, true);
 						}
@@ -439,7 +441,11 @@ const renderEntity = (function renderEntityClosure() {
 					// Values*10 reference https://github.com/zhad3/zrenderer/blob/c10b337dfb9d44e33b146551191b3398630823b5/source/sprite.d#L84
 
 					// Hat Middle
-					if (self.accessory3 > 0 && self.accessory3 !== self.accessory) {
+					if (
+						!hideCosmeticEquipment &&
+						self.accessory3 > 0 &&
+						self.accessory3 !== self.accessory
+					) {
 						// accessory already rendered, avoid render same item again
 						SpriteRenderer.zIndex = bodyZOffset + 100;
 						renderElement(self, self.files.accessory3, 'head', _position, false);
@@ -447,6 +453,7 @@ const renderEntity = (function renderEntityClosure() {
 
 					// Hat Top
 					if (
+						!hideCosmeticEquipment &&
 						self.accessory2 > 0 &&
 						self.accessory2 !== self.accessory &&
 						self.accessory2 !== self.accessory3
@@ -457,7 +464,7 @@ const renderEntity = (function renderEntityClosure() {
 					}
 
 					// Hat Bottom
-					if (self.accessory > 0) {
+					if (!hideCosmeticEquipment && self.accessory > 0) {
 						SpriteRenderer.zIndex = bodyZOffset + 300;
 						renderElement(self, self.files.accessory, 'head', _position, false);
 					}
@@ -466,7 +473,7 @@ const renderEntity = (function renderEntityClosure() {
 						// looking back
 
 						// Draw Robe
-						if (self.robe > 0) {
+						if (self.robe > 0 && !hideCosmeticEquipment) {
 							SpriteRenderer.zIndex = bodyZOffset + robeCorrection(false);
 							renderElement(self, self.files.robe, 'robe', _position, true);
 						}
