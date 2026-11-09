@@ -775,6 +775,7 @@ function UpdateGeneric(type, func, fallback) {
 					} else if (type === 'robe' && !final) {
 						const fallbackPath = DB.getRobePathNoSex(val, _this.job, _this._sex);
 						if (fallbackPath) {
+							Client.loadFile(fallbackPath + '.act');
 							Client.loadFile(fallbackPath + '.spr', function () {
 								if (!isCurrentLoad()) {
 									return;
@@ -782,7 +783,7 @@ function UpdateGeneric(type, func, fallback) {
 								_this['_' + type] = _val;
 								if (!shouldSuppressHead.call(_this)) {
 									_this.files[type].spr = fallbackPath + '.spr';
-									_this.files[type].act = filepath + '.act';
+									_this.files[type].act = fallbackPath + '.act';
 								}
 							});
 						}

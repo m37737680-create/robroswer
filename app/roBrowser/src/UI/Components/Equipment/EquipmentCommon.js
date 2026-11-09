@@ -253,6 +253,18 @@ export function createEquipment({
 				if (btn) onEquipmentOut();
 			});
 		}
+		const costumeContent = root.querySelector('#costume');
+		if (costumeContent) {
+			costumeContent.addEventListener('contextmenu', e => {
+				e.preventDefault();
+				const item = e.target.closest('.item');
+				if (item) onEquipmentInfo.call(item, e);
+			});
+			costumeContent.addEventListener('dblclick', e => {
+				const item = e.target.closest('.item');
+				if (item) onEquipmentUnEquip.call(item, e);
+			});
+		}
 
 		this.draggable('.titlebar');
 
@@ -617,7 +629,8 @@ export function createEquipment({
 		for (const key in _list) {
 			const equipMask = switchEquip ? _list[key].location : _list[key].equipped;
 			if (equipMask & location) {
-				return _list[key].wItemSpriteNumber;
+				const item = _list[key];
+				return item.wItemSpriteNumber || DB.getItemInfo(item.ITID).ClassNum || 0;
 			}
 		}
 		return 0;

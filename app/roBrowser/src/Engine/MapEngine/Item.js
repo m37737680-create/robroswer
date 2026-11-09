@@ -182,6 +182,8 @@ function onItemEquip(pkt) {
 	if (pkt.result == 1) {
 		const item = Inventory.getUI().removeItem(pkt.index, 1);
 		Equipment.getUI().equip(item, pkt.wearLocation);
+		const viewid = pkt.viewid ?? item.wItemSpriteNumber ?? 0;
+		const appearanceId = pkt.viewid ?? (item.wItemSpriteNumber || DB.getItemInfo(item.ITID).ClassNum || 0);
 		ChatBox.addText(DB.getItemName(item) + ' ' + DB.getMessage(170), ChatBox.TYPE.BLUE, ChatBox.FILTER.ITEM);
 
 		// Variables for Headgear Checks
@@ -192,37 +194,37 @@ function onItemEquip(pkt) {
 
 		// Display
 		if (pkt.wearLocation & EquipLocation.HEAD_TOP) {
-			Session.Entity.accessory2 = CostumeCheckTop ? CostumeCheckTop : pkt.viewid;
+			Session.Entity.accessory2 = CostumeCheckTop ? CostumeCheckTop : appearanceId;
 		}
 		if (pkt.wearLocation & EquipLocation.HEAD_MID) {
-			Session.Entity.accessory3 = CostumeCheckMid ? CostumeCheckMid : pkt.viewid;
+			Session.Entity.accessory3 = CostumeCheckMid ? CostumeCheckMid : appearanceId;
 		}
 		if (pkt.wearLocation & EquipLocation.HEAD_BOTTOM) {
-			Session.Entity.accessory = CostumeCheckBot ? CostumeCheckBot : pkt.viewid;
+			Session.Entity.accessory = CostumeCheckBot ? CostumeCheckBot : appearanceId;
 		}
 		if (pkt.wearLocation & EquipLocation.GARMENT) {
-			Session.Entity.robe = CostumeCheckRobe ? CostumeCheckRobe : pkt.viewid;
+			Session.Entity.robe = CostumeCheckRobe ? CostumeCheckRobe : appearanceId;
 		}
 
 		if (pkt.wearLocation & EquipLocation.WEAPON) {
-			Session.Entity.weapon = pkt.viewid;
+			Session.Entity.weapon = viewid;
 		}
 		if (pkt.wearLocation & EquipLocation.SHIELD) {
-			Session.Entity.shield = pkt.viewid;
+			Session.Entity.shield = viewid;
 		}
 
 		// costume override regular equips
 		if (pkt.wearLocation & EquipLocation.COSTUME_HEAD_TOP) {
-			Session.Entity.accessory2 = pkt.viewid;
+			Session.Entity.accessory2 = appearanceId;
 		}
 		if (pkt.wearLocation & EquipLocation.COSTUME_HEAD_MID) {
-			Session.Entity.accessory3 = pkt.viewid;
+			Session.Entity.accessory3 = appearanceId;
 		}
 		if (pkt.wearLocation & EquipLocation.COSTUME_HEAD_BOTTOM) {
-			Session.Entity.accessory = pkt.viewid;
+			Session.Entity.accessory = appearanceId;
 		}
 		if (pkt.wearLocation & EquipLocation.COSTUME_ROBE) {
-			Session.Entity.robe = pkt.viewid;
+			Session.Entity.robe = appearanceId;
 		}
 	}
 

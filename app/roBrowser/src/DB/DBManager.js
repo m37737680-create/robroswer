@@ -97,6 +97,14 @@ let SkillDescription = {};
  */
 const SexTable = ['\xbf\xa9', '\xb3\xb2'];
 
+function encodeClientResourceName(name) {
+	if (!/[\u1100-\u11ff\u3130-\u318f\uac00-\ud7af]/.test(name)) {
+		return name;
+	}
+
+	return Array.from(TextEncoding.encode(name, 'windows-949'), byte => String.fromCharCode(byte)).join('');
+}
+
 /**
  * @type {Object} Pet Talk json object
  */
@@ -1459,7 +1467,8 @@ class DB {
 			return null;
 		}
 
-		return 'data/sprite/\xbe\xc7\xbc\xbc\xbb\xe7\xb8\xae/' + SexTable[sex] + '/' + SexTable[sex] + HatTable[viewId];
+		const hatName = encodeClientResourceName(HatTable[viewId]);
+		return 'data/sprite/\xbe\xc7\xbc\xbc\xbb\xe7\xb8\xae/' + SexTable[sex] + '/' + SexTable[sex] + hatName;
 	}
 
 	/**
@@ -1475,7 +1484,7 @@ class DB {
 
 		return (
 			'data/sprite/\xb7\xce\xba\xea/' +
-			RobeTable[id] +
+			encodeClientResourceName(RobeTable[id]) +
 			'/' +
 			SexTable[sex] +
 			'/' +
@@ -1495,7 +1504,8 @@ class DB {
 		if (id === 0 || !(id in RobeTable)) {
 			return null;
 		}
-		return `data/sprite/\xb7\xce\xba\xea/${RobeTable[id]}/${RobeTable[id]}${DB.isDoram(job) ? '_doram' : ''}`;
+		const robeName = encodeClientResourceName(RobeTable[id]);
+		return `data/sprite/\xb7\xce\xba\xea/${robeName}/${robeName}${DB.isDoram(job) ? '_doram' : ''}`;
 	}
 
 	/**
