@@ -108,14 +108,31 @@
 }
 
 /** Characters infos **/
+#CharSelectV4 .charinfo-panel {
+	position: relative;
+	flex: 0 0 185px;
+	width: 185px;
+	height: 585px;
+	margin: 10px 0 0 10px;
+}
+
 #CharSelectV4 .charinfo {
 	height: 585px;
 	max-height: 80vh;
 	width: 185px;
 	background-repeat: no-repeat;
-	margin-top: 10px;
-	margin-left: 10px;
+	margin: 0;
 	position: relative;
+}
+
+#CharSelectV4 .charinfo-actions {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+#CharSelectV4 .charinfo-actions .btn {
+	pointer-events: auto;
 }
 #CharSelectV4 .charinfo div {
 	position: absolute;
@@ -301,39 +318,58 @@
 		overflow-y: auto;
 	}
 
-	#CharSelectV4 .charinfo {
+	#CharSelectV4 .charinfo-panel {
+		position: relative;
+		display: flex;
 		flex: none;
-		width: 185px;
-		height: 330px;
-		max-height: none;
-		margin: 0 auto;
+		gap: 8px;
+		margin: 0;
 		box-sizing: border-box;
-		background-color: #fff;
-		border: 1px solid #b8c5e0;
-		border-radius: 6px;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+	}
+
+	#CharSelectV4 .charinfo {
+		flex: 1 1 auto;
+		min-width: 0;
+		width: auto;
+		height: 305px;
+		max-height: none;
+		margin: 0;
+		padding: 30px 10px 10px;
+		box-sizing: border-box;
+		background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(235, 242, 253, 0.98)) !important;
+		border: 1px solid #b9c9e2;
+		border-radius: 8px;
+		box-shadow: 0 3px 12px rgba(17, 35, 67, 0.22);
 	}
 
 	#CharSelectV4 .charinfo::before {
 		content: 'Character details';
 		position: absolute;
-		top: 5px;
+		top: 0;
 		left: 10px;
-		width: 160px;
-		height: 18px;
-		color: #34466b;
+		width: calc(100% - 20px);
+		height: 28px;
+		color: #24395e;
 		font-size: 13px;
 		font-weight: bold;
-		border-bottom: 1px solid #d5deef;
+		line-height: 28px;
+		border-bottom: 1px solid #cbd7e9;
 	}
 
 	#CharSelectV4 .charinfo div {
 		left: 10px;
-		width: 165px;
-		height: 15px;
-		color: #24334e;
-		font-size: 11px;
-		line-height: 15px;
+		right: 10px;
+		width: auto;
+		height: 16px;
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		border-bottom: 1px solid rgba(152, 171, 201, 0.38);
+		color: #17294b;
+		font-size: 10px;
+		font-weight: bold;
+		line-height: 16px;
+		text-align: left;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -344,7 +380,7 @@
 	}
 
 	#CharSelectV4 .charinfo .map {
-		top: 29px;
+		top: 40px;
 	}
 
 	#CharSelectV4 .charinfo .map::before {
@@ -352,7 +388,7 @@
 	}
 
 	#CharSelectV4 .charinfo .job {
-		top: 48px;
+		top: 58px;
 	}
 
 	#CharSelectV4 .charinfo .job::before {
@@ -360,7 +396,7 @@
 	}
 
 	#CharSelectV4 .charinfo .lvl {
-		top: 67px;
+		top: 76px;
 	}
 
 	#CharSelectV4 .charinfo .lvl::before {
@@ -368,7 +404,7 @@
 	}
 
 	#CharSelectV4 .charinfo .exp {
-		top: 86px;
+		top: 94px;
 	}
 
 	#CharSelectV4 .charinfo .exp::before {
@@ -376,7 +412,7 @@
 	}
 
 	#CharSelectV4 .charinfo .hp {
-		top: 105px;
+		top: 112px;
 	}
 
 	#CharSelectV4 .charinfo .hp::before {
@@ -384,7 +420,7 @@
 	}
 
 	#CharSelectV4 .charinfo .sp {
-		top: 124px;
+		top: 130px;
 	}
 
 	#CharSelectV4 .charinfo .sp::before {
@@ -392,7 +428,7 @@
 	}
 
 	#CharSelectV4 .charinfo .str {
-		top: 143px;
+		top: 148px;
 	}
 
 	#CharSelectV4 .charinfo .str::before {
@@ -400,7 +436,7 @@
 	}
 
 	#CharSelectV4 .charinfo .agi {
-		top: 162px;
+		top: 166px;
 	}
 
 	#CharSelectV4 .charinfo .agi::before {
@@ -408,7 +444,7 @@
 	}
 
 	#CharSelectV4 .charinfo .vit {
-		top: 181px;
+		top: 184px;
 	}
 
 	#CharSelectV4 .charinfo .vit::before {
@@ -416,7 +452,7 @@
 	}
 
 	#CharSelectV4 .charinfo .int {
-		top: 200px;
+		top: 202px;
 	}
 
 	#CharSelectV4 .charinfo .int::before {
@@ -424,7 +460,7 @@
 	}
 
 	#CharSelectV4 .charinfo .dex {
-		top: 219px;
+		top: 220px;
 	}
 
 	#CharSelectV4 .charinfo .dex::before {
@@ -443,30 +479,54 @@
 		display: none;
 	}
 
-	#CharSelectV4 .charinfo .ok {
-		top: 286px;
-		left: 10px;
-		right: auto;
-		width: 165px;
-		height: 26px;
-		padding: 0;
-		background-size: 100% 100%;
-		background-color: #fff;
-		border: 1px solid #9aa8c2;
-		border-radius: 4px;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
-		color: #17233c;
-		font-weight: bold;
-		line-height: 24px;
-		text-shadow: none;
+	#CharSelectV4 .charinfo-actions {
+		position: relative;
+		inset: auto;
+		display: flex;
+		flex: 0 0 138px;
+		flex-direction: column;
+		justify-content: center;
+		gap: 10px;
+		min-width: 0;
+		padding: 10px;
+		box-sizing: border-box;
+		pointer-events: auto;
+		background: rgba(255, 255, 255, 0.94);
+		border: 1px solid #c6cee7;
+		border-radius: 6px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 	}
 
-	#CharSelectV4 .charinfo .delete,
-	#CharSelectV4 .charinfo .canceldelete,
-	#CharSelectV4 .charinfo .finaldelete {
-		top: 257px;
-		left: 27px;
+	#CharSelectV4 .charinfo-actions .delete,
+	#CharSelectV4 .charinfo-actions .canceldelete,
+	#CharSelectV4 .charinfo-actions .finaldelete,
+	#CharSelectV4 .charinfo-actions .ok {
+		position: relative;
+		top: auto;
 		right: auto;
+		bottom: auto;
+		left: auto;
+		display: flex;
+		flex: 0 0 36px;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 36px;
+		padding: 0 4px;
+		box-sizing: border-box;
+		background-size: 100% 100%;
+		border: 0;
+		color: #17233c;
+		font-size: 10px;
+		font-weight: bold;
+		line-height: 1.1;
+		text-align: center;
+		text-shadow: 0 1px 1px #fff;
+	}
+
+	#CharSelectV4 .charinfo-actions .ok {
+		flex-basis: 56px;
+		height: 56px;
 	}
 
 	#CharSelectV4 .cancel {
@@ -488,31 +548,38 @@
 	#CharSelectV4 .char_list {
 		flex: 1;
 		width: 100%;
-		min-height: 140px;
-		max-height: calc(100dvh - 380px);
+		min-height: 130px;
+		max-height: calc(100dvh - 350px);
 	}
 
-	#CharSelectV4 .charinfo {
-		width: min(100%, 420px);
-		height: 330px;
-		zoom: 1;
+	#CharSelectV4 .charinfo-panel {
+		flex-direction: row;
+		align-items: stretch;
+		width: 100%;
+		max-width: 520px;
+		height: 305px;
 		align-self: center;
-		margin: 0;
-		background-image: none !important;
-		background-color: rgba(255, 255, 255, 0.98);
-		box-shadow: 0 3px 12px rgba(24, 42, 75, 0.3);
 	}
 
-	#CharSelectV4 .charinfo::before {
-		width: calc(100% - 20px);
+	#CharSelectV4 .charinfo-actions {
+		flex-basis: clamp(112px, 30vw, 150px);
 	}
 
-	#CharSelectV4 .charinfo div {
-		width: calc(100% - 20px);
+	#CharSelectV4 .charinfo-actions .delete,
+	#CharSelectV4 .charinfo-actions .canceldelete,
+	#CharSelectV4 .charinfo-actions .finaldelete {
+		flex-basis: 42px;
+		height: 42px;
+		font-size: 11px;
+	}
+
+	#CharSelectV4 .charinfo-actions .ok {
+		flex-basis: 62px;
+		height: 62px;
 	}
 }
 
-@media (max-height: 500px) and (orientation: landscape) {
+@media (max-width: 900px) and (orientation: landscape) {
 	#CharSelectV4 .char_select_container {
 		flex-direction: row;
 		align-items: center;
@@ -522,7 +589,184 @@
 		height: calc(100dvh - 32px);
 	}
 
+	#CharSelectV4 .charinfo-panel {
+		flex: 0 0 clamp(220px, 36vw, 310px);
+		height: min(88dvh, 360px);
+		flex-direction: column;
+		gap: 8px;
+		margin: 0;
+	}
+
 	#CharSelectV4 .charinfo {
-		zoom: 0.78;
+		flex: 1 1 auto;
+		width: 100%;
+		min-height: 0;
+		padding: 25px 8px 8px;
+	}
+
+	#CharSelectV4 .charinfo::before {
+		top: 0;
+		font-size: 12px;
+	}
+
+	#CharSelectV4 .charinfo div {
+		height: 14px;
+		font-size: 10px;
+		line-height: 14px;
+	}
+
+	#CharSelectV4 .charinfo .map {
+		top: 26px;
+	}
+
+	#CharSelectV4 .charinfo .job {
+		top: 41px;
+	}
+
+	#CharSelectV4 .charinfo .lvl {
+		top: 56px;
+	}
+
+	#CharSelectV4 .charinfo .exp {
+		top: 71px;
+	}
+
+	#CharSelectV4 .charinfo .hp {
+		top: 86px;
+	}
+
+	#CharSelectV4 .charinfo .sp {
+		top: 101px;
+	}
+
+	#CharSelectV4 .charinfo .str {
+		top: 116px;
+	}
+
+	#CharSelectV4 .charinfo .agi {
+		top: 131px;
+	}
+
+	#CharSelectV4 .charinfo .vit {
+		top: 146px;
+	}
+
+	#CharSelectV4 .charinfo .int {
+		top: 161px;
+	}
+
+	#CharSelectV4 .charinfo .dex {
+		top: 176px;
+	}
+
+	#CharSelectV4 .charinfo .luk {
+		top: 191px;
+	}
+
+	#CharSelectV4 .charinfo-actions {
+		position: relative;
+		inset: auto;
+		flex: 0 0 auto;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 6px;
+		padding: 7px;
+		pointer-events: auto;
+		background: rgba(255, 255, 255, 0.97);
+		border-color: #b9c9e2;
+		border-radius: 8px;
+		box-shadow: 0 3px 12px rgba(17, 35, 67, 0.22);
+	}
+
+	#CharSelectV4 .charinfo-actions .delete,
+	#CharSelectV4 .charinfo-actions .canceldelete,
+	#CharSelectV4 .charinfo-actions .finaldelete {
+		flex: 1 1 46%;
+		height: 30px;
+	}
+
+	#CharSelectV4 .charinfo-actions .ok {
+		flex: 1 1 100%;
+		height: 34px;
+	}
+}
+
+@media (max-width: 900px) and (max-height: 420px) and (orientation: landscape) {
+	#CharSelectV4 .charinfo-panel {
+		height: calc(100dvh - 36px);
+	}
+
+	#CharSelectV4 .charinfo {
+		padding-top: 22px;
+	}
+
+	#CharSelectV4 .charinfo div {
+		height: 12px;
+		font-size: 9px;
+		line-height: 12px;
+	}
+
+	#CharSelectV4 .charinfo .map {
+		top: 24px;
+	}
+
+	#CharSelectV4 .charinfo .job {
+		top: 36px;
+	}
+
+	#CharSelectV4 .charinfo .lvl {
+		top: 48px;
+	}
+
+	#CharSelectV4 .charinfo .exp {
+		top: 60px;
+	}
+
+	#CharSelectV4 .charinfo .hp {
+		top: 72px;
+	}
+
+	#CharSelectV4 .charinfo .sp {
+		top: 84px;
+	}
+
+	#CharSelectV4 .charinfo .str {
+		top: 96px;
+	}
+
+	#CharSelectV4 .charinfo .agi {
+		top: 108px;
+	}
+
+	#CharSelectV4 .charinfo .vit {
+		top: 120px;
+	}
+
+	#CharSelectV4 .charinfo .int {
+		top: 132px;
+	}
+
+	#CharSelectV4 .charinfo .dex {
+		top: 144px;
+	}
+
+	#CharSelectV4 .charinfo .luk {
+		top: 156px;
+	}
+
+	#CharSelectV4 .charinfo-actions {
+		gap: 4px;
+		padding: 4px;
+	}
+
+	#CharSelectV4 .charinfo-actions .delete,
+	#CharSelectV4 .charinfo-actions .canceldelete,
+	#CharSelectV4 .charinfo-actions .finaldelete {
+		height: 26px;
+	}
+
+	#CharSelectV4 .charinfo-actions .ok {
+		height: 28px;
 	}
 }
