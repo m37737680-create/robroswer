@@ -123,6 +123,7 @@ NpcBox.init = function init() {
 	const content = root.querySelector('.content');
 	if (content) {
 		content.addEventListener('mousedown', e => e.stopImmediatePropagation());
+		content.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
 	}
 
 	// Event delegation for item links inside shadow DOM
