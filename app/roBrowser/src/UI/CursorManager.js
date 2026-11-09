@@ -18,6 +18,7 @@ import EntityManager from 'Renderer/EntityManager.js';
 import Entity from 'Renderer/Entity/Entity.js';
 import SpriteRenderer from 'Renderer/SpriteRenderer.js';
 import Mouse from 'Controls/MouseEventHandler.js';
+import Session from 'Engine/SessionStorage.js';
 
 /**
  * @type {integer} tick
@@ -124,6 +125,11 @@ class Cursor {
 	 * Load cursor data (action, sprite)
 	 */
 	static init(fn) {
+		if (Session.isTouchDevice) {
+			fn();
+			return;
+		}
+
 		// Already loaded
 		if (_sprite) {
 			fn();
@@ -188,6 +194,14 @@ class Cursor {
 	 * Render the cursor (update)
 	 */
 	static render(tick) {
+		if (Session.isTouchDevice) {
+			if (_selector) {
+				_selector.style.display = 'none';
+			}
+			document.body.classList.remove('custom-cursor');
+			return;
+		}
+
 		if (!Graphics.cursor || !_compiledStyle.length) {
 			if (_selector) {
 				// Pre-rework it used 'hidden' css
