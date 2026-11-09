@@ -8259,7 +8259,8 @@ export default {
 			//EF_DEVIL	Death
 			type: 'STR',
 			file: 'devil',
-			attachedEntity: true
+			attachedEntity: true,
+			stopAtEnd: true
 		}
 	],
 

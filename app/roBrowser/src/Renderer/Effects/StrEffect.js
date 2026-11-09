@@ -211,6 +211,7 @@ class StrEffect {
 		this.startTick = startTick;
 		this.position = position;
 		this.texturePath = texturePath;
+		this.stopAtEnd = false;
 
 		// If can't render it, just remove it.
 		Client.loadFile(
@@ -273,6 +274,10 @@ class StrEffect {
 		if (this.persistent && strFile && strFile.maxKey) {
 			keyIndex = keyIndex % strFile.maxKey;
 		}
+		const animationEnded = keyIndex >= strFile.maxKey;
+		if (animationEnded && this.stopAtEnd) {
+			keyIndex = Math.max(0, strFile.maxKey - 1);
+		}
 
 		// Cache for blank frame handling in hat effects
 		if (!this._lastValidAnim) {
@@ -311,7 +316,7 @@ class StrEffect {
 		}
 
 		// animation ended
-		if (keyIndex >= strFile.maxKey) {
+		if (animationEnded && !this.stopAtEnd) {
 			this.needCleanUp = true;
 		}
 	}

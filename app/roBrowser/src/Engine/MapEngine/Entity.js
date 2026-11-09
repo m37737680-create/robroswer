@@ -329,6 +329,16 @@ function onEntitySpam(pkt) {
  */
 function onEntityVanish(pkt) {
 	const entity = EntityManager.get(pkt.GID);
+	if (
+		Session.isTouchDevice &&
+		!entity &&
+		Session.Entity &&
+		pkt.GID === Session.Entity.GID &&
+		pkt.type === Entity.VT.DEAD
+	) {
+		Escape.showDeathMenu(haveSiegfriedItem());
+	}
+
 	if (entity) {
 		if (entity.objecttype === Entity.TYPE_PC && pkt.GID === Session.Entity.GID) {
 			//death animation only for myself
@@ -565,6 +575,9 @@ function onEntityResurect(pkt) {
 
 	// If it's our main character update Escape ui
 	if (entity === Session.Entity) {
+		if (Session.isTouchDevice) {
+			EffectManager.remove(null, entity.GID, EffectConst.EF_DEVIL);
+		}
 		Escape.resetMenu();
 	}
 }

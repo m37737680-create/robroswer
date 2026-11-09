@@ -459,7 +459,7 @@ class Entity {
 				if (!is_falcon) {
 					this.setAction({
 						action: this.ACTION.DIE,
-						repeat: is_pc,
+						repeat: is_pc && !(Session.isTouchDevice && this === Session.Entity),
 						play: true,
 						frame: 0,
 						next: false

@@ -101,15 +101,14 @@ function spamSTR(Params) {
 	}
 
 	// Start effect
-	EffectManager.add(
-		new StrEffect(
-			'data/texture/effect/' + filename + '.str',
-			Params.Inst.position,
-			Params.Inst.startTick,
-			texturePath
-		),
-		Params
+	const effect = new StrEffect(
+		'data/texture/effect/' + filename + '.str',
+		Params.Inst.position,
+		Params.Inst.startTick,
+		texturePath
 	);
+	effect.stopAtEnd = !!Params.effect.stopAtEnd && Session.isTouchDevice;
+	EffectManager.add(effect, Params);
 }
 
 /**
