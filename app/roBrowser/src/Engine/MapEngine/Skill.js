@@ -627,10 +627,12 @@ function onUseSkill(id, level, targetID) {
 	}
 
 	// Client side minimum delay
+	/*
 	if (entity && entity.amotionTick > Renderer.tick) {
 		// Can't spam skills faster than amotion
 		return;
 	}
+	*/
 
 	const target = EntityManager.get(targetID) || entity;
 	const skill = SkillWindow.getUI().getSkillById(id);
@@ -732,10 +734,12 @@ SkillTargetSelection.onUseSkillToPos = function onUseSkillToPos(id, level, x, y)
 	}
 
 	// Client side minimum delay
+	/*
 	if (entity && entity.amotionTick > Renderer.tick) {
 		// Can't spam skills faster than amotion
 		return;
 	}
+	*/
 
 	const pos = entity.position;
 	const skill = SkillWindow.getUI().getSkillById(id);

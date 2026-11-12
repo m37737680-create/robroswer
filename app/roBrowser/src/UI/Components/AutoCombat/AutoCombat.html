@@ -1,0 +1,238 @@
+<div class="autocombat-window">
+	<!-- TITLEBAR -->
+	<div class="autocombat-titlebar">
+		<span class="autocombat-title">Auto Hunt &amp; Auto Skills</span>
+		<button class="autocombat-close" type="button" title="Chiudi">&times;</button>
+	</div>
+
+	<!-- TAB NAVIGATION HEADER -->
+	<div class="autocombat-tabs">
+		<button class="ah-tab-btn active" data-tab="default" type="button">Base</button>
+		<button class="ah-tab-btn" data-tab="monster" type="button">Monster</button>
+		<button class="ah-tab-btn" data-tab="skill" type="button">Skill (3 Pag)</button>
+		<button class="ah-tab-btn" data-tab="potion" type="button">Pozioni</button>
+		<button class="ah-tab-btn" data-tab="looting" type="button">Looting</button>
+		<button class="ah-tab-btn" data-tab="item" type="button">Item Buff</button>
+	</div>
+
+	<!-- TAB PANELS CONTAINER (470 x 308) -->
+	<div class="autocombat-body">
+
+		<!-- PANEL 1: BASE -->
+		<div class="ah-panel active" id="ah-panel-default" data-background="autohunt/setting_default/bg_default_autohunt.bmp">
+			<div class="ah-panel-content">
+				<div class="ah-row">
+					<label class="ah-checkbox-label">
+						<span class="ah-custom-checkbox opt-master" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
+						<span class="ah-label-text"><strong>Attiva Auto Combat Generale</strong></span>
+					</label>
+				</div>
+				<div class="ah-row ah-row-suboption">
+					<label class="ah-checkbox-label">
+						<span class="ah-custom-checkbox opt-attack" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
+						<span class="ah-label-text">Attacco fisico</span>
+					</label>
+				</div>
+				<div class="ah-row ah-row-suboption">
+					<label class="ah-checkbox-label">
+						<span class="ah-custom-checkbox opt-skill" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
+						<span class="ah-label-text">Auto-Skill (Uso Abilità)</span>
+					</label>
+				</div>
+				<div class="ah-row ah-row-suboption ah-row-suboption-deep">
+					<label class="ah-checkbox-label">
+						<span class="ah-custom-checkbox opt-lowsp-normal" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
+						<span class="ah-label-text">Se SP basso, usa solo attacco normale</span>
+					</label>
+					<div class="ah-field-inline">
+						<span>Soglia SP: <span class="ah-val-lowsp">15</span>%</span>
+						<input type="range" class="ah-range-lowsp" min="1" max="50" value="15">
+					</div>
+				</div>
+				<div class="ah-row">
+					<label class="ah-checkbox-label">
+						<span class="ah-custom-checkbox opt-potion" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
+						<span class="ah-label-text">Auto-Pozioni (HP/SP Recovery)</span>
+					</label>
+				</div>
+				<div class="ah-row">
+					<label class="ah-checkbox-label">
+						<span class="ah-custom-checkbox opt-buff-item" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
+						<span class="ah-label-text">Auto-Buff Items (Cibi, Scroll, Pozioni Stat)</span>
+					</label>
+				</div>
+				<div class="ah-row">
+					<label class="ah-checkbox-label">
+						<span class="ah-custom-checkbox opt-loot" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
+						<span class="ah-label-text">Auto-Looting (Raccolta Oggetti a terra)</span>
+					</label>
+				</div>
+			</div>
+		</div>
+
+		<!-- PANEL 2: MONSTER -->
+		<div class="ah-panel" id="ah-panel-monster" data-background="autohunt/setting_monster/bg_monster_autohunt.bmp">
+			<div class="ah-panel-content">
+				<div class="ah-monster-toolbar">
+					<span class="ah-section-title" style="margin: 0;">Mostri della mappa:</span>
+					<button class="ah-btn-select-all" type="button">Tutti</button>
+				</div>
+				<div class="ah-row">
+					<div class="ah-monster-scrollbox">
+						<div class="ah-monster-list-container"></div>
+					</div>
+					<small class="ah-monster-count">0 mostri disponibili</small>
+				</div>
+			</div>
+		</div>
+
+		<!-- PANEL 3: SKILL (3 PAGES) -->
+		<div class="ah-panel" id="ah-panel-skill" data-background="autohunt/setting_skill/bg_skill_autohunt.bmp">
+			<!-- Subpage selector: 1 (Atk 1-8), 2 (Atk 9-16), 3 (Buffs) -->
+			<div class="ah-subpage-nav">
+				<button class="ah-subpage-btn active" data-page="1" type="button">Skill Attacco 1-8</button>
+				<button class="ah-subpage-btn" data-page="2" type="button">Skill Attacco 9-16</button>
+				<button class="ah-subpage-btn" data-page="3" type="button">Skill Buff (Supporto)</button>
+			</div>
+
+			<div class="ah-panel-content" style="padding-top: 30px;">
+				<div class="ah-skill-hint">Pagine attacco: parti da 5s e aumenta gli intervalli delle skill successive per migliorare la rotazione. Pagina buff: 60s standard. Trascina una skill nello slot.</div>
+				<div class="ah-skill-warning" hidden>Pagina 3: solo skill buff/supporto. Le skill di attacco qui possono bloccare Auto Combat.</div>
+				<div class="ah-skill-page-view" id="ah-skill-page-view">
+					<div class="ah-slots-grid" id="ah-skill-slots-grid">
+						<!-- 8 Slots generated dynamically with skillslot_autohunt.bmp -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- PANEL 4: POTION (4 SLOTS: 2 HP, 2 SP) -->
+		<div class="ah-panel" id="ah-panel-potion" data-background="autohunt/setting_potion/bg_potion1_autohunt.bmp">
+			<div class="ah-panel-content">
+				<div class="ah-potion-section">
+					<span class="ah-section-title" style="color: #ffb0b0;">HP Recovery (2 Slot)</span>
+					<div class="ah-potion-slots-container">
+						<!-- HP Slot 1 -->
+						<div class="ah-potion-box">
+							<div class="ah-potion-header">
+								<span class="ah-potion-num">Slot 1</span>
+								<div class="ah-potion-slot-icon-bg">
+									<div class="ah-potion-slot-icon-img" data-potion-key="hpItem1"></div>
+								</div>
+							</div>
+							<select class="ah-potion-select opt-hp-item-1"><option value="0">Disattivato</option></select>
+							<div class="ah-potion-slider-wrap">
+								<span>Usa se HP &lt; <b class="ah-val-hp1">70</b>%</span>
+								<input type="range" class="ah-range-hp1" min="1" max="99" value="70">
+							</div>
+						</div>
+						<!-- HP Slot 2 (Emergenza) -->
+						<div class="ah-potion-box">
+							<div class="ah-potion-header">
+								<span class="ah-potion-num" style="color:#ff8585;">Slot 2 (Emergenza)</span>
+								<div class="ah-potion-slot-icon-bg">
+									<div class="ah-potion-slot-icon-img" data-potion-key="hpItem2"></div>
+								</div>
+							</div>
+							<select class="ah-potion-select opt-hp-item-2"><option value="0">Disattivato</option></select>
+							<div class="ah-potion-slider-wrap">
+								<span>Usa se HP &lt; <b class="ah-val-hp2">35</b>%</span>
+								<input type="range" class="ah-range-hp2" min="1" max="99" value="35">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="ah-potion-section" style="margin-top: 10px;">
+					<span class="ah-section-title" style="color: #b0d4ff;">SP Recovery (2 Slot)</span>
+					<div class="ah-potion-slots-container">
+						<!-- SP Slot 1 -->
+						<div class="ah-potion-box">
+							<div class="ah-potion-header">
+								<span class="ah-potion-num">Slot 1</span>
+								<div class="ah-potion-slot-icon-bg">
+									<div class="ah-potion-slot-icon-img" data-potion-key="spItem1"></div>
+								</div>
+							</div>
+							<select class="ah-potion-select opt-sp-item-1"><option value="0">Disattivato</option></select>
+							<div class="ah-potion-slider-wrap">
+								<span>Usa se SP &lt; <b class="ah-val-sp1">40</b>%</span>
+								<input type="range" class="ah-range-sp1" min="1" max="99" value="40">
+							</div>
+						</div>
+						<!-- SP Slot 2 (Emergenza) -->
+						<div class="ah-potion-box">
+							<div class="ah-potion-header">
+								<span class="ah-potion-num" style="color:#85b8ff;">Slot 2 (Emergenza)</span>
+								<div class="ah-potion-slot-icon-bg">
+									<div class="ah-potion-slot-icon-img" data-potion-key="spItem2"></div>
+								</div>
+							</div>
+							<select class="ah-potion-select opt-sp-item-2"><option value="0">Disattivato</option></select>
+							<div class="ah-potion-slider-wrap">
+								<span>Usa se SP &lt; <b class="ah-val-sp2">15</b>%</span>
+								<input type="range" class="ah-range-sp2" min="1" max="99" value="15">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- PANEL 5: LOOTING -->
+		<div class="ah-panel" id="ah-panel-looting" data-background="autohunt/setting_looting/bg_looting_autohunt.bmp">
+			<div class="ah-panel-content">
+				<div class="ah-row">
+					<span class="ah-section-title">Gestione Limite Peso:</span>
+					<div class="ah-field-inline">
+						<span>Interrompi raccolta se Peso &gt; <b class="ah-val-maxweight">85</b>%</span>
+						<input type="range" class="ah-range-maxweight" min="40" max="95" value="85">
+					</div>
+				</div>
+				<div class="ah-row" style="margin-top: 8px;">
+					<label class="ah-checkbox-label">
+						<span class="ah-custom-checkbox opt-return-weight" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
+						<span class="ah-label-text">Usa Farfalla / Ritorno in città quando sovraccarico</span>
+					</label>
+				</div>
+				<div class="ah-return-item-control">
+					<div class="ah-return-item-drop" title="Trascina qui la Farfalla dalla finestra inventario">
+						<div class="ah-return-item-icon-bg">
+							<div class="ah-return-item-icon"></div>
+						</div>
+						<span class="ah-return-item-name">Trascina qui la Farfalla</span>
+					</div>
+					<button class="ah-return-item-clear" type="button" title="Rimuovi la Farfalla selezionata">&times;</button>
+				</div>
+				<div class="ah-row" style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 8px;">
+					<span class="ah-section-title">Filtri Oggetti da Raccogliere:</span>
+					<div class="ah-looting-filters">
+						<label class="ah-checkbox-label">
+							<span class="ah-custom-checkbox opt-loot-equip" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
+							<span class="ah-label-text">Armi e Armature</span>
+						</label>
+						<label class="ah-checkbox-label">
+							<span class="ah-custom-checkbox opt-loot-cards" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
+							<span class="ah-label-text">Carte (Cards)</span>
+						</label>
+						<label class="ah-checkbox-label">
+							<span class="ah-custom-checkbox opt-loot-etc" data-background="autohunt/checkbox_on_autohunt.bmp"></span>
+							<span class="ah-label-text">Materiali ed Etc</span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- PANEL 6: ITEM BUFFS (8 SLOTS) -->
+		<div class="ah-panel" id="ah-panel-item" data-background="autohunt/setting_item/bg_item_autohunt.bmp">
+			<div class="ah-panel-content">
+				<div class="ah-skill-hint" style="margin-bottom: 6px;">8 slot per consumabili potenzianti; scegli il tempo manuale o attiva il calcolo automatico</div>
+				<div class="ah-item-slots-grid" id="ah-item-slots-grid">
+					<!-- 8 slots generated dynamically with itemslot_autohunt.bmp -->
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>

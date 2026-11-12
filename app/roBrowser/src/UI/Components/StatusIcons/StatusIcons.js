@@ -390,6 +390,18 @@ function rendering(tick) {
 }
 
 /**
+ * Check if a status effect is currently active on the player
+ */
+StatusIcons.hasStatus = function hasStatus(index) {
+	return !!(_status[index] && (_status[index].end === Infinity || _status[index].end > Renderer.tick));
+};
+
+StatusIcons.hasAnyStatus = function hasAnyStatus(list) {
+	if (!Array.isArray(list)) return StatusIcons.hasStatus(list);
+	return list.some(id => StatusIcons.hasStatus(id));
+};
+
+/**
  * Create component and return it
  */
 export default UIManager.addComponent(StatusIcons);
