@@ -110,6 +110,8 @@ const clanEmblems = {};
  * are stored here and replayed once onLoad() finishes via flushEntityQueue().
  */
 const _pendingEntityQueue = [];
+const _questNotifyEffects = new Map();
+const QUEST_NOTIFY_EFFECT_UID = 'quest-notify-effect';
 
 /**
  * Flag set to true while we are inside a map transition (between
@@ -128,6 +130,7 @@ export function beginMapTransition() {
 	if (!_mapTransitioning) {
 		_mapTransitioning = true;
 		_pendingEntityQueue.length = 0;
+		_questNotifyEffects.clear();
 	}
 }
 
@@ -192,6 +195,8 @@ function onEntitySpam(pkt) {
 			}
 		}
 	}
+
+	applyQuestNotifyEffectOnSpawn(entity);
 
 	if (pkt.effectState & StatusState.EffectState.FALCON && DB.isHunter(pkt.job)) {
 		if (!entity.falcon) {
@@ -1198,46 +1203,46 @@ function onEntityLifeUpdateTiny(pkt) {
  */
 function onEntityQuestNotifyEffect(pkt) {
 	const entity = EntityManager.get(pkt.npcID);
-	let color = 0;
+	const effect = Number(pkt.effect);
 
-	if (pkt.effect !== 9999) {
-		const emotionId = pkt.effect + 81;
-
-		if (entity && pkt.effect in Emotions.indexes) {
-			entity.attachments.add({
-				frame: Emotions.indexes[emotionId],
-				file: 'emotion',
-				play: true,
-				head: true,
-				repeat: true,
-				depth: 5.0
-			});
+	if (effect === 9999 || Emotions.indexes[effect + 81] === undefined) {
+		_questNotifyEffects.delete(pkt.npcID);
+		if (entity) {
+			entity.attachments.remove(QUEST_NOTIFY_EFFECT_UID);
+		}
+	} else {
+		_questNotifyEffects.set(pkt.npcID, effect);
+		if (entity) {
+			applyQuestNotifyEffect(entity, effect);
 		}
 	}
 
-	switch (pkt.color + 1) {
-		case 1:
-			// yellow
-			color = 0xffff00;
-			break;
-		case 2:
-			// orange
-			color = 0xffa500;
-			break;
-		case 3:
-			// green
-			color = 0x00e16a;
-			break;
-		case 4:
-			// purple
-			color = 0x800080;
-			break;
-		case 0:
-		default:
-			return;
+	const colors = [0xffff00, 0xffa500, 0x00e16a, 0x800080];
+	const color = colors[Number(pkt.color)];
+	if (color !== undefined) {
+		MiniMap.getUI().addNpcMark(pkt.npcID, pkt.xPos, pkt.yPos, color, Infinity);
+	} else if (Number(pkt.color) === -1) {
+		MiniMap.getUI().removeNpcMark(pkt.npcID);
 	}
+}
 
-	MiniMap.getUI().addNpcMark(pkt.npcID, pkt.xPos, pkt.yPos, color, Infinity);
+function applyQuestNotifyEffect(entity, effect) {
+	entity.attachments.add({
+		uid: QUEST_NOTIFY_EFFECT_UID,
+		frame: Emotions.indexes[effect + 81],
+		file: 'emotion',
+		play: true,
+		head: true,
+		repeat: true,
+		depth: 5.0
+	});
+}
+
+function applyQuestNotifyEffectOnSpawn(entity) {
+	const effect = _questNotifyEffects.get(entity.GID);
+	if (effect === undefined) return;
+
+	applyQuestNotifyEffect(entity, effect);
 }
 
 /**
