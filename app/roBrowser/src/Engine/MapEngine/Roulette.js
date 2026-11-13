@@ -62,7 +62,7 @@ function onOpenRoulette(pkt) {
 	// Server responded (standard rAthena implementation)
 	if (pkt.result === 0) {
 		// Append component to DOM if not already appended
-		if (!Roulette.ui) {
+		if (!Roulette.__active) {
 			Roulette.append();
 		}
 		Roulette.onOpen(pkt);
@@ -89,7 +89,7 @@ function onRouletteInfo(pkt) {
 	// }
 
 	// Append component to DOM if not already appended
-	if (!Roulette.ui) {
+	if (!Roulette.__active) {
 		Roulette.append();
 	}
 	Roulette.onRouletteInfo(pkt);
@@ -112,15 +112,10 @@ function onGenerateRoulette(pkt) {
 	//   remainBronze: number
 	// }
 
-	if (pkt.result === 0) {
-		// Append component to DOM if not already appended
-		if (!Roulette.ui) {
-			Roulette.append();
-		}
-		Roulette.onResult(pkt);
-	} else {
-		console.error('Roulette spin failed:', pkt.result);
+	if (!Roulette.__active) {
+		Roulette.append();
 	}
+	Roulette.onResult(pkt);
 }
 
 /**
@@ -151,25 +146,17 @@ function onRecvRouletteItem(pkt) {
 	//   additionItemID: number
 	// }
 
-	if (pkt.result === 0) {
-		// Item received successfully
-		if (Roulette.ui && typeof Roulette.onItemReceived === 'function') {
-			Roulette.onItemReceived(pkt);
-		}
-	} else {
-		let errorMsg = 'Failed to receive roulette item';
-		switch (pkt.result) {
-			case 1:
-				errorMsg = 'Failed to receive item';
-				break;
-			case 2:
-				errorMsg = 'Item count exceeded';
-				break;
-			case 3:
-				errorMsg = 'Overweight';
-				break;
-		}
-		console.error('[Roulette]', errorMsg);
+	if (Roulette.__active && typeof Roulette.onItemReceived === 'function') {
+		Roulette.onItemReceived(pkt);
+	}
+
+	if (pkt.result !== 0) {
+		const errors = {
+			1: 'Failed to receive item',
+			2: 'Item count exceeded',
+			3: 'Overweight'
+		};
+		console.error('[Roulette]', errors[pkt.result] || `Prize request failed (${pkt.result})`);
 	}
 }
 

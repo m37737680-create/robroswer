@@ -12,42 +12,64 @@
 
 		<div class="roulette-container">
 			<div class="roulette-wheel">
-				<div class="wheel-center"></div>
 				<div class="wheel-slots">
 					<!-- Slots will be generated dynamically -->
 				</div>
-				<div class="wheel-pointer"></div>
 			</div>
 
 			<div class="roulette-info">
 				<div class="points-display">
-					<span class="label">Points:</span>
-					<span class="points-value">0</span>
+					<span>Gold: <strong class="gold-points">0</strong></span>
+					<span>Silver: <strong class="silver-points">0</strong></span>
+					<span>Bronze: <strong class="bronze-points">0</strong></span>
 				</div>
 
 				<div class="buttons-container">
 					<button
 						class="btn-spin"
+						type="button"
+						aria-label="Start roulette"
 						data-background="basic_interface/roullette/StartRoullette_a.bmp"
 						data-hover="basic_interface/roullette/StartRoullette_b.bmp"
+						data-down="basic_interface/roullette/StartRoullette_b.bmp"
 					>
-						<span>Spin</span>
+						<span class="visually-hidden">Spin</span>
 					</button>
-					<button class="btn-info">
+					<button class="btn-info" type="button" aria-label="Roulette information" aria-expanded="false">
 						<span>Info</span>
 					</button>
 					<button
-						class="btn-close"
+						class="btn-claim"
+						type="button"
+						aria-label="Get roulette prize"
 						data-background="basic_interface/roullette/GetWinPrize_a.bmp"
 						data-hover="basic_interface/roullette/GetWinPrize_b.bmp"
+						data-down="basic_interface/roullette/GetWinPrize_b.bmp"
 					>
-						<span>Get Prize</span>
+						<span class="visually-hidden">Get Prize</span>
 					</button>
 				</div>
 
 				<div class="result-display">
-					<span class="result-label">Result:</span>
+					<span class="visually-hidden">Result</span>
 					<div class="result-item"></div>
+				</div>
+			</div>
+
+			<div class="roulette-help" role="dialog" aria-labelledby="roulette-help-title" hidden>
+				<div class="roulette-help-header">
+					<strong id="roulette-help-title">Come funziona</strong>
+					<button class="roulette-help-close" type="button" aria-label="Chiudi">×</button>
+				</div>
+				<div class="roulette-help-content">
+					<p>Premi START per avviare un giro. La valuta viene scelta automaticamente dal server:</p>
+					<ul>
+						<li>1 punto Bronzo se il saldo è maggiore di zero;</li>
+						<li>altrimenti 10 punti Argento se il saldo è almeno 10;</li>
+						<li>altrimenti 10 punti Oro se il saldo è almeno 10.</li>
+					</ul>
+					<p>Non si può selezionare manualmente una moneta: il Bronzo ha sempre la precedenza. Se non hai Bronzo, il server prova prima con Argento e poi con Oro.</p>
+					<p>Quando il giro termina, premi GET PRIZE per ritirare l'oggetto selezionato.</p>
 				</div>
 			</div>
 		</div>

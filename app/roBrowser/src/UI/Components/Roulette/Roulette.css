@@ -5,6 +5,7 @@
 
 #Roulette {
 	position: absolute;
+	inset: 0;
 	width: 100%;
 	height: 100%;
 	z-index: 50;
@@ -14,14 +15,17 @@
 	position: relative;
 	width: 100%;
 	height: 100%;
+	box-sizing: border-box;
 	background-color: #2a2a2a;
+	background-size: 100% 100%;
 	border: 2px solid #5a5a5a;
 	border-radius: 10px;
 }
 
 #Roulette .titlebar {
 	position: relative;
-	height: 30px;
+	height: 40px;
+	box-sizing: border-box;
 	background: linear-gradient(to bottom, #4a4a4a 0%, #2a2a2a 100%);
 	border-bottom: 1px solid #5a5a5a;
 	cursor: move;
@@ -54,182 +58,255 @@
 }
 
 #Roulette .roulette-container {
-	position: relative;
-	width: 100%;
-	height: calc(100% - 30px);
-	padding: 20px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+	position: absolute;
+	inset: 40px 0 0;
 }
 
 #Roulette .roulette-wheel {
-	position: relative;
-	width: 350px;
-	height: 350px;
-	margin: 0 auto 20px;
-}
-
-#Roulette .wheel-center {
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 300px;
-	height: 300px;
-	border-radius: 50%;
-	background: radial-gradient(circle, #4a4a4a 0%, #2a2a2a 100%);
-	border: 3px solid #8a8a8a;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+	left: 148px;
+	top: 50px;
+	width: 306px;
+	height: 287px;
+	pointer-events: none;
 }
 
 #Roulette .wheel-slots {
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 280px;
-	height: 280px;
-	border-radius: 50%;
-	transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
+	inset: 0;
+	display: grid;
+	grid-template-columns: repeat(9, 34px);
+	grid-auto-rows: 41px;
+	width: 306px;
+	height: 287px;
 }
 
 #Roulette .wheel-slot {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 50px;
-	height: 50px;
-	margin-left: -25px;
-	margin-top: -25px;
-	transform-origin: center;
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgba(255, 255, 255, 0.1);
-	border: 1px solid #5a5a5a;
-	border-radius: 5px;
-	transition: background-color 0.3s;
-}
-
-#Roulette .wheel-slot:hover {
-	background-color: rgba(255, 255, 255, 0.2);
+	width: 30px;
+	height: 30px;
+	margin: 0;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	transform: none;
 }
 
 #Roulette .wheel-slot .item-icon {
-	width: 40px;
-	height: 40px;
+	width: 24px;
+	height: 24px;
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
 }
 
-#Roulette .wheel-pointer {
-	position: absolute;
-	top: 10px;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 0;
-	height: 0;
-	border-left: 15px solid transparent;
-	border-right: 15px solid transparent;
-	border-top: 30px solid #ff0000;
-	z-index: 10;
-	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+#Roulette .wheel-slot.active {
+	background: rgba(91, 225, 255, 0.28);
+	box-shadow: 0 0 8px #58dff4;
+}
+
+#Roulette .wheel-slot.winner {
+	animation: roulette-winner 0.55s ease-in-out infinite alternate;
 }
 
 #Roulette .roulette-info {
-	width: 100%;
-	text-align: center;
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+#Roulette .roulette-help[hidden] {
+	display: none;
+}
+
+#Roulette .roulette-help {
+	position: absolute;
+	left: 110px;
+	top: 28px;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	width: 380px;
+	max-height: 340px;
+	border: 1px solid #58dff4;
+	border-radius: 6px;
+	background: rgba(5, 24, 34, 0.97);
+	box-shadow: 0 0 16px rgba(0, 0, 0, 0.85);
+	color: #fff;
+	font-size: 13px;
+	pointer-events: auto;
+}
+
+#Roulette .roulette-help-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 8px 10px;
+	border-bottom: 1px solid rgba(88, 223, 244, 0.55);
+	color: #ffe66b;
+}
+
+#Roulette .roulette-help-close {
+	border: 0;
+	background: transparent;
+	color: #fff;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+#Roulette .roulette-help-content {
+	overflow: auto;
+	padding: 8px 12px;
+	line-height: 1.4;
+}
+
+#Roulette .roulette-help-content p {
+	margin: 4px 0 8px;
+}
+
+#Roulette .roulette-help-content ul {
+	margin: 4px 0 8px;
+	padding-left: 22px;
 }
 
 #Roulette .points-display {
-	margin-bottom: 15px;
-	font-size: 16px;
+	position: absolute;
+	left: 490px;
+	top: 24px;
+	display: flex;
+	flex-direction: column;
+	width: 86px;
 	color: #fff;
+	font-size: 11px;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 1px 1px 2px #102431, -1px -1px 2px #102431;
 }
 
-#Roulette .points-display .label {
-	font-weight: bold;
-	margin-right: 10px;
+#Roulette .points-display span {
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	height: 78px;
+	padding-bottom: 5px;
 }
 
-#Roulette .points-display .points-value {
-	color: #ffd700;
-	font-size: 18px;
-	font-weight: bold;
+#Roulette .points-display strong {
+	margin-left: 3px;
+	color: #ffe66b;
 }
 
 #Roulette .buttons-container {
-	display: flex;
-	justify-content: center;
-	gap: 10px;
-	margin-bottom: 15px;
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
 }
 
 #Roulette .buttons-container button {
-	min-width: 80px;
-	height: 30px;
-	border: 1px solid #5a5a5a;
-	background-color: #3a3a3a;
+	position: absolute;
+	display: block;
+	box-sizing: border-box;
+	padding: 0;
+	border: 0;
+	background-color: transparent;
 	background-repeat: no-repeat;
 	background-position: center;
+	background-size: 100% 100%;
+	cursor: pointer;
+	pointer-events: auto;
+	transition:
+		filter 100ms ease,
+		transform 100ms ease;
+}
+
+#Roulette .buttons-container .btn-spin {
+	left: 319px;
+	top: 358px;
+	width: 91px;
+	height: 82px;
+}
+
+#Roulette .buttons-container .btn-claim {
+	left: 193px;
+	top: 358px;
+	width: 91px;
+	height: 82px;
+}
+
+#Roulette .buttons-container .btn-info {
+	right: 15px;
+	top: 270px;
+	width: 70px;
+	height: 24px;
+	border: 0;
+	background: transparent;
 	color: #fff;
-	border-radius: 5px;
-	transition: background-color 0.3s;
+	font-size: 11px;
+	font-weight: bold;
+	text-shadow: 1px 1px 2px #102431, -1px -1px 2px #102431;
 }
 
-#Roulette .buttons-container button:hover {
-	background-color: #4a4a4a;
+#Roulette .buttons-container button:not(:disabled):hover {
+	filter: brightness(1.15);
+	transform: scale(1.04);
+	box-shadow: 0 0 12px rgba(73, 220, 255, 0.9);
 }
 
-#Roulette .buttons-container button:active {
-	background-color: #2a2a2a;
+#Roulette .buttons-container button:not(:disabled):active {
+	filter: brightness(0.9);
+	transform: scale(0.96);
+	box-shadow: inset 0 0 12px rgba(73, 220, 255, 0.9);
 }
 
 #Roulette .buttons-container button:disabled {
-	opacity: 0.5;
+	opacity: 0.55;
+	cursor: default;
 }
 
 #Roulette .result-display {
-	min-height: 60px;
-	padding: 10px;
-	background-color: rgba(0, 0, 0, 0.3);
-	border: 1px solid #5a5a5a;
-	border-radius: 5px;
-}
-
-#Roulette .result-display .result-label {
-	display: block;
-	color: #fff;
-	font-weight: bold;
-	margin-bottom: 5px;
+	position: absolute;
+	left: 144px;
+	top: 86px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 54px;
+	height: 54px;
+	pointer-events: none;
 }
 
 #Roulette .result-display .result-item {
-	display: inline-block;
-	width: 40px;
-	height: 40px;
+	display: block;
+	width: 46px;
+	height: 46px;
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
 }
 
-#Roulette .clear {
-	clear: both;
+#Roulette .visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
 }
 
-/* Animation classes */
-#Roulette .wheel-slots.spinning {
-	animation: spin 3s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-@keyframes spin {
-	0% {
-		transform: translate(-50%, -50%) rotate(0deg);
+@keyframes roulette-winner {
+	from {
+		background: rgba(255, 223, 88, 0.3);
+		box-shadow: 0 0 6px #ffd700;
 	}
-	100% {
-		transform: translate(-50%, -50%) rotate(1800deg);
+	to {
+		background: rgba(255, 223, 88, 0.75);
+		box-shadow: 0 0 14px #fff2a1;
 	}
 }

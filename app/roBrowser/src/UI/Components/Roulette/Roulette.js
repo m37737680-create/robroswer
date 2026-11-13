@@ -43,6 +43,33 @@ const _preferences = Preferences.get(
 	1.0
 );
 
+function positionRouletteWindow() {
+	const host = Roulette._host;
+	if (!host) return;
+
+	const viewportWidth = window.visualViewport?.width || Renderer.width || window.innerWidth;
+	const viewportHeight = window.visualViewport?.height || Renderer.height || window.innerHeight;
+	const width = host.offsetWidth || 600;
+	const height = host.offsetHeight || 500;
+	const scale = Math.min(1, (viewportWidth - 16) / width, (viewportHeight - 16) / height);
+	const safeScale = Math.max(0.1, scale);
+
+	host.style.transformOrigin = 'top left';
+	host.style.transform = safeScale < 1 ? `scale(${safeScale})` : '';
+	host.style.left =
+		safeScale < 1
+			? `${Math.max(0, (viewportWidth - width * safeScale) / 2)}px`
+			: `${Math.min(Math.max(0, _preferences.x), viewportWidth - width)}px`;
+	host.style.top =
+		safeScale < 1
+			? `${Math.max(0, (viewportHeight - height * safeScale) / 2)}px`
+			: `${Math.min(Math.max(0, _preferences.y), viewportHeight - height)}px`;
+}
+
+function onRouletteViewportResize() {
+	if (Roulette._host?.style.display !== 'none') positionRouletteWindow();
+}
+
 /**
  * @var {object} Roulette data
  */
@@ -60,6 +87,11 @@ const _rouletteInfo = {
  * @var {boolean} Is spinning
  */
 let _isSpinning = false;
+let _spinRequestPending = false;
+let _receiveRequestPending = false;
+let _spinRequestTimeout = null;
+let _receiveRequestTimeout = null;
+let _spinAnimationTimeout = null;
 
 /**
  * Initialize UI
@@ -71,8 +103,8 @@ Roulette.init = function init() {
 		Roulette.onClose();
 	});
 
-	root.querySelector('.btn-close').addEventListener('click', () => {
-		Roulette.onClose();
+	root.querySelector('.btn-claim').addEventListener('click', () => {
+		Roulette.requestReceiveItem();
 	});
 
 	root.querySelector('.btn-spin').addEventListener('click', () => {
@@ -85,7 +117,16 @@ Roulette.init = function init() {
 		Roulette.onInfo();
 	});
 
+	root.querySelector('.roulette-help-close').addEventListener('click', () => {
+		const help = root.querySelector('.roulette-help');
+		const button = root.querySelector('.btn-info');
+		help.hidden = true;
+		button.setAttribute('aria-expanded', 'false');
+	});
+
 	this.draggable('.titlebar');
+	window.addEventListener('resize', onRouletteViewportResize);
+	window.visualViewport?.addEventListener('resize', onRouletteViewportResize);
 };
 
 /**
@@ -118,8 +159,7 @@ function onClickIcon() {
  * Once append to the DOM
  */
 Roulette.onAppend = function onAppend() {
-	this._host.style.top = Math.min(Math.max(0, _preferences.y), Renderer.height - this._host.offsetHeight) + 'px';
-	this._host.style.left = Math.min(Math.max(0, _preferences.x), Renderer.width - this._host.offsetWidth) + 'px';
+	positionRouletteWindow();
 
 	if (!_preferences.show) {
 		this._host.style.display = 'none';
@@ -183,6 +223,15 @@ Roulette.onRemove = function onRemove() {
 		_iconBtn.remove();
 		_iconBtn = null;
 	}
+	_isSpinning = false;
+	_spinRequestPending = false;
+	_receiveRequestPending = false;
+	clearTimeout(_spinRequestTimeout);
+	clearTimeout(_receiveRequestTimeout);
+	clearTimeout(_spinAnimationTimeout);
+	_spinRequestTimeout = null;
+	_receiveRequestTimeout = null;
+	_spinAnimationTimeout = null;
 	_preferences.show = this._host.style.display !== 'none';
 	_preferences.x = parseInt(this._host.style.left, 10);
 	_preferences.y = parseInt(this._host.style.top, 10);
@@ -202,7 +251,13 @@ Roulette.onOpen = function onOpen(pkt) {
 		_rouletteInfo.additionItemID = pkt.additionItemID || 0;
 	}
 
+	const help = this.getRoot().querySelector('.roulette-help');
+	const infoButton = this.getRoot().querySelector('.btn-info');
+	help.hidden = true;
+	infoButton.setAttribute('aria-expanded', 'false');
 	this._host.style.display = '';
+	positionRouletteWindow();
+	this.generateWheelSlots();
 	this.updateUI();
 	this.focus();
 };
@@ -221,12 +276,20 @@ Roulette.onClose = function onClose() {
  * Request to spin the roulette
  */
 Roulette.onSpin = function onSpin() {
-	if (_isSpinning) {
+	if (_isSpinning || _spinRequestPending) {
 		return;
 	}
 
+	_spinRequestPending = true;
+	this.updateUI();
 	const pkt = new PACKET.CZ.REQ_GENERATE_ROULETTE();
 	Network.sendPacket(pkt);
+	_spinRequestTimeout = setTimeout(() => {
+		_spinRequestPending = false;
+		_spinRequestTimeout = null;
+		console.error('[Roulette] No response received for the spin request.');
+		this.updateUI();
+	}, 10000);
 };
 
 /**
@@ -236,6 +299,23 @@ Roulette.onRouletteInfo = function onRouletteInfo(pkt) {
 	if (pkt && pkt.items) {
 		_rouletteInfo.items = pkt.items;
 		_rouletteInfo.serial = pkt.serial;
+		const missingItemIds = [
+			...new Set(
+				pkt.items
+					.map(getRouletteItemId)
+					.filter(
+						itemId =>
+							itemId &&
+							DB.getItemInfo(Number(itemId)).identifiedDisplayName === 'Unknown Item'
+					)
+			)
+		];
+		if (missingItemIds.length) {
+			console.warn(
+				'[Roulette] Reward item data is missing from the client database:',
+				missingItemIds
+			);
+		}
 	}
 
 	Roulette.generateWheelSlots();
@@ -245,7 +325,10 @@ Roulette.onRouletteInfo = function onRouletteInfo(pkt) {
  * Show info window
  */
 Roulette.onInfo = function onInfo() {
-	// TODO: Show information about roulette
+	const help = this.getRoot().querySelector('.roulette-help');
+	const button = this.getRoot().querySelector('.btn-info');
+	help.hidden = !help.hidden;
+	button.setAttribute('aria-expanded', String(!help.hidden));
 };
 
 /**
@@ -254,13 +337,77 @@ Roulette.onInfo = function onInfo() {
 Roulette.updateUI = function updateUI() {
 	const root = this.getRoot();
 
-	this.generateWheelSlots();
-
 	const btnSpin = root.querySelector('.btn-spin');
 	if (btnSpin) {
-		btnSpin.disabled = _isSpinning;
+		btnSpin.disabled = _isSpinning || _spinRequestPending;
 	}
+
+	root.querySelector('.gold-points').textContent = String(_rouletteInfo.goldPoint);
+	root.querySelector('.silver-points').textContent = String(_rouletteInfo.silverPoint);
+	root.querySelector('.bronze-points').textContent = String(_rouletteInfo.bronzePoint);
+
+	const btnReceive = root.querySelector('.btn-claim');
+	if (btnReceive) btnReceive.disabled = _receiveRequestPending;
 };
+
+function getRouletteItemId(item) {
+	return item?.itemId ?? item?.item_id ?? item?.ItemID ?? 0;
+}
+
+function getPyramidPosition(index, item) {
+	const row = Number(item?.row);
+	const position = Number(item?.position);
+	const hasValidPacketPosition =
+		Number.isInteger(row) &&
+		row >= 0 &&
+		row <= 6 &&
+		Number.isInteger(position) &&
+		position >= 0 &&
+		position < 9 - row;
+	if (hasValidPacketPosition) {
+		return { row: 7 - row, column: row + position + 1 };
+	}
+
+	let offset = index;
+	for (let sourceRow = 0; sourceRow < 7; sourceRow++) {
+		const rowSize = 9 - sourceRow;
+		if (offset < rowSize) {
+			return { row: 7 - sourceRow, column: sourceRow + offset + 1 };
+		}
+		offset -= rowSize;
+	}
+
+	return { row: 7, column: 1 };
+}
+
+function setRouletteItemImage(element, itemId) {
+	if (!itemId) return;
+
+	const itemInfo = DB.getItemInfo(Number(itemId));
+	const itemName =
+		itemInfo?.identifiedDisplayName || itemInfo?.unidentifiedDisplayName || `Item ${itemId}`;
+	element.title = `${itemName} (#${itemId})`;
+	const resourceName =
+		itemInfo && (itemInfo.identifiedResourceName || itemInfo.unidentifiedResourceName);
+	if (!resourceName) {
+		console.warn(`[Roulette] Missing item icon resource for item ${itemId}.`);
+		return;
+	}
+
+	const path = `${DB.INTERFACE_PATH}item/${resourceName}.bmp`;
+	Client.loadFile(
+		path,
+		data => {
+			if (!element.isConnected) return;
+			if (!data) {
+				console.error(`[Roulette] Empty icon file: ${path}`);
+				return;
+			}
+			element.style.backgroundImage = `url(${data})`;
+		},
+		error => console.error(`[Roulette] Failed to load item icon: ${path}`, error)
+	);
+}
 
 /**
  * Generate wheel slots from items
@@ -272,38 +419,32 @@ Roulette.generateWheelSlots = function generateWheelSlots() {
 		return;
 	}
 	wheelSlots.innerHTML = '';
+	wheelSlots.style.transform = '';
 
 	const items = _rouletteInfo.items || [];
 	const numSlots = items.length || 10;
 
 	for (let i = 0; i < numSlots; i++) {
-		const angle = (360 / numSlots) * i;
-		const distance = 120;
-		const radian = (angle - 90) * (Math.PI / 180);
-
-		const x = distance * Math.cos(radian);
-		const y = distance * Math.sin(radian);
-
 		const slot = document.createElement('div');
 		slot.className = 'wheel-slot';
 		slot.setAttribute('data-index', i);
-		Object.assign(slot.style, {
-			transform: `translate(${x}px, ${y}px) rotate(${angle}deg)`
-		});
-
 		if (items[i]) {
-			const itemId = items[i].itemId || items[i].item_id || items[i].ItemID;
-			if (itemId) {
-				Client.loadFile(DB.INTERFACE_PATH + `item/${itemId}.bmp`, function (data) {
-					const icon = document.createElement('div');
-					icon.className = 'item-icon';
-					icon.style.backgroundImage = `url(${data})`;
-					slot.appendChild(icon);
-				});
-			}
+			const position = getPyramidPosition(i, items[i]);
+			slot.style.gridRowStart = position.row;
+			slot.style.gridColumnStart = position.column;
+		} else {
+			const position = getPyramidPosition(i, null);
+			slot.style.gridRowStart = position.row;
+			slot.style.gridColumnStart = position.column;
 		}
 
 		wheelSlots.appendChild(slot);
+		if (items[i]) {
+			const icon = document.createElement('div');
+			icon.className = 'item-icon';
+			slot.appendChild(icon);
+			setRouletteItemImage(icon, getRouletteItemId(items[i]));
+		}
 	}
 };
 
@@ -330,22 +471,37 @@ Roulette.startSpin = function startSpin(resultIndex) {
 		}
 		return;
 	}
-	const numSlots = _rouletteInfo.items.length || 10;
-	const degreesPerSlot = 360 / numSlots;
-
-	const targetRotation = 360 * 5 + resultIndex * degreesPerSlot;
-
-	wheelSlots.style.transform = `translate(-50%, -50%) rotate(${targetRotation}deg)`;
-
-	setTimeout(() => {
+	const slots = Array.from(wheelSlots.querySelectorAll('.wheel-slot'));
+	if (!slots.length) {
 		_isSpinning = false;
-		const r = Roulette.getRoot();
-		const btn = r.querySelector('.btn-spin');
-		if (btn) {
-			btn.disabled = false;
+		if (btnSpin) btnSpin.disabled = false;
+		return;
+	}
+
+	const normalizedIndex = ((Number(resultIndex) % slots.length) + slots.length) % slots.length;
+	const startedAt = Date.now();
+	let activeIndex = 0;
+
+	const animateNextSlot = () => {
+		slots.forEach(slot => slot.classList.remove('active', 'winner'));
+		slots[activeIndex].classList.add('active');
+
+		const elapsed = Date.now() - startedAt;
+		if (elapsed >= 3000) {
+			slots.forEach(slot => slot.classList.remove('active'));
+			slots[normalizedIndex].classList.add('winner');
+			_spinAnimationTimeout = null;
+			_isSpinning = false;
+			if (btnSpin) btnSpin.disabled = false;
+			Roulette.showResult(resultIndex);
+			return;
 		}
-		Roulette.showResult(resultIndex);
-	}, 3000);
+
+		activeIndex = (activeIndex + 1) % slots.length;
+		_spinAnimationTimeout = setTimeout(animateNextSlot, 70 + (elapsed / 3000) * 280);
+	};
+
+	animateNextSlot();
 };
 
 /**
@@ -357,24 +513,25 @@ Roulette.showResult = function showResult(resultIndex) {
 	if (!resultDisplay) {
 		return;
 	}
-	resultDisplay.innerHTML = '';
+	resultDisplay.style.backgroundImage = '';
 
-	if (_rouletteInfo.items[resultIndex]) {
-		const item = _rouletteInfo.items[resultIndex];
-		const itemId = item.itemId || item.item_id || item.ItemID;
-
-		if (itemId) {
-			Client.loadFile(DB.INTERFACE_PATH + `item/${itemId}.bmp`, function (data) {
-				resultDisplay.style.backgroundImage = `url(${data})`;
-			});
-		}
-	}
+	const item = _rouletteInfo.items[Number(resultIndex)];
+	setRouletteItemImage(resultDisplay, getRouletteItemId(item));
 };
 
 /**
  * Handle roulette result from server
  */
 Roulette.onResult = function onResult(pkt) {
+	_spinRequestPending = false;
+	clearTimeout(_spinRequestTimeout);
+	_spinRequestTimeout = null;
+	if (pkt.result !== 0) {
+		console.error(`[Roulette] Spin request failed (${pkt.result}).`);
+		this.updateUI();
+		return;
+	}
+
 	if (pkt.step !== undefined) {
 		_rouletteInfo.step = pkt.step;
 	}
@@ -393,15 +550,27 @@ Roulette.onResult = function onResult(pkt) {
 		_rouletteInfo.bronzePoint = pkt.remainBronze;
 	}
 
+	this.updateUI();
 	if (pkt.idx !== undefined) {
-		Roulette.startSpin(pkt.idx);
+		const resultIndex = _rouletteInfo.items.findIndex(
+			item => Number(item.row) === Number(pkt.step) && Number(item.position) === Number(pkt.idx)
+		);
+		Roulette.startSpin(resultIndex >= 0 ? resultIndex : pkt.idx);
 	}
 };
 
 /**
  * Handle item received from server
  */
-Roulette.onItemReceived = function onItemReceived(_pkt) {
+Roulette.onItemReceived = function onItemReceived(pkt) {
+	_receiveRequestPending = false;
+	clearTimeout(_receiveRequestTimeout);
+	_receiveRequestTimeout = null;
+	if (pkt.result === 0) {
+		_rouletteInfo.additionItemID = 0;
+		const resultDisplay = this.getRoot().querySelector('.result-item');
+		if (resultDisplay) resultDisplay.style.backgroundImage = '';
+	}
 	Roulette.updateUI();
 };
 
@@ -409,9 +578,21 @@ Roulette.onItemReceived = function onItemReceived(_pkt) {
  * Request to receive the roulette item
  */
 Roulette.requestReceiveItem = function requestReceiveItem(condition) {
+	if (_receiveRequestPending) {
+		return;
+	}
+
+	_receiveRequestPending = true;
+	this.updateUI();
 	const pkt = new PACKET.CZ.RECV_ROULETTE_ITEM();
 	pkt.condition = condition || 0;
 	Network.sendPacket(pkt);
+	_receiveRequestTimeout = setTimeout(() => {
+		_receiveRequestPending = false;
+		_receiveRequestTimeout = null;
+		console.error('[Roulette] No response received for the prize request.');
+		this.updateUI();
+	}, 10000);
 };
 
 /**
