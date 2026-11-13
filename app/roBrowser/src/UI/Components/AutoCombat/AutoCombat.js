@@ -7,7 +7,7 @@
  * - HTML5 Drag & Drop from SkillList window directly onto slots
  * - Hotkey (F1-F9) and direct skill casting with range, SP, cooldown and delay handling
  * - Configurable skill intervals for attack and support rotations
- * - Safe Potion dropdowns with ITID persistence and strict HP vs SP vs Hybrid separation
+ * - Potion drag-and-drop with ITID persistence and strict HP vs SP vs Hybrid separation
  * - Selectable map monsters and independent automation toggles
  * - Auto Buff Items based on active status timers and Looting
  */
@@ -23,6 +23,7 @@ import PACKET from 'Network/PacketStructure.js';
 import Entity from 'Renderer/Entity/Entity.js';
 import EntityManager from 'Renderer/EntityManager.js';
 import MapRenderer from 'Renderer/MapRenderer.js';
+import Renderer from 'Renderer/Renderer.js';
 import ChatBox from 'UI/Components/ChatBox/ChatBox.js';
 import Inventory from 'UI/Components/Inventory/Inventory.js';
 import ShortCut from 'UI/Components/ShortCut/ShortCut.js';
@@ -39,10 +40,36 @@ import ItemTable from '../../../DB/Items/ItemTable.js';
 const component = new GUIComponent('AutoCombat', cssText);
 component.render = () => htmlText;
 
+function centerAutoCombatWindow() {
+	const host = component._host;
+	if (!host) return;
+
+	const viewportWidth = window.visualViewport?.width || window.innerWidth;
+	const viewportHeight = window.visualViewport?.height || window.innerHeight;
+	const width = host.offsetWidth || 470;
+	const height = host.offsetHeight || 361;
+	const scale = Math.min(1, (viewportWidth - 16) / width, (viewportHeight - 16) / height);
+	const safeScale = Math.max(0.1, scale);
+
+	host.style.transformOrigin = 'top left';
+	host.style.transform = safeScale < 1 ? `scale(${safeScale})` : '';
+	host.style.left = `${Math.max(0, (viewportWidth - width * safeScale) / 2)}px`;
+	host.style.top = `${Math.max(0, (viewportHeight - height * safeScale) / 2)}px`;
+}
+
+function onAutoCombatViewportResize() {
+	if (component._host?.style.display !== 'none') centerAutoCombatWindow();
+}
+
+function isGameplayReady() {
+	return Session.Playing && Session.Entity && !MapRenderer.loading && !!Renderer.canvas.parentNode;
+}
+
 const defaults = {
 	enabled: false,
 	attack: true,
 	autoSkill: true,
+	skillMovement: true,
 	autoPotion: true,
 	autoBuffItem: true,
 	loot: true,
@@ -75,12 +102,16 @@ const defaults = {
 
 	// Potions (stored by ITID!)
 	hpItem1: 0,
+	hpItem1Enabled: true,
 	hpPercent1: 70,
 	hpItem2: 0,
+	hpItem2Enabled: true,
 	hpPercent2: 35,
 	spItem1: 0,
+	spItem1Enabled: true,
 	spPercent1: 40,
 	spItem2: 0,
+	spItem2Enabled: true,
 	spPercent2: 15,
 	returnItemId: 0,
 
@@ -174,6 +205,8 @@ let lastAttackAction = 0;
 let lastSkillAction = 0;
 let lastWander = 0;
 let targetGID = 0;
+let nextAttackSkillSlot = 0;
+let nextBuffSkillSlot = 0;
 
 const buffItemLastUsed = new Map();
 const skillSlotLastUsed = new Map();
@@ -185,9 +218,15 @@ const unavailableSkillSlots = new Map();
 let previousStatusTimers = new Map();
 let pendingSkillAttempt = null;
 let skillFailureRecovery = false;
+let skillRotationOverrideUntil = 0;
 const SKILL_FAILURE_SKIP_MS = 30000;
 const SKILL_FAILURE_WINDOW_MS = 5000;
+const SKILL_STUCK_TIMEOUT_MS = 10000;
+const SKILL_MOVE_STALL_TIMEOUT_MS = 2500;
+const SKILL_STUCK_SKIP_MS = 5000;
+const SKILL_ROTATION_OVERRIDE_MS = 10000;
 const SKILL_FAILURE_HOOK_MARKER = '__autoCombatSkillFailureHook';
+const AUTO_COMBAT_SLOT_DRAG_MIME = 'application/x-autocombat-slot';
 
 const unreachableTargets = new Map();
 let trackedTargetGID = 0;
@@ -230,7 +269,8 @@ function getSkillInventorySignature() {
 function onAutoSkillFailure() {
 	const attempt = pendingSkillAttempt;
 	pendingSkillAttempt = null;
-	if (!attempt || Date.now() - attempt.at > SKILL_FAILURE_WINDOW_MS) return;
+	const attemptAt = attempt?.hadMoveAction ? attempt.lastProgressAt : attempt?.at;
+	if (!attempt || Date.now() - attemptAt > SKILL_FAILURE_WINDOW_MS) return;
 
 	skillFailureRecovery = true;
 	unavailableSkillSlots.set(attempt.slotKey, {
@@ -265,6 +305,8 @@ component.init = function init() {
 	// Window Controls
 	root.querySelector('.autocombat-close').addEventListener('click', () => close());
 	this.draggable('.autocombat-titlebar');
+	window.addEventListener('resize', onAutoCombatViewportResize);
+	window.visualViewport?.addEventListener('resize', onAutoCombatViewportResize);
 
 	// Tab switching
 	root.querySelectorAll('.ah-tab-btn').forEach(btn => {
@@ -337,6 +379,7 @@ component.init = function init() {
 	setupCheckbox(root, '.opt-master', 'enabled');
 	setupCheckbox(root, '.opt-attack', 'attack');
 	setupCheckbox(root, '.opt-skill', 'autoSkill');
+	setupCheckbox(root, '.opt-skill-movement', 'skillMovement');
 	setupCheckbox(root, '.opt-potion', 'autoPotion');
 	setupCheckbox(root, '.opt-buff-item', 'autoBuffItem');
 	setupCheckbox(root, '.opt-loot', 'loot');
@@ -348,36 +391,25 @@ component.init = function init() {
 
 	// Sliders
 	setupSlider(root, '.ah-range-lowsp', '.ah-val-lowsp', 'lowSpPercent');
-	setupSlider(root, '.ah-range-hp1', '.ah-val-hp1', 'hpPercent1');
-	setupSlider(root, '.ah-range-hp2', '.ah-val-hp2', 'hpPercent2');
-	setupSlider(root, '.ah-range-sp1', '.ah-val-sp1', 'spPercent1');
-	setupSlider(root, '.ah-range-sp2', '.ah-val-sp2', 'spPercent2');
+	setupSlider(root, '.ah-range-hp1', null, 'hpPercent1');
+	setupSlider(root, '.ah-range-hp2', null, 'hpPercent2');
+	setupSlider(root, '.ah-range-sp1', null, 'spPercent1');
+	setupSlider(root, '.ah-range-sp2', null, 'spPercent2');
 	setupSlider(root, '.ah-range-maxweight', '.ah-val-maxweight', 'maxWeightPercent');
+	setupPotionSliderVisuals(root);
+	setupPotionStepButtons(root);
+	setupPotionToggle(root, 'hpItem1Enabled');
+	setupPotionToggle(root, 'hpItem2Enabled');
+	setupPotionToggle(root, 'spItem1Enabled');
+	setupPotionToggle(root, 'spItem2Enabled');
 
 	root.querySelector('.ah-btn-select-all')?.addEventListener('click', () => toggleAllMonsters(root));
 
-	// Potions selection bindings — save on change
-	[
-		['hpItem1', '.opt-hp-item-1'],
-		['hpItem2', '.opt-hp-item-2'],
-		['spItem1', '.opt-sp-item-1'],
-		['spItem2', '.opt-sp-item-2']
-	].forEach(([key, selector]) => {
-		const sel = root.querySelector(selector);
-		if (sel) {
-			sel.addEventListener('change', e => {
-				preferences[key] = Number(e.target.value) || 0;
-				preferences.save();
-				updatePotionIcon(root, key);
-			});
-		}
-	});
-
 	// Setup potion slot drag-drop for all 4 slots
-	setupPotionSlotDrop(root, '.opt-hp-item-1', 'hpItem1');
-	setupPotionSlotDrop(root, '.opt-hp-item-2', 'hpItem2');
-	setupPotionSlotDrop(root, '.opt-sp-item-1', 'spItem1');
-	setupPotionSlotDrop(root, '.opt-sp-item-2', 'spItem2');
+	setupPotionSlotDrop(root, 'hpItem1');
+	setupPotionSlotDrop(root, 'hpItem2');
+	setupPotionSlotDrop(root, 'spItem1');
+	setupPotionSlotDrop(root, 'spItem2');
 	setupReturnItemDrop(root);
 	setupBuffItemSlotDrop(root);
 
@@ -390,6 +422,7 @@ component.onAppend = function onAppend() {
 	this._host.style.left = `${preferences.x}px`;
 	this._host.style.top = `${preferences.y}px`;
 	this._host.style.display = preferences.show ? '' : 'none';
+	if (preferences.show) centerAutoCombatWindow();
 
 	// Apply GRF Backgrounds on panels
 	setGrfBackground(root.querySelector('#ah-panel-default'), 'autohunt/setting_default/bg_default_autohunt.bmp');
@@ -398,11 +431,20 @@ component.onAppend = function onAppend() {
 	setGrfBackground(root.querySelector('#ah-panel-potion'), 'autohunt/setting_potion/bg_potion1_autohunt.bmp');
 	setGrfBackground(root.querySelector('#ah-panel-looting'), 'autohunt/setting_looting/bg_looting_autohunt.bmp');
 	setGrfBackground(root.querySelector('#ah-panel-item'), 'autohunt/setting_item/bg_item_autohunt.bmp');
+	root.querySelectorAll('.ah-potion-slot-icon-bg').forEach(icon => {
+		setGrfBackground(icon, 'autohunt/itemslot_autohunt.bmp');
+	});
 
-	addIcon();
+	if (isGameplayReady()) addIcon();
+	else removeIcon();
 	refreshMonsters(root);
 	refreshItems(root);
 	start();
+};
+
+component.onRemove = function onRemove() {
+	removeIcon();
+	stop();
 };
 
 function setupCheckbox(root, selector, prefKey, onChange) {
@@ -425,9 +467,80 @@ function setupCheckbox(root, selector, prefKey, onChange) {
 	});
 }
 
+function recordSkillAttempt(slotKey, skillId, previousMoveAction) {
+	const at = lastSkillAction;
+	const queuedMoveAction = Session.moveAction !== previousMoveAction ? Session.moveAction : null;
+	const groundSkill = !!(
+		SkillWindow.getUI()?.getSkillById?.(skillId)?.type & SkillTargetSelection.TYPE.PLACE
+	);
+	if (groundSkill || Date.now() < skillRotationOverrideUntil) {
+		skillRotationOverrideUntil = at + SKILL_ROTATION_OVERRIDE_MS;
+	}
+	skillSlotLastUsed.set(slotKey, at);
+	pendingSkillAttempt = {
+		slotKey,
+		skillId,
+		at,
+		moveAction: queuedMoveAction,
+		hadMoveAction: !!queuedMoveAction,
+		moveActionWasPending: !!queuedMoveAction,
+		lastProgressAt: at,
+		playerPosition: Session.Entity?.position
+			? { x: Session.Entity.position[0], y: Session.Entity.position[1] }
+			: null
+	};
+	skillFailureRecovery = false;
+}
+
+function isPendingSkillMoveAction() {
+	return !!pendingSkillAttempt?.moveAction && Session.moveAction === pendingSkillAttempt.moveAction;
+}
+
+function canContinueSkillRotation() {
+	return !isPlayerCasting() || skillFailureRecovery || Date.now() < skillRotationOverrideUntil;
+}
+
+function recoverStalledSkillAttempt() {
+	const attempt = pendingSkillAttempt;
+	if (!attempt) return;
+
+	const now = Date.now();
+	const queuedMove = isPendingSkillMoveAction();
+	if (attempt.moveActionWasPending && !queuedMove) {
+		attempt.moveActionWasPending = false;
+		attempt.at = now;
+		attempt.lastProgressAt = now;
+	}
+	if (
+		queuedMove &&
+		Session.Entity?.position &&
+		attempt.playerPosition &&
+		Math.hypot(
+			Session.Entity.position[0] - attempt.playerPosition.x,
+			Session.Entity.position[1] - attempt.playerPosition.y
+		) >= 1
+	) {
+		attempt.playerPosition = { x: Session.Entity.position[0], y: Session.Entity.position[1] };
+		attempt.lastProgressAt = now;
+	}
+
+	const timeout = queuedMove ? SKILL_MOVE_STALL_TIMEOUT_MS : SKILL_STUCK_TIMEOUT_MS;
+	if (now - (queuedMove ? attempt.lastProgressAt : attempt.at) < timeout) return;
+	pendingSkillAttempt = null;
+	if (!queuedMove && !isPlayerCasting()) return;
+
+	if (queuedMove) Session.moveAction = null;
+	unavailableSkillSlots.set(attempt.slotKey, {
+		skillId: attempt.skillId,
+		inventorySignature: getSkillInventorySignature(),
+		expiresAt: now + SKILL_STUCK_SKIP_MS
+	});
+	skillFailureRecovery = true;
+}
+
 function setupSlider(root, inputSelector, outputSelector, prefKey) {
 	const input = root.querySelector(inputSelector);
-	const output = root.querySelector(outputSelector);
+	const output = outputSelector ? root.querySelector(outputSelector) : null;
 	if (!input) return;
 
 	input.value = preferences[prefKey];
@@ -449,11 +562,99 @@ function getSkillPageKey() {
 	return 'skillsPage1';
 }
 
+function getAutoCombatSlotDrag(event) {
+	if (!event.dataTransfer) return null;
+	try {
+		const serialized =
+			event.dataTransfer.getData(AUTO_COMBAT_SLOT_DRAG_MIME) ||
+			event.dataTransfer.getData('text/plain') ||
+			event.dataTransfer.getData('Text');
+		const dragData = serialized ? JSON.parse(serialized) : null;
+		return dragData?.autoCombatSlot === true ? dragData : null;
+	} catch (_error) {
+		return null;
+	}
+}
+
+function hasAutoCombatSlotDrag(event) {
+	const types = event.dataTransfer?.types;
+	return Boolean(types && Array.from(types).includes(AUTO_COMBAT_SLOT_DRAG_MIME));
+}
+
+function setAutoCombatSlotDrag(event, dragData) {
+	if (!event.dataTransfer) return;
+	const serialized = JSON.stringify({ autoCombatSlot: true, ...dragData });
+	event.dataTransfer.effectAllowed = 'move';
+	event.dataTransfer.setData(AUTO_COMBAT_SLOT_DRAG_MIME, serialized);
+	event.dataTransfer.setData('text/plain', serialized);
+}
+
+function stopGameMousePropagation(element) {
+	['mousedown', 'mouseup', 'touchstart', 'touchend'].forEach(type => {
+		element.addEventListener(type, event => event.stopPropagation());
+	});
+}
+
+function createEmptySkillSlot(pageKey) {
+	return {
+		type: 'none',
+		key: 0,
+		skillId: 0,
+		level: 1,
+		interval: pageKey === 'skillsBuff' ? 60 : 5
+	};
+}
+
+function clearSkillSlot(pageKey, index, root) {
+	const slots = preferences[pageKey];
+	if (!Array.isArray(slots) || !slots[index]) return;
+
+	slots[index] = { ...slots[index], type: 'none', key: 0, skillId: 0, level: 1 };
+	preferences.save();
+	renderSkillSlots(root);
+}
+
+function moveSkillSlot(sourcePageKey, sourceIndex, targetPageKey, targetIndex, root) {
+	const validPages = ['skillsPage1', 'skillsPage2', 'skillsBuff'];
+	if (!validPages.includes(sourcePageKey) || !validPages.includes(targetPageKey)) return;
+
+	const sourceSlots = preferences[sourcePageKey];
+	const targetSlots = preferences[targetPageKey];
+	if (
+		!Array.isArray(sourceSlots) ||
+		!Array.isArray(targetSlots) ||
+		!Number.isInteger(sourceIndex) ||
+		!Number.isInteger(targetIndex) ||
+		!sourceSlots[sourceIndex] ||
+		!targetSlots[targetIndex] ||
+		(sourcePageKey === targetPageKey && sourceIndex === targetIndex)
+	) {
+		return;
+	}
+
+	const source = sourceSlots[sourceIndex];
+	const target = targetSlots[targetIndex];
+	if (!source || source.type === 'none') return;
+
+	if (target.type === 'none') {
+		targetSlots[targetIndex] = { ...source };
+		sourceSlots[sourceIndex] = createEmptySkillSlot(sourcePageKey);
+	} else {
+		sourceSlots[sourceIndex] = { ...target };
+		targetSlots[targetIndex] = { ...source };
+	}
+
+	preferences.save();
+	renderSkillSlots(root);
+}
+
 function renderSkillSlots(root) {
 	const container = root.querySelector('#ah-skill-slots-grid');
 	if (!container) return;
 	container.innerHTML = '';
 	const skillWarning = root.querySelector('.ah-skill-warning');
+	const skillHint = root.querySelector('.ah-skill-hint');
+	if (skillHint) skillHint.hidden = currentSkillPage === 3;
 	if (skillWarning) skillWarning.hidden = currentSkillPage !== 3;
 
 	const prefKey = getSkillPageKey();
@@ -484,64 +685,50 @@ function renderSkillSlots(root) {
 		const box = document.createElement('div');
 		box.className = 'ah-slot-box';
 
-		const priorityNum = (currentSkillPage - 1) * 8 + (i + 1);
-		const skillName = slot.skillId && SkillInfo[slot.skillId] ? SkillInfo[slot.skillId].SkillName : `Skill #${slot.skillId}`;
-
 		box.innerHTML = `
 			<div class="ah-slot-header">
 				<span>Slot ${i + 1}</span>
-				<span style="color:#7ab7ff;">#${priorityNum}</span>
 			</div>
 			<div class="ah-slot-icon-bg">
 				<div class="ah-slot-icon-img"></div>
 				<span class="ah-slot-lvl" style="display:none;"></span>
 			</div>
-			<select class="ah-slot-select sel-mode">
-				<option value="none">Disattivato</option>
-				<optgroup label="Hotkey Rapido">
-					${Array.from({ length: 9 }, (_, k) => `<option value="shortcut_${k}">Hotkey F${k + 1}</option>`).join('')}
-				</optgroup>
-				${slot.type === 'skill' && slot.skillId ? `<option value="skill" selected>${skillName} (Lv ${slot.level || 1})</option>` : ''}
-			</select>
 			<div class="ah-buff-timing ah-skill-timing">
-				<span>Intervallo</span>
-				<input type="number" class="ah-buff-sec ah-skill-interval" min="1" max="3600" value="${slot.interval}">
-				<span>secondi</span>
+				<input type="number" class="ah-buff-sec ah-skill-interval" min="1" max="3600" value="${slot.interval}" aria-label="Intervallo in secondi">
+				<div class="ah-skill-stepper" aria-label="Modifica intervallo">
+					<button type="button" class="ah-skill-step" data-step="1" aria-label="Aumenta intervallo">▲</button>
+					<button type="button" class="ah-skill-step" data-step="-1" aria-label="Diminuisci intervallo">▼</button>
+				</div>
 			</div>
 		`;
 
 		const iconBg = box.querySelector('.ah-slot-icon-bg');
 		const iconImg = box.querySelector('.ah-slot-icon-img');
 		const lvlBadge = box.querySelector('.ah-slot-lvl');
-		const modeSel = box.querySelector('.sel-mode');
 		const intervalInput = box.querySelector('.ah-skill-interval');
+		const stepButtons = box.querySelectorAll('.ah-skill-step');
 
+		iconBg.title = slot.type !== 'none'
+			? 'Trascina su un altro slot per spostare o fuori dal riquadro per rimuovere'
+			: 'Trascina una skill qui';
 		setGrfBackground(iconBg, 'autohunt/skillslot_autohunt.bmp');
-
-		// Initial select value
-		if (slot.type === 'shortcut') {
-			modeSel.value = `shortcut_${slot.key || 0}`;
-		} else if (slot.type === 'skill' && slot.skillId) {
-			modeSel.value = 'skill';
-		} else {
-			modeSel.value = 'none';
-		}
+		stopGameMousePropagation(iconBg);
+		iconBg.draggable = slot.type !== 'none';
+		iconBg.addEventListener('dragstart', event => {
+			if (slot.type === 'none') {
+				event.preventDefault();
+				return;
+			}
+			setAutoCombatSlotDrag(event, { kind: 'skill', pageKey: prefKey, index: i });
+			iconBg.classList.add('dragging');
+		});
+		iconBg.addEventListener('dragend', event => {
+			iconBg.classList.remove('dragging');
+			if (event.dataTransfer?.dropEffect === 'none') clearSkillSlot(prefKey, i, root);
+		});
 
 		// Update slot icon & badge
 		updateSlotDisplay(iconImg, lvlBadge, slot);
-
-		// Dropdown change handler
-		modeSel.addEventListener('change', e => {
-			const val = e.target.value;
-			if (val === 'none') {
-				preferences[prefKey][i] = { ...preferences[prefKey][i], type: 'none', key: 0, skillId: 0, level: 1 };
-			} else if (val.startsWith('shortcut_')) {
-				const scKey = Number(val.replace('shortcut_', '')) || 0;
-				preferences[prefKey][i] = { ...preferences[prefKey][i], type: 'shortcut', key: scKey, skillId: 0, level: 1 };
-			}
-			preferences.save();
-			renderSkillSlots(root);
-		});
 
 		intervalInput.addEventListener('change', () => {
 			const interval = Math.min(3600, Math.max(1, Math.round(Number(intervalInput.value) || 1)));
@@ -549,30 +736,45 @@ function renderSkillSlots(root) {
 			preferences[prefKey][i].interval = interval;
 			preferences.save();
 		});
+		stepButtons.forEach(button => {
+			stopGameMousePropagation(button);
+			button.addEventListener('click', () => {
+				const step = Number(button.dataset.step) || 0;
+				const interval = Math.min(3600, Math.max(1, Number(intervalInput.value) + step || 1));
+				intervalInput.value = String(interval);
+				intervalInput.dispatchEvent(new Event('change', { bubbles: true }));
+			});
+		});
 
 		// Right click on slot clears it
 		box.addEventListener('contextmenu', e => {
 			e.preventDefault();
-			preferences[prefKey][i] = { ...preferences[prefKey][i], type: 'none', key: 0, skillId: 0, level: 1 };
-			preferences.save();
-			renderSkillSlots(root);
+			clearSkillSlot(prefKey, i, root);
 		});
 
-		// HTML5 Drag & Drop handlers
-		box.addEventListener('dragover', e => {
+		// Only the GRF slot frame accepts drops.
+		iconBg.addEventListener('dragover', e => {
 			e.preventDefault();
-			e.dataTransfer.dropEffect = 'copy';
-			box.classList.add('drag-hover');
+			e.dataTransfer.dropEffect = hasAutoCombatSlotDrag(e) ? 'move' : 'copy';
+			iconBg.classList.add('drag-hover');
 		});
 
-		box.addEventListener('dragleave', () => {
-			box.classList.remove('drag-hover');
+		iconBg.addEventListener('dragleave', e => {
+			if (!iconBg.contains(e.relatedTarget)) iconBg.classList.remove('drag-hover');
 		});
 
-		box.addEventListener('drop', e => {
+		iconBg.addEventListener('drop', e => {
 			e.preventDefault();
 			e.stopPropagation();
-			box.classList.remove('drag-hover');
+			iconBg.classList.remove('drag-hover');
+
+			const slotDrag = getAutoCombatSlotDrag(e);
+			if (slotDrag) {
+				if (slotDrag.kind === 'skill') {
+					moveSkillSlot(slotDrag.pageKey, Number(slotDrag.index), prefKey, i, root);
+				}
+				return;
+			}
 
 			let dragData = null;
 			try {
@@ -651,10 +853,12 @@ function renderItemBuffSlots(root) {
 		...(Array.isArray(preferences.buffItems) ? preferences.buffItems[index] : {})
 	}));
 	const inventoryItems = (Inventory.getUI().list || []).filter(item => item && item.ITID && item.count > 0);
-	const inventoryList = inventoryItems.filter(isBuffConsumable);
 
 	for (let i = 0; i < 8; i++) {
 		const slot = preferences.buffItems[i];
+		const selectedItem = inventoryItems.find(item => Number(item.ITID) === Number(slot.itemId));
+		const selectedInfo = slot.itemId ? DB.getItemInfo(slot.itemId) : null;
+		const slotItemIsBuff = slot.itemId ? isBuffConsumable(selectedItem || { ITID: Number(slot.itemId) }) : false;
 		const box = document.createElement('div');
 		box.className = 'ah-slot-box';
 		box.dataset.buffItemSlot = String(i);
@@ -662,20 +866,14 @@ function renderItemBuffSlots(root) {
 		box.innerHTML = `
 			<div class="ah-slot-header">
 				<span>Buff ${i + 1}</span>
-				<span style="color:#7ab7ff;">#${i + 1}</span>
 			</div>
 			<div class="ah-slot-icon-bg">
 				<div class="ah-slot-icon-img"></div>
 			</div>
-			<select class="ah-slot-select sel-buff-item">
-				<option value="0">Disattivato</option>
-			</select>
 			<div class="ah-buff-timing">
-				<span>Ogni</span>
-				<input type="number" class="ah-buff-sec" min="5" max="3600" value="${slot.interval || 60}">
-				<span>sec</span>
+				<input type="number" class="ah-buff-sec" min="5" max="3600" value="${slot.interval || 60}" aria-label="Intervallo in secondi">
 				<label class="ah-buff-auto-label">
-					<input type="checkbox" class="ah-buff-auto">
+					<input type="checkbox" class="ah-buff-auto" aria-label="Rileva automaticamente la durata">
 					Auto
 				</label>
 			</div>
@@ -684,41 +882,36 @@ function renderItemBuffSlots(root) {
 
 		const iconBg = box.querySelector('.ah-slot-icon-bg');
 		const iconImg = box.querySelector('.ah-slot-icon-img');
-		const sel = box.querySelector('.sel-buff-item');
 		const inputSec = box.querySelector('.ah-buff-sec');
 		const autoDuration = box.querySelector('.ah-buff-auto');
 		const durationLabel = box.querySelector('.ah-buff-duration');
 
 		setGrfBackground(iconBg, 'autohunt/itemslot_autohunt.bmp');
-
-		inventoryList.forEach(item => {
-			const option = document.createElement('option');
-			option.value = String(item.ITID);
-			option.textContent = `${DB.getItemName(item)} (${item.count})`;
-			sel.appendChild(option);
+		stopGameMousePropagation(iconBg);
+		iconBg.draggable = Number(slot.itemId) > 0;
+		iconBg.addEventListener('dragstart', event => {
+			if (!(Number(preferences.buffItems[i]?.itemId) > 0)) {
+				event.preventDefault();
+				return;
+			}
+			setAutoCombatSlotDrag(event, { kind: 'buffItem', index: i });
+			iconBg.classList.add('dragging');
 		});
-		if (slot.itemId && !inventoryList.some(item => Number(item.ITID) === Number(slot.itemId))) {
-			const selectedItem = inventoryItems.find(item => Number(item.ITID) === Number(slot.itemId));
-			const option = document.createElement('option');
-			option.value = String(slot.itemId);
-			option.textContent = selectedItem
-				? `${DB.getItemName(selectedItem)} (${selectedItem.count})`
-				: `${DB.getItemInfo(slot.itemId).identifiedDisplayName || `Item #${slot.itemId}`} (non in inventario)`;
-			sel.appendChild(option);
-		}
+		iconBg.addEventListener('dragend', event => {
+			iconBg.classList.remove('dragging');
+			if (event.dataTransfer?.dropEffect === 'none') clearBuffItemSlot(i, root);
+		});
 
-		sel.value = slot.itemId || 0;
 		autoDuration.checked = !!slot.autoDuration;
 		inputSec.disabled = autoDuration.checked;
 		updateBuffItemIcon(iconImg, slot.itemId);
+		const itemName = selectedItem
+			? DB.getItemName(selectedItem)
+			: selectedInfo?.identifiedDisplayName || (slot.itemId ? `Item #${slot.itemId}` : 'Slot buff vuoto');
+		iconBg.title = !slotItemIsBuff && slot.itemId
+			? `${itemName}: non è un potenziamento. Trascina fuori dal riquadro per rimuoverlo`
+			: `${itemName}. Trascina qui un cibo o un consumabile potenziante; trascina fuori per rimuovere`;
 		updateBuffDurationLabel(slot, durationLabel);
-
-		sel.addEventListener('change', () => {
-			preferences.buffItems[i] = { ...preferences.buffItems[i], itemId: Number(sel.value) || 0 };
-			preferences.save();
-			updateBuffItemIcon(iconImg, preferences.buffItems[i].itemId);
-			updateBuffDurationLabel(preferences.buffItems[i], durationLabel);
-		});
 
 		autoDuration.addEventListener('change', () => {
 			preferences.buffItems[i] = { ...preferences.buffItems[i], autoDuration: autoDuration.checked };
@@ -738,34 +931,82 @@ function renderItemBuffSlots(root) {
 	}
 }
 
+function clearBuffItemSlot(index, root) {
+	const slot = preferences.buffItems?.[index];
+	if (!slot) return;
+
+	preferences.buffItems[index] = { ...slot, itemId: 0 };
+	preferences.save();
+	renderItemBuffSlots(root);
+}
+
+function moveBuffItemSlot(sourceIndex, targetIndex, root) {
+	const slots = preferences.buffItems;
+	if (
+		!Array.isArray(slots) ||
+		!Number.isInteger(sourceIndex) ||
+		!Number.isInteger(targetIndex) ||
+		!slots[sourceIndex]?.itemId ||
+		!slots[targetIndex] ||
+		sourceIndex === targetIndex
+	) {
+		return;
+	}
+
+	const source = { ...slots[sourceIndex] };
+	const target = { ...slots[targetIndex] };
+	if (target.itemId) {
+		slots[sourceIndex] = target;
+		slots[targetIndex] = source;
+	} else {
+		slots[targetIndex] = source;
+		slots[sourceIndex] = { itemId: 0, interval: 60, autoDuration: false };
+	}
+
+	preferences.save();
+	renderItemBuffSlots(root);
+}
+
 function setupBuffItemSlotDrop(root) {
 	const container = root.querySelector('#ah-item-slots-grid');
 	if (!container || container.dataset.dropBound) return;
 	container.dataset.dropBound = 'true';
 
 	container.addEventListener('dragover', event => {
+		const icon = event.target.closest('.ah-slot-icon-bg');
+		if (!icon || !container.contains(icon)) return;
 		const box = event.target.closest('.ah-slot-box[data-buff-item-slot]');
 		if (!box) return;
 		event.preventDefault();
-		event.dataTransfer.dropEffect = 'copy';
-		box.classList.add('drag-hover');
+		event.dataTransfer.dropEffect = hasAutoCombatSlotDrag(event) ? 'move' : 'copy';
+		icon.classList.add('drag-hover');
 	});
 
 	container.addEventListener('dragleave', event => {
-		const box = event.target.closest('.ah-slot-box[data-buff-item-slot]');
-		if (box && !box.contains(event.relatedTarget)) box.classList.remove('drag-hover');
+		const icon = event.target.closest('.ah-slot-icon-bg');
+		if (icon && !icon.contains(event.relatedTarget)) icon.classList.remove('drag-hover');
 	});
 
 	container.addEventListener('drop', event => {
+		const icon = event.target.closest('.ah-slot-icon-bg');
+		if (!icon || !container.contains(icon)) return;
 		const box = event.target.closest('.ah-slot-box[data-buff-item-slot]');
 		if (!box) return;
 		event.preventDefault();
 		event.stopPropagation();
-		box.classList.remove('drag-hover');
+		icon.classList.remove('drag-hover');
+
+		const slotDrag = getAutoCombatSlotDrag(event);
+		if (slotDrag) {
+			if (slotDrag.kind === 'buffItem') {
+				moveBuffItemSlot(Number(slotDrag.index), Number(box.dataset.buffItemSlot), root);
+			}
+			return;
+		}
 
 		const item = getDraggedItem(event);
 		const index = Number(box.dataset.buffItemSlot);
-		if (!item || !Number.isInteger(index) || !isConsumableItem(item)) return;
+		if (!item || !Number.isInteger(index) || !isBuffConsumable(item)) return;
 
 		preferences.buffItems[index] = { ...preferences.buffItems[index], itemId: item.ITID };
 		preferences.save();
@@ -775,6 +1016,13 @@ function setupBuffItemSlotDrop(root) {
 
 function updateBuffItemIcon(iconImg, itemId) {
 	if (!iconImg) return;
+	const iconBg = iconImg.closest('.ah-slot-icon-bg');
+	if (iconBg) iconBg.draggable = Number(itemId) > 0;
+	if (iconBg) {
+		iconBg.title = itemId
+			? 'Trascina su un altro slot per spostare o fuori dal riquadro per rimuovere'
+			: 'Trascina qui un cibo o un consumabile potenziante';
+	}
 	if (!itemId) {
 		iconImg.style.backgroundImage = 'none';
 		return;
@@ -808,12 +1056,14 @@ function hasBuffEffect(text) {
 }
 
 function getBuffDurationSeconds(itemId) {
-	if (!itemId) return 0;
-	if (observedBuffItemDurations.has(Number(itemId))) return observedBuffItemDurations.get(Number(itemId));
-	if (buffItemDurationCache.has(itemId)) return buffItemDurationCache.get(itemId);
+	const numericItemId = Number(itemId);
+	if (!numericItemId) return 0;
+	if (observedBuffItemDurations.has(numericItemId)) return observedBuffItemDurations.get(numericItemId);
+	if (buffItemDurationCache.has(numericItemId)) return buffItemDurationCache.get(numericItemId);
 
-	const info = DB.getItemInfo(itemId);
+	const info = DB.getItemInfo(numericItemId);
 	const description = `${info.identifiedDescriptionName || ''} ${info.unidentifiedDescriptionName || ''}`;
+	if (!description.trim()) return 0;
 	const durationPattern =
 		/(\d+(?:[.,]\d+)?)\s*(hours?|hrs?|ore?|ora|minutes?|mins?|minuto|minuti?|min|seconds?|secs?|secondo|secondi?|sec)\b/gi;
 	let durationSeconds = 0;
@@ -826,7 +1076,7 @@ function getBuffDurationSeconds(itemId) {
 		else durationSeconds += amount;
 	}
 
-	buffItemDurationCache.set(itemId, durationSeconds);
+	buffItemDurationCache.set(numericItemId, durationSeconds);
 	return durationSeconds;
 }
 
@@ -967,16 +1217,95 @@ function updateBuffDurationLabel(slot, label) {
 	} else {
 		label.textContent = 'Tempo manuale';
 	}
+	label.title = label.textContent;
 }
 
 // -------------------------------------------------------------
 // POTION SLOT ICON HELPERS
 // -------------------------------------------------------------
+function setupPotionSliderVisuals(root) {
+	[
+		['.ah-range-hp1', 'hp', 134],
+		['.ah-range-hp2', 'hp', 134],
+		['.ah-range-sp1', 'sp', 134],
+		['.ah-range-sp2', 'sp', 134],
+		['.ah-range-maxweight', 'hp', 220]
+	].forEach(([selector, resource, width]) => {
+		const input = root.querySelector(selector);
+		const fill = input?.closest('.ah-potion-slider-wrap')?.querySelector('.ah-potion-slider-fill');
+		if (!input || !fill) return;
+
+		setGrfBackground(fill, `autohunt/setting_potion/slider_gage_${resource}.bmp`);
+		fill.style.backgroundSize = `${width}px 9px`;
+		fill.style.backgroundPosition = 'left center';
+		Client.loadFile(`${DB.INTERFACE_PATH}autohunt/setting_potion/slider_thumb_${resource}.bmp`, url => {
+			input.style.setProperty('--ah-potion-thumb-image', `url("${url}")`);
+		});
+		stopGameMousePropagation(input);
+
+		const updateFill = () => {
+			const min = Number(input.min) || 0;
+			const max = Number(input.max) || 100;
+			const value = Number(input.value) || 0;
+			const progress = max > min ? Math.max(0, Math.min(1, (value - min) / (max - min))) : 0;
+			fill.style.width = `${width * progress}px`;
+		};
+		input.addEventListener('input', updateFill);
+		updateFill();
+	});
+}
+
+function setupPotionStepButtons(root) {
+	root.querySelectorAll('.ah-potion-step').forEach(button => {
+		const direction = button.classList.contains('ah-potion-step-left') ? 'l' : 'r';
+		setGrfBackground(button, `autohunt/setting_potion/chr_arrow_${direction}_out.bmp`);
+		stopGameMousePropagation(button);
+		button.addEventListener('click', event => {
+			event.preventDefault();
+			event.stopPropagation();
+			const input = button.closest('.ah-potion-box')?.querySelector('input[type="range"]');
+			if (!input) return;
+			const min = Number(input.min) || 0;
+			const max = Number(input.max) || 100;
+			const step = Number(input.step) || 1;
+			const value = Number(input.value) || 0;
+			input.value = String(Math.max(min, Math.min(max, value + Number(button.dataset.step) * step)));
+			input.dispatchEvent(new Event('input', { bubbles: true }));
+		});
+	});
+}
+
+function setupPotionToggle(root, prefKey) {
+	const toggle = root.querySelector(`[data-potion-enabled="${prefKey}"]`);
+	if (!toggle) return;
+
+	const update = () => {
+		const enabled = preferences[prefKey] !== false;
+		setGrfBackground(toggle, `autohunt/setting_potion/toggle_${enabled ? 'on' : 'off'}.bmp`);
+		toggle.setAttribute('aria-pressed', String(enabled));
+	};
+	update();
+	stopGameMousePropagation(toggle);
+	toggle.addEventListener('click', event => {
+		event.preventDefault();
+		event.stopPropagation();
+		preferences[prefKey] = preferences[prefKey] === false;
+		preferences.save();
+		update();
+	});
+}
+
 function updatePotionIcon(root, prefKey) {
-	// Try to find by data-prefkey attribute on the icon img
 	const iconImg = root.querySelector(`[data-potion-key="${prefKey}"]`);
 	if (!iconImg) return;
 	const itid = preferences[prefKey];
+	const iconBg = iconImg.closest('.ah-potion-slot-icon-bg');
+	if (iconBg) iconBg.draggable = !!itid;
+	if (iconBg) {
+		iconBg.title = itid
+			? 'Trascina su un altro slot compatibile o fuori dal riquadro per rimuovere'
+			: 'Trascina qui una pozione compatibile';
+	}
 	if (!itid) {
 		iconImg.style.backgroundImage = 'none';
 		return;
@@ -988,27 +1317,73 @@ function updatePotionIcon(root, prefKey) {
 	});
 }
 
-function setupPotionSlotDrop(root, selectSelector, prefKey) {
-	const sel = root.querySelector(selectSelector);
-	if (!sel) return;
-	const box = sel.closest('.ah-potion-box');
-	if (!box) return;
+function setupPotionSlotDrop(root, prefKey) {
+	const icon = root.querySelector(`.ah-potion-slot-icon-bg[data-potion-slot="${prefKey}"]`);
+	if (!icon) return;
 
-	box.addEventListener('dragover', e => {
-		e.preventDefault();
-		box.classList.add('drag-hover');
+	stopGameMousePropagation(icon);
+	icon.addEventListener('dragstart', event => {
+		const itemId = Number(preferences[prefKey]) || 0;
+		if (!itemId) {
+			event.preventDefault();
+			return;
+		}
+		setAutoCombatSlotDrag(event, { kind: 'potion', prefKey });
+		icon.classList.add('dragging');
 	});
-	box.addEventListener('dragleave', () => box.classList.remove('drag-hover'));
-	box.addEventListener('drop', e => {
-		e.preventDefault();
-		e.stopPropagation();
-		box.classList.remove('drag-hover');
-		const item = getDraggedItem(e);
+	icon.addEventListener('dragend', event => {
+		icon.classList.remove('dragging');
+		icon.classList.remove('drag-hover');
+		if (event.dataTransfer?.dropEffect === 'none') clearPotionSlot(prefKey, root);
+	});
+
+	icon.addEventListener('dragover', event => {
+		event.preventDefault();
+		event.dataTransfer.dropEffect = hasAutoCombatSlotDrag(event) ? 'move' : 'copy';
+		icon.classList.add('drag-hover');
+	});
+	icon.addEventListener('dragleave', event => {
+		if (!icon.contains(event.relatedTarget)) icon.classList.remove('drag-hover');
+	});
+	icon.addEventListener('drop', event => {
+		event.preventDefault();
+		event.stopPropagation();
+		icon.classList.remove('drag-hover');
+
+		const slotDrag = getAutoCombatSlotDrag(event);
+		if (slotDrag) {
+			if (slotDrag.kind === 'potion') movePotionSlot(slotDrag.prefKey, prefKey, root);
+			return;
+		}
+
+		const item = getDraggedItem(event);
 		if (!item || !isPotionCompatible(item, prefKey)) return;
 		preferences[prefKey] = item.ITID;
 		preferences.save();
 		refreshItems(root);
 	});
+}
+
+function clearPotionSlot(prefKey, root) {
+	if (!['hpItem1', 'hpItem2', 'spItem1', 'spItem2'].includes(prefKey)) return;
+	preferences[prefKey] = 0;
+	preferences.save();
+	refreshItems(root);
+}
+
+function movePotionSlot(sourceKey, targetKey, root) {
+	const validKeys = ['hpItem1', 'hpItem2', 'spItem1', 'spItem2'];
+	if (!validKeys.includes(sourceKey) || !validKeys.includes(targetKey) || sourceKey === targetKey) return;
+
+	const sourceItemId = Number(preferences[sourceKey]) || 0;
+	const targetItemId = Number(preferences[targetKey]) || 0;
+	if (!sourceItemId || !isPotionCompatible({ ITID: sourceItemId }, targetKey)) return;
+	if (targetItemId && !isPotionCompatible({ ITID: targetItemId }, sourceKey)) return;
+
+	preferences[sourceKey] = targetItemId;
+	preferences[targetKey] = sourceItemId;
+	preferences.save();
+	refreshItems(root);
 }
 
 function isPotionCompatible(item, prefKey) {
@@ -1343,57 +1718,8 @@ function isHpOnlyItem(item, name) {
 }
 
 function refreshItems(root) {
-	const inventoryList = (Inventory.getUI().list || []).filter(item => {
-		return item && item.ITID && Number(item.count) > 0;
-	});
-
-	// Separate HP items vs SP items strictly
-	const hpItems = inventoryList.filter(item => {
-		const name = getHealingName(item);
-		return isHybridItem(item, name) || isHpOnlyItem(item, name);
-	});
-
-	const spItems = inventoryList.filter(item => {
-		const name = getHealingName(item);
-		return isHybridItem(item, name) || isSpOnlyItem(item, name);
-	});
-
-	const populateSelect = (selector, prefKey, items) => {
-		const sel = root.querySelector(selector);
-		if (!sel) return;
-		const currentVal = Number(preferences[prefKey]) || 0;
-		sel.innerHTML = '<option value="0">Disattivato</option>';
-		items.forEach(item => {
-			const opt = document.createElement('option');
-			opt.value = String(item.ITID);
-			opt.textContent = `${DB.getItemName(item)} (${item.count})`;
-			if (Number(item.ITID) === currentVal) opt.selected = true;
-			sel.appendChild(opt);
-		});
-		// Se il valore salvato non è nella lista (item non in inventario), mostra comunque il nome
-		if (currentVal > 0 && !items.find(it => Number(it.ITID) === currentVal)) {
-			const opt = document.createElement('option');
-			opt.value = String(currentVal);
-			const info = DB.getItemInfo(currentVal);
-			opt.textContent = `${info?.identifiedDisplayName || 'Item #' + currentVal} (non in inv.)`;
-			opt.selected = true;
-			sel.appendChild(opt);
-		}
-	};
-
-	populateSelect('.opt-hp-item-1', 'hpItem1', hpItems);
-	populateSelect('.opt-hp-item-2', 'hpItem2', hpItems);
-	populateSelect('.opt-sp-item-1', 'spItem1', spItems);
-	populateSelect('.opt-sp-item-2', 'spItem2', spItems);
-
-	// Update potion slot icons
 	['hpItem1', 'hpItem2', 'spItem1', 'spItem2'].forEach(key => {
 		updatePotionIcon(root, key);
-	});
-
-	// Update icon bg for each potion slot
-	root.querySelectorAll('.ah-potion-slot-icon-bg').forEach(bg => {
-		setGrfBackground(bg, 'autohunt/itemslot_autohunt.bmp');
 	});
 }
 
@@ -1436,7 +1762,6 @@ function castSkillOnTarget(skillId, level, targetEntity) {
 	const skRange =
 		skill?.attackRange || (info?.AttackRange && (info.AttackRange[level - 1] || info.AttackRange[0])) || 2;
 	if (
-		!(targetType & SkillTargetSelection.TYPE.PLACE) &&
 		targetEntity &&
 		targetEntity !== Session.Entity &&
 		targetEntity.position
@@ -1446,7 +1771,7 @@ function castSkillOnTarget(skillId, level, targetEntity) {
 			targetEntity.position[1] - Session.Entity.position[1]
 		);
 		if (dist > skRange + 1) {
-			moveToTarget(targetEntity);
+			if (preferences.skillMovement) moveToTarget(targetEntity);
 			return false;
 		}
 	}
@@ -1475,12 +1800,25 @@ function castSkillOnTarget(skillId, level, targetEntity) {
 		) {
 			return false;
 		}
-		SkillTargetSelection.onUseSkillToPos(
-			skillId,
-			level,
-			Math.round(targetEntity.position[0]),
-			Math.round(targetEntity.position[1])
-		);
+		const x = Math.round(targetEntity.position[0]);
+		const y = Math.round(targetEntity.position[1]);
+		if (preferences.skillMovement) {
+			SkillTargetSelection.onUseSkillToPos(skillId, level, x, y);
+		} else {
+			const pkt =
+				PACKETVER.value >= 20190904
+					? new PACKET.CZ.USE_SKILL_TOGROUND3()
+					: PACKETVER.value >= 20180307
+						? new PACKET.CZ.USE_SKILL_TOGROUND2()
+						: new PACKET.CZ.USE_SKILL_TOGROUND();
+			pkt.SKID = skillId;
+			pkt.selectedLevel = level;
+			pkt.xPos = x;
+			pkt.yPos = y;
+			Session.Entity.lastSKID = skillId;
+			Session.Entity.lastSkLvl = level;
+			Network.sendPacket(pkt);
+		}
 	} else if (targetType & SkillTargetSelection.TYPE.SELF && !(targetType & SkillTargetSelection.TYPE.TARGET)) {
 		return false;
 	} else { // Single target skill on monster
@@ -1553,13 +1891,28 @@ function useSkillOnTarget(slot, targetEntity, slotKey) {
 	if (!skillId) return false;
 	if (isSkillSlotUnavailable(slotKey, skillId)) return false;
 	const lastCast = lastSkillAction;
+	const previousMoveAction = Session.moveAction;
 	const result = castSkillOnTarget(skillId, level, targetEntity);
 	if (lastSkillAction !== lastCast) {
-		skillSlotLastUsed.set(slotKey, lastSkillAction);
-		pendingSkillAttempt = { slotKey, skillId, at: lastSkillAction };
-		skillFailureRecovery = false;
+		recordSkillAttempt(slotKey, skillId, previousMoveAction);
 	}
 	return result;
+}
+
+function useNextAttackSkill(targetEntity) {
+	const pages = [preferences.skillsPage1, preferences.skillsPage2];
+	const slotCount = 16;
+	for (let offset = 0; offset < slotCount; offset++) {
+		const slotIndex = (nextAttackSkillSlot + offset) % slotCount;
+		const pageIndex = slotIndex < 8 ? 0 : 1;
+		const pageSlotIndex = slotIndex % 8;
+		const slot = pages[pageIndex][pageSlotIndex];
+		if (useSkillOnTarget(slot, targetEntity, `skillsPage${pageIndex + 1}:${pageSlotIndex}`)) {
+			nextAttackSkillSlot = (slotIndex + 1) % slotCount;
+			return true;
+		}
+	}
+	return false;
 }
 
 function castBuffSkill(slot, slotKey) {
@@ -1581,12 +1934,23 @@ function castBuffSkill(slot, slotKey) {
 	if (isSkillSlotUnavailable(slotKey, skillId)) return false;
 	if (!canUseSkillSlot(slot, slotKey)) return false;
 
+	const previousMoveAction = Session.moveAction;
 	if (castSkillOnTarget(skillId, level, Session.Entity)) {
-		const lastCast = lastSkillAction;
-		skillSlotLastUsed.set(slotKey, lastCast);
-		pendingSkillAttempt = { slotKey, skillId, at: lastCast };
-		skillFailureRecovery = false;
+		recordSkillAttempt(slotKey, skillId, previousMoveAction);
 		return true;
+	}
+	return false;
+}
+
+function castNextBuffSkill() {
+	const slots = preferences.skillsBuff;
+	const slotCount = slots.length;
+	for (let offset = 0; offset < slotCount; offset++) {
+		const slotIndex = (nextBuffSkillSlot + offset) % slotCount;
+		if (castBuffSkill(slots[slotIndex], `skillsBuff:${slotIndex}`)) {
+			nextBuffSkillSlot = (slotIndex + 1) % slotCount;
+			return true;
+		}
 	}
 	return false;
 }
@@ -1622,14 +1986,16 @@ function attackEntity(entity) {
 // GAME LOOP (TICK)
 // -------------------------------------------------------------
 function tick() {
+	if (!isGameplayReady()) {
+		removeIcon();
+		return;
+	}
+
 	if (!document.getElementById('autoCombatHudIcon')) {
 		addIcon();
 	}
 
-	if (!Session.Entity) return;
-	if (pendingSkillAttempt && Date.now() - pendingSkillAttempt.at > SKILL_FAILURE_WINDOW_MS) {
-		pendingSkillAttempt = null;
-	}
+	recoverStalledSkillAttempt();
 
 	const life = Session.Entity.life;
 	if (!life || life.hp <= 0) return;
@@ -1638,20 +2004,34 @@ function tick() {
 	// 1. Potions: 2 HP slots, 2 SP slots (by ITID)
 	if (preferences.autoPotion && life.hp_max > 0) {
 		const hpPct = (life.hp / life.hp_max) * 100;
-		if (preferences.hpItem2 && hpPct <= preferences.hpPercent2) {
+		const hpThresholdsMatch = Number(preferences.hpPercent1) === Number(preferences.hpPercent2);
+		if (
+			preferences.hpItem2Enabled !== false &&
+			preferences.hpItem2 &&
+			hpPct <= preferences.hpPercent2 &&
+			!(hpThresholdsMatch && preferences.hpItem1Enabled !== false && preferences.hpItem1)
+		) {
 			usePotionByITID(preferences.hpItem2);
-		} else if (preferences.hpItem1 && hpPct <= preferences.hpPercent1) {
+		} else if (preferences.hpItem1Enabled !== false && preferences.hpItem1 && hpPct <= preferences.hpPercent1) {
 			usePotionByITID(preferences.hpItem1);
 		}
 	}
 	if (preferences.autoPotion && life.sp_max > 0) {
 		const spPct = (life.sp / life.sp_max) * 100;
-		if (preferences.spItem2 && spPct <= preferences.spPercent2) {
+		const spThresholdsMatch = Number(preferences.spPercent1) === Number(preferences.spPercent2);
+		if (
+			preferences.spItem2Enabled !== false &&
+			preferences.spItem2 &&
+			spPct <= preferences.spPercent2 &&
+			!(spThresholdsMatch && preferences.spItem1Enabled !== false && preferences.spItem1)
+		) {
 			usePotionByITID(preferences.spItem2);
-		} else if (preferences.spItem1 && spPct <= preferences.spPercent1) {
+		} else if (preferences.spItem1Enabled !== false && preferences.spItem1 && spPct <= preferences.spPercent1) {
 			usePotionByITID(preferences.spItem1);
 		}
 	}
+
+	if (isPendingSkillMoveAction()) return;
 
 	// 2. Buff Items (8 slots)
 	if (preferences.autoBuffItem && canAct()) {
@@ -1659,6 +2039,8 @@ function tick() {
 		preferences.buffItems.forEach(slot => {
 			if (!slot || !slot.itemId) return;
 			const itemId = Number(slot.itemId);
+			const item = (Inventory.getUI().list || []).find(it => it && Number(it.ITID) === itemId && it.count > 0);
+			if (!item || !isBuffConsumable(item)) return;
 			let last = buffItemLastUsed.get(itemId);
 			let duration = slot.autoDuration ? getBuffDurationSeconds(itemId) : 0;
 			if (slot.autoDuration && last === undefined) {
@@ -1674,11 +2056,8 @@ function tick() {
 			}
 			const intervalMs = (duration || Number(slot.interval) || 60) * 1000;
 			if (now - (last || 0) >= intervalMs) {
-				const item = (Inventory.getUI().list || []).find(it => it && Number(it.ITID) === itemId && it.count > 0);
-				if (item) {
-					useItemByIndex(item.index);
-					buffItemLastUsed.set(itemId, now);
-				}
+				useItemByIndex(item.index);
+				buffItemLastUsed.set(itemId, now);
 			}
 		});
 	}
@@ -1689,10 +2068,8 @@ function tick() {
 	const spPct = life.sp_max > 0 ? (life.sp / life.sp_max) * 100 : 100;
 	const lowSpNormalOnly =
 		canAutoSkill && preferences.lowSpNormalAttack && spPct <= preferences.lowSpPercent;
-	if (canAutoSkill && !lowSpNormalOnly && canAct() && (!isPlayerCasting() || skillFailureRecovery)) {
-		for (const [index, slot] of preferences.skillsBuff.entries()) {
-			if (castBuffSkill(slot, `skillsBuff:${index}`)) break;
-		}
+	if (canAutoSkill && !lowSpNormalOnly && canAct() && canContinueSkillRotation()) {
+		castNextBuffSkill();
 	}
 
 	// 4. Stop looting at the configured weight threshold and optionally return.
@@ -1732,27 +2109,12 @@ function tick() {
 	if (canAutoAttack || canAutoSkill) {
 		const target = getTarget();
 		if (target) {
-			if (!isPlayerCasting() || skillFailureRecovery) {
+			if (canContinueSkillRotation()) {
 				let skillExecuted = false;
 				const allowSkills = canAutoSkill && !lowSpNormalOnly;
 
 				if (allowSkills) {
-					// Page 1: Attack Skills 1-8
-					for (const [index, slot] of preferences.skillsPage1.entries()) {
-						if (useSkillOnTarget(slot, target, `skillsPage1:${index}`)) {
-							skillExecuted = true;
-							break;
-						}
-					}
-					// Page 2: Attack Skills 9-16
-					if (!skillExecuted) {
-						for (const [index, slot] of preferences.skillsPage2.entries()) {
-							if (useSkillOnTarget(slot, target, `skillsPage2:${index}`)) {
-								skillExecuted = true;
-								break;
-							}
-						}
-					}
+					skillExecuted = useNextAttackSkill(target);
 				}
 
 				if (
@@ -1763,8 +2125,8 @@ function tick() {
 					if (attackEntity(target)) skillFailureRecovery = false;
 				}
 			}
-		} else if (canAutoAttack) {
-			wander();
+		} else if (canAutoAttack || (canAutoSkill && preferences.skillMovement)) {
+			if (canContinueSkillRotation()) wander();
 		}
 	}
 }
@@ -1937,6 +2299,7 @@ function open() {
 	preferences.show = true;
 	preferences.save();
 	component._host.style.display = '';
+	centerAutoCombatWindow();
 	component.focus();
 	const root = component.getRoot();
 	refreshMonsters(root);
@@ -1951,6 +2314,11 @@ function close() {
 	preferences.y = parseInt(component._host.style.top, 10) || preferences.y;
 	preferences.save();
 	component._host.style.display = 'none';
+}
+
+function toggle() {
+	if (preferences.show) close();
+	else open();
 }
 
 function ensureGlobalStyles() {
@@ -1994,12 +2362,14 @@ function addIcon() {
 	icon.id = 'autoCombatHudIcon';
 	icon.type = 'button';
 	icon.textContent = 'Auto';
-	icon.title = 'Apri AutoCombat';
-	icon.setAttribute('aria-label', 'Apri AutoCombat');
+	icon.title = 'Apri o chiudi AutoCombat';
+	icon.setAttribute('aria-label', 'Apri o chiudi AutoCombat');
+
+	stopGameMousePropagation(icon);
 
 	icon.addEventListener('click', event => {
 		event.stopPropagation();
-		open();
+		toggle();
 	});
 
 	icon.addEventListener('contextmenu', e => {
@@ -2010,10 +2380,16 @@ function addIcon() {
 	icon.addEventListener('touchstart', event => {
 		event.preventDefault();
 		event.stopPropagation();
-		open();
+		toggle();
 	}, { passive: false });
 
+	icon.addEventListener('touchend', event => event.stopPropagation());
+
 	document.body.appendChild(icon);
+}
+
+function removeIcon() {
+	document.getElementById('autoCombatHudIcon')?.remove();
 }
 
 export default UIManager.addComponent(component);

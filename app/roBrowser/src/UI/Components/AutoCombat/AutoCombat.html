@@ -41,6 +41,12 @@
 				</div>
 				<div class="ah-row ah-row-suboption ah-row-suboption-deep">
 					<label class="ah-checkbox-label">
+						<span class="ah-custom-checkbox opt-skill-movement" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
+						<span class="ah-label-text">Movimento per Auto-Skill</span>
+					</label>
+				</div>
+				<div class="ah-row ah-row-suboption ah-row-suboption-deep">
+					<label class="ah-checkbox-label">
 						<span class="ah-custom-checkbox opt-lowsp-normal" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
 						<span class="ah-label-text">Se SP basso, usa solo attacco normale</span>
 					</label>
@@ -96,11 +102,11 @@
 			</div>
 
 			<div class="ah-panel-content" style="padding-top: 30px;">
-				<div class="ah-skill-hint">Pagine attacco: parti da 5s e aumenta gli intervalli delle skill successive per migliorare la rotazione. Pagina buff: 60s standard. Trascina una skill nello slot.</div>
-				<div class="ah-skill-warning" hidden>Pagina 3: solo skill buff/supporto. Le skill di attacco qui possono bloccare Auto Combat.</div>
+				<div class="ah-skill-hint">Attacco: inizia da 5s e aumenta gli intervalli; buff: 60s. Trascina le skill negli slot.</div>
+				<div class="ah-skill-warning" hidden>Pagina 3 solo buff/supporto: non usare skill di attacco.</div>
 				<div class="ah-skill-page-view" id="ah-skill-page-view">
 					<div class="ah-slots-grid" id="ah-skill-slots-grid">
-						<!-- 8 Slots generated dynamically with skillslot_autohunt.bmp -->
+						<!-- 8 skill slots over the positions in the GRF background -->
 					</div>
 				</div>
 			</div>
@@ -109,70 +115,71 @@
 		<!-- PANEL 4: POTION (4 SLOTS: 2 HP, 2 SP) -->
 		<div class="ah-panel" id="ah-panel-potion" data-background="autohunt/setting_potion/bg_potion1_autohunt.bmp">
 			<div class="ah-panel-content">
-				<div class="ah-potion-section">
-					<span class="ah-section-title" style="color: #ffb0b0;">HP Recovery (2 Slot)</span>
-					<div class="ah-potion-slots-container">
-						<!-- HP Slot 1 -->
-						<div class="ah-potion-box">
-							<div class="ah-potion-header">
-								<span class="ah-potion-num">Slot 1</span>
-								<div class="ah-potion-slot-icon-bg">
-									<div class="ah-potion-slot-icon-img" data-potion-key="hpItem1"></div>
-								</div>
-							</div>
-							<select class="ah-potion-select opt-hp-item-1"><option value="0">Disattivato</option></select>
-							<div class="ah-potion-slider-wrap">
-								<span>Usa se HP &lt; <b class="ah-val-hp1">70</b>%</span>
-								<input type="range" class="ah-range-hp1" min="1" max="99" value="70">
-							</div>
+				<div class="ah-potion-intro">Configure recovery items to use.</div>
+				<div class="ah-potion-hint">If recovery ratios are the same, items are used from left to right.</div>
+				<div class="ah-potion-slots-container">
+					<div class="ah-potion-box" data-potion-card="hpItem1">
+						<div class="ah-potion-header">
+							<span class="ah-potion-title">HP Recovery</span>
+							<button class="ah-potion-toggle" type="button" data-potion-enabled="hpItem1Enabled" aria-label="Toggle HP recovery slot 1" aria-pressed="true"></button>
 						</div>
-						<!-- HP Slot 2 (Emergenza) -->
-						<div class="ah-potion-box">
-							<div class="ah-potion-header">
-								<span class="ah-potion-num" style="color:#ff8585;">Slot 2 (Emergenza)</span>
-								<div class="ah-potion-slot-icon-bg">
-									<div class="ah-potion-slot-icon-img" data-potion-key="hpItem2"></div>
-								</div>
-							</div>
-							<select class="ah-potion-select opt-hp-item-2"><option value="0">Disattivato</option></select>
-							<div class="ah-potion-slider-wrap">
-								<span>Usa se HP &lt; <b class="ah-val-hp2">35</b>%</span>
-								<input type="range" class="ah-range-hp2" min="1" max="99" value="35">
-							</div>
+						<div class="ah-potion-range-label">Auto recover when HP is below</div>
+						<div class="ah-potion-slider-wrap">
+							<button class="ah-potion-step ah-potion-step-left" type="button" data-step="-1" aria-label="Lower HP threshold"></button>
+							<div class="ah-potion-slider-fill" aria-hidden="true"></div>
+							<input type="range" class="ah-range-hp1" min="0" max="100" value="70" aria-label="HP recovery threshold">
+							<button class="ah-potion-step ah-potion-step-right" type="button" data-step="1" aria-label="Raise HP threshold"></button>
+						</div>
+						<div class="ah-potion-slot-icon-bg" data-potion-slot="hpItem1">
+							<div class="ah-potion-slot-icon-img" data-potion-key="hpItem1"></div>
 						</div>
 					</div>
-				</div>
-
-				<div class="ah-potion-section" style="margin-top: 10px;">
-					<span class="ah-section-title" style="color: #b0d4ff;">SP Recovery (2 Slot)</span>
-					<div class="ah-potion-slots-container">
-						<!-- SP Slot 1 -->
-						<div class="ah-potion-box">
-							<div class="ah-potion-header">
-								<span class="ah-potion-num">Slot 1</span>
-								<div class="ah-potion-slot-icon-bg">
-									<div class="ah-potion-slot-icon-img" data-potion-key="spItem1"></div>
-								</div>
-							</div>
-							<select class="ah-potion-select opt-sp-item-1"><option value="0">Disattivato</option></select>
-							<div class="ah-potion-slider-wrap">
-								<span>Usa se SP &lt; <b class="ah-val-sp1">40</b>%</span>
-								<input type="range" class="ah-range-sp1" min="1" max="99" value="40">
-							</div>
+					<div class="ah-potion-box" data-potion-card="hpItem2">
+						<div class="ah-potion-header">
+							<span class="ah-potion-title">HP Recovery</span>
+							<button class="ah-potion-toggle" type="button" data-potion-enabled="hpItem2Enabled" aria-label="Toggle HP recovery slot 2" aria-pressed="true"></button>
 						</div>
-						<!-- SP Slot 2 (Emergenza) -->
-						<div class="ah-potion-box">
-							<div class="ah-potion-header">
-								<span class="ah-potion-num" style="color:#85b8ff;">Slot 2 (Emergenza)</span>
-								<div class="ah-potion-slot-icon-bg">
-									<div class="ah-potion-slot-icon-img" data-potion-key="spItem2"></div>
-								</div>
-							</div>
-							<select class="ah-potion-select opt-sp-item-2"><option value="0">Disattivato</option></select>
-							<div class="ah-potion-slider-wrap">
-								<span>Usa se SP &lt; <b class="ah-val-sp2">15</b>%</span>
-								<input type="range" class="ah-range-sp2" min="1" max="99" value="15">
-							</div>
+						<div class="ah-potion-range-label">Auto recover when HP is below</div>
+						<div class="ah-potion-slider-wrap">
+							<button class="ah-potion-step ah-potion-step-left" type="button" data-step="-1" aria-label="Lower HP threshold"></button>
+							<div class="ah-potion-slider-fill" aria-hidden="true"></div>
+							<input type="range" class="ah-range-hp2" min="0" max="100" value="35" aria-label="HP recovery threshold">
+							<button class="ah-potion-step ah-potion-step-right" type="button" data-step="1" aria-label="Raise HP threshold"></button>
+						</div>
+						<div class="ah-potion-slot-icon-bg" data-potion-slot="hpItem2">
+							<div class="ah-potion-slot-icon-img" data-potion-key="hpItem2"></div>
+						</div>
+					</div>
+					<div class="ah-potion-box" data-potion-card="spItem1">
+						<div class="ah-potion-header">
+							<span class="ah-potion-title">SP Recovery</span>
+							<button class="ah-potion-toggle" type="button" data-potion-enabled="spItem1Enabled" aria-label="Toggle SP recovery slot 1" aria-pressed="true"></button>
+						</div>
+						<div class="ah-potion-range-label">Auto recover when SP is below</div>
+						<div class="ah-potion-slider-wrap">
+							<button class="ah-potion-step ah-potion-step-left" type="button" data-step="-1" aria-label="Lower SP threshold"></button>
+							<div class="ah-potion-slider-fill" aria-hidden="true"></div>
+							<input type="range" class="ah-range-sp1" min="0" max="100" value="40" aria-label="SP recovery threshold">
+							<button class="ah-potion-step ah-potion-step-right" type="button" data-step="1" aria-label="Raise SP threshold"></button>
+						</div>
+						<div class="ah-potion-slot-icon-bg" data-potion-slot="spItem1">
+							<div class="ah-potion-slot-icon-img" data-potion-key="spItem1"></div>
+						</div>
+					</div>
+					<div class="ah-potion-box" data-potion-card="spItem2">
+						<div class="ah-potion-header">
+							<span class="ah-potion-title">SP Recovery</span>
+							<button class="ah-potion-toggle" type="button" data-potion-enabled="spItem2Enabled" aria-label="Toggle SP recovery slot 2" aria-pressed="true"></button>
+						</div>
+						<div class="ah-potion-range-label">Auto recover when SP is below</div>
+						<div class="ah-potion-slider-wrap">
+							<button class="ah-potion-step ah-potion-step-left" type="button" data-step="-1" aria-label="Lower SP threshold"></button>
+							<div class="ah-potion-slider-fill" aria-hidden="true"></div>
+							<input type="range" class="ah-range-sp2" min="0" max="100" value="15" aria-label="SP recovery threshold">
+							<button class="ah-potion-step ah-potion-step-right" type="button" data-step="1" aria-label="Raise SP threshold"></button>
+						</div>
+						<div class="ah-potion-slot-icon-bg" data-potion-slot="spItem2">
+							<div class="ah-potion-slot-icon-img" data-potion-key="spItem2"></div>
 						</div>
 					</div>
 				</div>
@@ -181,15 +188,18 @@
 
 		<!-- PANEL 5: LOOTING -->
 		<div class="ah-panel" id="ah-panel-looting" data-background="autohunt/setting_looting/bg_looting_autohunt.bmp">
-			<div class="ah-panel-content">
-				<div class="ah-row">
+			<div class="ah-panel-content ah-looting-content">
+				<div class="ah-looting-weight">
 					<span class="ah-section-title">Gestione Limite Peso:</span>
-					<div class="ah-field-inline">
-						<span>Interrompi raccolta se Peso &gt; <b class="ah-val-maxweight">85</b>%</span>
-						<input type="range" class="ah-range-maxweight" min="40" max="95" value="85">
+					<div class="ah-weight-caption">
+						Interrompi raccolta se Peso &gt; <b class="ah-val-maxweight">85</b>%
+					</div>
+					<div class="ah-potion-slider-wrap ah-weight-slider-wrap">
+						<div class="ah-potion-slider-fill" aria-hidden="true"></div>
+						<input type="range" class="ah-range-maxweight" min="40" max="95" value="85" aria-label="Limite peso">
 					</div>
 				</div>
-				<div class="ah-row" style="margin-top: 8px;">
+				<div class="ah-row ah-looting-return-option">
 					<label class="ah-checkbox-label">
 						<span class="ah-custom-checkbox opt-return-weight" data-background="autohunt/checkbox_off_autohunt.bmp"></span>
 						<span class="ah-label-text">Usa Farfalla / Ritorno in città quando sovraccarico</span>
@@ -204,7 +214,7 @@
 					</div>
 					<button class="ah-return-item-clear" type="button" title="Rimuovi la Farfalla selezionata">&times;</button>
 				</div>
-				<div class="ah-row" style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 8px;">
+				<div class="ah-looting-filter-panel">
 					<span class="ah-section-title">Filtri Oggetti da Raccogliere:</span>
 					<div class="ah-looting-filters">
 						<label class="ah-checkbox-label">
@@ -227,9 +237,9 @@
 		<!-- PANEL 6: ITEM BUFFS (8 SLOTS) -->
 		<div class="ah-panel" id="ah-panel-item" data-background="autohunt/setting_item/bg_item_autohunt.bmp">
 			<div class="ah-panel-content">
-				<div class="ah-skill-hint" style="margin-bottom: 6px;">8 slot per consumabili potenzianti; scegli il tempo manuale o attiva il calcolo automatico</div>
+				<div class="ah-skill-hint" style="margin-bottom: 6px;">Trascina cibi, scroll o pozioni potenzianti; attiva Auto per rilevare la durata.</div>
 				<div class="ah-item-slots-grid" id="ah-item-slots-grid">
-					<!-- 8 slots generated dynamically with itemslot_autohunt.bmp -->
+					<!-- 8 buff-item slots over the positions in the GRF background -->
 				</div>
 			</div>
 		</div>

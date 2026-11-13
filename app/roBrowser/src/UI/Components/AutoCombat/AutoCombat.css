@@ -188,57 +188,75 @@
 }
 
 .ah-skill-hint {
-	font-size: 10px;
-	color: #ffdf7d;
-	background: rgba(0, 0, 0, 0.45);
+	font-size: 9px;
+	color: #111;
+	background: transparent;
 	padding: 3px 6px;
-	border-radius: 3px;
 	margin-bottom: 6px;
 	text-align: center;
-	text-shadow: 1px 1px 2px #000;
+	font-weight: bold;
 }
 .ah-skill-warning {
-	margin-bottom: 5px;
-	color: #ff9a8b;
-	font-size: 10px;
+	position: absolute;
+	top: 30px;
+	left: 16px;
+	right: 16px;
+	color: #111;
+	font-size: 8px;
 	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	font-weight: bold;
 }
 .ah-skill-warning[hidden] { display: none; }
 
-/* 8-Slots Grid (Skill & Items) */
-.ah-slots-grid, .ah-item-slots-grid {
+/* Place the interactive slots over their matching GRF placeholders. */
+.ah-slots-grid {
+	position: absolute;
+	top: 68px;
+	left: 79px;
+	width: 308px;
+	height: 150px;
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	gap: 6px 8px;
-	margin-top: 4px;
+	grid-template-columns: repeat(4, 77px);
+	grid-template-rows: repeat(2, 74px);
+	gap: 0;
+	margin: 0;
+}
+.ah-item-slots-grid {
+	position: absolute;
+	top: 76px;
+	left: 79px;
+	width: 308px;
+	height: 150px;
+	display: grid;
+	grid-template-columns: repeat(4, 77px);
+	grid-template-rows: 74px 76px;
+	gap: 0;
+	margin: 0;
 }
 
 .ah-slot-box {
-	background: rgba(14, 20, 30, 0.65);
-	border: 1px solid #3c4c66;
-	border-radius: 4px;
-	padding: 3px 4px;
+	position: relative;
+	width: 77px;
+	min-width: 0;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	padding: 0;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 2px;
-	transition: border-color 0.15s, box-shadow 0.15s;
-}
-.ah-slot-box:hover { border-color: #5d7aa6; }
-.ah-slot-box.drag-hover {
-	border-color: #ffe066 !important;
-	box-shadow: 0 0 10px rgba(255, 224, 102, 0.8) !important;
-	background: rgba(45, 60, 90, 0.75) !important;
+	gap: 0;
 }
 
 .ah-slot-header {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	font-size: 9px;
-	color: #9ac2f5;
-	font-weight: bold;
+	display: none;
+}
+.ah-slot-icon-bg.dragging,
+.ah-potion-slot-icon-bg.dragging {
+	opacity: 0.55;
 }
 .ah-slot-icon-bg {
 	width: 34px;
@@ -249,9 +267,35 @@
 	align-items: center;
 	justify-content: center;
 	position: relative;
+	background: transparent;
 	cursor: grab;
+	transition: filter 0.15s, outline-color 0.15s;
+}
+#ah-skill-slots-grid .ah-slot-icon-bg {
+	position: absolute;
+	left: 22px;
+	top: 22px;
+}
+#ah-item-slots-grid .ah-slot-icon-bg {
+	position: absolute;
+	left: 22px;
+	top: 0;
 }
 .ah-slot-icon-bg:active { cursor: grabbing; }
+.ah-slot-icon-bg.drag-hover,
+.ah-potion-slot-icon-bg.drag-hover {
+	outline: 2px solid #4d94ed;
+	outline-offset: -2px;
+	animation: ah-slot-drop-pulse 650ms ease-in-out infinite alternate;
+}
+.ah-slot-icon-bg.dragging,
+.ah-potion-slot-icon-bg.dragging {
+	filter: drop-shadow(0 0 5px rgba(53, 134, 231, 0.9));
+}
+@keyframes ah-slot-drop-pulse {
+	from { filter: drop-shadow(0 0 1px rgba(53, 134, 231, 0.5)); }
+	to { filter: drop-shadow(0 0 7px rgba(53, 134, 231, 1)); }
+}
 
 .ah-slot-icon-img {
 	width: 24px;
@@ -268,26 +312,18 @@
 	bottom: 1px;
 	font-size: 8px;
 	font-weight: bold;
-	color: #fff;
-	background: rgba(0, 0, 0, 0.75);
+	color: #111;
+	background: transparent;
 	padding: 0 2px;
-	border-radius: 2px;
 	pointer-events: none;
 	line-height: 10px;
 }
 
-.ah-slot-select {
+.ah-buff-duration {
 	width: 100%;
-	background: rgba(18, 25, 36, 0.95);
-	border: 1px solid #3d4f6c;
-	color: #dbe7f7;
-	font-size: 9px;
-	padding: 1px 2px;
-	border-radius: 2px;
-}
-.ah-slot-select option {
-	background: #141b26;
-	color: #dbe7f7;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 /* Monster List Scrollbox */
@@ -340,49 +376,169 @@
 }
 
 /* Potions layout */
+.ah-potion-intro,
+.ah-potion-hint {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	white-space: nowrap;
+}
+.ah-potion-intro {
+	top: 5px;
+	color: #334b75;
+	font-size: 11px;
+	font-weight: bold;
+}
+.ah-potion-hint {
+	top: 24px;
+	color: #6885aa;
+	font-size: 9px;
+}
 .ah-potion-slots-container {
-	display: flex;
-	gap: 12px;
-	margin-top: 4px;
+	position: absolute;
+	inset: 0;
 }
 .ah-potion-box {
-	flex: 1;
-	background: rgba(14, 20, 30, 0.65);
-	border: 1px solid #3c4f6d;
-	border-radius: 4px;
-	padding: 6px 8px;
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
+	position: absolute;
+	width: 221px;
+	height: 107px;
 	box-sizing: border-box;
 }
-.ah-potion-box.drag-hover,
-.ah-return-item-drop.drag-hover {
-	border-color: #ffe066;
-	box-shadow: 0 0 8px rgba(255, 224, 102, 0.7);
-}
+#ah-panel-potion [data-potion-card="hpItem1"] { left: 11px; top: 50px; }
+#ah-panel-potion [data-potion-card="hpItem2"] { left: 237px; top: 50px; }
+#ah-panel-potion [data-potion-card="spItem1"] { left: 11px; top: 162px; }
+#ah-panel-potion [data-potion-card="spItem2"] { left: 237px; top: 162px; }
 .ah-potion-header {
+	position: absolute;
+	inset: 0 0 auto;
+	height: 23px;
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
+	justify-content: center;
 }
-.ah-potion-num { font-size: 10px; font-weight: bold; color: #a4c7f7; }
-.ah-potion-select {
-	background: rgba(18, 25, 36, 0.95);
-	border: 1px solid #3d4f6c;
-	color: #fff;
+.ah-potion-title {
+	color: #344968;
+	font-size: 11px;
+	font-weight: bold;
+}
+.ah-potion-toggle {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	width: 34px;
+	height: 15px;
+	padding: 0;
+	border: 0;
+	background-color: transparent;
+	background-size: 34px 15px;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+.ah-potion-toggle:hover,
+.ah-potion-step:hover {
+	filter: brightness(1.12);
+}
+.ah-potion-range-label {
+	position: absolute;
+	top: 37px;
+	left: 10px;
+	right: 10px;
+	color: #222;
 	font-size: 10px;
-	padding: 3px;
-	border-radius: 3px;
+	line-height: 12px;
+	text-align: center;
+	white-space: nowrap;
 }
-.ah-potion-select option {
-	background: #141b26;
-	color: #fff;
+.ah-potion-slider-wrap {
+	position: absolute;
+	top: 72px;
+	left: 0;
+	width: 100%;
+	height: 16px;
 }
-.ah-potion-slider-wrap { font-size: 10px; color: #abbfdb; text-shadow: 1px 1px 2px #000; }
+.ah-potion-step {
+	position: absolute;
+	top: 0;
+	width: 14px;
+	height: 15px;
+	padding: 0;
+	border: 0;
+	background-color: transparent;
+	background-size: 14px 15px;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+.ah-potion-step-left { left: 7px; }
+.ah-potion-step-right { left: 157px; }
+#ah-panel-potion .ah-potion-slider-wrap input[type="range"] {
+	position: absolute;
+	top: 0;
+	left: 23px;
+	width: 134px;
+	height: 15px;
+	margin: 0;
+	padding: 0;
+	-webkit-appearance: none;
+	appearance: none;
+	background: transparent;
+	cursor: pointer;
+	touch-action: pan-x;
+}
+.ah-potion-slider-fill {
+	position: absolute;
+	top: 3px;
+	left: 23px;
+	width: 0;
+	height: 9px;
+	overflow: hidden;
+	background-position: left center;
+	background-repeat: no-repeat;
+	pointer-events: none;
+}
 
-/* Potion slot drag icon */
+#ah-panel-potion .ah-potion-slider-wrap input[type="range"]::-webkit-slider-runnable-track {
+	height: 9px;
+	background: transparent;
+}
+#ah-panel-potion .ah-potion-slider-wrap input[type="range"]::-webkit-slider-thumb {
+	width: 14px;
+	height: 15px;
+	margin-top: -3px;
+	-webkit-appearance: none;
+	appearance: none;
+	border: 0;
+	background-color: transparent;
+	background-image: var(--ah-potion-thumb-image);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 14px 15px;
+}
+#ah-panel-potion .ah-potion-slider-wrap input[type="range"]::-moz-range-track {
+	height: 9px;
+	border: 0;
+	background: transparent;
+}
+#ah-panel-potion .ah-potion-slider-wrap input[type="range"]::-moz-range-progress {
+	height: 9px;
+	background: transparent;
+}
+#ah-panel-potion .ah-potion-slider-wrap input[type="range"]::-moz-range-thumb {
+	width: 14px;
+	height: 15px;
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+	background-image: var(--ah-potion-thumb-image);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 14px 15px;
+}
 .ah-potion-slot-icon-bg {
+	position: absolute;
+	top: 61px;
+	left: 179px;
+	z-index: 2;
 	width: 34px;
 	height: 34px;
 	background-size: 34px 34px;
@@ -390,14 +546,19 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	position: relative;
+	background-color: transparent;
 	cursor: grab;
-	align-self: center;
+	transition: filter 0.15s, outline-color 0.15s;
 }
 .ah-potion-slot-icon-bg:active { cursor: grabbing; }
 .ah-potion-slot-icon-bg.drag-hover {
-	border: 1px solid #ffe066;
-	box-shadow: 0 0 8px rgba(255, 224, 102, 0.7);
+	outline: 2px solid #4d94ed;
+	outline-offset: -2px;
+	animation: ah-slot-drop-pulse 650ms ease-in-out infinite alternate;
+}
+.ah-potion-slot-icon-bg.dragging {
+	opacity: 0.55;
+	filter: drop-shadow(0 0 5px rgba(53, 134, 231, 0.9));
 }
 .ah-potion-slot-icon-img {
 	width: 24px;
@@ -409,32 +570,204 @@
 }
 
 /* Looting Filters */
+#ah-panel-looting .ah-looting-content {
+	position: relative;
+	padding: 0;
+}
+.ah-looting-weight {
+	position: absolute;
+	top: 7px;
+	left: 0;
+	right: 0;
+	height: 98px;
+	box-sizing: border-box;
+}
+.ah-looting-weight .ah-section-title {
+	position: absolute;
+	top: 12px;
+	left: 0;
+	right: 0;
+	margin: 0;
+	color: #334b75;
+	text-align: center;
+	text-shadow: none;
+}
+.ah-weight-caption {
+	position: absolute;
+	top: 70px;
+	left: 8px;
+	right: 8px;
+	color: #293e5b;
+	font-size: 10px;
+	text-align: center;
+}
+.ah-weight-slider-wrap {
+	position: absolute;
+	top: 107px;
+	left: 50%;
+	width: 220px;
+	height: 15px;
+	transform: translateX(-50%);
+}
+.ah-weight-slider-wrap::before {
+	position: absolute;
+	top: 3px;
+	left: 0;
+	width: 100%;
+	height: 9px;
+	border: 1px solid #8da7c0;
+	border-radius: 6px;
+	background: linear-gradient(180deg, #dce9f5, #b8cde0);
+	box-sizing: border-box;
+	content: '';
+}
+#ah-panel-looting .ah-weight-slider-wrap .ah-potion-slider-fill {
+	position: absolute;
+	top: 3px;
+	left: 0;
+	max-width: 100%;
+	height: 9px;
+	border-radius: 6px;
+	pointer-events: none;
+}
+#ah-panel-looting .ah-weight-slider-wrap input[type="range"] {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 220px;
+	height: 15px;
+	margin: 0;
+	padding: 0;
+	-webkit-appearance: none;
+	appearance: none;
+	background: transparent;
+	cursor: pointer;
+	touch-action: pan-x;
+}
+#ah-panel-looting .ah-weight-slider-wrap input[type="range"]::-webkit-slider-runnable-track {
+	height: 9px;
+	background: transparent;
+}
+#ah-panel-looting .ah-weight-slider-wrap input[type="range"]::-webkit-slider-thumb {
+	width: 14px;
+	height: 15px;
+	margin-top: -3px;
+	-webkit-appearance: none;
+	appearance: none;
+	border: 0;
+	background-color: transparent;
+	background-image: var(--ah-potion-thumb-image);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 14px 15px;
+}
+#ah-panel-looting .ah-weight-slider-wrap input[type="range"]::-moz-range-track {
+	height: 9px;
+	border: 0;
+	background: transparent;
+}
+#ah-panel-looting .ah-weight-slider-wrap input[type="range"]::-moz-range-progress {
+	height: 9px;
+	background: transparent;
+}
+#ah-panel-looting .ah-weight-slider-wrap input[type="range"]::-moz-range-thumb {
+	width: 14px;
+	height: 15px;
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+	background-image: var(--ah-potion-thumb-image);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 14px 15px;
+}
+.ah-looting-return-option {
+	position: absolute;
+	top: 172px;
+	left: 24px;
+	right: 24px;
+	margin: 0;
+}
+#ah-panel-looting .ah-looting-return-option .ah-checkbox-label,
+#ah-panel-looting .ah-looting-filter-panel .ah-checkbox-label {
+	text-shadow: none;
+}
+#ah-panel-looting .ah-looting-return-option .ah-label-text,
+#ah-panel-looting .ah-looting-filter-panel .ah-label-text {
+	color: #263a53;
+	font-size: 10px;
+}
 .ah-looting-filters {
 	display: flex;
-	flex-direction: column;
-	gap: 6px;
-	margin-top: 4px;
+	align-items: center;
+	justify-content: space-between;
+	flex: 1;
+	min-width: 0;
+	gap: 8px;
+	margin: 0;
+}
+.ah-looting-filter-panel {
+	position: absolute;
+	top: 252px;
+	left: 24px;
+	right: 24px;
+	min-height: 18px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 0;
+	box-sizing: border-box;
+	border: 0;
+	background: transparent;
+}
+.ah-looting-filter-panel .ah-section-title {
+	flex: 0 0 auto;
+	margin: 0;
+	color: #334b75;
+	font-size: 9px;
+	text-shadow: none;
+}
+.ah-looting-filter-panel .ah-checkbox-label {
+	flex: 0 0 auto;
+	gap: 4px;
+	white-space: nowrap;
+}
+.ah-looting-filter-panel .ah-label-text {
+	font-size: 9px;
 }
 
 .ah-return-item-control {
+	position: absolute;
+	top: 190px;
+	left: 24px;
+	right: 24px;
+	height: 48px;
 	display: flex;
 	align-items: center;
-	gap: 6px;
-	margin: 4px 0 8px;
+	gap: 8px;
+	margin: 0;
 }
 .ah-return-item-drop {
 	flex: 1;
 	min-width: 0;
+	height: 48px;
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	padding: 3px 6px;
-	border: 1px dashed #64748b;
-	border-radius: 3px;
-	background: rgba(14, 20, 30, 0.65);
-	color: #c7dcf7;
+	padding: 4px 8px;
+	box-sizing: border-box;
+	border: 1px dashed #7894b2;
+	border-radius: 4px;
+	background: rgba(247, 251, 255, 0.82);
+	color: #263a53;
 	font-size: 10px;
 	cursor: copy;
+	transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.ah-return-item-drop.drag-hover {
+	border-color: #4d94ed;
+	background: rgba(230, 242, 255, 0.95);
+	box-shadow: 0 0 8px rgba(53, 134, 231, 0.55);
 }
 .ah-return-item-icon-bg {
 	width: 34px;
@@ -445,6 +778,12 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	transition: filter 0.15s, outline-color 0.15s;
+}
+.ah-return-item-drop.drag-hover .ah-return-item-icon-bg {
+	outline: 2px solid #4d94ed;
+	outline-offset: -2px;
+	animation: ah-slot-drop-pulse 650ms ease-in-out infinite alternate;
 }
 .ah-return-item-icon {
 	width: 24px;
@@ -465,31 +804,112 @@
 	width: 22px;
 	height: 22px;
 	padding: 0;
-	border: 1px solid #64748b;
+	border: 1px solid #7894b2;
 	border-radius: 3px;
-	background: rgba(35, 48, 68, 0.85);
-	color: #fff;
+	background: rgba(247, 251, 255, 0.9);
+	color: #344968;
 	cursor: pointer;
 }
 
 .ah-buff-timing {
 	width: 100%;
+	min-width: 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	gap: 4px;
 	font-size: 9px;
-	color: #c7dcf7;
+	color: #111;
+}
+.ah-item-slots-grid .ah-buff-timing {
+	position: absolute;
+	left: 0;
+	top: 39px;
+	width: 77px;
+	height: 14px;
+	display: block;
+	font-size: 8px;
+}
+.ah-item-slots-grid .ah-buff-sec {
+	position: absolute;
+	left: 25px;
+	top: 0;
+	width: 28px;
+	height: 16px;
+	box-sizing: border-box;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	color: #111;
+	text-align: center;
+	padding: 0;
+	font-size: 9px;
+	font-weight: bold;
+}
+#ah-item-slots-grid .ah-buff-sec:disabled {
+	opacity: 1;
 }
 .ah-skill-timing {
-	gap: 2px;
-	font-size: 8px;
+	position: absolute;
+	left: 0;
+	top: 55px;
+	width: 77px;
+	height: 24px;
+	display: block;
 }
-.ah-skill-interval {
-	width: 30px;
+#ah-skill-slots-grid .ah-skill-interval {
+	position: absolute;
+	left: 25px;
+	top: 5px;
+	width: 28px;
 	min-width: 0;
+	height: 16px;
 	padding: 0;
-	font-size: 8px;
+	font-size: 9px;
+	background: rgba(255, 255, 255, 0.85);
+	border: 1px solid #a5b7d2;
+	border-radius: 0;
+	color: #111;
+	font-weight: bold;
+	text-align: center;
+	box-sizing: border-box;
+}
+#ah-skill-slots-grid .ah-skill-interval::-webkit-inner-spin-button,
+#ah-skill-slots-grid .ah-skill-interval::-webkit-outer-spin-button {
+	appearance: none;
+	margin: 0;
+}
+#ah-skill-slots-grid .ah-skill-interval {
+	-moz-appearance: textfield;
+}
+.ah-skill-stepper {
+	position: absolute;
+	top: 5px;
+	right: 1px;
+	z-index: 1;
+	width: 20px;
+	height: 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+}
+.ah-skill-step {
+	flex: 1;
+	min-height: 0;
+	padding: 0;
+	border: 1px solid #8da7c8;
+	border-radius: 2px;
+	background: rgba(255, 255, 255, 0.9);
+	color: #111;
+	font-size: 9px;
+	font-weight: 800;
+	line-height: 9px;
+	cursor: pointer;
+	touch-action: manipulation;
+}
+.ah-skill-step:hover {
+	background: #dceaff;
+	border-color: #4d94ed;
 }
 .ah-buff-sec {
 	width: 42px;
@@ -500,6 +920,39 @@
 	padding: 1px;
 	border-radius: 2px;
 }
+#ah-item-slots-grid .ah-buff-auto-label {
+	position: absolute;
+	left: 53px;
+	top: 0;
+	height: 14px;
+	display: flex;
+	align-items: center;
+	gap: 1px;
+	font-size: 9px;
+	font-weight: bold;
+	color: #111;
+	line-height: 10px;
+}
+#ah-item-slots-grid .ah-buff-auto-label input {
+	width: 10px;
+	height: 10px;
+	margin: 0;
+	padding: 0;
+}
+#ah-skill-slots-grid .ah-buff-timing > span {
+	display: none;
+}
+#ah-item-slots-grid .ah-buff-duration {
+	position: absolute;
+	left: 0;
+	top: 58px;
+	width: 77px;
+	min-height: 10px;
+	color: #111;
+	font-size: 9px;
+	font-weight: bold;
+	line-height: 9px;
+}
 .ah-buff-auto-label {
 	display: flex;
 	align-items: center;
@@ -508,8 +961,9 @@
 }
 .ah-buff-duration {
 	min-height: 10px;
-	color: #a7bdd9;
+	color: #111;
 	font-size: 8px;
+	font-weight: bold;
 	text-align: center;
 }
 
