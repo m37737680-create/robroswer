@@ -181,22 +181,34 @@ moc_prydb1,42,133,2	script	Thief Guildsman#thief	118,{
 		next;
 		mes "[Brad]";
 		mes "Va bene, ho fatto quello che potevo per te, quindi vai la tua strada. Sono un uomo piuttosto impegnato.";
+		next;
+		mes "[Brad]";
+		mes "ah! un ultima cosa se vuoi sbloccare le seguenti skill?";
+		mes "Back Slide, Pick Stone, Throw Stone, Sprinkle Sand";
+		mes "Vai a parlare nella stanza affianco con <NAVI>[Alcouskou]<INFO>moc_prydb1,155,127</INFO></NAVI>, lui ti dirà di più.";
 		mes "A presto.";
 		close;
 	}
 	if(BaseJob != Job_Novice) {
-		if(BaseJob == Job_Thief) {
-			mes "[Brad]";
-			mes "Non ho eventi speciali ora. Quindi vai e torna più tardi.";
+		// *** NUOVA LOGICA Aggiunta qui: Controlla se è Ladro OPPURE Assassino ***
+		if (BaseJob == Job_Thief || BaseJob == Job_Assassin) { 
+			mes "[Brad]"; // Manteniamo il nome NPC originale
+			mes "Vuoi imparare nuove skill?";
+			mes "Back Slide, Pick Stone, Throw Stone, Sprinkle Sand";
+			mes "Vai a parlare nella stanza affianco con <NAVI>[Alcouskou]<INFO>moc_prydb1,155,127</INFO></NAVI>, lui ti dirà di più.";
 		}else{
+			// Questo blocco gestisce TUTTI gli altri lavori (che non sono Novice, Thief o Assassin)
+			mes "[Brad]"; // Ho aggiunto il nome NPC per uniformità
 			mes "Bbandito di gilda";
-			mes "Ehi~ Ehi~ Non sei un novizio o un ladro!";
+			mes "Ehi~ Ehi~ Non sei un novizio o un ladro!"; 
 			mes "Cosa fai qui? Non sei il benvenuto di rendere questo posto la tua casa~ Hweeeee~ Vai via da qui~";
 		}
-		close;
+		close; // Chiude se BaseJob != Job_Novice, indipendentemente dal risultato.
 	}
-	mes "Bbandito di gilda";
+	// Questo blocco viene eseguito solo se BaseJob == Job_Novice
+	mes "Bbandito di gilda"; 
 	mes "Ho? Perché un novizio come te è venuto qui?";
-	mes "Se sei qui per essere un Ladro, chiedi alla signora malumore che sta proprio accanto a me.";
+	// Se sei Novizio, il messaggio per Ladro/Assassin non ha senso ancora qui. Manteniamo la logica originale.
+	mes "Se sei qui per essere un Ladro, chiedi alla signora malumore che sta proprio accanto a me."; 
 	close;
 }
